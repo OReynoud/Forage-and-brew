@@ -38,7 +38,11 @@ public class CharacterMovement : MonoBehaviour
             isMoving = false;
         }
         
-        
+
+    }
+
+    void FixedUpdate()
+    {
         if (isMoving)
             RotatePlayer();
     }
