@@ -38,15 +38,15 @@ public class CameraController : MonoBehaviour
     {
         cam = Camera.main;
         targetFocalLength = cam.focalLength;
-        cameraOffset = transform.localPosition;
     }
     
     // Update is called once per frame
     void FixedUpdate()
     {
-        transform.parent.position = Vector3.Lerp(transform.parent.position, player.position ,cameraLerp);
+        transform.parent.position = Vector3.Lerp(transform.parent.position, player.position+cameraOffset,cameraLerp);
         transform.localPosition =
             Vector3.Lerp(transform.localPosition, -transform.forward * distanceFromPlayer, cameraLerp);
         cam.focalLength = Mathf.Lerp(cam.focalLength,targetFocalLength,focalLerp);
+
     }
 }
