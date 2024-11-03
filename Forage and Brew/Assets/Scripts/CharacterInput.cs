@@ -6,8 +6,9 @@ public class CharacterInput : MonoBehaviour
     public InputSystem_Actions inputs;
 
     public CharacterMovement movement;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private CharacterInteractController characterInteractController;
+
+    private void Start()
     {
         inputs = new InputSystem_Actions();
         EnableInputs(true);
@@ -19,23 +20,31 @@ public class CharacterInput : MonoBehaviour
         {
             inputs.Player.Enable();
             inputs.Player.Move.Enable();
+            inputs.Player.Interact.Enable();
             inputs.Player.Move.performed += MoveOnPerformed;
+            inputs.Player.Interact.performed += InteractOnPerformed;
         }
         else
         {
             inputs.Player.Disable();
             inputs.Player.Move.Disable();
+            inputs.Player.Interact.Disable();
+            inputs.Player.Move.performed -= MoveOnPerformed;
+            inputs.Player.Interact.performed -= InteractOnPerformed;
         }
-        
     }
 
     private void MoveOnPerformed(InputAction.CallbackContext obj)
     {
-        Debug.Log(obj.ReadValue<Vector2>());
+        // Debug.Log(obj.ReadValue<Vector2>());
     }
 
-    // Update is called once per frame
-    void Update()
+    private void InteractOnPerformed(InputAction.CallbackContext obj)
+    {
+        characterInteractController.Interact();
+    }
+
+    private void Update()
     {
         movement.Move(inputs.Player.Move.ReadValue<Vector2>());
     }

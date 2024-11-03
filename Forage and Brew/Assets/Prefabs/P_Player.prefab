@@ -185,6 +185,7 @@ GameObject:
   - component: {fileID: 846135936849312896}
   - component: {fileID: 1678197034909348745}
   - component: {fileID: 3136355370498426651}
+  - component: {fileID: 454307287895772554}
   - component: {fileID: 7297164509645321647}
   m_Layer: 0
   m_Name: P_Player
@@ -245,6 +246,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movement: {fileID: 3136355370498426651}
+  characterInteractController: {fileID: 454307287895772554}
 --- !u!114 &3136355370498426651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -296,6 +298,18 @@ MonoBehaviour:
   accelerationCurveIndex: 0
   brakeIntensity: 1
   isMoving: 0
+--- !u!114 &454307287895772554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8201888323390173134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e479b9cd5248b5c43a4691392958b0d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!54 &7297164509645321647
 Rigidbody:
   m_ObjectHideFlags: 0
