@@ -2,12 +2,19 @@ using UnityEngine;
 
 public class IngredientToCollectBehaviour : MonoBehaviour
 {
-    [Header("References")]
+    [Header("Dependencies")]
     [SerializeField] private IngredientToCollectGlobalValuesSo ingredientToCollectGlobalValuesSo;
+    [field: SerializeField] public IngredientValuesSo IngredientValuesSo { get; private set; }
     [SerializeField] private SphereCollider collectTrigger;
     
     [Header("UI")]
     [SerializeField] private GameObject collectInputCanvasGameObject;
+
+
+    private void Start()
+    {
+        collectInputCanvasGameObject.SetActive(false);
+    }
 
 
     private void EnableCollect()

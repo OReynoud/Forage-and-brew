@@ -19,7 +19,7 @@ public class CharacterInteractController : MonoBehaviour
     {
         if (CurrentIngredientToCollectBehaviour)
         {
-            Debug.Log("Interacting with " + CurrentIngredientToCollectBehaviour.name);
+            HapticChallengeManager.Instance.StartHapticChallenge(CurrentIngredientToCollectBehaviour.IngredientValuesSo.Type);
         }
     }
 }
