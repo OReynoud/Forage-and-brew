@@ -22,7 +22,8 @@ public class HapticChallengeManager : MonoBehaviour
     private bool _isGaugeHapticChallengeActive;
     private bool _isGaugeHapticChallengeGoingUp;
     
-    // Current Ingredient To Collect
+    // Global variables
+    private bool _isHapticChallengeActive;
     private IngredientToCollectBehaviour _currentIngredientToCollectBehaviour;
     
     
@@ -70,6 +71,8 @@ public class HapticChallengeManager : MonoBehaviour
         {
             StopGaugeHapticChallenge();
         }
+        
+        CharacterInputManager.Instance.EnableMoveInputs();
     }
 
     private void StartGaugeHapticChallenge()
@@ -80,12 +83,14 @@ public class HapticChallengeManager : MonoBehaviour
                 _currentGaugeHapticChallengeSo.GaugeTotalHeight * 0.5f));
         _isGaugeHapticChallengeGoingUp = Random.Range(0, 2) == 0;
         _isGaugeHapticChallengeActive = true;
+        _isHapticChallengeActive = true;
     }
 
     private void StopGaugeHapticChallenge()
     {
         gaugeHapticChallengeGameObject.SetActive(false);
         _isGaugeHapticChallengeActive = false;
+        _isHapticChallengeActive = false;
         _currentIngredientToCollectBehaviour.Delete();
         _currentIngredientToCollectBehaviour = null;
     }

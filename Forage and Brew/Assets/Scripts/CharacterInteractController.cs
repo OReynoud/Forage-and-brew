@@ -3,8 +3,6 @@ using UnityEngine;
 public class CharacterInteractController : MonoBehaviour
 {
     public IngredientToCollectBehaviour CurrentIngredientToCollectBehaviour { get; private set; }
-    
-    private bool _isHapticChallengeActive;
 
 
     public void SetNewIngredientToCollect(IngredientToCollectBehaviour newIngredientToCollectBehaviour)
@@ -25,12 +23,6 @@ public class CharacterInteractController : MonoBehaviour
             CurrentIngredientToCollectBehaviour.DisableCollect();
             HapticChallengeManager.Instance.StartHapticChallenge(CurrentIngredientToCollectBehaviour);
             CurrentIngredientToCollectBehaviour = null;
-            _isHapticChallengeActive = true;
-        }
-        else if (_isHapticChallengeActive)
-        {
-            HapticChallengeManager.Instance.StopHapticChallenge();
-            CharacterInputManager.Instance.EnableMoveInputs();
         }
     }
 }

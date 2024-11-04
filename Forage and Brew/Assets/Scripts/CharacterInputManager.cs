@@ -25,6 +25,11 @@ public class CharacterInputManager : MonoBehaviour
         EnableInputs();
     }
 
+    private void Update()
+    {
+        movementController.Move(_inputs.Player.Move.ReadValue<Vector2>());
+    }
+
     #endregion
 
     
@@ -33,6 +38,7 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.Enable();
         EnableMoveInputs();
         EnableInteractInputs();
+        EnableHapticChallengeInputs();
     }
     
     public void EnableMoveInputs()
@@ -47,11 +53,18 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.Interact.performed += InteractOnPerformed;
     }
     
+    public void EnableHapticChallengeInputs()
+    {
+        _inputs.Player.HapticChallenge.Enable();
+        _inputs.Player.HapticChallenge.performed += HapticChallengeOnPerformed;
+    }
+
     public void DisableInputs()
     {
         _inputs.Player.Disable();
         DisableMoveInputs();
         DisableInteractInputs();
+        DisableHapticChallengeInputs();
     }
     
     public void DisableMoveInputs()
@@ -65,6 +78,12 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.Interact.Disable();
         _inputs.Player.Interact.performed -= InteractOnPerformed;
     }
+    
+    public void DisableHapticChallengeInputs()
+    {
+        _inputs.Player.HapticChallenge.Disable();
+        _inputs.Player.HapticChallenge.performed -= HapticChallengeOnPerformed;
+    }
 
     
     private void MoveOnPerformed(InputAction.CallbackContext obj)
@@ -77,8 +96,8 @@ public class CharacterInputManager : MonoBehaviour
         characterInteractController.Interact();
     }
 
-    private void Update()
+    private void HapticChallengeOnPerformed(InputAction.CallbackContext obj)
     {
-        movementController.Move(_inputs.Player.Move.ReadValue<Vector2>());
+        HapticChallengeManager.Instance.StopHapticChallenge();
     }
 }
