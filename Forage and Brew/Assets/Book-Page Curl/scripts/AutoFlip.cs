@@ -4,12 +4,13 @@ using System.Collections;
 public class AutoFlip : MonoBehaviour {
     public FlipMode Mode;
     public float PageFlipTime = 1;
+    public float acceleratedFlipTime = 0.2f;
     public float TimeBetweenPages = 1;
     public float DelayBeforeStarting = 0;
     public bool AutoStartFlip=true;
     public Book ControledBook;
     public int AnimationFramesCount = 40;
-    bool isFlipping = false;
+    public bool isFlipping = false;
     // Use this for initialization
     void Start () {
         if (!ControledBook)
@@ -17,6 +18,8 @@ public class AutoFlip : MonoBehaviour {
         if (AutoStartFlip)
             StartFlipping();
         ControledBook.OnFlip.AddListener(new UnityEngine.Events.UnityAction(PageFlipped));
+        
+        FlipXPages(3,false);
 	}
     void PageFlipped()
     {
@@ -24,14 +27,14 @@ public class AutoFlip : MonoBehaviour {
     }
 	public void StartFlipping()
     {
-        StartCoroutine(FlipToEnd());
+        StartCoroutine(FlipToEnd(PageFlipTime));
     }
-    public void FlipRightPage()
+    public void FlipRightPage(float flipTime)
     {
         if (isFlipping) return;
         if (ControledBook.currentPage >= ControledBook.TotalPageCount) return;
         isFlipping = true;
-        float frameTime = PageFlipTime / AnimationFramesCount;
+        float frameTime = flipTime / AnimationFramesCount;
         float xc = (ControledBook.EndBottomRight.x + ControledBook.EndBottomLeft.x) / 2;
         float xl = ((ControledBook.EndBottomRight.x - ControledBook.EndBottomLeft.x) / 2) * 0.9f;
         //float h =  ControledBook.Height * 0.5f;
@@ -39,23 +42,22 @@ public class AutoFlip : MonoBehaviour {
         float dx = (xl)*2 / AnimationFramesCount;
         StartCoroutine(FlipRTL(xc, xl, h, frameTime, dx));
     }
-    public void FlipLeftPage()
+    public void FlipLeftPage(float flipTime)
     {
         if (isFlipping) return;
         if (ControledBook.currentPage <= 0) return;
         isFlipping = true;
-        float frameTime = PageFlipTime / AnimationFramesCount;
+        float frameTime = flipTime / AnimationFramesCount;
         float xc = (ControledBook.EndBottomRight.x + ControledBook.EndBottomLeft.x) / 2;
         float xl = ((ControledBook.EndBottomRight.x - ControledBook.EndBottomLeft.x) / 2) * 0.9f;
-        //float h =  ControledBook.Height * 0.5f;
         float h = Mathf.Abs(ControledBook.EndBottomRight.y) * 0.9f;
         float dx = (xl) * 2 / AnimationFramesCount;
         StartCoroutine(FlipLTR(xc, xl, h, frameTime, dx));
     }
-    IEnumerator FlipToEnd()
+    IEnumerator FlipToEnd(float flipTime)
     {
         yield return new WaitForSeconds(DelayBeforeStarting);
-        float frameTime = PageFlipTime / AnimationFramesCount;
+        float frameTime = flipTime / AnimationFramesCount;
         float xc = (ControledBook.EndBottomRight.x + ControledBook.EndBottomLeft.x) / 2;
         float xl = ((ControledBook.EndBottomRight.x - ControledBook.EndBottomLeft.x) / 2)*0.9f;
         //float h =  ControledBook.Height * 0.5f;
@@ -122,4 +124,33 @@ public class AutoFlip : MonoBehaviour {
         }
         ControledBook.ReleasePage();
     }
+
+
+    public void FlipXPages(int pagesAmount, bool flipSide)
+    {
+        StartCoroutine(FlipXPagesCoroutine(pagesAmount, flipSide));
+    }
+    /// <summary>
+    /// Flip multiple pages in given direction
+    /// </summary>
+    /// <param name="pagesAmount"></param>
+    /// <param name="flipSide"> true = left, false = right </param>
+    /// <returns></returns>
+    IEnumerator FlipXPagesCoroutine(int pagesAmount, bool flipSide)
+    {
+        for (int i = 0; i < pagesAmount; i++)
+        {
+            Debug.Log("Flip");
+            if (flipSide)
+            {
+                FlipLeftPage(acceleratedFlipTime);
+            }
+            else
+            {
+                FlipRightPage(acceleratedFlipTime);
+            }
+            yield return new WaitUntil(() => isFlipping = false);
+        }
+    }
+    
 }

@@ -2,6 +2,7 @@
 //As the rbarraza.com website is not live anymore you can get an archived version from web archive 
 //or check an archived version that I uploaded on my website: https://dandarawy.com/html5-canvas-pageflip/
 
+using System;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
@@ -17,7 +18,14 @@ public class Book : MonoBehaviour {
     [SerializeField]
     RectTransform BookPanel;
     public Sprite background;
-    public Sprite[] bookPages;
+    
+    [Serializable]
+    public struct BookPage
+    {
+        public Sprite pageSprite;
+        public RectTransform UIComponent;
+    }
+    public BookPage[] bookPages;
     public bool interactable=true;
     public bool enableShadowEffect=true;
     //represent the index of the sprite shown in the right page
@@ -63,7 +71,7 @@ public class Book : MonoBehaviour {
     Vector3 ebl;
     //follow point 
     Vector3 f;
-    bool pageDragging = false;
+    public bool pageDragging = false;
     //current flip mode
     FlipMode mode;
 
@@ -289,15 +297,40 @@ public class Book : MonoBehaviour {
         Left.rectTransform.pivot = new Vector2(0, 0);
         Left.transform.position = RightNext.transform.position;
         Left.transform.eulerAngles = new Vector3(0, 0, 0);
-        Left.sprite = (currentPage < bookPages.Length) ? bookPages[currentPage] : background;
+        if (currentPage < bookPages.Length)
+        {
+            Left.sprite = bookPages[currentPage].pageSprite;
+            bookPages[currentPage].UIComponent.SetParent(Left.transform);
+            bookPages[currentPage].UIComponent.SetAsLastSibling();
+            bookPages[currentPage].UIComponent.anchoredPosition = Vector2.zero;
+        }
+        else
+            Left.sprite = background;
+        
         Left.transform.SetAsFirstSibling();
         
         Right.gameObject.SetActive(true);
         Right.transform.position = RightNext.transform.position;
         Right.transform.eulerAngles = new Vector3(0, 0, 0);
-        Right.sprite = (currentPage < bookPages.Length - 1) ? bookPages[currentPage + 1] : background;
+        if (currentPage < bookPages.Length - 1)
+        {
+            Right.sprite = bookPages[currentPage + 1].pageSprite;
+            bookPages[currentPage + 1].UIComponent.SetParent(Right.transform);
+            bookPages[currentPage + 1].UIComponent.SetAsLastSibling();
+            bookPages[currentPage + 1].UIComponent.anchoredPosition = Vector2.zero;
+        }
+        else
+            Right.sprite = background;
 
-        RightNext.sprite = (currentPage < bookPages.Length - 2) ? bookPages[currentPage + 2] : background;
+        if (currentPage < bookPages.Length - 2)
+        {
+            RightNext.sprite = bookPages[currentPage + 2].pageSprite;
+            bookPages[currentPage + 2].UIComponent.SetParent(RightNext.transform);
+            bookPages[currentPage + 2].UIComponent.SetAsLastSibling();
+            bookPages[currentPage + 2].UIComponent.anchoredPosition = Vector2.zero;
+        }
+        else
+            RightNext.sprite = background;
 
         LeftNext.transform.SetAsFirstSibling();
         if (enableShadowEffect) Shadow.gameObject.SetActive(true);
@@ -321,17 +354,37 @@ public class Book : MonoBehaviour {
 
         Right.gameObject.SetActive(true);
         Right.transform.position = LeftNext.transform.position;
-        Right.sprite = bookPages[currentPage - 1];
+        Right.sprite = bookPages[currentPage - 1].pageSprite;
         Right.transform.eulerAngles = new Vector3(0, 0, 0);
         Right.transform.SetAsFirstSibling();
+        bookPages[currentPage - 1].UIComponent.SetParent(Right.transform);
+        bookPages[currentPage - 1].UIComponent.SetAsLastSibling();
+        bookPages[currentPage - 1].UIComponent.anchoredPosition = Vector2.zero;
 
         Left.gameObject.SetActive(true);
         Left.rectTransform.pivot = new Vector2(1, 0);
         Left.transform.position = LeftNext.transform.position;
         Left.transform.eulerAngles = new Vector3(0, 0, 0);
-        Left.sprite = (currentPage >= 2) ? bookPages[currentPage - 2] : background;
+        if (currentPage >= 2)
+        {
+            Left.sprite = bookPages[currentPage - 2].pageSprite;
+            bookPages[currentPage - 2].UIComponent.SetParent(Left.transform);
+            bookPages[currentPage - 2].UIComponent.SetAsLastSibling();
+            bookPages[currentPage - 2].UIComponent.anchoredPosition = Vector2.zero;
+        }
+        else
+            Left.sprite = background;
 
-        LeftNext.sprite = (currentPage >= 3) ? bookPages[currentPage - 3] : background;
+
+        if (currentPage >= 3)
+        {
+            LeftNext.sprite = bookPages[currentPage - 3].pageSprite;
+            bookPages[currentPage - 3].UIComponent.SetParent(LeftNext.transform);
+            bookPages[currentPage - 3].UIComponent.SetAsLastSibling();
+            bookPages[currentPage - 3].UIComponent.anchoredPosition = Vector2.zero;
+        }
+        else
+            LeftNext.sprite = background;
 
         RightNext.transform.SetAsFirstSibling();
         if (enableShadowEffect) ShadowLTR.gameObject.SetActive(true);
@@ -366,8 +419,27 @@ public class Book : MonoBehaviour {
     Coroutine currentCoroutine;
     void UpdateSprites()
     {
-        LeftNext.sprite= (currentPage > 0 && currentPage <= bookPages.Length) ? bookPages[currentPage-1] : background;
-        RightNext.sprite=(currentPage>=0 &&currentPage<bookPages.Length) ? bookPages[currentPage] : background;
+        if (currentPage > 0 && currentPage <= bookPages.Length)
+        {
+            LeftNext.sprite = bookPages[currentPage - 1].pageSprite;
+            bookPages[currentPage - 1].UIComponent.SetParent(LeftNext.transform);
+            bookPages[currentPage - 1].UIComponent.SetAsLastSibling();
+            bookPages[currentPage - 1].UIComponent.anchoredPosition = Vector2.zero;
+            bookPages[currentPage - 1].UIComponent.localRotation = Quaternion.identity;
+        }
+        else
+            LeftNext.sprite = background;
+
+        if (currentPage >= 0 && currentPage < bookPages.Length)
+        {
+            RightNext.sprite = bookPages[currentPage].pageSprite;
+            bookPages[currentPage].UIComponent.SetParent(RightNext.transform);
+            bookPages[currentPage].UIComponent.SetAsLastSibling();
+            bookPages[currentPage].UIComponent.anchoredPosition = Vector2.zero;
+            bookPages[currentPage].UIComponent.localRotation = Quaternion.identity;
+        }
+        else
+            RightNext.sprite = background;
     }
     public void TweenForward()
     {
@@ -444,5 +516,12 @@ public class Book : MonoBehaviour {
         }
         if (onFinish != null)
             onFinish();
+    }
+
+
+
+    public void OnMove()
+    {
+        Debug.Log("Jai appuyé sur un bouton");
     }
 }
