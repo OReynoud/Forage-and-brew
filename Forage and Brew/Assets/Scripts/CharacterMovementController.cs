@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CharacterMovement : MonoBehaviour
+public class CharacterMovementController : MonoBehaviour
 {
     private Vector3 playerDir;
     public Rigidbody rb;

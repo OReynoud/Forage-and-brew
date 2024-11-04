@@ -28,6 +28,12 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     }
     
 
+    public void Delete()
+    {
+        Destroy(gameObject);
+    }
+    
+
     #region Trigger
 
     private void OnTriggerEnter(Collider other)
