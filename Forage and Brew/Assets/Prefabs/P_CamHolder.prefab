@@ -28,13 +28,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3295390197538786708}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.38440496, y: 0.0066514867, z: -0.0027697578, w: 0.9231365}
-  m_LocalPosition: {x: -0.12313216, y: 8.609308, z: -8.544095}
+  m_LocalRotation: {x: 0.35827324, y: 0.08165967, z: -0.031475294, w: 0.92950594}
+  m_LocalPosition: {x: -1.9038936, y: 9.886404, z: -10.752074}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 643426000899897084}
-  m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 38.7, y: 10.041, z: 0}
 --- !u!20 &3107649149454670002
 Camera:
   m_ObjectHideFlags: 0
@@ -150,13 +150,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d2a74c20eef2f746a948695725689eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 0}
+  cam: {fileID: 3107649149454670002}
   player: {fileID: 0}
-  cameraOffset: {x: 0, y: 0, z: 0}
-  targetFocalLength: 0
-  distanceFromPlayer: 12.13
-  cameraLerp: 0.07
+  targetFocalLength: 18.48
+  cameraRotation: {x: 42.1578, y: 10.041409, z: 0.00000057586306}
+  cameraOffset: {x: 0, y: 2.06, z: 0}
+  distanceFromPlayer: 14.73
+  positionLerp: 0.07
+  rotationLerp: 0.02
   focalLerp: 0.07
+  scriptableCamSettings: {fileID: 11400000, guid: 1c4ca42704d6f7f4091879f325288c5b, type: 2}
 --- !u!1 &6323787455752851328
 GameObject:
   m_ObjectHideFlags: 0
