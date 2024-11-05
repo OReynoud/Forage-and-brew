@@ -100,11 +100,24 @@ public class CameraController : Singleton<CameraController>
     {
         cam = Camera.main;
         targetFocalLength = cam.focalLength;
-        cameraRotation = transform.rotation.eulerAngles;
+        cameraRotation = transform.localRotation.eulerAngles;
         previousCamSettings = scriptableCamSettings;
         targetCamSettings = scriptableCamSettings;
+        
+
         if (scriptableCamSettings == null)
+        {
             Debug.LogError("No Scriptable Cam Settings found, camera might work unpredictably");
+        }
+        else
+        {
+            ApplyScriptableCamSettings();
+            transform.parent.position = player.position + cameraOffset;
+            transform.localRotation = Quaternion.Euler(cameraRotation);
+            transform.localPosition = -transform.forward * distanceFromPlayer;
+            cam.focalLength = targetFocalLength;
+            //Debug.Log(transform.localRotation.eulerAngles);
+        }
     }
     
     // Update is called once per frame
@@ -115,7 +128,7 @@ public class CameraController : Singleton<CameraController>
             Vector3.Lerp(transform.localPosition, -transform.forward * distanceFromPlayer, positionLerp);
         cam.focalLength = Mathf.Lerp(cam.focalLength,targetFocalLength,focalLerp);
         
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(cameraRotation),positionLerp);
+        transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(cameraRotation),rotationLerp);
     }
 
     private void Update()
