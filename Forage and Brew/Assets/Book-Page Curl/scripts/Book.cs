@@ -26,6 +26,10 @@ public class Book : MonoBehaviour {
         public RectTransform UIComponent;
     }
     public BookPage[] bookPages;
+    
+    public BookMark[] bookMarks;
+    public float bookmarkLerp;
+    
     public bool interactable=true;
     public bool enableShadowEffect=true;
     //represent the index of the sprite shown in the right page
@@ -102,6 +106,11 @@ public class Book : MonoBehaviour {
         ShadowLTR.rectTransform.sizeDelta = new Vector2(pageWidth, shadowPageHeight);
         ShadowLTR.rectTransform.pivot = new Vector2(0, (pageWidth / 2) / shadowPageHeight);
 
+        foreach (var bookMark in bookMarks)
+        {
+            bookMark.basePos = bookMark.UIComponent.anchoredPosition;
+        }
+
     }
 
     private void CalcCurlCriticalPoints()
@@ -150,7 +159,45 @@ public class Book : MonoBehaviour {
         {
             UpdateBook();
         }
+
+
     }
+
+    private void FixedUpdate()
+    {
+        for (int i = 0; i < bookMarks.Length; i++)
+        {
+            if (i == bookMarks.Length - 1)
+            {
+                if (bookMarks[^1].index <= currentPage)
+                {
+                    bookMarks[^1].UIComponent.anchoredPosition = Vector2.Lerp(
+                        bookMarks[^1].UIComponent.anchoredPosition,
+                        bookMarks[^1].basePos + new Vector2(bookMarks[^1].xDisplacement,0),bookmarkLerp);
+                }
+                else
+                {
+                    bookMarks[^1].UIComponent.anchoredPosition = Vector2.Lerp(
+                        bookMarks[^1].UIComponent.anchoredPosition,
+                        bookMarks[^1].basePos,bookmarkLerp);
+                }
+                return;
+            }
+            if (bookMarks[i].index <= currentPage && bookMarks[i+1].index > currentPage)
+            {
+                bookMarks[i].UIComponent.anchoredPosition = Vector2.Lerp(
+                    bookMarks[i].UIComponent.anchoredPosition,
+                    bookMarks[i].basePos + new Vector2(bookMarks[i].xDisplacement,0),bookmarkLerp);
+            }
+            else
+            {
+                bookMarks[i].UIComponent.anchoredPosition = Vector2.Lerp(
+                    bookMarks[i].UIComponent.anchoredPosition,
+                    bookMarks[i].basePos,bookmarkLerp);
+            }
+        }
+    }
+
     public void UpdateBook()
     {
         f = Vector3.Lerp(f, transformPoint(Input.mousePosition), Time.deltaTime * 10);

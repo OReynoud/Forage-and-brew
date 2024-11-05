@@ -104,10 +104,7 @@ public class CameraController : Singleton<CameraController>
         previousCamSettings = scriptableCamSettings;
         targetCamSettings = scriptableCamSettings;
         if (scriptableCamSettings == null)
-        {
             Debug.LogError("No Scriptable Cam Settings found, camera might work unpredictably");
-            return;
-        }
     }
     
     // Update is called once per frame

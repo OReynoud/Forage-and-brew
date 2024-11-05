@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 [RequireComponent(typeof(Book))]
 public class AutoFlip : MonoBehaviour {
@@ -10,7 +11,7 @@ public class AutoFlip : MonoBehaviour {
     public bool AutoStartFlip=true;
     public Book ControledBook;
     public int AnimationFramesCount = 40;
-    public bool isFlipping = false;
+    public bool isFlipping;
     // Use this for initialization
     void Start () {
         if (!ControledBook)
@@ -19,7 +20,6 @@ public class AutoFlip : MonoBehaviour {
             StartFlipping();
         ControledBook.OnFlip.AddListener(new UnityEngine.Events.UnityAction(PageFlipped));
         
-        FlipXPages(3,false);
 	}
     void PageFlipped()
     {
@@ -125,22 +125,21 @@ public class AutoFlip : MonoBehaviour {
         ControledBook.ReleasePage();
     }
 
-
-    public void FlipXPages(int pagesAmount, bool flipSide)
-    {
-        StartCoroutine(FlipXPagesCoroutine(pagesAmount, flipSide));
-    }
     /// <summary>
     /// Flip multiple pages in given direction
     /// </summary>
     /// <param name="pagesAmount"></param>
     /// <param name="flipSide"> true = left, false = right </param>
     /// <returns></returns>
+    public void FlipXPages(int pagesAmount, bool flipSide)
+    {
+        StartCoroutine(FlipXPagesCoroutine(pagesAmount, flipSide));
+    }
+
     IEnumerator FlipXPagesCoroutine(int pagesAmount, bool flipSide)
     {
         for (int i = 0; i < pagesAmount; i++)
         {
-            Debug.Log("Flip");
             if (flipSide)
             {
                 FlipLeftPage(acceleratedFlipTime);
@@ -149,8 +148,15 @@ public class AutoFlip : MonoBehaviour {
             {
                 FlipRightPage(acceleratedFlipTime);
             }
-            yield return new WaitUntil(() => isFlipping = false);
+            Debug.Log("Flip");
+            yield return new WaitUntil(() => isFlipping == false);
         }
     }
-    
-}
+
+    public void JumpToBookMark(int index)
+    {
+        var pageDiff = Mathf.Abs(index - ControledBook.currentPage);
+        
+        FlipXPages(Mathf.CeilToInt(pageDiff * 0.5f), index <= ControledBook.currentPage);
+    }
+} 
