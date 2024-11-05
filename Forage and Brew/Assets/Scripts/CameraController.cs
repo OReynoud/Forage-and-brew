@@ -1,7 +1,5 @@
-using System;
 using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class CameraController : Singleton<CameraController>
 {
@@ -34,7 +32,6 @@ public class CameraController : Singleton<CameraController>
             transform.parent.position = player.position + cameraOffset;
             transform.localPosition = -transform.forward * distanceFromPlayer;
             transform.LookAt(transform.parent);
-            
         }
 
     }
@@ -98,6 +95,7 @@ public class CameraController : Singleton<CameraController>
 
     void Start()
     {
+        player = CharacterDontDestroyOnLoadBehaviour.Instance.transform;
         cam = Camera.main;
         targetFocalLength = cam.focalLength;
         cameraRotation = transform.localRotation.eulerAngles;
