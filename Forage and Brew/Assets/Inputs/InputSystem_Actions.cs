@@ -71,6 +71,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Codex"",
+                    ""type"": ""Button"",
+                    ""id"": ""e4131a32-90e2-49e1-b71a-e501f23e4192"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -291,6 +300,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""HapticChallenge"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""083d5288-8c2e-4753-b685-9d6c3dc7ca3e"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Codex"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -883,6 +903,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_HapticChallenge = m_Player.FindAction("HapticChallenge", throwIfNotFound: true);
         m_Player_Previous = m_Player.FindAction("Previous", throwIfNotFound: true);
         m_Player_Next = m_Player.FindAction("Next", throwIfNotFound: true);
+        m_Player_Codex = m_Player.FindAction("Codex", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -967,6 +988,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_HapticChallenge;
     private readonly InputAction m_Player_Previous;
     private readonly InputAction m_Player_Next;
+    private readonly InputAction m_Player_Codex;
     public struct PlayerActions
     {
         private @InputSystem_Actions m_Wrapper;
@@ -976,6 +998,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @HapticChallenge => m_Wrapper.m_Player_HapticChallenge;
         public InputAction @Previous => m_Wrapper.m_Player_Previous;
         public InputAction @Next => m_Wrapper.m_Player_Next;
+        public InputAction @Codex => m_Wrapper.m_Player_Codex;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1000,6 +1023,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Next.started += instance.OnNext;
             @Next.performed += instance.OnNext;
             @Next.canceled += instance.OnNext;
+            @Codex.started += instance.OnCodex;
+            @Codex.performed += instance.OnCodex;
+            @Codex.canceled += instance.OnCodex;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1019,6 +1045,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Next.started -= instance.OnNext;
             @Next.performed -= instance.OnNext;
             @Next.canceled -= instance.OnNext;
+            @Codex.started -= instance.OnCodex;
+            @Codex.performed -= instance.OnCodex;
+            @Codex.canceled -= instance.OnCodex;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1206,6 +1235,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnHapticChallenge(InputAction.CallbackContext context);
         void OnPrevious(InputAction.CallbackContext context);
         void OnNext(InputAction.CallbackContext context);
+        void OnCodex(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

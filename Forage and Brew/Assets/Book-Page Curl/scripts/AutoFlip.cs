@@ -1,17 +1,32 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using NaughtyAttributes;
+
 [RequireComponent(typeof(Book))]
 public class AutoFlip : MonoBehaviour {
-    public FlipMode Mode;
-    public float PageFlipTime = 1;
-    public float acceleratedFlipTime = 0.2f;
-    public float TimeBetweenPages = 1;
-    public float DelayBeforeStarting = 0;
-    public bool AutoStartFlip=true;
-    public Book ControledBook;
-    public int AnimationFramesCount = 40;
-    public bool isFlipping;
+    
+    [BoxGroup("References")] public RectTransform codexTransform;
+    [BoxGroup("References")] [HideInInspector] public Book ControledBook;
+    
+    [BoxGroup("Page Flipping")] public float PageFlipTime = 1;
+    [BoxGroup("Page Flipping")] public float acceleratedFlipTime = 0.2f;
+    [BoxGroup("Page Flipping")] public int AnimationFramesCount = 40;
+    
+    [BoxGroup("Codex Movement")] public Vector2 offset;
+    [BoxGroup("Codex Movement")] public float codexLerp = 0.17f;
+    
+    //Controls
+    
+
+    
+    [Foldout("Deprecated")] public FlipMode Mode;
+    [Foldout("Deprecated")] public float TimeBetweenPages = 1;
+    [Foldout("Deprecated")] public float DelayBeforeStarting = 0;
+    [Foldout("Deprecated")] public bool AutoStartFlip=true;
+    
+    
+    private bool isFlipping;
     // Use this for initialization
     void Start () {
         if (!ControledBook)
@@ -21,6 +36,21 @@ public class AutoFlip : MonoBehaviour {
         ControledBook.OnFlip.AddListener(new UnityEngine.Events.UnityAction(PageFlipped));
         
 	}
+
+    private void Update()
+    {
+        if (CharacterInputManager.Instance.showCodex)
+        {
+            codexTransform.anchoredPosition = Vector2.Lerp(codexTransform.anchoredPosition,Vector2.zero, codexLerp);
+        }
+        else
+        {
+            codexTransform.anchoredPosition = Vector2.Lerp(codexTransform.anchoredPosition, offset, codexLerp);
+        }
+
+        
+    }
+
     void PageFlipped()
     {
         isFlipping = false;
@@ -158,5 +188,17 @@ public class AutoFlip : MonoBehaviour {
         var pageDiff = Mathf.Abs(index - ControledBook.currentPage);
         
         FlipXPages(Mathf.CeilToInt(pageDiff * 0.5f), index <= ControledBook.currentPage);
+    }
+
+    public void PlayerInputFlipPages(Vector2 input)
+    {
+        if (input.x > 0.5f)
+        {
+            FlipRightPage(PageFlipTime);
+        }
+        else if (input.x < -0.5f)
+        {
+            FlipLeftPage(PageFlipTime);
+        }
     }
 } 

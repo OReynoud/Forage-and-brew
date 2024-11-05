@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class CharacterInputManager : MonoBehaviour
@@ -10,6 +11,9 @@ public class CharacterInputManager : MonoBehaviour
 
     [SerializeField] private CharacterMovementController movementController;
     [SerializeField] private CharacterInteractController characterInteractController;
+    [SerializeField] private AutoFlip codexController;
+    public UnityEvent OnCodexShow;
+    public bool showCodex;
 
 
     #region Unity Callbacks
@@ -27,7 +31,15 @@ public class CharacterInputManager : MonoBehaviour
 
     private void Update()
     {
-        movementController.Move(_inputs.Player.Move.ReadValue<Vector2>());
+        if (showCodex)
+        {
+            codexController.PlayerInputFlipPages(_inputs.Player.Move.ReadValue<Vector2>());
+        }
+        else
+        {
+            movementController.Move(_inputs.Player.Move.ReadValue<Vector2>());
+        }
+        
     }
 
     #endregion
@@ -39,8 +51,23 @@ public class CharacterInputManager : MonoBehaviour
         EnableMoveInputs();
         EnableInteractInputs();
         EnableHapticChallengeInputs();
+        EnableCodexInputs();
     }
-    
+
+    private void EnableCodexInputs()
+    {
+        _inputs.Player.Codex.Enable();
+        _inputs.Player.Codex.performed += CodexOnPerformed;
+    }
+
+    private void CodexOnPerformed(InputAction.CallbackContext obj)
+    {
+        showCodex = !showCodex;
+        if (OnCodexShow != null)
+            OnCodexShow.Invoke();
+        
+    }
+
     public void EnableMoveInputs()
     {
         _inputs.Player.Move.Enable();
