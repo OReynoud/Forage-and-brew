@@ -56,6 +56,7 @@ public class CharacterInteractController : MonoBehaviour
         {
             GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay = TimeOfDay.Daytime;
             WeatherManager.Instance.PassToNextWeatherState();
+            LunarCycleManager.Instance.PassToNextLunarCycleState();
             Debug.Log("It's daytime now");
         } 
     }
