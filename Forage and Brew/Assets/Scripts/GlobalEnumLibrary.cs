@@ -4,3 +4,9 @@ public enum Scene
     Outdoor,
     Biome1
 }
+
+public enum TimeOfDay
+{
+    Daytime,
+    Nighttime
+}
