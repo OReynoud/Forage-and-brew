@@ -28,7 +28,13 @@ public class CollectedIngredientBehaviour : MonoBehaviour
     {
         grabInputCanvasGameObject.SetActive(false);
     }
-    
+
+
+    public void GrabMethod(bool grab)
+    {
+        grabTrigger.enabled = !grab;
+        grabTrigger.attachedRigidbody.isKinematic = grab;
+    }
 
     #region Trigger
 
@@ -36,7 +42,7 @@ public class CollectedIngredientBehaviour : MonoBehaviour
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
-            // characterInteractController.SetNewIngredientToCollect(this);
+            characterInteractController.SetNewCollectedIngredient(this);
             EnableGrab();
         }
     }
@@ -46,7 +52,7 @@ public class CollectedIngredientBehaviour : MonoBehaviour
         if (other.TryGetComponent(out CharacterInteractController characterInteractController) /*&&
             characterInteractController.CurrentIngredientToCollectBehaviour == this*/)
         {
-            // characterInteractController.SetNewIngredientToCollect(null);
+            characterInteractController.SetNewCollectedIngredient(null);
             DisableGrab(); // Temporary
         }
     }
