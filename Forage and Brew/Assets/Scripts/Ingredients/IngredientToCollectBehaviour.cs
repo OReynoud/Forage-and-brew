@@ -4,8 +4,9 @@ public class IngredientToCollectBehaviour : MonoBehaviour
 {
     [Header("Dependencies")]
     [SerializeField] private IngredientToCollectGlobalValuesSo ingredientToCollectGlobalValuesSo;
-    [field: SerializeField] public IngredientValuesSo IngredientValuesSo { get; private set; }
+    [field: SerializeField] public IngredientValuesSo IngredientValuesSo { get; set; }
     [SerializeField] private SphereCollider collectTrigger;
+    [SerializeField] private Transform meshParentTransform;
     
     [Header("UI")]
     [SerializeField] private GameObject collectInputCanvasGameObject;
@@ -13,6 +14,7 @@ public class IngredientToCollectBehaviour : MonoBehaviour
 
     private void Start()
     {
+        Instantiate(IngredientValuesSo.MeshGameObject, meshParentTransform);
         collectInputCanvasGameObject.SetActive(false);
     }
 
@@ -28,8 +30,9 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     }
     
 
-    public void Delete()
+    public void Collect()
     {
+        CharacterDontDestroyOnLoadManager.Instance.CollectedIngredients.Add(IngredientValuesSo);
         Destroy(gameObject);
     }
     

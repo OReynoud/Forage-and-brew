@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterDontDestroyOnLoadManager : MonoBehaviour
@@ -6,6 +7,8 @@ public class CharacterDontDestroyOnLoadManager : MonoBehaviour
     
     public Scene PreviousScene { get; set; }
     public TimeOfDay CurrentTimeOfDay { get; set; } = TimeOfDay.Daytime;
+    
+    public List<IngredientValuesSo> CollectedIngredients { get; private set; } = new();
     
     
     private void Awake()

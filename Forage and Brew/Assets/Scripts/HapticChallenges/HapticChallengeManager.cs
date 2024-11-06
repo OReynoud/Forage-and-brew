@@ -91,7 +91,7 @@ public class HapticChallengeManager : MonoBehaviour
         gaugeHapticChallengeGameObject.SetActive(false);
         _isGaugeHapticChallengeActive = false;
         _isHapticChallengeActive = false;
-        _currentIngredientToCollectBehaviour.Delete();
+        _currentIngredientToCollectBehaviour.Collect();
         _currentIngredientToCollectBehaviour = null;
     }
     
