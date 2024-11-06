@@ -10,9 +10,9 @@ public class SceneChangeTriggerBehaviour : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        if (doesNeedToBeDaytime && CharacterDontDestroyOnLoadManager.Instance.CurrentTimeOfDay != TimeOfDay.Daytime) return;
+        if (doesNeedToBeDaytime && GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay != TimeOfDay.Daytime) return;
         
-        if (other.CompareTag("Player") && CharacterDontDestroyOnLoadManager.Instance.PreviousScene != scene)
+        if (other.CompareTag("Player") && GameDontDestroyOnLoadManager.Instance.PreviousScene != scene)
         {
             foreach (SceneName sceneName in sceneListSo.SceneNames)
             {
@@ -25,7 +25,7 @@ public class SceneChangeTriggerBehaviour : MonoBehaviour
             
             if (doesMakeItNighttime)
             {
-                CharacterDontDestroyOnLoadManager.Instance.CurrentTimeOfDay = TimeOfDay.Nighttime;
+                GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay = TimeOfDay.Nighttime;
                 Debug.Log("It's nighttime now");
             }
         }

@@ -54,7 +54,8 @@ public class CharacterInteractController : MonoBehaviour
         }
         else if (IsNearBed && CollectedIngredientStack.Count == 0)
         {
-            CharacterDontDestroyOnLoadManager.Instance.CurrentTimeOfDay = TimeOfDay.Daytime;
+            GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay = TimeOfDay.Daytime;
+            WeatherManager.Instance.PassToNextWeatherState();
             Debug.Log("It's daytime now");
         } 
     }

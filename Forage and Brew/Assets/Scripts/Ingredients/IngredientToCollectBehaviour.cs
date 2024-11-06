@@ -32,7 +32,7 @@ public class IngredientToCollectBehaviour : MonoBehaviour
 
     public void Collect()
     {
-        CharacterDontDestroyOnLoadManager.Instance.CollectedIngredients.Add(IngredientValuesSo);
+        GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Add(IngredientValuesSo);
         Destroy(gameObject);
     }
     

@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 741869424035b634584f4b30920590d1, type: 3}
+  m_Name: D_RainyWeatherState
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Rainy
+  <EndProbabilities>k__BackingField:
+  - <SuccessiveDayNumber>k__BackingField: 1
+    <WeatherStateEndProbabilities>k__BackingField:
+    - <WeatherStateSo>k__BackingField: {fileID: 11400000}
+      <EndProbability>k__BackingField: 250
+    - <WeatherStateSo>k__BackingField: {fileID: 11400000, guid: 0cdfb10c8486d8b4fb199704c172f4e8, type: 2}
+      <EndProbability>k__BackingField: 375
+    - <WeatherStateSo>k__BackingField: {fileID: 11400000, guid: a00e85be8514d87449947c1a76125a1a, type: 2}
+      <EndProbability>k__BackingField: 375
+  - <SuccessiveDayNumber>k__BackingField: 2
+    <WeatherStateEndProbabilities>k__BackingField:
+    - <WeatherStateSo>k__BackingField: {fileID: 11400000}
+      <EndProbability>k__BackingField: 200
+    - <WeatherStateSo>k__BackingField: {fileID: 11400000, guid: 0cdfb10c8486d8b4fb199704c172f4e8, type: 2}
+      <EndProbability>k__BackingField: 400
+    - <WeatherStateSo>k__BackingField: {fileID: 11400000, guid: a00e85be8514d87449947c1a76125a1a, type: 2}
+      <EndProbability>k__BackingField: 400
+  - <SuccessiveDayNumber>k__BackingField: 3
+    <WeatherStateEndProbabilities>k__BackingField:
+    - <WeatherStateSo>k__BackingField: {fileID: 11400000, guid: 0cdfb10c8486d8b4fb199704c172f4e8, type: 2}
+      <EndProbability>k__BackingField: 500
+    - <WeatherStateSo>k__BackingField: {fileID: 11400000, guid: a00e85be8514d87449947c1a76125a1a, type: 2}
+      <EndProbability>k__BackingField: 500

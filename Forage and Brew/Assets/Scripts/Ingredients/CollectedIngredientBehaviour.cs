@@ -32,8 +32,8 @@ public class CollectedIngredientBehaviour : MonoBehaviour
 
     public void GrabMethod(bool grab)
     {
-        grabTrigger.enabled = !grab;
         grabTrigger.attachedRigidbody.isKinematic = grab;
+        grabTrigger.enabled = !grab;
     }
 
     #region Trigger

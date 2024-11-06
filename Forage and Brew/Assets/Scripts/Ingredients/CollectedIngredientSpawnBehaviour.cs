@@ -7,7 +7,7 @@ public class CollectedIngredientSpawnBehaviour : MonoBehaviour
     
     private void Start()
     {
-        foreach (IngredientValuesSo collectedIngredient in CharacterDontDestroyOnLoadManager.Instance.CollectedIngredients)
+        foreach (IngredientValuesSo collectedIngredient in GameDontDestroyOnLoadManager.Instance.CollectedIngredients)
         {
             if (collectedIngredient.Type == ingredientType)
             {

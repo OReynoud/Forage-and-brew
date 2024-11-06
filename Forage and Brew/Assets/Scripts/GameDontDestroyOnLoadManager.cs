@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterDontDestroyOnLoadManager : MonoBehaviour
+public class GameDontDestroyOnLoadManager : MonoBehaviour
 {
-    public static CharacterDontDestroyOnLoadManager Instance { get; private set; }
+    public static GameDontDestroyOnLoadManager Instance { get; private set; }
     
     public Scene PreviousScene { get; set; }
     public TimeOfDay CurrentTimeOfDay { get; set; } = TimeOfDay.Daytime;
