@@ -97,15 +97,15 @@ public class CameraController : Singleton<CameraController>
         transitionTime = TransitionTime == 0 ? 0.001f : TransitionTime;
         counter = 0;
     }
-    
-    public void ApplyScriptableCamSettings(float TransitionTime)
+
+    private void ApplyScriptableCamSettings(float TransitionTime)
     {
 
         transitionTime = TransitionTime == 0 ? 0.001f : TransitionTime;
         counter = 0;
     }
 
-    public void UpdateCamWithCodex()
+    private void UpdateCamWithCodex()
     {
         Debug.Log("Event called");
         if (CharacterInputManager.Instance.showCodex)
@@ -116,6 +116,14 @@ public class CameraController : Singleton<CameraController>
         {
             ApplyScriptableCamSettings(codexExitTime);
         }
+    }
+
+    public void InstantCamUpdate()
+    {
+        transform.parent.position = player.position + cameraOffset;
+        transform.localRotation = Quaternion.Euler(cameraRotation);
+        transform.localPosition = -transform.forward * distanceFromPlayer;
+        cam.focalLength = targetFocalLength;
     }
 
     void Start()
@@ -136,13 +144,12 @@ public class CameraController : Singleton<CameraController>
         else
         {
             ApplyScriptableCamSettings();
-            transform.parent.position = player.position + cameraOffset;
-            transform.localRotation = Quaternion.Euler(cameraRotation);
-            transform.localPosition = -transform.forward * distanceFromPlayer;
-            cam.focalLength = targetFocalLength;
+            InstantCamUpdate();
             //Debug.Log(transform.localRotation.eulerAngles);
         }
     }
+    
+    
     
     // Update is called once per frame
     void FixedUpdate()

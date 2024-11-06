@@ -27,6 +27,7 @@ public class CharacterInputManager : MonoBehaviour
     {
         _inputs = new InputSystem_Actions();
         EnableInputs();
+        codexController = AutoFlip.instance;
     }
 
     private void Update()

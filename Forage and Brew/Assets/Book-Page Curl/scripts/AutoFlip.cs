@@ -4,7 +4,8 @@ using System.Collections;
 using NaughtyAttributes;
 
 [RequireComponent(typeof(Book))]
-public class AutoFlip : MonoBehaviour {
+public class AutoFlip : Singleton<AutoFlip>
+{
     
     [BoxGroup("References")] public RectTransform codexTransform;
     [BoxGroup("References")] [HideInInspector] public Book ControledBook;

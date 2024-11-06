@@ -15,10 +15,9 @@ public enum FlipMode
 }
 [ExecuteInEditMode]
 public class Book : MonoBehaviour {
-    public Canvas canvas;
     [SerializeField]
     RectTransform BookPanel;
-    public Sprite background;
+
     
     [Serializable]
     public struct BookPage
@@ -31,7 +30,7 @@ public class Book : MonoBehaviour {
     public BookMark[] bookMarks;
     public float bookmarkLerp;
     
-    public bool interactable=true;
+    [HideInInspector] public bool interactable=true;
     public bool enableShadowEffect=true;
     //represent the index of the sprite shown in the right page
     public int currentPage = 0;
@@ -54,6 +53,8 @@ public class Book : MonoBehaviour {
             return BookPanel.rect.height ; 
         }
     }
+    [Foldout("Refs")] public Canvas canvas;
+    [Foldout("Refs")] public Sprite background;
     [Foldout("Refs")] public Image ClippingPlane;
     [Foldout("Refs")] public Image NextPageClip;
     [Foldout("Refs")] public Image Shadow;

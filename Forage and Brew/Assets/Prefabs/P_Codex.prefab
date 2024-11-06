@@ -516,7 +516,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -1500}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1435789331959783795
@@ -3710,7 +3710,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 1117, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7460053850230856073
@@ -5254,15 +5254,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bef881b4c6ed71248b493dcd92c831a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Mode: 0
+  codexTransform: {fileID: 1561651975351071565}
+  ControledBook: {fileID: 0}
   PageFlipTime: 1
   acceleratedFlipTime: 0.2
+  AnimationFramesCount: 40
+  offset: {x: 0, y: -1500}
+  codexLerp: 0.17
+  Mode: 0
   TimeBetweenPages: 2
   DelayBeforeStarting: 0
   AutoStartFlip: 0
-  ControledBook: {fileID: 0}
-  AnimationFramesCount: 40
-  isFlipping: 0
 --- !u!224 &2768177697017376908 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 22443772, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
