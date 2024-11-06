@@ -201,4 +201,36 @@ public class AutoFlip : MonoBehaviour {
             FlipLeftPage(PageFlipTime);
         }
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="flipSide"> true = left, false = right </param>
+    public void PlayerInputNavigateBookmarks(bool flipSide)
+    {
+        
+        if (!flipSide)
+        {
+            foreach (var bookMark in ControledBook.bookMarks)
+            {
+                if (bookMark.index > ControledBook.currentPage)
+                {
+                    JumpToBookMark(bookMark.index);
+                    return;
+                }
+            }
+        }
+        else
+        {
+            for (int i = ControledBook.bookMarks.Length - 1; i >= 0; i--)
+            {
+                if (ControledBook.bookMarks[i].index < ControledBook.currentPage) 
+                { 
+                    JumpToBookMark(ControledBook.bookMarks[i].index);
+                    return;
+                }
+                
+            }
+        }
+    }
 } 

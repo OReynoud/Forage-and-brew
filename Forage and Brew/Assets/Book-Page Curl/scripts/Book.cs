@@ -5,6 +5,7 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using NaughtyAttributes;
 using UnityEngine.UI;
 using UnityEngine.Events;
 public enum FlipMode
@@ -53,14 +54,14 @@ public class Book : MonoBehaviour {
             return BookPanel.rect.height ; 
         }
     }
-    public Image ClippingPlane;
-    public Image NextPageClip;
-    public Image Shadow;
-    public Image ShadowLTR;
-    public Image Left;
-    public Image LeftNext;
-    public Image Right;
-    public Image RightNext;
+    [Foldout("Refs")] public Image ClippingPlane;
+    [Foldout("Refs")] public Image NextPageClip;
+    [Foldout("Refs")] public Image Shadow;
+    [Foldout("Refs")] public Image ShadowLTR;
+    [Foldout("Refs")] public Image Left;
+    [Foldout("Refs")] public Image LeftNext;
+    [Foldout("Refs")] public Image Right;
+    [Foldout("Refs")] public Image RightNext;
     public UnityEvent OnFlip;
     float radius1, radius2;
     //Spine Bottom

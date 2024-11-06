@@ -58,11 +58,35 @@ public class CharacterInputManager : MonoBehaviour
     {
         _inputs.Player.Codex.Enable();
         _inputs.Player.Codex.performed += CodexOnPerformed;
+        _inputs.Player.BookMarkLeft.performed += BookMarkLeftOnPerformed;
+        _inputs.Player.BookMarkRight.performed += BookMarkRightOnPerformed;
+    }
+    private void DisableCodexInputs()
+    {
+        _inputs.Player.Codex.Disable();
+        _inputs.Player.Codex.performed -= CodexOnPerformed;
+        _inputs.Player.BookMarkLeft.performed -= BookMarkLeftOnPerformed;
+        _inputs.Player.BookMarkRight.performed -= BookMarkRightOnPerformed;
+    }
+
+    private void BookMarkRightOnPerformed(InputAction.CallbackContext obj)
+    {
+        if (!showCodex)return;
+        
+        codexController.PlayerInputNavigateBookmarks(false);
+    }
+    private void BookMarkLeftOnPerformed(InputAction.CallbackContext obj)
+    {
+        if (!showCodex)return;
+        
+        codexController.PlayerInputNavigateBookmarks(true);
     }
 
     private void CodexOnPerformed(InputAction.CallbackContext obj)
     {
+        movementController.Move(Vector2.zero);
         showCodex = !showCodex;
+        
         if (OnCodexShow != null)
             OnCodexShow.Invoke();
         

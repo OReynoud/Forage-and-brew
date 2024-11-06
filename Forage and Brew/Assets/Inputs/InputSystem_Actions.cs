@@ -80,6 +80,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BookMarkRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""83e71b32-b980-48bc-9fe8-9a12dc7562d0"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BookMarkLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""53c75319-d22d-4c37-818d-0aa5483c0a85"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -355,6 +373,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""Codex"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""14355306-354a-457b-a2e0-6155cb9367cb"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BookMarkRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""929ca3f9-7933-4070-bc2c-08e935870801"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BookMarkLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -948,6 +988,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Previous = m_Player.FindAction("Previous", throwIfNotFound: true);
         m_Player_Next = m_Player.FindAction("Next", throwIfNotFound: true);
         m_Player_Codex = m_Player.FindAction("Codex", throwIfNotFound: true);
+        m_Player_BookMarkRight = m_Player.FindAction("BookMarkRight", throwIfNotFound: true);
+        m_Player_BookMarkLeft = m_Player.FindAction("BookMarkLeft", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1033,6 +1075,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Previous;
     private readonly InputAction m_Player_Next;
     private readonly InputAction m_Player_Codex;
+    private readonly InputAction m_Player_BookMarkRight;
+    private readonly InputAction m_Player_BookMarkLeft;
     public struct PlayerActions
     {
         private @InputSystem_Actions m_Wrapper;
@@ -1043,6 +1087,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @Previous => m_Wrapper.m_Player_Previous;
         public InputAction @Next => m_Wrapper.m_Player_Next;
         public InputAction @Codex => m_Wrapper.m_Player_Codex;
+        public InputAction @BookMarkRight => m_Wrapper.m_Player_BookMarkRight;
+        public InputAction @BookMarkLeft => m_Wrapper.m_Player_BookMarkLeft;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1070,6 +1116,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Codex.started += instance.OnCodex;
             @Codex.performed += instance.OnCodex;
             @Codex.canceled += instance.OnCodex;
+            @BookMarkRight.started += instance.OnBookMarkRight;
+            @BookMarkRight.performed += instance.OnBookMarkRight;
+            @BookMarkRight.canceled += instance.OnBookMarkRight;
+            @BookMarkLeft.started += instance.OnBookMarkLeft;
+            @BookMarkLeft.performed += instance.OnBookMarkLeft;
+            @BookMarkLeft.canceled += instance.OnBookMarkLeft;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1092,6 +1144,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Codex.started -= instance.OnCodex;
             @Codex.performed -= instance.OnCodex;
             @Codex.canceled -= instance.OnCodex;
+            @BookMarkRight.started -= instance.OnBookMarkRight;
+            @BookMarkRight.performed -= instance.OnBookMarkRight;
+            @BookMarkRight.canceled -= instance.OnBookMarkRight;
+            @BookMarkLeft.started -= instance.OnBookMarkLeft;
+            @BookMarkLeft.performed -= instance.OnBookMarkLeft;
+            @BookMarkLeft.canceled -= instance.OnBookMarkLeft;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1280,6 +1338,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnPrevious(InputAction.CallbackContext context);
         void OnNext(InputAction.CallbackContext context);
         void OnCodex(InputAction.CallbackContext context);
+        void OnBookMarkRight(InputAction.CallbackContext context);
+        void OnBookMarkLeft(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
