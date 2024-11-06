@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class CharacterDontDestroyOnLoadBehaviour : MonoBehaviour
+public class CharacterDontDestroyOnLoadManager : MonoBehaviour
 {
-    public static CharacterDontDestroyOnLoadBehaviour Instance { get; private set; }
+    public static CharacterDontDestroyOnLoadManager Instance { get; private set; }
     
     public Scene PreviousScene { get; set; }
     

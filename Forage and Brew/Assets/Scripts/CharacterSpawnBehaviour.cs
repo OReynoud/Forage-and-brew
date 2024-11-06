@@ -8,16 +8,16 @@ public class CharacterSpawnBehaviour : MonoBehaviour
 
     private void Start()
     {
-        if (sourceScene == CharacterDontDestroyOnLoadBehaviour.Instance.PreviousScene)
+        if (sourceScene == CharacterDontDestroyOnLoadManager.Instance.PreviousScene)
         {
-            CharacterDontDestroyOnLoadBehaviour.Instance.transform.position = transform.position;
-            CharacterDontDestroyOnLoadBehaviour.Instance.transform.rotation = transform.rotation;
+            CharacterDontDestroyOnLoadManager.Instance.transform.position = transform.position;
+            CharacterDontDestroyOnLoadManager.Instance.transform.rotation = transform.rotation;
 
             foreach (SceneName sceneName in sceneListSo.SceneNames)
             {
                 if (sceneName.Name == SceneManager.GetActiveScene().name)
                 {
-                    CharacterDontDestroyOnLoadBehaviour.Instance.PreviousScene = sceneName.Scene;
+                    CharacterDontDestroyOnLoadManager.Instance.PreviousScene = sceneName.Scene;
                     break;
                 }
             }

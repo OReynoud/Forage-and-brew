@@ -120,7 +120,7 @@ public class CameraController : Singleton<CameraController>
 
     void Start()
     {
-        player = CharacterDontDestroyOnLoadBehaviour.Instance.transform;
+        player = CharacterDontDestroyOnLoadManager.Instance.transform;
         cam = Camera.main;
         targetFocalLength = cam.focalLength;
         cameraRotation = transform.localRotation.eulerAngles;
