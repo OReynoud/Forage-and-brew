@@ -6,7 +6,9 @@ public class CollectedIngredientBehaviour : MonoBehaviour
     [SerializeField] private CollectedIngredientGlobalValuesSo collectedIngredientGlobalValuesSo;
     [field: SerializeField] public IngredientValuesSo IngredientValuesSo { get; set; }
     [SerializeField] private SphereCollider grabTrigger;
+    [SerializeField] private Collider ingredientCollider;
     [SerializeField] private Transform meshParentTransform;
+    public float stackHeight { get; set; }
     
     [Header("UI")]
     [SerializeField] private GameObject grabInputCanvasGameObject;
@@ -16,6 +18,7 @@ public class CollectedIngredientBehaviour : MonoBehaviour
     {
         Instantiate(IngredientValuesSo.MeshGameObject, meshParentTransform);
         grabInputCanvasGameObject.SetActive(false);
+        stackHeight = collectedIngredientGlobalValuesSo.StackHeight;
     }
 
 
@@ -34,6 +37,7 @@ public class CollectedIngredientBehaviour : MonoBehaviour
     {
         grabTrigger.attachedRigidbody.isKinematic = grab;
         grabTrigger.enabled = !grab;
+        ingredientCollider.enabled = !grab;
     }
 
     #region Trigger

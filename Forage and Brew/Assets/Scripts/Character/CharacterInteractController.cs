@@ -5,17 +5,50 @@ using UnityEngine;
 public class CharacterInteractController : MonoBehaviour
 {
     public IngredientToCollectBehaviour CurrentIngredientToCollectBehaviour { get; private set; }
-    
+
     public CollectedIngredientBehaviour CurrentCollectedIngredientBehaviour { get; private set; }
-    public Stack<CollectedIngredientBehaviour> CollectedIngredientStack = new Stack<CollectedIngredientBehaviour>();
+    public List<CollectedIngredientStack> collectedIngredientStack = new List<CollectedIngredientStack>();
+
+    public class CollectedIngredientStack
+    {
+        public CollectedIngredientBehaviour ingredient { get; set; }
+        public bool isPickedUp { get; set; }
+
+        public CollectedIngredientStack(CollectedIngredientBehaviour Ingredient)
+        {
+            ingredient = Ingredient;
+            isPickedUp = false;
+        }
+    }
+
     public BedBehaviour CurrentNearBed { get; set; }
     public bool handsFull { get; set; }
 
+    private Rigidbody rb { get; set; }
 
-    [BoxGroup("Collected ingredients stack variables")] public Transform stackPlacement;
-    [BoxGroup("Collected ingredients stack variables")] [field: Min(0f)] public int maxStackSize;
-    [BoxGroup("Collected ingredients stack variables")] [field: Min(0f)] public float timeToAddToStack;
+    [BoxGroup("Collected ingredients stack variables")]
+    public Transform stackPlacement;
 
+    [BoxGroup("Collected ingredients stack variables")] [field: Min(0f)]
+    public int maxStackSize;
+
+    [BoxGroup("Collected ingredients stack variables")] [field: Range(0f, 1f)]
+    public float pickupLerp;
+
+    [BoxGroup("Collected ingredients stack variables")] [field: Range(0f, 1f)]
+    public float stackLerp;
+
+    [BoxGroup("Collected ingredients stack variables")] [field: Min(0f)]
+    public float stackRadius;
+
+    [BoxGroup("Collected ingredients stack variables")] [field: Min(0f)]
+    public float stackDisplacementClamp;
+
+
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
 
     public void SetNewIngredientToCollect(IngredientToCollectBehaviour newIngredientToCollectBehaviour)
     {
@@ -23,7 +56,7 @@ public class CharacterInteractController : MonoBehaviour
         {
             CurrentIngredientToCollectBehaviour.DisableCollect();
         }
-        
+
         CurrentIngredientToCollectBehaviour = newIngredientToCollectBehaviour;
     }
 
@@ -33,7 +66,7 @@ public class CharacterInteractController : MonoBehaviour
         {
             CurrentCollectedIngredientBehaviour.DisableGrab();
         }
-        
+
         CurrentCollectedIngredientBehaviour = newCollectedIngredientBehaviour;
     }
 
@@ -46,23 +79,91 @@ public class CharacterInteractController : MonoBehaviour
             HapticChallengeManager.Instance.StartHapticChallenge(CurrentIngredientToCollectBehaviour);
             CurrentIngredientToCollectBehaviour = null;
         }
-        else if(CurrentCollectedIngredientBehaviour)
+        else if (CurrentCollectedIngredientBehaviour)
         {
             CurrentCollectedIngredientBehaviour.DisableGrab();
 
             AddToPile(CurrentCollectedIngredientBehaviour);
         }
-        else if (CurrentNearBed && CollectedIngredientStack.Count == 0)
+        else if (CurrentNearBed && collectedIngredientStack.Count == 0)
         {
             CurrentNearBed.Sleep();
-        } 
+        }
     }
 
 
     void AddToPile(CollectedIngredientBehaviour ingredient)
     {
-        CollectedIngredientStack.Push(CurrentCollectedIngredientBehaviour);
+        if (collectedIngredientStack.Count > 0 && collectedIngredientStack.Count < maxStackSize)
+        {
+            if (collectedIngredientStack[0].ingredient.IngredientValuesSo.Type != ingredient.IngredientValuesSo.Type)
+                return;
+        }
+
+
+        CurrentCollectedIngredientBehaviour.DisableGrab();
         CurrentCollectedIngredientBehaviour.GrabMethod(true);
         CurrentCollectedIngredientBehaviour.transform.SetParent(transform);
+        collectedIngredientStack.Add(new CollectedIngredientStack(CurrentCollectedIngredientBehaviour));
+        CurrentCollectedIngredientBehaviour = null;
+        //CurrentCollectedIngredientBehaviour.transform.SetParent(stackPlacement);
+    }
+
+    private void FixedUpdate()
+    {
+        UpdateStack();
+    }
+
+    float clampedDisplacement;
+
+    void UpdateStack()
+    {
+        for (var i = 0; i < collectedIngredientStack.Count; i++)
+        {
+            clampedDisplacement = Mathf.Clamp(rb.linearVelocity.magnitude, 0, stackDisplacementClamp);
+            var ingredient = collectedIngredientStack[i].ingredient;
+
+            if (collectedIngredientStack[i].isPickedUp)
+            {
+                //y lerp
+                ingredient.transform.localPosition = Vector3.Lerp(ingredient.transform.localPosition,
+                    new Vector3(ingredient.transform.localPosition.x, ingredient.stackHeight * i,
+                        ingredient.transform.localPosition.z), pickupLerp);
+                if (i == 0)
+                {
+                    ingredient.transform.localPosition = Vector3.Lerp(ingredient.transform.localPosition,
+                        new Vector3(0, ingredient.transform.localPosition.y, 0), stackLerp);
+                }
+                else
+                {
+                    ingredient.transform.localPosition = Vector3.Lerp(ingredient.transform.localPosition,
+                        new Vector3(0, ingredient.transform.localPosition.y, -clampedDisplacement * i), stackLerp);
+                }
+
+                continue;
+            }
+
+
+            //y lerp
+            ingredient.transform.position = Vector3.Lerp(ingredient.transform.position,
+                new Vector3(ingredient.transform.position.x, stackPlacement.position.y + ingredient.stackHeight * i,
+                    ingredient.transform.position.z), pickupLerp);
+
+            //x and z lerp
+            if (Vector2.Distance(new Vector2(ingredient.transform.position.x, ingredient.transform.position.z),
+                    new Vector2(stackPlacement.position.x, stackPlacement.position.z)) > stackRadius)
+            {
+                ingredient.transform.position = Vector3.Lerp(ingredient.transform.position,
+                    new Vector3(stackPlacement.position.x, ingredient.transform.position.y, stackPlacement.position.z),
+                    pickupLerp);
+            }
+            else if (!collectedIngredientStack[i].isPickedUp)
+            {
+                collectedIngredientStack[i].isPickedUp = true;
+                ingredient.transform.SetParent(stackPlacement);
+            }
+
+        }
     }
 }
+    
