@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class WeatherManager : MonoBehaviour
@@ -5,10 +6,9 @@ public class WeatherManager : MonoBehaviour
     // Singleton
     public static WeatherManager Instance { get; private set; }
     
-    [SerializeField] private WeatherStateSo biome1StartingWeatherState;
+    [SerializeField] private WeatherStateSo forestStartingWeatherState;
     
-    private WeatherStateSo _biome1CurrentWeatherState;
-    private int _biome1CurrentWeatherStateSuccessiveCount;
+    public Dictionary<Biome, (WeatherStateSo weatherState, int successiveCount)> CurrentWeatherStates { get; } = new();
     
 
     private void Awake()
@@ -25,39 +25,41 @@ public class WeatherManager : MonoBehaviour
     
     private void Start()
     {
-        _biome1CurrentWeatherState = biome1StartingWeatherState;
-        _biome1CurrentWeatherStateSuccessiveCount = 1;
-        Debug.Log("The weather state for the first day is " + _biome1CurrentWeatherState.Name);
+        CurrentWeatherStates.Add(Biome.Forest, (forestStartingWeatherState, 1));
+        Debug.Log("The weather state for the first day is " + CurrentWeatherStates[Biome.Forest].weatherState.Name);
     }
     
     
     public void PassToNextWeatherState()
     {
-        foreach (WeatherStateEndProbabilityBySuccessiveDayNumber weatherStateEndProbability in _biome1CurrentWeatherState.EndProbabilities)
+        foreach (KeyValuePair<Biome, (WeatherStateSo weatherState, int successiveCount)> currentWeatherState in CurrentWeatherStates)
         {
-            if (weatherStateEndProbability.SuccessiveDayNumber == _biome1CurrentWeatherStateSuccessiveCount)
+            foreach (WeatherStateEndProbabilityBySuccessiveDayNumber weatherStateEndProbability in currentWeatherState.Value.weatherState.EndProbabilities)
             {
-                float randomValue = Random.Range(0f, 1000f);
-                float cumulativeProbability = 0f;
-                
-                foreach (WeatherStateEndProbability endProbability in weatherStateEndProbability.WeatherStateEndProbabilities)
+                if (weatherStateEndProbability.SuccessiveDayNumber == currentWeatherState.Value.successiveCount)
                 {
-                    cumulativeProbability += endProbability.EndProbability;
-                    
-                    if (randomValue <= cumulativeProbability)
+                    float randomValue = Random.Range(0f, 1000f);
+                    float cumulativeProbability = 0f;
+                
+                    foreach (WeatherStateEndProbability endProbability in weatherStateEndProbability.WeatherStateEndProbabilities)
                     {
-                        Debug.Log("The weather state for the next day is " + endProbability.WeatherStateSo.Name);
-                        
-                        if (endProbability.WeatherStateSo == _biome1CurrentWeatherState)
+                        cumulativeProbability += endProbability.EndProbability;
+                    
+                        if (randomValue <= cumulativeProbability)
                         {
-                            _biome1CurrentWeatherStateSuccessiveCount++;
+                            Debug.Log("The weather state for the next day is " + endProbability.WeatherStateSo.Name);
+                        
+                            if (endProbability.WeatherStateSo == currentWeatherState.Value.weatherState)
+                            {
+                                CurrentWeatherStates[currentWeatherState.Key] = (endProbability.WeatherStateSo,
+                                    CurrentWeatherStates[currentWeatherState.Key].successiveCount + 1);
+                                return;
+                            }
+                        
+                            CurrentWeatherStates[currentWeatherState.Key] = (endProbability.WeatherStateSo, 1);
+                        
                             return;
                         }
-                        
-                        _biome1CurrentWeatherState = endProbability.WeatherStateSo;
-                        _biome1CurrentWeatherStateSuccessiveCount = 1;
-                        
-                        return;
                     }
                 }
             }

@@ -1,5 +1,3 @@
-using System;
-
 public enum IngredientType
 {
     Mushroom,
@@ -8,20 +6,21 @@ public enum IngredientType
     Berry
 }
 
-[Flags]
 public enum Biome
 {
-    Forest = 1 << 0
+    None = 0,
+    Forest = 1 << 0,
+    Swamp = 1 << 1
 }
 
-[Flags]
 public enum SpawnLocation
 {
+    None = 0,
     FlatLand = 1 << 0,
     BaseOfTree = 1 << 1,
     TreeTrunk = 1 << 2,
     DeadTreeTrunk = 1 << 3,
-    Brush = 1 << 4,
+    Bush = 1 << 4,
     RiverBank = 1 << 5,
     RiverBed = 1 << 6,
     Pond = 1 << 7,

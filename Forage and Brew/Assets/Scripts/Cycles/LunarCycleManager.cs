@@ -9,6 +9,7 @@ public class LunarCycleManager : MonoBehaviour
     [SerializeField] private int startingLunarCycleStateIndex;
     
     private int _currentLunarCycleStateIndex;
+    public LunarCycleStateSo CurrentLunarCycleState => lunarCycleStateOrderSo.LunarCycleStates[_currentLunarCycleStateIndex];
     
 
     private void Awake()

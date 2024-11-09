@@ -4,18 +4,33 @@ public class IngredientToCollectBehaviour : MonoBehaviour
 {
     [Header("Dependencies")]
     [SerializeField] private IngredientToCollectGlobalValuesSo ingredientToCollectGlobalValuesSo;
-    [field: SerializeField] public IngredientValuesSo IngredientValuesSo { get; set; }
+    [SerializeField] private IngredientToCollectSpawnManager ingredientToCollectSpawnManager;
     [SerializeField] private SphereCollider collectTrigger;
     [SerializeField] private Transform meshParentTransform;
+    
+    [Header("Data")]
+    [field: SerializeField] public SpawnLocation SpawnLocation { get; private set; }
     
     [Header("UI")]
     [SerializeField] private GameObject collectInputCanvasGameObject;
 
+    public IngredientValuesSo IngredientValuesSo { get; set; }
+    
+
+    private void Awake()
+    {
+        ingredientToCollectSpawnManager.IngredientToCollectBehaviours.Add(this);
+    }
 
     private void Start()
     {
-        Instantiate(IngredientValuesSo.MeshGameObject, meshParentTransform);
         collectInputCanvasGameObject.SetActive(false);
+    }
+    
+    
+    public void SpawnMesh()
+    {
+        Instantiate(IngredientValuesSo.MeshGameObject, meshParentTransform);
     }
 
 
