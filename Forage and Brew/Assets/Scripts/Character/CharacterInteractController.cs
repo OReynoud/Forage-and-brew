@@ -8,7 +8,7 @@ public class CharacterInteractController : MonoBehaviour
     
     public CollectedIngredientBehaviour CurrentCollectedIngredientBehaviour { get; private set; }
     public Stack<CollectedIngredientBehaviour> CollectedIngredientStack = new Stack<CollectedIngredientBehaviour>();
-    public bool IsNearBed { get; set; }
+    public BedBehaviour CurrentNearBed { get; set; }
     public bool handsFull { get; set; }
 
 
@@ -52,12 +52,9 @@ public class CharacterInteractController : MonoBehaviour
 
             AddToPile(CurrentCollectedIngredientBehaviour);
         }
-        else if (IsNearBed && CollectedIngredientStack.Count == 0)
+        else if (CurrentNearBed && CollectedIngredientStack.Count == 0)
         {
-            GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay = TimeOfDay.Daytime;
-            WeatherManager.Instance.PassToNextWeatherState();
-            LunarCycleManager.Instance.PassToNextLunarCycleState();
-            Debug.Log("It's daytime now");
+            CurrentNearBed.Sleep();
         } 
     }
 

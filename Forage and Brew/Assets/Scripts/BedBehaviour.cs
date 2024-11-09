@@ -21,12 +21,21 @@ public class BedBehaviour : MonoBehaviour
         interactInputCanvasGameObject.SetActive(false);
     }
     
+
+    public void Sleep()
+    {
+        GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay = TimeOfDay.Daytime;
+        WeatherManager.Instance.PassToNextWeatherState();
+        LunarCycleManager.Instance.PassToNextLunarCycleState();
+        Debug.Log("It's daytime now");
+    }
+    
     
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
-            characterInteractController.IsNearBed = true;
+            characterInteractController.CurrentNearBed = this;
             EnableInteract();
         }
     }
@@ -35,7 +44,7 @@ public class BedBehaviour : MonoBehaviour
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
-            characterInteractController.IsNearBed = false;
+            characterInteractController.CurrentNearBed = null;
             DisableInteract();
         }
     }
