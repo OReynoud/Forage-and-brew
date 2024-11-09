@@ -2,7 +2,10 @@ using System;
 
 public enum IngredientType
 {
-    Mushroom
+    Mushroom,
+    Herb,
+    Moss,
+    Berry
 }
 
 [Flags]
