@@ -38,16 +38,16 @@ public class CharacterMovementController : MonoBehaviour
     {
         isGrounded = GroundCheck(out RaycastHit hit);
         angledVelocity = playerDir;
-        if (isGrounded)
+        if (Physics.Raycast(transform.position , transform.forward, out RaycastHit hitForward, 0.7f, LayerMask.GetMask("Default")))
         {
-            if (Physics.Raycast(transform.position , transform.forward, out RaycastHit hitForward, 0.7f, LayerMask.GetMask("Default")))
-            {
-                angle = Vector3.Angle(hitForward.normal, transform.forward) - 90;
-            }
-            else if (Physics.Raycast(transform.position , -transform.forward, out RaycastHit hitBack, 1f, LayerMask.GetMask("Default")))
-            {
-                angle = Vector3.Angle(hitBack.normal, transform.forward) - 90;
-            }
+            angle = Vector3.Angle(hitForward.normal, transform.forward) - 90;
+        }
+        else if (Physics.Raycast(transform.position , -transform.forward, out RaycastHit hitBack, 1f, LayerMask.GetMask("Default")))
+        {
+            angle = Vector3.Angle(hitBack.normal, transform.forward) - 90;
+        }
+        if (isGrounded) 
+        {
 
             if (Mathf.Abs(angle) < maxAngle)
             {
@@ -69,9 +69,9 @@ public class CharacterMovementController : MonoBehaviour
         }
         else
         {
-            angledVelocity = playerDir * (speed * accelerationCurve.Evaluate(accelerationCurveIndex) * playerDir.magnitude * Time.deltaTime);
+            angledVelocity = playerDir * (speed * accelerationCurve.Evaluate(accelerationCurveIndex) * playerDir.magnitude);
 
-            rb.linearVelocity = new Vector3(rb.linearVelocity.x + angledVelocity.x, rb.linearVelocity.y, rb.linearVelocity.z + angledVelocity.z);
+            rb.linearVelocity = new Vector3(angledVelocity.x, rb.linearVelocity.y - 9.81f * Time.deltaTime,angledVelocity.z);
         }
 
         if (playerDir.magnitude > 0)
