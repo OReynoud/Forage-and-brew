@@ -389,8 +389,30 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""3f7b539b-c1c7-435d-80e5-686061b37721"",
+                    ""path"": ""<HID::PowerA NSW wired controller>/button8"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BookMarkRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""929ca3f9-7933-4070-bc2c-08e935870801"",
                     ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BookMarkLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""043dc900-e3c3-42d4-8846-1a3bb071b30b"",
+                    ""path"": ""<HID::PowerA NSW wired controller>/button7"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
