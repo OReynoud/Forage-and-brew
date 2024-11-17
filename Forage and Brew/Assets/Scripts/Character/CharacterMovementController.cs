@@ -63,7 +63,6 @@ public class CharacterMovementController : MonoBehaviour
                 rb.linearVelocity = new Vector3(angledVelocity.x, rb.linearVelocity.y, angledVelocity.z);
             }
             
-            Debug.Log(angle);
             Debug.DrawRay(transform.position,angledVelocity* 5,Color.blue ,0);
 
         }
