@@ -103,8 +103,12 @@ public class CharacterInputManager : MonoBehaviour
     {
         _inputs.Player.Interact.Enable();
         _inputs.Player.Interact.performed += InteractOnPerformed;
+        _inputs.Player.Cancel.Enable();
+        _inputs.Player.Cancel.performed += CancelOnPerformed;
     }
-    
+
+
+
     public void EnableHapticChallengeInputs()
     {
         _inputs.Player.HapticChallenge.Enable();
@@ -129,6 +133,8 @@ public class CharacterInputManager : MonoBehaviour
     {
         _inputs.Player.Interact.Disable();
         _inputs.Player.Interact.performed -= InteractOnPerformed;
+        _inputs.Player.Cancel.Disable();
+        _inputs.Player.Cancel.performed -= CancelOnPerformed;
     }
     
     public void DisableHapticChallengeInputs()
@@ -146,6 +152,10 @@ public class CharacterInputManager : MonoBehaviour
     private void InteractOnPerformed(InputAction.CallbackContext obj)
     {
         characterInteractController.Interact();
+    }
+    private void CancelOnPerformed(InputAction.CallbackContext obj)
+    {
+        characterInteractController.Cancel();
     }
 
     private void HapticChallengeOnPerformed(InputAction.CallbackContext obj)
