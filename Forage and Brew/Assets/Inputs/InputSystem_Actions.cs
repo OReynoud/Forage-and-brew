@@ -98,6 +98,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""0b61c09d-6b48-457f-accc-3d78878e3c8e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -417,6 +426,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""BookMarkLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0c94976d-c90f-4b4d-bb16-c5083b1bc63d"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6f900ac9-3677-4bf5-8364-42543d0e7e58"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1012,6 +1043,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Codex = m_Player.FindAction("Codex", throwIfNotFound: true);
         m_Player_BookMarkRight = m_Player.FindAction("BookMarkRight", throwIfNotFound: true);
         m_Player_BookMarkLeft = m_Player.FindAction("BookMarkLeft", throwIfNotFound: true);
+        m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1099,6 +1131,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Codex;
     private readonly InputAction m_Player_BookMarkRight;
     private readonly InputAction m_Player_BookMarkLeft;
+    private readonly InputAction m_Player_Cancel;
     public struct PlayerActions
     {
         private @InputSystem_Actions m_Wrapper;
@@ -1111,6 +1144,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @Codex => m_Wrapper.m_Player_Codex;
         public InputAction @BookMarkRight => m_Wrapper.m_Player_BookMarkRight;
         public InputAction @BookMarkLeft => m_Wrapper.m_Player_BookMarkLeft;
+        public InputAction @Cancel => m_Wrapper.m_Player_Cancel;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1144,6 +1178,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @BookMarkLeft.started += instance.OnBookMarkLeft;
             @BookMarkLeft.performed += instance.OnBookMarkLeft;
             @BookMarkLeft.canceled += instance.OnBookMarkLeft;
+            @Cancel.started += instance.OnCancel;
+            @Cancel.performed += instance.OnCancel;
+            @Cancel.canceled += instance.OnCancel;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1172,6 +1209,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @BookMarkLeft.started -= instance.OnBookMarkLeft;
             @BookMarkLeft.performed -= instance.OnBookMarkLeft;
             @BookMarkLeft.canceled -= instance.OnBookMarkLeft;
+            @Cancel.started -= instance.OnCancel;
+            @Cancel.performed -= instance.OnCancel;
+            @Cancel.canceled -= instance.OnCancel;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1362,6 +1402,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnCodex(InputAction.CallbackContext context);
         void OnBookMarkRight(InputAction.CallbackContext context);
         void OnBookMarkLeft(InputAction.CallbackContext context);
+        void OnCancel(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

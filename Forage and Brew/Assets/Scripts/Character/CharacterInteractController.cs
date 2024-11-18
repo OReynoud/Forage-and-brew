@@ -81,13 +81,27 @@ public class CharacterInteractController : MonoBehaviour
         }
         else if (CurrentCollectedIngredientBehaviour)
         {
-            CurrentCollectedIngredientBehaviour.DisableGrab();
+            
 
             AddToPile(CurrentCollectedIngredientBehaviour);
         }
         else if (CurrentNearBed && collectedIngredientStack.Count == 0)
         {
             CurrentNearBed.Sleep();
+        }
+    }
+    public void Cancel()
+    {
+        if (collectedIngredientStack.Count > 0)
+        {
+            int length = collectedIngredientStack.Count;
+
+            for (int i = 0; i < length; i++)
+            {
+                collectedIngredientStack[0].ingredient.GrabMethod(false);
+                collectedIngredientStack[0].ingredient.transform.SetParent(null);
+                collectedIngredientStack.RemoveAt(0);
+            }
         }
     }
 
@@ -99,8 +113,7 @@ public class CharacterInteractController : MonoBehaviour
             if (collectedIngredientStack[0].ingredient.IngredientValuesSo.Type != ingredient.IngredientValuesSo.Type)
                 return;
         }
-
-
+        
         CurrentCollectedIngredientBehaviour.DisableGrab();
         CurrentCollectedIngredientBehaviour.GrabMethod(true);
         CurrentCollectedIngredientBehaviour.transform.SetParent(transform);
@@ -165,5 +178,7 @@ public class CharacterInteractController : MonoBehaviour
 
         }
     }
+
+    
 }
     
