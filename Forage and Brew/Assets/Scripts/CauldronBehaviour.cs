@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class CauldronBehaviour : MonoBehaviour
+public class CauldronBehaviour : Singleton<CauldronBehaviour>
 {
     [SerializeField] private CameraPreset cauldronCameraPreset;
     [SerializeField] private float cauldronCameraTransitionTime = 0.5f;
@@ -8,6 +9,7 @@ public class CauldronBehaviour : MonoBehaviour
     
     [SerializeField] private GameObject interactInputCanvasGameObject;
 
+    public List<CollectedIngredientBehaviour> ingredients = new List<CollectedIngredientBehaviour>();
 
     private void Start()
     {
@@ -30,6 +32,7 @@ public class CauldronBehaviour : MonoBehaviour
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
+            characterInteractController.nextToCauldron = true;
             _previousCameraPreset = CameraController.instance.TargetCamSettings;
             CameraController.instance.ApplyScriptableCamSettings(cauldronCameraPreset, cauldronCameraTransitionTime);
             EnableInteract();
@@ -40,6 +43,7 @@ public class CauldronBehaviour : MonoBehaviour
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
+            characterInteractController.nextToCauldron = false;
             CameraController.instance.ApplyScriptableCamSettings(_previousCameraPreset, cauldronCameraTransitionTime);
             DisableInteract();
         }

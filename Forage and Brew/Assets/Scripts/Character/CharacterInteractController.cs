@@ -23,6 +23,7 @@ public class CharacterInteractController : MonoBehaviour
 
     public BedBehaviour CurrentNearBed { get; set; }
     public bool handsFull { get; set; }
+    public bool nextToCauldron { get; set; }
 
     private Rigidbody rb { get; set; }
 
@@ -72,6 +73,10 @@ public class CharacterInteractController : MonoBehaviour
 
     public void Interact()
     {
+        if (nextToCauldron && collectedIngredientStack.Count > 0)
+        {
+            ShoveStackInCauldron();
+        }
         if (CurrentIngredientToCollectBehaviour)
         {
             CharacterInputManager.Instance.DisableMoveInputs();
@@ -120,6 +125,18 @@ public class CharacterInteractController : MonoBehaviour
         collectedIngredientStack.Add(new CollectedIngredientStack(CurrentCollectedIngredientBehaviour));
         CurrentCollectedIngredientBehaviour = null;
         //CurrentCollectedIngredientBehaviour.transform.SetParent(stackPlacement);
+    }
+
+    void ShoveStackInCauldron()
+    {
+        for (int i = 0; i < collectedIngredientStack.Count; i++)
+        {
+            //collectedIngredientStack[i].ingredient.GrabMethod(false);
+            collectedIngredientStack[i].ingredient.transform.SetParent(CauldronBehaviour.instance.transform);
+            collectedIngredientStack[i].ingredient.transform.position = Vector3.zero;
+            CauldronBehaviour.instance.ingredients.Add(collectedIngredientStack[i].ingredient);
+        }
+        collectedIngredientStack.Clear();
     }
 
     private void FixedUpdate()
