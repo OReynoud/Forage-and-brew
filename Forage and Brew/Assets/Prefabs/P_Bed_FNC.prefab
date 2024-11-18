@@ -374,6 +374,7 @@ GameObject:
   - component: {fileID: 5922908981466457607}
   - component: {fileID: 8849310442405200353}
   - component: {fileID: 8927620014963207577}
+  - component: {fileID: 8017016795945414786}
   m_Layer: 0
   m_Name: P_Bed_FNC
   m_TagString: Untagged
@@ -417,7 +418,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 2
+  m_Radius: 3
   m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!114 &8927620014963207577
 MonoBehaviour:
@@ -432,6 +433,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactInputCanvasGameObject: {fileID: 194505192868040899}
+--- !u!65 &8017016795945414786
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6483722927392403168}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2, y: 2.5, z: 4}
+  m_Center: {x: 0, y: 1.25, z: 0}
 --- !u!1 &6527139700313773335
 GameObject:
   m_ObjectHideFlags: 0
