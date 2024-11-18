@@ -18,7 +18,7 @@ public class HapticChallengeManager : MonoBehaviour
     [SerializeField] private RectTransform gaugeArrowRectTransform;
     
     // Gauge Haptic Challenge
-    private GaugeHapticChallengeSo _currentGaugeHapticChallengeSo;
+    private GaugeCollectHapticChallengeSo _currentGaugeCollectHapticChallengeSo;
     private bool _isGaugeHapticChallengeActive;
     private bool _isGaugeHapticChallengeGoingUp;
     
@@ -54,9 +54,9 @@ public class HapticChallengeManager : MonoBehaviour
         {
             if (ingredientTypeHapticChallenge.IngredientType == _currentIngredientToCollectBehaviour.IngredientValuesSo.Type)
             {
-                if (ingredientTypeHapticChallenge.HapticChallengeSo is GaugeHapticChallengeSo gaugeHapticChallengeSo)
+                if (ingredientTypeHapticChallenge.CollectHapticChallengeSo is GaugeCollectHapticChallengeSo gaugeHapticChallengeSo)
                 {
-                    _currentGaugeHapticChallengeSo = gaugeHapticChallengeSo;
+                    _currentGaugeCollectHapticChallengeSo = gaugeHapticChallengeSo;
                     StartGaugeHapticChallenge();
                 }
                 
@@ -79,8 +79,8 @@ public class HapticChallengeManager : MonoBehaviour
     {
         gaugeHapticChallengeGameObject.SetActive(true);
         gaugeArrowRectTransform.anchoredPosition = new Vector2(gaugeArrowRectTransform.anchoredPosition.x,
-            Random.Range(_currentGaugeHapticChallengeSo.GaugeTotalHeight * -0.5f,
-                _currentGaugeHapticChallengeSo.GaugeTotalHeight * 0.5f));
+            Random.Range(_currentGaugeCollectHapticChallengeSo.GaugeTotalHeight * -0.5f,
+                _currentGaugeCollectHapticChallengeSo.GaugeTotalHeight * 0.5f));
         _isGaugeHapticChallengeGoingUp = Random.Range(0, 2) == 0;
         _isGaugeHapticChallengeActive = true;
         _isHapticChallengeActive = true;
@@ -99,7 +99,7 @@ public class HapticChallengeManager : MonoBehaviour
     {
         if (_isGaugeHapticChallengeGoingUp)
         {
-            gaugeArrowRectTransform.anchoredPosition += new Vector2(0f, _currentGaugeHapticChallengeSo.ArrowSpeed * Time.deltaTime);
+            gaugeArrowRectTransform.anchoredPosition += new Vector2(0f, _currentGaugeCollectHapticChallengeSo.ArrowSpeed * Time.deltaTime);
             if (gaugeArrowRectTransform.anchoredPosition.y >= gaugeRectTransform.sizeDelta.y * 0.5f)
             {
                 _isGaugeHapticChallengeGoingUp = false;
@@ -107,7 +107,7 @@ public class HapticChallengeManager : MonoBehaviour
         }
         else
         {
-            gaugeArrowRectTransform.anchoredPosition -= new Vector2(0f, _currentGaugeHapticChallengeSo.ArrowSpeed * Time.deltaTime);
+            gaugeArrowRectTransform.anchoredPosition -= new Vector2(0f, _currentGaugeCollectHapticChallengeSo.ArrowSpeed * Time.deltaTime);
             if (gaugeArrowRectTransform.anchoredPosition.y <= gaugeRectTransform.sizeDelta.y * -0.5f)
             {
                 _isGaugeHapticChallengeGoingUp = true;
@@ -122,7 +122,7 @@ public class HapticChallengeManager : MonoBehaviour
         {
             foreach (var ingredientTypeHapticChallenge in hapticChallengeListSo.HapticChallengesByIngredientType)
             {
-                if (ingredientTypeHapticChallenge.HapticChallengeSo is GaugeHapticChallengeSo gaugeHapticChallengeSo)
+                if (ingredientTypeHapticChallenge.CollectHapticChallengeSo is GaugeCollectHapticChallengeSo gaugeHapticChallengeSo)
                 {
                     gaugeRectTransform.sizeDelta = new Vector2(wrongGaugeRectTransform.sizeDelta.x,
                         gaugeHapticChallengeSo.GaugeTotalHeight);

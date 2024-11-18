@@ -9,8 +9,9 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>
     
     [SerializeField] private GameObject interactInputCanvasGameObject;
 
-    public List<CollectedIngredientBehaviour> ingredients = new List<CollectedIngredientBehaviour>();
+    public List<CollectedIngredientBehaviour> Ingredients { get; } = new();
 
+    
     private void Start()
     {
         interactInputCanvasGameObject.SetActive(false);
