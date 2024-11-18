@@ -14,8 +14,10 @@ public class CollectedIngredientBehaviour : MonoBehaviour
     public float stackHeight { get; set; }
     public bool isPutInCauldron { get; set; }
     
-    public Vector3 middlePoint { get; set; }
+    public Vector3 startControl { get; set; }
+    public Vector3 endControl { get; set; }
     
+    public Vector3 originControl{ get; set; }
     public float cauldronLerp { get; set; }
     
     [Header("UI")]
@@ -28,17 +30,22 @@ public class CollectedIngredientBehaviour : MonoBehaviour
         grabInputCanvasGameObject.SetActive(false);
         stackHeight = collectedIngredientGlobalValuesSo.StackHeight;
         rb = GetComponent<Rigidbody>();
-        cauldronLerp = Random.Range(0, collectedIngredientGlobalValuesSo.MaxCauldronLerp);
+        cauldronLerp = Random.Range(collectedIngredientGlobalValuesSo.MinCauldronLerp, collectedIngredientGlobalValuesSo.MaxCauldronLerp);
 
     }
 
     private float lerp = 0;
+
     private void Update()
     {
-        if (!isPutInCauldron) return;
+        if (!isPutInCauldron || lerp > 1) return;
         lerp += Time.deltaTime * cauldronLerp;
-        transform.position = Vector3.Slerp(transform.position, Vector3.zero, lerp); //+ middlePoint;
-        
+        transform.position =
+            Mathf.Pow(1 - lerp, 3) * originControl +
+            3 * Mathf.Pow(1 - lerp, 2) * lerp * startControl +
+            3 * (1 - lerp) * Mathf.Pow(lerp, 2) * endControl +
+            Mathf.Pow(lerp, 3) * Vector3.zero; //Last line is obsolete but for understanding purposes ill leave it in
+
     }
 
 
