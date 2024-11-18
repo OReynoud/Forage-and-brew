@@ -18,7 +18,7 @@ public class CameraController : Singleton<CameraController>
 
     [BoxGroup] [Expandable] public CameraPreset scriptableCamSettings;
     private CameraPreset previousCamSettings;
-    private CameraPreset targetCamSettings;
+    public CameraPreset TargetCamSettings { get; private set; }
     
     [BoxGroup("References")] public CameraPreset codexCamSettings;
     public float codexEnterTime;
@@ -92,8 +92,8 @@ public class CameraController : Singleton<CameraController>
 
     public void ApplyScriptableCamSettings(CameraPreset preset, float TransitionTime)
     {
-        previousCamSettings = targetCamSettings;
-        targetCamSettings = preset;
+        previousCamSettings = TargetCamSettings;
+        TargetCamSettings = preset;
         transitionTime = TransitionTime == 0 ? 0.001f : TransitionTime;
         counter = 0;
     }
@@ -132,7 +132,7 @@ public class CameraController : Singleton<CameraController>
         targetFocalLength = cam.focalLength;
         cameraRotation = transform.localRotation.eulerAngles;
         previousCamSettings = scriptableCamSettings;
-        targetCamSettings = scriptableCamSettings;
+        TargetCamSettings = scriptableCamSettings;
         
         CharacterInputManager.Instance.OnCodexShow.AddListener(UpdateCamWithCodex);
 
@@ -169,26 +169,26 @@ public class CameraController : Singleton<CameraController>
         }
         
         
-        cameraRotation = Vector3.Lerp(previousCamSettings.cameraRotation,targetCamSettings.cameraRotation,counter / transitionTime);
-        cameraOffset = Vector3.Lerp(previousCamSettings.cameraOffset,targetCamSettings.cameraOffset,counter / transitionTime);
+        cameraRotation = Vector3.Lerp(previousCamSettings.cameraRotation,TargetCamSettings.cameraRotation,counter / transitionTime);
+        cameraOffset = Vector3.Lerp(previousCamSettings.cameraOffset,TargetCamSettings.cameraOffset,counter / transitionTime);
 
         if (!CharacterInputManager.Instance.showCodex)
         {
-            targetFocalLength = Mathf.Lerp(previousCamSettings.targetFocalLength,targetCamSettings.targetFocalLength, counter / transitionTime);
-            distanceFromPlayer = Mathf.Lerp(previousCamSettings.distanceFromPlayer,targetCamSettings.distanceFromPlayer, counter / transitionTime);
+            targetFocalLength = Mathf.Lerp(previousCamSettings.targetFocalLength,TargetCamSettings.targetFocalLength, counter / transitionTime);
+            distanceFromPlayer = Mathf.Lerp(previousCamSettings.distanceFromPlayer,TargetCamSettings.distanceFromPlayer, counter / transitionTime);
         }
         else
         {
             targetFocalLength = Mathf.Lerp(previousCamSettings.targetFocalLength,
-                targetCamSettings.targetFocalLength - codexCamSettings.targetFocalLength, counter / transitionTime);
+                TargetCamSettings.targetFocalLength - codexCamSettings.targetFocalLength, counter / transitionTime);
             
             
             distanceFromPlayer = Mathf.Lerp(previousCamSettings.distanceFromPlayer,
-                targetCamSettings.distanceFromPlayer + codexCamSettings.distanceFromPlayer, counter / transitionTime);
+                TargetCamSettings.distanceFromPlayer + codexCamSettings.distanceFromPlayer, counter / transitionTime);
         }
 
-        positionLerp = Mathf.Lerp(previousCamSettings.positionLerp,targetCamSettings.positionLerp, counter / transitionTime);
-        rotationLerp = Mathf.Lerp(previousCamSettings.rotationLerp,targetCamSettings.rotationLerp, counter / transitionTime);
-        focalLerp = Mathf.Lerp(previousCamSettings.focalLerp,targetCamSettings.focalLerp, counter / transitionTime);
+        positionLerp = Mathf.Lerp(previousCamSettings.positionLerp,TargetCamSettings.positionLerp, counter / transitionTime);
+        rotationLerp = Mathf.Lerp(previousCamSettings.rotationLerp,TargetCamSettings.rotationLerp, counter / transitionTime);
+        focalLerp = Mathf.Lerp(previousCamSettings.focalLerp,TargetCamSettings.focalLerp, counter / transitionTime);
     }
 }
