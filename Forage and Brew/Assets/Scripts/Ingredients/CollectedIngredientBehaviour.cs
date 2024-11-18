@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CollectedIngredientBehaviour : MonoBehaviour
 {
@@ -10,6 +12,9 @@ public class CollectedIngredientBehaviour : MonoBehaviour
     [SerializeField] private Collider ingredientCollider;
     [SerializeField] private Transform meshParentTransform;
     public float stackHeight { get; set; }
+    public bool isPutInCauldron { get; set; }
+    
+    public Vector3 middlePoint { get; set; }
     
     [Header("UI")]
     [SerializeField] private GameObject grabInputCanvasGameObject;
@@ -21,6 +26,13 @@ public class CollectedIngredientBehaviour : MonoBehaviour
         grabInputCanvasGameObject.SetActive(false);
         stackHeight = collectedIngredientGlobalValuesSo.StackHeight;
         rb = GetComponent<Rigidbody>();
+    }
+
+    private void Update()
+    {
+        if (!isPutInCauldron) return;
+        
+        //transform.position = Vector3.Slerp(transform.position,Vector3.zero, ) + middlePoint;
     }
 
 
