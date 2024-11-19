@@ -6,7 +6,7 @@ using UnityEngine;
 public struct IngredientTypeHapticChallenge
 {
     [field: SerializeField] public IngredientType IngredientType { get; private set; }
-    [field: SerializeField] public HapticChallengeSo HapticChallengeSo { get; private set; }
+    [field: SerializeField] public CollectHapticChallengeSo CollectHapticChallengeSo { get; private set; }
 }
 
 [Serializable]
@@ -31,4 +31,18 @@ public struct WeatherStateEndProbability
     
     [field: SerializeField] [field: Tooltip("The probability to have this weather state for the next day (in per mil).")]
     [field: Range(0f, 1000f)] public float EndProbability { get; set; }
+}
+
+[Serializable]
+public struct CookedIngredientForm
+{
+    [field: SerializeField] public IngredientValuesSo Ingredient { get; private set; }
+    [field: SerializeField] public CookHapticChallengeSo CookedForm { get; private set; }
+}
+
+[Serializable]
+public struct CauldronHapticChallengeIngredients
+{
+    [field: SerializeField] public List<CookedIngredientForm> CookedIngredients { get; private set; }
+    [field: SerializeField] public CauldronHapticChallengeSo CauldronHapticChallengeSo { get; private set; }
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class HapticChallengeManager : MonoBehaviour
@@ -6,8 +7,9 @@ public class HapticChallengeManager : MonoBehaviour
     // Singleton
     public static HapticChallengeManager Instance { get; private set; }
 
+    [FormerlySerializedAs("hapticChallengeListSo")]
     [Header("Dependencies")]
-    [SerializeField] private HapticChallengeListSo hapticChallengeListSo;
+    [SerializeField] private CollectHapticChallengeListSo collectHapticChallengeListSo;
 
     [Header("Gauge Haptic Challenge UI")]
     [SerializeField] private GameObject gaugeHapticChallengeGameObject;
@@ -50,11 +52,11 @@ public class HapticChallengeManager : MonoBehaviour
     {
         _currentIngredientToCollectBehaviour = ingredientToCollectBehaviour;
         
-        foreach (var ingredientTypeHapticChallenge in hapticChallengeListSo.HapticChallengesByIngredientType)
+        foreach (var ingredientTypeHapticChallenge in collectHapticChallengeListSo.HapticChallengesByIngredientType)
         {
             if (ingredientTypeHapticChallenge.IngredientType == _currentIngredientToCollectBehaviour.IngredientValuesSo.Type)
             {
-                if (ingredientTypeHapticChallenge.HapticChallengeSo is GaugeHapticChallengeSo gaugeHapticChallengeSo)
+                if (ingredientTypeHapticChallenge.CollectHapticChallengeSo is GaugeHapticChallengeSo gaugeHapticChallengeSo)
                 {
                     _currentGaugeHapticChallengeSo = gaugeHapticChallengeSo;
                     StartGaugeHapticChallenge();
@@ -118,11 +120,11 @@ public class HapticChallengeManager : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (hapticChallengeListSo)
+        if (collectHapticChallengeListSo)
         {
-            foreach (var ingredientTypeHapticChallenge in hapticChallengeListSo.HapticChallengesByIngredientType)
+            foreach (var ingredientTypeHapticChallenge in collectHapticChallengeListSo.HapticChallengesByIngredientType)
             {
-                if (ingredientTypeHapticChallenge.HapticChallengeSo is GaugeHapticChallengeSo gaugeHapticChallengeSo)
+                if (ingredientTypeHapticChallenge.CollectHapticChallengeSo is GaugeHapticChallengeSo gaugeHapticChallengeSo)
                 {
                     gaugeRectTransform.sizeDelta = new Vector2(wrongGaugeRectTransform.sizeDelta.x,
                         gaugeHapticChallengeSo.GaugeTotalHeight);
