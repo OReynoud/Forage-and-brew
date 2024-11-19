@@ -133,9 +133,9 @@ public class CharacterInteractController : MonoBehaviour
         {
             //collectedIngredientStack[i].ingredient.GrabMethod(false);
             collectedIngredientStack[i].ingredient.transform.SetParent(CauldronBehaviour.instance.transform);
-            collectedIngredientStack[i].ingredient.transform.position = Vector3.zero;
+            
             collectedIngredientStack[i].ingredient.middlePoint = collectedIngredientStack[i].ingredient.transform.position * 0.5f + Random.insideUnitSphere;
-            CauldronBehaviour.instance.Ingredients.Add(collectedIngredientStack[i].ingredient);
+            CauldronBehaviour.instance.ingredients.Add(collectedIngredientStack[i].ingredient);
             //CauldronBehaviour.instance.
         }
         collectedIngredientStack.Clear();
