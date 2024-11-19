@@ -33,6 +33,42 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "HapticChallengeSecond",
+                    "type": "Button",
+                    "id": "84641f2e-0d01-40e3-920b-90832d499c02",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "HapticChallengeJoystick",
+                    "type": "Value",
+                    "id": "7762633a-ca37-45db-beab-67e631eb1415",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "HapticChallengeJoystickHorizontalAxis",
+                    "type": "Value",
+                    "id": "43a3a000-c0b2-49f3-9488-79fe0b49114d",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "HapticChallengeJoystickVerticalAxis",
+                    "type": "Value",
+                    "id": "7802f24e-27b8-4af7-bebf-9779185dd35f",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Previous",
                     "type": "Button",
                     "id": "2776c80d-3c14-4091-8c56-d04ced07a2b0",
@@ -212,10 +248,10 @@
                 {
                     "name": "",
                     "id": "3ea4d645-4504-4529-b061-ab81934c3752",
-                    "path": "<Joystick>/stick",
+                    "path": "<HID::PowerA NSW wired controller>/stick",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Joystick",
+                    "groups": "Gamepad",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -332,6 +368,39 @@
                 },
                 {
                     "name": "",
+                    "id": "03753926-cfa2-4c94-b339-501d56a3a761",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "HapticChallengeSecond",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bafa3918-be96-42fa-a1e7-96e1f9710e86",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "HapticChallengeSecond",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "799a63c7-6fbf-4fd1-9e74-f49a92c1cc95",
+                    "path": "<HID::PowerA NSW wired controller>/trigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "HapticChallengeSecond",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "083d5288-8c2e-4753-b685-9d6c3dc7ca3e",
                     "path": "<Keyboard>/tab",
                     "interactions": "",
@@ -437,6 +506,39 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "df68684a-dd13-47db-8ea5-808993c6f87d",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "HapticChallengeJoystick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9723b9f6-24a9-4c2f-99fb-f4deb0a46cab",
+                    "path": "<HID::PowerA NSW wired controller>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HapticChallengeJoystickHorizontalAxis",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b8c336b3-3a11-4f7b-83f6-d956b9d32998",
+                    "path": "<HID::PowerA NSW wired controller>/rz",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HapticChallengeJoystickVerticalAxis",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

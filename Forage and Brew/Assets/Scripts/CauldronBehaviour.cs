@@ -8,6 +8,9 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>
     private CameraPreset _previousCameraPreset;
     
     [SerializeField] private GameObject interactInputCanvasGameObject;
+    [SerializeField] private GameObject buttonAGameObject;
+    [SerializeField] private GameObject buttonXGameObject;
+    [SerializeField] private GameObject buttonYGameObject;
 
     public List<CollectedIngredientBehaviour> Ingredients { get; } = new();
 
@@ -18,14 +21,27 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>
     }
 
 
-    private void EnableInteract()
+    private void EnableInteract(bool areHandsFull)
     {
+        buttonAGameObject.SetActive(areHandsFull);
+        buttonXGameObject.SetActive(!areHandsFull);
+        buttonYGameObject.SetActive(!areHandsFull);
+        
         interactInputCanvasGameObject.SetActive(true);
     }
     
-    public void DisableInteract()
+    public void DisableInteract(bool isStillNear = false)
     {
-        interactInputCanvasGameObject.SetActive(false);
+        if (isStillNear)
+        {
+            buttonAGameObject.SetActive(!buttonAGameObject.activeSelf);
+            buttonXGameObject.SetActive(!buttonXGameObject.activeSelf);
+            buttonYGameObject.SetActive(!buttonYGameObject.activeSelf);
+        }
+        else
+        {
+            interactInputCanvasGameObject.SetActive(false);
+        }
     }
     
     
@@ -33,10 +49,10 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
-            characterInteractController.nextToCauldron = true;
+            characterInteractController.CurrentNearCauldron = this;
             _previousCameraPreset = CameraController.instance.TargetCamSettings;
             CameraController.instance.ApplyScriptableCamSettings(cauldronCameraPreset, cauldronCameraTransitionTime);
-            EnableInteract();
+            EnableInteract(characterInteractController.AreHandsFull);
         }
     }
     
@@ -44,7 +60,7 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
-            characterInteractController.nextToCauldron = false;
+            characterInteractController.CurrentNearCauldron = null;
             CameraController.instance.ApplyScriptableCamSettings(_previousCameraPreset, cauldronCameraTransitionTime);
             DisableInteract();
         }

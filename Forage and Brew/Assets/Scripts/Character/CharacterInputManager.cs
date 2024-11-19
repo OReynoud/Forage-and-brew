@@ -90,7 +90,6 @@ public class CharacterInputManager : MonoBehaviour
         
         if (OnCodexShow != null)
             OnCodexShow.Invoke();
-        
     }
 
     public void EnableMoveInputs()
@@ -113,6 +112,17 @@ public class CharacterInputManager : MonoBehaviour
     {
         _inputs.Player.HapticChallenge.Enable();
         _inputs.Player.HapticChallenge.performed += HapticChallengeOnPerformed;
+        _inputs.Player.HapticChallengeSecond.Enable();
+        _inputs.Player.HapticChallengeSecond.performed += HapticChallengeSecondOnPerformed;
+        _inputs.Player.HapticChallengeJoystick.Enable();
+        _inputs.Player.HapticChallengeJoystick.performed += HapticChallengeJoystickOnPerformed;
+        _inputs.Player.HapticChallengeJoystick.canceled += HapticChallengeJoystickOnPerformed;
+        _inputs.Player.HapticChallengeJoystickHorizontalAxis.Enable();
+        _inputs.Player.HapticChallengeJoystickHorizontalAxis.performed += HapticChallengeJoystickHorizontalAxisOnPerformed;
+        _inputs.Player.HapticChallengeJoystickHorizontalAxis.canceled += HapticChallengeJoystickHorizontalAxisOnPerformed;
+        _inputs.Player.HapticChallengeJoystickVerticalAxis.Enable();
+        _inputs.Player.HapticChallengeJoystickVerticalAxis.performed += HapticChallengeJoystickVerticalAxisOnPerformed;
+        _inputs.Player.HapticChallengeJoystickVerticalAxis.canceled += HapticChallengeJoystickVerticalAxisOnPerformed;
     }
 
     public void DisableInputs()
@@ -121,6 +131,7 @@ public class CharacterInputManager : MonoBehaviour
         DisableMoveInputs();
         DisableInteractInputs();
         DisableHapticChallengeInputs();
+        DisableCodexInputs();
     }
     
     public void DisableMoveInputs()
@@ -141,6 +152,17 @@ public class CharacterInputManager : MonoBehaviour
     {
         _inputs.Player.HapticChallenge.Disable();
         _inputs.Player.HapticChallenge.performed -= HapticChallengeOnPerformed;
+        _inputs.Player.HapticChallengeSecond.Disable();
+        _inputs.Player.HapticChallengeSecond.performed -= HapticChallengeSecondOnPerformed;
+        _inputs.Player.HapticChallengeJoystick.Disable();
+        _inputs.Player.HapticChallengeJoystick.performed -= HapticChallengeJoystickOnPerformed;
+        _inputs.Player.HapticChallengeJoystick.canceled -= HapticChallengeJoystickOnPerformed;
+        _inputs.Player.HapticChallengeJoystickHorizontalAxis.Disable();
+        _inputs.Player.HapticChallengeJoystickHorizontalAxis.performed -= HapticChallengeJoystickHorizontalAxisOnPerformed;
+        _inputs.Player.HapticChallengeJoystickHorizontalAxis.canceled -= HapticChallengeJoystickHorizontalAxisOnPerformed;
+        _inputs.Player.HapticChallengeJoystickVerticalAxis.Disable();
+        _inputs.Player.HapticChallengeJoystickVerticalAxis.performed -= HapticChallengeJoystickVerticalAxisOnPerformed;
+        _inputs.Player.HapticChallengeJoystickVerticalAxis.canceled -= HapticChallengeJoystickVerticalAxisOnPerformed;
     }
 
     
@@ -160,6 +182,26 @@ public class CharacterInputManager : MonoBehaviour
 
     private void HapticChallengeOnPerformed(InputAction.CallbackContext obj)
     {
-        HapticChallengeManager.Instance.StopHapticChallenge();
+        CollectHapticChallengeManager.Instance.StopCollectHapticChallenge();
+    }
+
+    private void HapticChallengeSecondOnPerformed(InputAction.CallbackContext obj)
+    {
+        
+    }
+    
+    private void HapticChallengeJoystickOnPerformed(InputAction.CallbackContext obj)
+    {
+        StirHapticChallengeManager.Instance.JoystickInputValue = obj.ReadValue<Vector2>();
+    }
+    
+    private void HapticChallengeJoystickHorizontalAxisOnPerformed(InputAction.CallbackContext obj)
+    {
+        StirHapticChallengeManager.Instance.JoystickInputValue = new Vector2(obj.ReadValue<float>(), StirHapticChallengeManager.Instance.JoystickInputValue.y);
+    }
+    
+    private void HapticChallengeJoystickVerticalAxisOnPerformed(InputAction.CallbackContext obj)
+    {
+        StirHapticChallengeManager.Instance.JoystickInputValue = new Vector2(StirHapticChallengeManager.Instance.JoystickInputValue.x, obj.ReadValue<float>());
     }
 }

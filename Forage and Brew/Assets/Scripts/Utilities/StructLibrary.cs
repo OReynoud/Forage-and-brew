@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using UnityEngine;
 
 [Serializable]
@@ -36,7 +37,9 @@ public struct WeatherStateEndProbability
 [Serializable]
 public struct CookedIngredientForm
 {
-    [field: SerializeField] public IngredientValuesSo Ingredient { get; private set; }
+    [field: SerializeField] public bool IsAType { get; private set; }
+    [field: AllowNesting] [field: HideIf("IsAType")] [field: SerializeField] public IngredientValuesSo Ingredient { get; private set; }
+    [field: AllowNesting] [field: ShowIf("IsAType")] [field: SerializeField] public IngredientType IngredientType { get; private set; }
     [field: SerializeField] public CookHapticChallengeSo CookedForm { get; private set; }
 }
 
