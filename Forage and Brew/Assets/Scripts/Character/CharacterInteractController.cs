@@ -138,7 +138,7 @@ public class CharacterInteractController : MonoBehaviour
             collectedIngredientStack[i].ingredient.startControl = collectedIngredientStack[i].ingredient.originControl  + Vector3.up + new Vector3(Random.Range(-1,1f),Random.value,Random.Range(-1,1f));
             collectedIngredientStack[i].ingredient.endControl = Vector3.up + new Vector3(Random.Range(-1,1f),Random.value,Random.Range(-1,1f));
             collectedIngredientStack[i].ingredient.isPutInCauldron = true;
-            CauldronBehaviour.instance.ingredients.Add(collectedIngredientStack[i].ingredient);
+            CauldronBehaviour.instance.Ingredients.Add(collectedIngredientStack[i].ingredient);
             //CauldronBehaviour.instance.
         }
         collectedIngredientStack.Clear();
