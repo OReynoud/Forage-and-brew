@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "D_GaugeHapticChallenge", menuName = "Haptic Challenges/GaugeHapticChallengeSo")]
-public class GaugeHapticChallengeSo : HapticChallengeSo
+public class GaugeHapticChallengeSo : CollectHapticChallengeSo
 {
     [field: SerializeField] [field: Tooltip("The total height of the gauge (in pixels, based on 1920x1080 screen).")]
     [field: Min(0f)] public float GaugeTotalHeight { get; private set; } = 3f;

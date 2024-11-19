@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class HapticChallengeManager : MonoBehaviour
@@ -6,8 +7,9 @@ public class HapticChallengeManager : MonoBehaviour
     // Singleton
     public static HapticChallengeManager Instance { get; private set; }
 
+    [FormerlySerializedAs("hapticChallengeListSo")]
     [Header("Dependencies")]
-    [SerializeField] private HapticChallengeListSo hapticChallengeListSo;
+    [SerializeField] private CollectHapticChallengeListSo collectHapticChallengeListSo;
 
     [Header("Gauge Haptic Challenge UI")]
     [SerializeField] private GameObject gaugeHapticChallengeGameObject;
@@ -18,7 +20,7 @@ public class HapticChallengeManager : MonoBehaviour
     [SerializeField] private RectTransform gaugeArrowRectTransform;
     
     // Gauge Haptic Challenge
-    private GaugeCollectHapticChallengeSo _currentGaugeCollectHapticChallengeSo;
+    private GaugeHapticChallengeSo _currentGaugeHapticChallengeSo;
     private bool _isGaugeHapticChallengeActive;
     private bool _isGaugeHapticChallengeGoingUp;
     
@@ -50,13 +52,13 @@ public class HapticChallengeManager : MonoBehaviour
     {
         _currentIngredientToCollectBehaviour = ingredientToCollectBehaviour;
         
-        foreach (var ingredientTypeHapticChallenge in hapticChallengeListSo.HapticChallengesByIngredientType)
+        foreach (var ingredientTypeHapticChallenge in collectHapticChallengeListSo.HapticChallengesByIngredientType)
         {
             if (ingredientTypeHapticChallenge.IngredientType == _currentIngredientToCollectBehaviour.IngredientValuesSo.Type)
             {
-                if (ingredientTypeHapticChallenge.CollectHapticChallengeSo is GaugeCollectHapticChallengeSo gaugeHapticChallengeSo)
+                if (ingredientTypeHapticChallenge.CollectHapticChallengeSo is GaugeHapticChallengeSo gaugeHapticChallengeSo)
                 {
-                    _currentGaugeCollectHapticChallengeSo = gaugeHapticChallengeSo;
+                    _currentGaugeHapticChallengeSo = gaugeHapticChallengeSo;
                     StartGaugeHapticChallenge();
                 }
                 
@@ -79,8 +81,8 @@ public class HapticChallengeManager : MonoBehaviour
     {
         gaugeHapticChallengeGameObject.SetActive(true);
         gaugeArrowRectTransform.anchoredPosition = new Vector2(gaugeArrowRectTransform.anchoredPosition.x,
-            Random.Range(_currentGaugeCollectHapticChallengeSo.GaugeTotalHeight * -0.5f,
-                _currentGaugeCollectHapticChallengeSo.GaugeTotalHeight * 0.5f));
+            Random.Range(_currentGaugeHapticChallengeSo.GaugeTotalHeight * -0.5f,
+                _currentGaugeHapticChallengeSo.GaugeTotalHeight * 0.5f));
         _isGaugeHapticChallengeGoingUp = Random.Range(0, 2) == 0;
         _isGaugeHapticChallengeActive = true;
         _isHapticChallengeActive = true;
@@ -99,7 +101,7 @@ public class HapticChallengeManager : MonoBehaviour
     {
         if (_isGaugeHapticChallengeGoingUp)
         {
-            gaugeArrowRectTransform.anchoredPosition += new Vector2(0f, _currentGaugeCollectHapticChallengeSo.ArrowSpeed * Time.deltaTime);
+            gaugeArrowRectTransform.anchoredPosition += new Vector2(0f, _currentGaugeHapticChallengeSo.ArrowSpeed * Time.deltaTime);
             if (gaugeArrowRectTransform.anchoredPosition.y >= gaugeRectTransform.sizeDelta.y * 0.5f)
             {
                 _isGaugeHapticChallengeGoingUp = false;
@@ -107,7 +109,7 @@ public class HapticChallengeManager : MonoBehaviour
         }
         else
         {
-            gaugeArrowRectTransform.anchoredPosition -= new Vector2(0f, _currentGaugeCollectHapticChallengeSo.ArrowSpeed * Time.deltaTime);
+            gaugeArrowRectTransform.anchoredPosition -= new Vector2(0f, _currentGaugeHapticChallengeSo.ArrowSpeed * Time.deltaTime);
             if (gaugeArrowRectTransform.anchoredPosition.y <= gaugeRectTransform.sizeDelta.y * -0.5f)
             {
                 _isGaugeHapticChallengeGoingUp = true;
@@ -118,11 +120,11 @@ public class HapticChallengeManager : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (hapticChallengeListSo)
+        if (collectHapticChallengeListSo)
         {
-            foreach (var ingredientTypeHapticChallenge in hapticChallengeListSo.HapticChallengesByIngredientType)
+            foreach (var ingredientTypeHapticChallenge in collectHapticChallengeListSo.HapticChallengesByIngredientType)
             {
-                if (ingredientTypeHapticChallenge.CollectHapticChallengeSo is GaugeCollectHapticChallengeSo gaugeHapticChallengeSo)
+                if (ingredientTypeHapticChallenge.CollectHapticChallengeSo is GaugeHapticChallengeSo gaugeHapticChallengeSo)
                 {
                     gaugeRectTransform.sizeDelta = new Vector2(wrongGaugeRectTransform.sizeDelta.x,
                         gaugeHapticChallengeSo.GaugeTotalHeight);
