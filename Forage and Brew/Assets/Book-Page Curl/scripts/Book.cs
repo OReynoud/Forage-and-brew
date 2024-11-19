@@ -333,6 +333,7 @@ public class Book : MonoBehaviour {
     }
     public void DragRightPageToPoint(Vector3 point)
     {
+        Debug.Log("Tourne a droite");
         if (currentPage >= bookPages.Length) return;
         pageDragging = true;
         mode = FlipMode.RightToLeft;
@@ -367,6 +368,7 @@ public class Book : MonoBehaviour {
             bookPages[currentPage + 1].UIComponent.SetParent(Right.transform);
             bookPages[currentPage + 1].UIComponent.SetAsLastSibling();
             bookPages[currentPage + 1].UIComponent.anchoredPosition = Vector2.zero;
+            bookPages[currentPage + 1].UIComponent.gameObject.SetActive(true);
         }
         else
             Right.sprite = background;
@@ -377,10 +379,15 @@ public class Book : MonoBehaviour {
             bookPages[currentPage + 2].UIComponent.SetParent(RightNext.transform);
             bookPages[currentPage + 2].UIComponent.SetAsLastSibling();
             bookPages[currentPage + 2].UIComponent.anchoredPosition = Vector2.zero;
+            bookPages[currentPage + 2].UIComponent.gameObject.SetActive(true);
         }
         else
             RightNext.sprite = background;
 
+        if (currentPage >= 2)
+        {
+            bookPages[currentPage - 2].UIComponent.gameObject.SetActive(false);
+        }
         LeftNext.transform.SetAsFirstSibling();
         if (enableShadowEffect) Shadow.gameObject.SetActive(true);
         UpdateBookRTLToPoint(f);
@@ -409,6 +416,11 @@ public class Book : MonoBehaviour {
         bookPages[currentPage - 1].UIComponent.SetParent(Right.transform);
         bookPages[currentPage - 1].UIComponent.SetAsLastSibling();
         bookPages[currentPage - 1].UIComponent.anchoredPosition = Vector2.zero;
+        bookPages[currentPage - 1].UIComponent.gameObject.SetActive(true);
+        if (currentPage + 1 < bookPages.Length)
+        {
+            bookPages[currentPage + 1].UIComponent.gameObject.SetActive(false);
+        }
 
         Left.gameObject.SetActive(true);
         Left.rectTransform.pivot = new Vector2(1, 0);
@@ -419,6 +431,7 @@ public class Book : MonoBehaviour {
             Left.sprite = bookPages[currentPage - 2].pageSprite;
             bookPages[currentPage - 2].UIComponent.SetParent(Left.transform);
             bookPages[currentPage - 2].UIComponent.SetAsLastSibling();
+            bookPages[currentPage - 2].UIComponent.gameObject.SetActive(true);
             bookPages[currentPage - 2].UIComponent.anchoredPosition = Vector2.zero;
         }
         else
@@ -430,6 +443,7 @@ public class Book : MonoBehaviour {
             LeftNext.sprite = bookPages[currentPage - 3].pageSprite;
             bookPages[currentPage - 3].UIComponent.SetParent(LeftNext.transform);
             bookPages[currentPage - 3].UIComponent.SetAsLastSibling();
+            bookPages[currentPage - 3].UIComponent.gameObject.SetActive(true);
             bookPages[currentPage - 3].UIComponent.anchoredPosition = Vector2.zero;
         }
         else
@@ -475,6 +489,11 @@ public class Book : MonoBehaviour {
             bookPages[currentPage - 1].UIComponent.SetAsLastSibling();
             bookPages[currentPage - 1].UIComponent.anchoredPosition = Vector2.zero;
             bookPages[currentPage - 1].UIComponent.localRotation = Quaternion.identity;
+            bookPages[currentPage - 1].UIComponent.gameObject.SetActive(true);
+            if (currentPage - 3 >=1)
+            {
+                bookPages[currentPage - 3].UIComponent.gameObject.SetActive(false);
+            }
         }
         else
             LeftNext.sprite = background;
@@ -486,9 +505,16 @@ public class Book : MonoBehaviour {
             bookPages[currentPage].UIComponent.SetAsLastSibling();
             bookPages[currentPage].UIComponent.anchoredPosition = Vector2.zero;
             bookPages[currentPage].UIComponent.localRotation = Quaternion.identity;
+            bookPages[currentPage].UIComponent.gameObject.SetActive(true);
         }
         else
             RightNext.sprite = background;
+
+        if (currentPage + 2 < bookPages.Length)
+        {
+            bookPages[currentPage + 2].UIComponent.gameObject.SetActive(false);
+            
+        }
     }
     public void TweenForward()
     {
