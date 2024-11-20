@@ -114,6 +114,11 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.HapticChallenge.performed += HapticChallengeOnPerformed;
         _inputs.Player.HapticChallengeSecond.Enable();
         _inputs.Player.HapticChallengeSecond.performed += HapticChallengeSecondOnPerformed;
+        EnableHapticChallengeJoystickInputs();
+    }
+    
+    public void EnableHapticChallengeJoystickInputs()
+    {
         _inputs.Player.HapticChallengeJoystick.Enable();
         _inputs.Player.HapticChallengeJoystick.performed += HapticChallengeJoystickOnPerformed;
         _inputs.Player.HapticChallengeJoystick.canceled += HapticChallengeJoystickOnPerformed;
@@ -127,7 +132,6 @@ public class CharacterInputManager : MonoBehaviour
 
     public void DisableInputs()
     {
-        _inputs.Player.Disable();
         DisableMoveInputs();
         DisableInteractInputs();
         DisableHapticChallengeInputs();
@@ -154,6 +158,11 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.HapticChallenge.performed -= HapticChallengeOnPerformed;
         _inputs.Player.HapticChallengeSecond.Disable();
         _inputs.Player.HapticChallengeSecond.performed -= HapticChallengeSecondOnPerformed;
+        DisableHapticChallengeJoystickInputs();
+    }
+    
+    public void DisableHapticChallengeJoystickInputs()
+    {
         _inputs.Player.HapticChallengeJoystick.Disable();
         _inputs.Player.HapticChallengeJoystick.performed -= HapticChallengeJoystickOnPerformed;
         _inputs.Player.HapticChallengeJoystick.canceled -= HapticChallengeJoystickOnPerformed;

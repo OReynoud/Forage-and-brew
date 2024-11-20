@@ -26,6 +26,10 @@ public class StirHapticChallengeManager : MonoBehaviour
     [SerializeField] private float cauldronCameraTransitionTime = 0.5f;
     private CameraPreset _previousCameraPreset;
     
+    [Header("Character")]
+    [SerializeField] private Vector3 characterStirPosition;
+    [SerializeField] private Vector3 characterStirRotation;
+    
     private PotionValuesSo _currentPotion;
     private StirHapticChallengeSo _currentChallenge;
     private float _currentStirTime;
@@ -128,6 +132,11 @@ public class StirHapticChallengeManager : MonoBehaviour
         
         _previousCameraPreset = CameraController.instance.TargetCamSettings;
         CameraController.instance.ApplyScriptableCamSettings(cauldronCameraPreset, cauldronCameraTransitionTime);
+
+        transform.position = CurrentCauldron.transform.position + characterStirPosition;
+        transform.rotation = Quaternion.Euler(characterStirRotation);
+        CharacterInputManager.Instance.DisableInputs();
+        CharacterInputManager.Instance.EnableHapticChallengeJoystickInputs();
         
         PickRightPotion();
         _currentChallenge = _currentPotion.StirHapticChallenge;
