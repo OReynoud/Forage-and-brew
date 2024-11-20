@@ -24,6 +24,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "StartPageNavigation",
+                    "type": "Button",
+                    "id": "65a3e502-1f69-4d8c-922b-6dcf82ea299a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "HapticChallenge",
                     "type": "Button",
                     "id": "e7ab67af-0c8f-419b-8411-4ca88fa1feb1",
@@ -117,6 +126,15 @@
                     "name": "Cancel",
                     "type": "Button",
                     "id": "0b61c09d-6b48-457f-accc-3d78878e3c8e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ExitPageNavigation",
+                    "type": "Button",
+                    "id": "e329b180-c82a-41b8-a669-0b394bd50036",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -335,6 +353,39 @@
                 },
                 {
                     "name": "",
+                    "id": "1dd190c6-d5d9-4456-89f0-6673a675043a",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "StartPageNavigation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "13cf0867-15f9-4a2f-9c48-ab4036138b9c",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "StartPageNavigation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "01ec2cbd-805b-4688-be08-dcfe4bb58f2c",
+                    "path": "<HID::PowerA NSW wired controller>/button3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "StartPageNavigation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "7a1ecd98-51b7-4e89-8b07-f58654c818e0",
                     "path": "<Keyboard>/e",
                     "interactions": "",
@@ -506,6 +557,39 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3a9828e3-f6d9-493a-b2a1-7b49edf9c947",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ExitPageNavigation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "da42467b-6ad9-4dd9-a4a3-6f048bc47a9e",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ExitPageNavigation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ca5e5577-c337-4b3d-8094-968ef1229eff",
+                    "path": "<HID::PowerA NSW wired controller>/button2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "ExitPageNavigation",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

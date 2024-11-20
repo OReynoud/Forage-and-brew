@@ -2,12 +2,14 @@
 using UnityEngine;
 using System.Collections;
 using NaughtyAttributes;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Book))]
 public class AutoFlip : Singleton<AutoFlip>
 {
     
     [BoxGroup("References")] public RectTransform codexTransform;
+    [BoxGroup("References")] public RectTransform codexProportions;
     [BoxGroup("References")] [HideInInspector] public Book ControledBook;
     
     [BoxGroup("Page Flipping")] public float PageFlipTime = 1;
@@ -16,6 +18,12 @@ public class AutoFlip : Singleton<AutoFlip>
     
     [BoxGroup("Codex Movement")] public Vector2 offset;
     [BoxGroup("Codex Movement")] public float codexLerp = 0.17f;
+    [BoxGroup("Codex Movement")] public bool isNavigatingPages;
+    [BoxGroup("Codex Movement")] public Vector3 aimedCodexPos;
+    [BoxGroup("Codex Movement")] public float yCursorSpeed = 1;
+    [BoxGroup("Codex Movement")] public float xCursorSpeed = 1;
+    
+    
     
     //Controls
     
@@ -25,6 +33,7 @@ public class AutoFlip : Singleton<AutoFlip>
     [Foldout("Deprecated")] public float TimeBetweenPages = 1;
     [Foldout("Deprecated")] public float DelayBeforeStarting = 0;
     [Foldout("Deprecated")] public bool AutoStartFlip=true;
+
     
     
     private bool isFlipping;
@@ -35,21 +44,36 @@ public class AutoFlip : Singleton<AutoFlip>
         if (AutoStartFlip)
             StartFlipping();
         ControledBook.OnFlip.AddListener(new UnityEngine.Events.UnityAction(PageFlipped));
-        
-	}
+        CharacterInputManager.Instance.OnNavigationChange.AddListener(ChangeCodexNavigationType);
+        Cursor.lockState = CursorLockMode.Confined;
+        proportions = new Vector2(codexProportions.rect.width ,codexProportions.rect.height);
+
+        Debug.Log(codexProportions.rect.height);
+        Debug.Log(codexProportions.rect.width);
+ 
+
+    }
 
     private void Update()
     {
         if (CharacterInputManager.Instance.showCodex)
         {
-            codexTransform.anchoredPosition = Vector2.Lerp(codexTransform.anchoredPosition,Vector2.zero, codexLerp);
+            codexTransform.anchoredPosition = Vector2.Lerp(codexTransform.anchoredPosition,aimedCodexPos, isNavigatingPages? codexLerp * 0.3f : codexLerp);
         }
         else
         {
             codexTransform.anchoredPosition = Vector2.Lerp(codexTransform.anchoredPosition, offset, codexLerp);
+            aimedCodexPos = Vector3.zero;
         }
 
-        
+        if (isNavigatingPages)
+        {
+            codexTransform.localScale = Vector2.Lerp(codexTransform.localScale, Vector2.one * 2, codexLerp);
+        }
+        else
+        {
+            codexTransform.localScale = Vector2.Lerp(codexTransform.localScale, Vector2.one, codexLerp);
+        }
     }
 
     void PageFlipped()
@@ -191,8 +215,32 @@ public class AutoFlip : Singleton<AutoFlip>
         FlipXPages(Mathf.CeilToInt(pageDiff * 0.5f), index <= ControledBook.currentPage);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="navType">false = global codex navigation, true = page navigation</param>
+    public void ChangeCodexNavigationType(bool navType)
+    {
+        isNavigatingPages = navType;
+        if (!isNavigatingPages)
+        {
+            aimedCodexPos = Vector3.zero;
+        }
+    }
+
+    private Vector2 proportions;
     public void PlayerInputFlipPages(Vector2 input)
     {
+        if (isNavigatingPages)
+        {
+            aimedCodexPos -= new Vector3(input.x * xCursorSpeed,input.y * yCursorSpeed,0);
+            aimedCodexPos.x = Mathf.Clamp(aimedCodexPos.x, -proportions.x,
+                proportions.x);
+            
+            aimedCodexPos.y = Mathf.Clamp(aimedCodexPos.y, -proportions.y,
+                proportions.y);
+            return;
+        }
         if (input.x > 0.5f)
         {
             FlipRightPage(PageFlipTime);
