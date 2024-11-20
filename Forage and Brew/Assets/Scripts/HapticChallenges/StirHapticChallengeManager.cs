@@ -22,7 +22,7 @@ public class StirHapticChallengeManager : MonoBehaviour
     [SerializeField] private Image gaugeImage;
     
     [Header("Camera")]
-    [SerializeField] private CameraPreset cauldronCameraPreset;
+    [SerializeField] private CameraPreset stirChallengeCameraPreset;
     [SerializeField] private float cauldronCameraTransitionTime = 0.5f;
     private CameraPreset _previousCameraPreset;
     
@@ -131,7 +131,7 @@ public class StirHapticChallengeManager : MonoBehaviour
         if (!CurrentCauldron) return;
         
         _previousCameraPreset = CameraController.instance.TargetCamSettings;
-        CameraController.instance.ApplyScriptableCamSettings(cauldronCameraPreset, cauldronCameraTransitionTime);
+        CameraController.instance.ApplyScriptableCamSettings(stirChallengeCameraPreset, cauldronCameraTransitionTime);
 
         transform.position = CurrentCauldron.transform.position + characterStirPosition;
         transform.rotation = Quaternion.Euler(characterStirRotation);

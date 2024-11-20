@@ -5,7 +5,6 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>
 {
     [SerializeField] private GameObject interactInputCanvasGameObject;
     [SerializeField] private GameObject buttonAGameObject;
-    [SerializeField] private GameObject buttonXGameObject;
     [SerializeField] private GameObject buttonYGameObject;
     [field: SerializeField] public Transform SpoonTransform { get; private set; }
 
@@ -21,7 +20,6 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>
     private void EnableInteract(bool areHandsFull)
     {
         buttonAGameObject.SetActive(areHandsFull);
-        buttonXGameObject.SetActive(!areHandsFull);
         buttonYGameObject.SetActive(!areHandsFull);
         
         interactInputCanvasGameObject.SetActive(true);
@@ -32,7 +30,6 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>
         if (isStillNear)
         {
             buttonAGameObject.SetActive(!buttonAGameObject.activeSelf);
-            buttonXGameObject.SetActive(!buttonXGameObject.activeSelf);
             buttonYGameObject.SetActive(!buttonYGameObject.activeSelf);
         }
         else
