@@ -14,10 +14,12 @@ public class StirHapticChallengeManager : MonoBehaviour
     
     [Header("UI")]
     [SerializeField] private GameObject stirChallengeGameObject;
+    [SerializeField] private GameObject visualIndicationGameObject;
     [SerializeField] private GameObject clockwiseArrowGameObject;
     [SerializeField] private Image clockwiseArrowImage;
     [SerializeField] private GameObject rotationMarkerGameObject;
     [SerializeField] private Image rotationMarkerImage;
+    [SerializeField] private Image gaugeImage;
     
     [Header("Camera")]
     [SerializeField] private CameraPreset cauldronCameraPreset;
@@ -136,6 +138,7 @@ public class StirHapticChallengeManager : MonoBehaviour
         _joystickInputDifferences.Clear();
         
         stirChallengeGameObject.SetActive(true);
+        gaugeImage.fillAmount = 0;
         
         StartPreview();
     }
@@ -227,6 +230,8 @@ public class StirHapticChallengeManager : MonoBehaviour
         _currentStirIndex++;
         _currentCheckIndex = 0;
         _lastJoystickInputValue = Vector2.zero;
+        
+        gaugeImage.fillAmount = (float)_currentStirIndex / _currentChallenge.StirDurations.Length;
             
         if (_currentStirIndex >= _currentChallenge.StirDurations.Length)
         {
@@ -262,14 +267,15 @@ public class StirHapticChallengeManager : MonoBehaviour
     
     private void StartWaitingForInputReset()
     {
+        gaugeImage.fillAmount = (float)(_currentStirIndex + 1) / _currentChallenge.StirDurations.Length;
         _isWaitingForInputReset = true;
-        stirChallengeGameObject.SetActive(false);
+        visualIndicationGameObject.SetActive(false);
     }
     
     private void StopWaitingForInputReset()
     {
         _isWaitingForInputReset = false;
-        stirChallengeGameObject.SetActive(true);
+        visualIndicationGameObject.SetActive(true);
         
         NextStirTurn();
     }
