@@ -548,7 +548,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""path"": ""<HID::PowerA NSW wired controller>/z"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Gamepad"",
                     ""action"": ""HapticChallengeJoystickHorizontalAxis"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -558,8 +558,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""id"": ""b8c336b3-3a11-4f7b-83f6-d956b9d32998"",
                     ""path"": ""<HID::PowerA NSW wired controller>/rz"",
                     ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
+                    ""processors"": ""Invert"",
+                    ""groups"": "";Gamepad"",
                     ""action"": ""HapticChallengeJoystickVerticalAxis"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

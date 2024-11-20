@@ -4,4 +4,5 @@ using UnityEngine;
 public class PotionListSo : ScriptableObject
 {
     [field: SerializeField] public PotionValuesSo[] Potions { get; private set; }
+    [field: SerializeField] public PotionValuesSo DefaultPotion { get; private set; }
 }

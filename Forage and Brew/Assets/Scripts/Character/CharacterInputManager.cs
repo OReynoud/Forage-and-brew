@@ -187,7 +187,7 @@ public class CharacterInputManager : MonoBehaviour
 
     private void HapticChallengeSecondOnPerformed(InputAction.CallbackContext obj)
     {
-        
+        StirHapticChallengeManager.Instance.StartStirChallenge();
     }
     
     private void HapticChallengeJoystickOnPerformed(InputAction.CallbackContext obj)

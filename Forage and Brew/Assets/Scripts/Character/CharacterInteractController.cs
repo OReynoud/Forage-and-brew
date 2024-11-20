@@ -141,7 +141,7 @@ public class CharacterInteractController : MonoBehaviour
             collectedIngredientStack[i].ingredient.startControl = collectedIngredientStack[i].ingredient.originControl + Vector3.up + new Vector3(Random.Range(-1f, 1f), Random.value, Random.Range(-1f, 1f));
             collectedIngredientStack[i].ingredient.endControl = Vector3.up + new Vector3(Random.Range(-1f, 1f), Random.value, Random.Range(-1f, 1f));
             collectedIngredientStack[i].ingredient.isPutInCauldron = true;
-            CauldronBehaviour.instance.Ingredients.Add(collectedIngredientStack[i].ingredient);
+            CauldronBehaviour.instance.Ingredients.Add(collectedIngredientStack[i].ingredient.IngredientValuesSo);
         }
         collectedIngredientStack.Clear();
         AreHandsFull = false;

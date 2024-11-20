@@ -57,7 +57,6 @@ public class CharacterMovementController : MonoBehaviour
             }
             else
             {
-                Debug.Log("Too steep");
                 angledVelocity = playerDir * (speed * accelerationCurve.Evaluate(accelerationCurveIndex) * playerDir.magnitude);
 
                 rb.linearVelocity = new Vector3(angledVelocity.x, rb.linearVelocity.y, angledVelocity.z);

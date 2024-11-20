@@ -3,16 +3,12 @@ using UnityEngine;
 
 public class CauldronBehaviour : Singleton<CauldronBehaviour>
 {
-    [SerializeField] private CameraPreset cauldronCameraPreset;
-    [SerializeField] private float cauldronCameraTransitionTime = 0.5f;
-    private CameraPreset _previousCameraPreset;
-    
     [SerializeField] private GameObject interactInputCanvasGameObject;
     [SerializeField] private GameObject buttonAGameObject;
     [SerializeField] private GameObject buttonXGameObject;
     [SerializeField] private GameObject buttonYGameObject;
 
-    public List<CollectedIngredientBehaviour> Ingredients { get; } = new();
+    public List<IngredientValuesSo> Ingredients { get; } = new();
 
     
     private void Start()
@@ -47,21 +43,23 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out CharacterInteractController characterInteractController))
+        if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
+            other.TryGetComponent(out StirHapticChallengeManager stirHapticChallengeManager))
         {
             characterInteractController.CurrentNearCauldron = this;
-            _previousCameraPreset = CameraController.instance.TargetCamSettings;
-            CameraController.instance.ApplyScriptableCamSettings(cauldronCameraPreset, cauldronCameraTransitionTime);
+            stirHapticChallengeManager.CurrentCauldron = this;
             EnableInteract(characterInteractController.AreHandsFull);
         }
     }
     
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out CharacterInteractController characterInteractController))
+        if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
+            other.TryGetComponent(out StirHapticChallengeManager stirHapticChallengeManager) &&
+            characterInteractController.CurrentNearCauldron == this)
         {
             characterInteractController.CurrentNearCauldron = null;
-            CameraController.instance.ApplyScriptableCamSettings(_previousCameraPreset, cauldronCameraTransitionTime);
+            stirHapticChallengeManager.CurrentCauldron = null;
             DisableInteract();
         }
     }
