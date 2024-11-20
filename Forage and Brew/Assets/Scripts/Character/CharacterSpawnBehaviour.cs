@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class CharacterSpawnBehaviour : MonoBehaviour
@@ -20,6 +21,7 @@ public class CharacterSpawnBehaviour : MonoBehaviour
                 if (sceneName.Name == SceneManager.GetActiveScene().name)
                 {
                     GameDontDestroyOnLoadManager.Instance.PreviousScene = sceneName.Scene;
+                    CharacterVfxManager.Instance.CheckForRainVfx(sceneName.Scene);
                     break;
                 }
             }

@@ -13,6 +13,9 @@ public class CharacterInputManager : MonoBehaviour
     [SerializeField] private CharacterInteractController characterInteractController;
     [SerializeField] private AutoFlip codexController;
     public UnityEvent OnCodexShow;
+
+    public UnityEvent<bool> OnNavigationChange;
+
     public bool showCodex;
 
 
@@ -61,13 +64,20 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.Codex.performed += CodexOnPerformed;
         _inputs.Player.BookMarkLeft.performed += BookMarkLeftOnPerformed;
         _inputs.Player.BookMarkRight.performed += BookMarkRightOnPerformed;
+        _inputs.Player.StartPageNavigation.performed += StartPageNavigationOnPerformed;
+        _inputs.Player.ExitPageNavigation.performed += ExitPageNavigationOnPerformed;
     }
+
+
+
     private void DisableCodexInputs()
     {
         _inputs.Player.Codex.Disable();
         _inputs.Player.Codex.performed -= CodexOnPerformed;
         _inputs.Player.BookMarkLeft.performed -= BookMarkLeftOnPerformed;
         _inputs.Player.BookMarkRight.performed -= BookMarkRightOnPerformed;
+        _inputs.Player.StartPageNavigation.performed -= StartPageNavigationOnPerformed;
+        _inputs.Player.ExitPageNavigation.performed -= ExitPageNavigationOnPerformed;
     }
 
     private void BookMarkRightOnPerformed(InputAction.CallbackContext obj)
@@ -87,9 +97,27 @@ public class CharacterInputManager : MonoBehaviour
     {
         movementController.Move(Vector2.zero);
         showCodex = !showCodex;
+
+        if (!showCodex)
+        {
+            OnNavigationChange.Invoke(false);
+        }
         
         if (OnCodexShow != null)
             OnCodexShow.Invoke();
+    }
+    private void ExitPageNavigationOnPerformed(InputAction.CallbackContext obj)
+    {
+        if (!showCodex)return;
+        if (OnNavigationChange != null)
+            OnNavigationChange.Invoke(false);
+    }
+
+    private void StartPageNavigationOnPerformed(InputAction.CallbackContext obj)
+    {
+        if (!showCodex)return;
+        if (OnCodexShow != null)
+            OnNavigationChange.Invoke(true);
     }
 
     public void EnableMoveInputs()

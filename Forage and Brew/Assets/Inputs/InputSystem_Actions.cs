@@ -46,6 +46,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""StartPageNavigation"",
+                    ""type"": ""Button"",
+                    ""id"": ""65a3e502-1f69-4d8c-922b-6dcf82ea299a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""HapticChallenge"",
                     ""type"": ""Button"",
                     ""id"": ""e7ab67af-0c8f-419b-8411-4ca88fa1feb1"",
@@ -139,6 +148,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""name"": ""Cancel"",
                     ""type"": ""Button"",
                     ""id"": ""0b61c09d-6b48-457f-accc-3d78878e3c8e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ExitPageNavigation"",
+                    ""type"": ""Button"",
+                    ""id"": ""e329b180-c82a-41b8-a669-0b394bd50036"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -357,6 +375,39 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""1dd190c6-d5d9-4456-89f0-6673a675043a"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""StartPageNavigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""13cf0867-15f9-4a2f-9c48-ab4036138b9c"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""StartPageNavigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""01ec2cbd-805b-4688-be08-dcfe4bb58f2c"",
+                    ""path"": ""<HID::PowerA NSW wired controller>/button3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""StartPageNavigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""7a1ecd98-51b7-4e89-8b07-f58654c818e0"",
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
@@ -528,6 +579,39 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3a9828e3-f6d9-493a-b2a1-7b49edf9c947"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExitPageNavigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""da42467b-6ad9-4dd9-a4a3-6f048bc47a9e"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExitPageNavigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ca5e5577-c337-4b3d-8094-968ef1229eff"",
+                    ""path"": ""<HID::PowerA NSW wired controller>/button2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ExitPageNavigation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1150,6 +1234,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
+        m_Player_StartPageNavigation = m_Player.FindAction("StartPageNavigation", throwIfNotFound: true);
         m_Player_HapticChallenge = m_Player.FindAction("HapticChallenge", throwIfNotFound: true);
         m_Player_HapticChallengeSecond = m_Player.FindAction("HapticChallengeSecond", throwIfNotFound: true);
         m_Player_HapticChallengeJoystick = m_Player.FindAction("HapticChallengeJoystick", throwIfNotFound: true);
@@ -1161,6 +1246,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_BookMarkRight = m_Player.FindAction("BookMarkRight", throwIfNotFound: true);
         m_Player_BookMarkLeft = m_Player.FindAction("BookMarkLeft", throwIfNotFound: true);
         m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
+        m_Player_ExitPageNavigation = m_Player.FindAction("ExitPageNavigation", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1242,6 +1328,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Interact;
+    private readonly InputAction m_Player_StartPageNavigation;
     private readonly InputAction m_Player_HapticChallenge;
     private readonly InputAction m_Player_HapticChallengeSecond;
     private readonly InputAction m_Player_HapticChallengeJoystick;
@@ -1253,12 +1340,14 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_BookMarkRight;
     private readonly InputAction m_Player_BookMarkLeft;
     private readonly InputAction m_Player_Cancel;
+    private readonly InputAction m_Player_ExitPageNavigation;
     public struct PlayerActions
     {
         private @InputSystem_Actions m_Wrapper;
         public PlayerActions(@InputSystem_Actions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
+        public InputAction @StartPageNavigation => m_Wrapper.m_Player_StartPageNavigation;
         public InputAction @HapticChallenge => m_Wrapper.m_Player_HapticChallenge;
         public InputAction @HapticChallengeSecond => m_Wrapper.m_Player_HapticChallengeSecond;
         public InputAction @HapticChallengeJoystick => m_Wrapper.m_Player_HapticChallengeJoystick;
@@ -1270,6 +1359,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @BookMarkRight => m_Wrapper.m_Player_BookMarkRight;
         public InputAction @BookMarkLeft => m_Wrapper.m_Player_BookMarkLeft;
         public InputAction @Cancel => m_Wrapper.m_Player_Cancel;
+        public InputAction @ExitPageNavigation => m_Wrapper.m_Player_ExitPageNavigation;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1285,6 +1375,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @StartPageNavigation.started += instance.OnStartPageNavigation;
+            @StartPageNavigation.performed += instance.OnStartPageNavigation;
+            @StartPageNavigation.canceled += instance.OnStartPageNavigation;
             @HapticChallenge.started += instance.OnHapticChallenge;
             @HapticChallenge.performed += instance.OnHapticChallenge;
             @HapticChallenge.canceled += instance.OnHapticChallenge;
@@ -1318,6 +1411,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Cancel.started += instance.OnCancel;
             @Cancel.performed += instance.OnCancel;
             @Cancel.canceled += instance.OnCancel;
+            @ExitPageNavigation.started += instance.OnExitPageNavigation;
+            @ExitPageNavigation.performed += instance.OnExitPageNavigation;
+            @ExitPageNavigation.canceled += instance.OnExitPageNavigation;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1328,6 +1424,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @StartPageNavigation.started -= instance.OnStartPageNavigation;
+            @StartPageNavigation.performed -= instance.OnStartPageNavigation;
+            @StartPageNavigation.canceled -= instance.OnStartPageNavigation;
             @HapticChallenge.started -= instance.OnHapticChallenge;
             @HapticChallenge.performed -= instance.OnHapticChallenge;
             @HapticChallenge.canceled -= instance.OnHapticChallenge;
@@ -1361,6 +1460,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Cancel.started -= instance.OnCancel;
             @Cancel.performed -= instance.OnCancel;
             @Cancel.canceled -= instance.OnCancel;
+            @ExitPageNavigation.started -= instance.OnExitPageNavigation;
+            @ExitPageNavigation.performed -= instance.OnExitPageNavigation;
+            @ExitPageNavigation.canceled -= instance.OnExitPageNavigation;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1545,6 +1647,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnStartPageNavigation(InputAction.CallbackContext context);
         void OnHapticChallenge(InputAction.CallbackContext context);
         void OnHapticChallengeSecond(InputAction.CallbackContext context);
         void OnHapticChallengeJoystick(InputAction.CallbackContext context);
@@ -1556,6 +1659,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnBookMarkRight(InputAction.CallbackContext context);
         void OnBookMarkLeft(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
+        void OnExitPageNavigation(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
