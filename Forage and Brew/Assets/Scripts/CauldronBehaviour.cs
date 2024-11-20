@@ -7,6 +7,7 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>
     [SerializeField] private GameObject buttonAGameObject;
     [SerializeField] private GameObject buttonXGameObject;
     [SerializeField] private GameObject buttonYGameObject;
+    [field: SerializeField] public Transform SpoonTransform { get; private set; }
 
     public List<IngredientValuesSo> Ingredients { get; } = new();
 

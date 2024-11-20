@@ -295,8 +295,12 @@ public class StirHapticChallengeManager : MonoBehaviour
         
         _lastJoystickInputValue = JoystickInputValue;
         
-        _joystickInputDifferences.Add(Mathf.Abs(Vector2.Angle(Vector2.down, JoystickInputValue) -
-                                                rotationMarkerGameObject.transform.localEulerAngles.z));
+        float joystickInputAngle = -Vector2.SignedAngle(Vector2.down, JoystickInputValue);
+        
+        CurrentCauldron.SpoonTransform.localRotation = Quaternion.Euler(0, joystickInputAngle, 0);
+        
+        _joystickInputDifferences.Add(Mathf.Abs(rotationMarkerGameObject.transform.localEulerAngles.z -
+                                                joystickInputAngle));
         
         return true;
     }
