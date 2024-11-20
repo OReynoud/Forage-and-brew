@@ -272,6 +272,7 @@ public class StirHapticChallengeManager : MonoBehaviour
         _currentChallenge = null;
         
         CameraController.instance.ApplyScriptableCamSettings(_previousCameraPreset, cauldronCameraTransitionTime);
+        CharacterInputManager.Instance.EnableInputs();
     }
     
     private void StartWaitingForInputReset()
