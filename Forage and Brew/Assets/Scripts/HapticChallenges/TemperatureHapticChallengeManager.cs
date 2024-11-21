@@ -73,7 +73,6 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
 
         transform.position = CurrentBellows.transform.position + CurrentBellows.transform.rotation * characterBlowPosition;
         transform.rotation = CurrentBellows.transform.rotation * Quaternion.Euler(characterBlowRotation);
-        Debug.Log("Character rotation: " + transform.rotation.eulerAngles);
         CharacterInputManager.Instance.DisableInputs();
         CharacterInputManager.Instance.EnableHapticChallengeJoystickInputs();
         
