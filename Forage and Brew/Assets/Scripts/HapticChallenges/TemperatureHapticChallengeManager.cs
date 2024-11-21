@@ -119,6 +119,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
                 temperatureHapticChallengeGlobalValuesSo.HeatIncreaseDuration);
             gaugeArrowRectTransform.anchoredPosition = new Vector2(gaugeArrowRectTransform.anchoredPosition.x,
                 gaugeImage.fillAmount * gaugeRectTransform.rect.height);
+            UpdateCurrentTemperatureAndMaintenanceTime();
             return;
         }
         
