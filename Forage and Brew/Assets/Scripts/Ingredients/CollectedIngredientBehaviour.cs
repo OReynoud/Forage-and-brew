@@ -80,7 +80,7 @@ public class CollectedIngredientBehaviour : MonoBehaviour
         startControl = originControl + Vector3.up + new Vector3(Random.Range(-1f, 1f), Random.value, Random.Range(-1f, 1f));
         endControl = Vector3.up + new Vector3(Random.Range(-1f, 1f), Random.value, Random.Range(-1f, 1f));
         isPutInCauldron = true;
-        CauldronBehaviour.instance.Ingredients.Add(IngredientValuesSo);
+        CauldronBehaviour.instance.AddIngredient(this);
     }
 
     #region Trigger

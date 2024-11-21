@@ -223,6 +223,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
         CharacterInputManager.Instance.EnableInputs();
         CurrentBellows.EnableInteract();
         
+        CauldronBehaviour.instance.AddTemperature(_currentTemperature);
         startTemperature = _currentTemperature;
         _isChallengeActive = false;
         temperatureChallengeGameObject.SetActive(false);

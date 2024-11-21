@@ -13,6 +13,7 @@ public enum TimeOfDay
 
 public enum Temperature
 {
+    None,
     LowHeat,
     MediumHeat,
     HighHeat

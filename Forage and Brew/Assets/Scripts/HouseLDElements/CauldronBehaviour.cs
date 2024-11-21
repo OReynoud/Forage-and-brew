@@ -8,7 +8,7 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>
     [SerializeField] private GameObject buttonYGameObject;
     [field: SerializeField] public Transform SpoonTransform { get; private set; }
 
-    public List<IngredientValuesSo> Ingredients { get; } = new();
+    public List<TemperatureChallengeIngredients> TemperatureAndIngredients { get; } = new();
 
     
     private void Start()
@@ -35,6 +35,36 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>
         else
         {
             interactInputCanvasGameObject.SetActive(false);
+        }
+    }
+    
+    
+    public void AddIngredient(CollectedIngredientBehaviour collectedIngredientBehaviour)
+    {
+        if (TemperatureAndIngredients.Count == 0 || TemperatureAndIngredients[^1].Temperature != Temperature.None)
+        {
+            TemperatureAndIngredients.Add(new TemperatureChallengeIngredients(
+                new List<CookedIngredientForm>(),
+                Temperature.None));
+        }
+        
+        TemperatureAndIngredients[^1].CookedIngredients.Add(new CookedIngredientForm(
+            collectedIngredientBehaviour.IngredientValuesSo, null));
+    }
+    
+    public void AddTemperature(Temperature temperature)
+    {
+        if (TemperatureAndIngredients.Count == 0)
+        {
+            TemperatureAndIngredients.Add(new TemperatureChallengeIngredients(
+                new List<CookedIngredientForm>(),
+                temperature));
+        }
+        else
+        {
+            TemperatureAndIngredients[^1] = new TemperatureChallengeIngredients(
+                TemperatureAndIngredients[^1].CookedIngredients,
+                temperature);
         }
     }
     
