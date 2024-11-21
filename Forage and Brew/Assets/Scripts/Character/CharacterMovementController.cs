@@ -1,24 +1,28 @@
 using System;
+using NaughtyAttributes;
 using UnityEngine;
 
 public class CharacterMovementController : MonoBehaviour
 {
-    private Vector3 playerDir;
-    public Rigidbody rb;
     public float speed;
     [Range(0,1)]public float rotationSpeed = 0.1f;
     public float maxAngle;
     public AnimationCurve accelerationCurve;
-    public float accelerationCurveIndex;
-    [Range(1,10)]public float brakeIntensity = 1;
 
-    public bool isGrounded;
+    [Foldout("Debug")] [ReadOnly] private Vector3 playerDir;
+    [Foldout("Debug")] [ReadOnly]  public float accelerationCurveIndex;
+    [Foldout("Debug")] [ReadOnly] public bool isGrounded;
+    [Foldout("Debug")] [ReadOnly] public bool isMoving;
+    
+    
+    private Rigidbody rb;
 
-    public bool isMoving;
+    private LayerMask groundMask;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        groundMask = LayerMask.GetMask("Default");
     }
 
     public void Move(Vector2 inputDir)
@@ -36,13 +40,32 @@ public class CharacterMovementController : MonoBehaviour
     private float angle;
     void Update()
     {
-        isGrounded = GroundCheck(out RaycastHit hit);
+        isGrounded = GroundCheck();
+        PlayerMovement();
+    }
+
+    
+    void FixedUpdate()
+    {
+        if (isMoving)
+            RotatePlayer();
+    }
+
+    bool GroundCheck()
+    {
+        bool check = Physics.Raycast(transform.position + Vector3.up * 0.6f, Vector3.down, 0.7f, groundMask);
+        
+        return check;
+    }
+    
+    void PlayerMovement()
+    {
         angledVelocity = playerDir;
-        if (Physics.Raycast(transform.position , transform.forward, out RaycastHit hitForward, 0.7f, LayerMask.GetMask("Default")))
+        if (Physics.Raycast(transform.position , transform.forward, out RaycastHit hitForward, 0.7f, groundMask))
         {
             angle = Vector3.Angle(hitForward.normal, transform.forward) - 90;
         }
-        else if (Physics.Raycast(transform.position , -transform.forward, out RaycastHit hitBack, 1f, LayerMask.GetMask("Default")))
+        else if (Physics.Raycast(transform.position , -transform.forward, out RaycastHit hitBack, 1f, groundMask))
         {
             angle = Vector3.Angle(hitBack.normal, transform.forward) - 90;
         }
@@ -82,20 +105,6 @@ public class CharacterMovementController : MonoBehaviour
             accelerationCurveIndex = 0;
             isMoving = false;
         }
-
-
-    }
-
-    bool GroundCheck(out RaycastHit hit)
-    {
-        bool check = Physics.Raycast(transform.position + Vector3.up * 0.6f, Vector3.down, out hit, 0.7f, LayerMask.GetMask("Default"));
-        
-        return check;
-    }
-    void FixedUpdate()
-    {
-        if (isMoving)
-            RotatePlayer();
     }
 
 

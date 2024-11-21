@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -9,14 +10,16 @@ public class CharacterInputManager : MonoBehaviour
 
     private InputSystem_Actions _inputs;
 
-    [SerializeField] private CharacterMovementController movementController;
-    [SerializeField] private CharacterInteractController characterInteractController;
-    [SerializeField] private AutoFlip codexController;
-    public UnityEvent OnCodexShow;
+    private CharacterMovementController movementController;
+    private CharacterInteractController characterInteractController;
+    private AutoFlip codexController;
 
-    public UnityEvent<bool> OnNavigationChange;
+    public UnityEvent OnCodexShow { get; set; } = new();
+    public UnityEvent<bool> OnNavigationChange { get; set; } = new();
+    
+    
 
-    public bool showCodex;
+    [BoxGroup("Debug")]public bool showCodex;
 
 
     #region Unity Callbacks
@@ -30,6 +33,8 @@ public class CharacterInputManager : MonoBehaviour
     {
         _inputs = new InputSystem_Actions();
         EnableInputs();
+        movementController = GetComponent<CharacterMovementController>();
+        characterInteractController = GetComponent<CharacterInteractController>();
         codexController = AutoFlip.instance;
     }
 
