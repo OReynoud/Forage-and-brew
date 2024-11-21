@@ -138,6 +138,8 @@ public class StirHapticChallengeManager : MonoBehaviour
         CharacterInputManager.Instance.DisableInputs();
         CharacterInputManager.Instance.EnableHapticChallengeJoystickInputs();
         
+        CurrentCauldron.DisableInteract();
+        
         PickRightPotion();
         _currentChallenge = _currentPotion.StirHapticChallenge;
         _currentStirTime = 0;
@@ -273,6 +275,7 @@ public class StirHapticChallengeManager : MonoBehaviour
         
         CameraController.instance.ApplyScriptableCamSettings(_previousCameraPreset, cauldronCameraTransitionTime);
         CharacterInputManager.Instance.EnableInputs();
+        CurrentCauldron.EnableInteract(false);
     }
     
     private void StartWaitingForInputReset()

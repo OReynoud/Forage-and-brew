@@ -17,7 +17,7 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>
     }
 
 
-    private void EnableInteract(bool areHandsFull)
+    public void EnableInteract(bool areHandsFull)
     {
         buttonAGameObject.SetActive(areHandsFull);
         buttonYGameObject.SetActive(!areHandsFull);

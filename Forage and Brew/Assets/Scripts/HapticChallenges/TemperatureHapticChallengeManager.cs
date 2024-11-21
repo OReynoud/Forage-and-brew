@@ -76,6 +76,8 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
         CharacterInputManager.Instance.DisableInputs();
         CharacterInputManager.Instance.EnableHapticChallengeJoystickInputs();
         
+        CurrentBellows.DisableInteract();
+        
         _isChallengeActive = true;
         _currentBlowTime = 0f;
         _temperatureMaintenanceTime = 0f;
@@ -219,6 +221,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
     {
         CameraController.instance.ApplyScriptableCamSettings(_previousCameraPreset, cauldronCameraTransitionTime);
         CharacterInputManager.Instance.EnableInputs();
+        CurrentBellows.EnableInteract();
         
         startTemperature = _currentTemperature;
         _isChallengeActive = false;
