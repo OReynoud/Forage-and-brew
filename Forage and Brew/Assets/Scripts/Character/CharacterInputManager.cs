@@ -13,9 +13,9 @@ public class CharacterInputManager : MonoBehaviour
     private CharacterMovementController movementController;
     private CharacterInteractController characterInteractController;
     private AutoFlip codexController;
-    
-    public UnityEvent OnCodexShow { get; set; }
-    public UnityEvent<bool> OnNavigationChange { get; set; }
+
+    public UnityEvent OnCodexShow { get; set; } = new();
+    public UnityEvent<bool> OnNavigationChange { get; set; } = new();
     
     
 
