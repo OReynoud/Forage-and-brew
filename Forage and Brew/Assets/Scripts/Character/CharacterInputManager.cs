@@ -220,6 +220,7 @@ public class CharacterInputManager : MonoBehaviour
     private void HapticChallengeOnPerformed(InputAction.CallbackContext obj)
     {
         CollectHapticChallengeManager.Instance.StopCollectHapticChallenge();
+        TemperatureHapticChallengeManager.Instance.StartTemperatureChallenge();
     }
 
     private void HapticChallengeSecondOnPerformed(InputAction.CallbackContext obj)
@@ -230,15 +231,18 @@ public class CharacterInputManager : MonoBehaviour
     private void HapticChallengeJoystickOnPerformed(InputAction.CallbackContext obj)
     {
         StirHapticChallengeManager.Instance.JoystickInputValue = obj.ReadValue<Vector2>();
+        TemperatureHapticChallengeManager.Instance.JoystickInputValue = obj.ReadValue<Vector2>();
     }
     
     private void HapticChallengeJoystickHorizontalAxisOnPerformed(InputAction.CallbackContext obj)
     {
         StirHapticChallengeManager.Instance.JoystickInputValue = new Vector2(obj.ReadValue<float>(), StirHapticChallengeManager.Instance.JoystickInputValue.y);
+        TemperatureHapticChallengeManager.Instance.JoystickInputValue = new Vector2(obj.ReadValue<float>(), TemperatureHapticChallengeManager.Instance.JoystickInputValue.y);
     }
     
     private void HapticChallengeJoystickVerticalAxisOnPerformed(InputAction.CallbackContext obj)
     {
         StirHapticChallengeManager.Instance.JoystickInputValue = new Vector2(StirHapticChallengeManager.Instance.JoystickInputValue.x, obj.ReadValue<float>());
+        TemperatureHapticChallengeManager.Instance.JoystickInputValue = new Vector2(TemperatureHapticChallengeManager.Instance.JoystickInputValue.x, obj.ReadValue<float>());
     }
 }

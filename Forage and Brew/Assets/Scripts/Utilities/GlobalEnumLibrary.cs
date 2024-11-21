@@ -10,3 +10,10 @@ public enum TimeOfDay
     Daytime,
     Nighttime
 }
+
+public enum Temperature
+{
+    LowHeat,
+    MediumHeat,
+    HighHeat
+}

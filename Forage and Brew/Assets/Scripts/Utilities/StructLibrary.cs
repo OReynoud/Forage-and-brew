@@ -44,8 +44,8 @@ public struct CookedIngredientForm
 }
 
 [Serializable]
-public struct CauldronHapticChallengeIngredients
+public struct TemperatureChallengeIngredients
 {
     [field: SerializeField] public List<CookedIngredientForm> CookedIngredients { get; private set; }
-    [field: SerializeField] public CauldronHapticChallengeSo CauldronHapticChallengeSo { get; private set; }
+    [field: SerializeField] public Temperature Temperature { get; private set; }
 }

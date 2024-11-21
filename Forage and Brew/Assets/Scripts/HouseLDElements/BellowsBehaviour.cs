@@ -24,23 +24,19 @@ public class BellowsBehaviour : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
-            other.TryGetComponent(out StirHapticChallengeManager stirHapticChallengeManager))
+        if (other.TryGetComponent(out TemperatureHapticChallengeManager temperatureHapticChallengeManager))
         {
-            // characterInteractController.CurrentNearCauldron = this;
-            // stirHapticChallengeManager.CurrentCauldron = this;
+            temperatureHapticChallengeManager.CurrentBellows = this;
             EnableInteract();
         }
     }
     
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
-            other.TryGetComponent(out StirHapticChallengeManager stirHapticChallengeManager) /*&&
-            characterInteractController.CurrentNearCauldron == this*/)
+        if (other.TryGetComponent(out TemperatureHapticChallengeManager temperatureHapticChallengeManager) &&
+            temperatureHapticChallengeManager.CurrentBellows == this)
         {
-            // characterInteractController.CurrentNearCauldron = null;
-            // stirHapticChallengeManager.CurrentCauldron = null;
+            temperatureHapticChallengeManager.CurrentBellows = null;
             DisableInteract();
         }
     }

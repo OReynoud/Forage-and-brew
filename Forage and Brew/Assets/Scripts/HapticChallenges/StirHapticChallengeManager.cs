@@ -78,7 +78,7 @@ public class StirHapticChallengeManager : MonoBehaviour
                 cauldronIngredients.Add(ingredient);
             }
             
-            foreach (CookedIngredientForm cookedIngredientForm in potion.CauldronHapticChallengeIngredients[0].CookedIngredients)
+            foreach (CookedIngredientForm cookedIngredientForm in potion.TemperatureChallengeIngredients[0].CookedIngredients)
             {
                 if (cookedIngredientForm.IsAType)
                 {
