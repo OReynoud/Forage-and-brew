@@ -71,3 +71,17 @@ public struct TemperatureChallengeIngredients
     [field: SerializeField] public List<CookedIngredientForm> CookedIngredients { get; private set; }
     [field: SerializeField] public Temperature Temperature { get; private set; }
 }
+
+[Serializable]
+public struct HapticChallengeMovementDirectionRectTransform
+{
+    [field: SerializeField] public HapticChallengeMovementDirection HapticChallengeMovementDirection { get; private set; }
+    [field: SerializeField] public RectTransform RectTransform { get; private set; }
+}
+
+[Serializable]
+public struct HapticChallengeMovementDirectionProbability
+{
+    [field: SerializeField] public HapticChallengeMovementDirection HapticChallengeMovementDirection { get; private set; }
+    [field: SerializeField] [field: Range(0f, 1f)] public float Probability { get; private set; }
+}

@@ -18,3 +18,13 @@ public enum Temperature
     MediumHeat,
     HighHeat
 }
+
+public enum HapticChallengeMovementDirection
+{
+    UpDown,
+    LeftRight,
+    UpLeftDownRight,
+    UpRightDownLeft,
+    Clockwise,
+    CounterClockwise
+}

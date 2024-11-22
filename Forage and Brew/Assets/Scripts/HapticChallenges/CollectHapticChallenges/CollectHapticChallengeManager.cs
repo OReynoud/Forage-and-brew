@@ -17,14 +17,15 @@ public class CollectHapticChallengeManager : MonoBehaviour
     [SerializeField] private RectTransform perfectGaugeRectTransform;
     [SerializeField] private RectTransform gaugeArrowRectTransform;
     
+    // Global variables
+    private bool _isCollectHapticChallengeActive;
+    private IngredientToCollectBehaviour _currentIngredientToCollectBehaviour;
+    public Vector2 JoystickInputValue { get; set; }
+    
     // Gauge Haptic Challenge
     private GaugeHapticChallengeSo _currentGaugeHapticChallengeSo;
     private bool _isGaugeHapticChallengeActive;
     private bool _isGaugeHapticChallengeGoingUp;
-    
-    // Global variables
-    private bool _isCollectHapticChallengeActive;
-    private IngredientToCollectBehaviour _currentIngredientToCollectBehaviour;
     
     
     private void Awake()
