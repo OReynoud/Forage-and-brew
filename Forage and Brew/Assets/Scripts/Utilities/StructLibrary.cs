@@ -37,6 +37,22 @@ public struct WeatherStateEndProbability
 [Serializable]
 public struct CookedIngredientForm
 {
+    public CookedIngredientForm(IngredientValuesSo ingredient, CookHapticChallengeSo cookedForm)
+    {
+        IsAType = false;
+        Ingredient = ingredient;
+        IngredientType = default;
+        CookedForm = cookedForm;
+    }
+    
+    public CookedIngredientForm(IngredientType ingredientType, CookHapticChallengeSo cookedForm)
+    {
+        IsAType = true;
+        Ingredient = default;
+        IngredientType = ingredientType;
+        CookedForm = cookedForm;
+    }
+    
     [field: SerializeField] public bool IsAType { get; private set; }
     [field: AllowNesting] [field: HideIf("IsAType")] [field: SerializeField] public IngredientValuesSo Ingredient { get; private set; }
     [field: AllowNesting] [field: ShowIf("IsAType")] [field: SerializeField] public IngredientType IngredientType { get; private set; }
@@ -46,6 +62,12 @@ public struct CookedIngredientForm
 [Serializable]
 public struct TemperatureChallengeIngredients
 {
+    public TemperatureChallengeIngredients(List<CookedIngredientForm> cookedIngredients, Temperature temperature)
+    {
+        CookedIngredients = cookedIngredients;
+        Temperature = temperature;
+    }
+    
     [field: SerializeField] public List<CookedIngredientForm> CookedIngredients { get; private set; }
     [field: SerializeField] public Temperature Temperature { get; private set; }
 }

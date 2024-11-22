@@ -11,12 +11,12 @@ public class BellowsBehaviour : MonoBehaviour
     }
 
 
-    private void EnableInteract()
+    public void EnableInteract()
     {
         interactInputCanvasGameObject.SetActive(true);
     }
     
-    private void DisableInteract()
+    public void DisableInteract()
     {
         interactInputCanvasGameObject.SetActive(false);
     }
