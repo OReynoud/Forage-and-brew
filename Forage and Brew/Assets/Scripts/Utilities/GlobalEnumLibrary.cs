@@ -24,7 +24,5 @@ public enum HapticChallengeMovementDirection
     UpDown,
     LeftRight,
     UpLeftDownRight,
-    UpRightDownLeft,
-    Clockwise,
-    CounterClockwise
+    UpRightDownLeft
 }

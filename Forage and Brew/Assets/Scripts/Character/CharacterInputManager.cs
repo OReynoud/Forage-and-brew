@@ -224,7 +224,7 @@ public class CharacterInputManager : MonoBehaviour
 
     private void HapticChallengeOnPerformed(InputAction.CallbackContext obj)
     {
-        CollectHapticChallengeManager.Instance.StopCollectHapticChallenge();
+        CollectHapticChallengeManager.Instance.StopGaugeHapticChallenge();
         TemperatureHapticChallengeManager.Instance.StartTemperatureChallenge();
     }
 

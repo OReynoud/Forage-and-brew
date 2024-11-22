@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class CollectHapticChallengeManager : MonoBehaviour
@@ -16,16 +18,29 @@ public class CollectHapticChallengeManager : MonoBehaviour
     [SerializeField] private RectTransform correctGaugeRectTransform;
     [SerializeField] private RectTransform perfectGaugeRectTransform;
     [SerializeField] private RectTransform gaugeArrowRectTransform;
+
+    [Header("Unearthing Haptic Challenge UI")]
+    [SerializeField] private GameObject unearthingHapticChallengeGameObject;
+    [SerializeField] private List<HapticChallengeMovementDirectionRectTransform> unearthingHapticChallengeRectTransforms;
+    [SerializeField] private Image unearthingHapticChallengeGaugeImage;
     
     // Global variables
     private bool _isCollectHapticChallengeActive;
     private IngredientToCollectBehaviour _currentIngredientToCollectBehaviour;
     public Vector2 JoystickInputValue { get; set; }
+    private Vector2 _lastJoystickInputValue;
     
     // Gauge Haptic Challenge
     private GaugeHapticChallengeSo _currentGaugeHapticChallengeSo;
     private bool _isGaugeHapticChallengeActive;
     private bool _isGaugeHapticChallengeGoingUp;
+    
+    // Unearthing Haptic Challenge
+    private UnearthingHapticChallengeSo _currentUnearthingHapticChallengeSo;
+    private bool _isUnearthingHapticChallengeActive;
+    private int _currentUnearthingHapticChallengeIndex;
+    private float _currentUnearthingHapticChallengeTime;
+    private bool _hasMovementDirectionBeenTriggeredOnce;
     
     
     private void Awake()
@@ -44,6 +59,11 @@ public class CollectHapticChallengeManager : MonoBehaviour
         {
             UpdateGaugeHapticChallenge();
         }
+        
+        if (_isUnearthingHapticChallengeActive)
+        {
+            UpdateUnearthingHapticChallenge();
+        }
     }
 
 
@@ -61,21 +81,26 @@ public class CollectHapticChallengeManager : MonoBehaviour
                     StartGaugeHapticChallenge();
                 }
                 
+                if (ingredientTypeHapticChallenge.CollectHapticChallengeSo is UnearthingHapticChallengeSo unearthingHapticChallengeSo)
+                {
+                    _currentUnearthingHapticChallengeSo = unearthingHapticChallengeSo;
+                    StartUnearthingHapticChallenge();
+                }
+                
                 return;
             }
         }
     }
 
-    public void StopCollectHapticChallenge()
+    private void StopCollectHapticChallenge()
     {
-        if (_isGaugeHapticChallengeActive)
-        {
-            StopGaugeHapticChallenge();
-        }
-        
+        _isCollectHapticChallengeActive = false;
+        _currentIngredientToCollectBehaviour.Collect();
+        _currentIngredientToCollectBehaviour = null;
         CharacterInputManager.Instance.EnableMoveInputs();
     }
 
+    
     private void StartGaugeHapticChallenge()
     {
         gaugeHapticChallengeGameObject.SetActive(true);
@@ -87,13 +112,13 @@ public class CollectHapticChallengeManager : MonoBehaviour
         _isCollectHapticChallengeActive = true;
     }
 
-    private void StopGaugeHapticChallenge()
+    public void StopGaugeHapticChallenge()
     {
+        if (!_isGaugeHapticChallengeActive) return;
+        
         gaugeHapticChallengeGameObject.SetActive(false);
         _isGaugeHapticChallengeActive = false;
-        _isCollectHapticChallengeActive = false;
-        _currentIngredientToCollectBehaviour.Collect();
-        _currentIngredientToCollectBehaviour = null;
+        StopCollectHapticChallenge();
     }
     
     private void UpdateGaugeHapticChallenge()
@@ -115,13 +140,153 @@ public class CollectHapticChallengeManager : MonoBehaviour
             }
         }
     }
+    
+    
+    private void StartUnearthingHapticChallenge()
+    {
+        unearthingHapticChallengeGameObject.SetActive(true);
+        _isUnearthingHapticChallengeActive = true;
+        _isCollectHapticChallengeActive = true;
+        _currentUnearthingHapticChallengeTime = 0f;
+        _hasMovementDirectionBeenTriggeredOnce = false;
+
+        foreach (HapticChallengeMovementDirectionRectTransform unearthingHapticChallengeRectTransform in unearthingHapticChallengeRectTransforms)
+        {
+            unearthingHapticChallengeRectTransform.RectTransform.gameObject.SetActive(false);
+        }
+        
+        PickRandomMovementDirectionUnearthingChallenge(true);
+        unearthingHapticChallengeRectTransforms[_currentUnearthingHapticChallengeIndex].RectTransform.gameObject.SetActive(true);
+    }
+    
+    public void StopUnearthingHapticChallenge()
+    {
+        if (!_isUnearthingHapticChallengeActive) return;
+        
+        unearthingHapticChallengeGameObject.SetActive(false);
+        _isUnearthingHapticChallengeActive = false;
+        StopCollectHapticChallenge();
+    }
+    
+    private void UpdateUnearthingHapticChallenge()
+    {
+        if (CheckInputUnearthingChallenge()) return;
+        
+        _currentUnearthingHapticChallengeTime += Time.deltaTime;
+        
+        if (_currentUnearthingHapticChallengeTime >= _currentUnearthingHapticChallengeSo.MovementDirectionDuration)
+        {
+            ChangeMovementDirectionUnearthingChallenge();
+            _currentUnearthingHapticChallengeTime = 0f;
+        }
+    }
+    
+    private void PickRandomMovementDirectionUnearthingChallenge(bool isFirstTime = false)
+    {
+        int previousIndex = _currentUnearthingHapticChallengeIndex;
+        
+        _currentUnearthingHapticChallengeIndex = Random.Range(0, unearthingHapticChallengeRectTransforms.Count -
+                                                                 (isFirstTime ? 0 : 1));
+        
+        if (!isFirstTime && _currentUnearthingHapticChallengeIndex >= previousIndex)
+        {
+            _currentUnearthingHapticChallengeIndex++;
+        }
+    }
+    
+    private void ChangeMovementDirectionUnearthingChallenge()
+    {
+        _hasMovementDirectionBeenTriggeredOnce = false;
+        unearthingHapticChallengeRectTransforms[_currentUnearthingHapticChallengeIndex].RectTransform.gameObject.SetActive(false);
+        PickRandomMovementDirectionUnearthingChallenge();
+        unearthingHapticChallengeRectTransforms[_currentUnearthingHapticChallengeIndex].RectTransform.gameObject.SetActive(true);
+    }
+    
+    private bool CheckInputUnearthingChallenge()
+    {
+        switch (unearthingHapticChallengeRectTransforms[_currentUnearthingHapticChallengeIndex].HapticChallengeMovementDirection)
+        {
+            case HapticChallengeMovementDirection.LeftRight:
+                ProcessInputUnearthingChallenge(Vector2.left, Vector2.right, _currentUnearthingHapticChallengeSo.CardinalMovementDirectionTolerance);
+                break;
+            case HapticChallengeMovementDirection.UpDown:
+                ProcessInputUnearthingChallenge(Vector2.up, Vector2.down, _currentUnearthingHapticChallengeSo.CardinalMovementDirectionTolerance);
+                break;
+            case HapticChallengeMovementDirection.UpLeftDownRight:
+                ProcessInputUnearthingChallenge((Vector2.up + Vector2.left).normalized, (Vector2.down + Vector2.right).normalized,
+                    _currentUnearthingHapticChallengeSo.DiagonalMovementDirectionTolerance);
+                break;
+            case HapticChallengeMovementDirection.UpRightDownLeft:
+                ProcessInputUnearthingChallenge((Vector2.up + Vector2.right).normalized, (Vector2.down + Vector2.left).normalized,
+                    _currentUnearthingHapticChallengeSo.DiagonalMovementDirectionTolerance);
+                break;
+        }
+
+        if (unearthingHapticChallengeGaugeImage.fillAmount >= 1f)
+        {
+            StopUnearthingHapticChallenge();
+            return true;
+        }
+        
+        return false;
+    }
+
+    private void ProcessInputUnearthingChallenge(Vector2 firstDirection, Vector2 secondDirection, float tolerance)
+    {
+        if (!_hasMovementDirectionBeenTriggeredOnce)
+        {
+            if (JoystickInputValue.x >= firstDirection.x - tolerance && JoystickInputValue.x <= firstDirection.x + tolerance &&
+                JoystickInputValue.y >= firstDirection.y - tolerance && JoystickInputValue.y <= firstDirection.y + tolerance)
+            {
+                _hasMovementDirectionBeenTriggeredOnce = true;
+                IncreaseGaugeUnearthingChallenge();
+                _lastJoystickInputValue = firstDirection;
+                return;
+            }
+
+            if (JoystickInputValue.x >= secondDirection.x - tolerance && JoystickInputValue.x <= secondDirection.x + tolerance &&
+                JoystickInputValue.y >= secondDirection.y - tolerance && JoystickInputValue.y <= secondDirection.y + tolerance)
+            {
+                _hasMovementDirectionBeenTriggeredOnce = true;
+                IncreaseGaugeUnearthingChallenge();
+                _lastJoystickInputValue = secondDirection;
+            }
+        }
+        else
+        {
+            if (_lastJoystickInputValue == firstDirection)
+            {
+                if (JoystickInputValue.x >= secondDirection.x - tolerance && JoystickInputValue.x <= secondDirection.x + tolerance &&
+                    JoystickInputValue.y >= secondDirection.y - tolerance && JoystickInputValue.y <= secondDirection.y + tolerance)
+                {
+                    IncreaseGaugeUnearthingChallenge();
+                    _lastJoystickInputValue = secondDirection;
+                }
+            }
+            else
+            {
+                if (JoystickInputValue.x >= firstDirection.x - tolerance && JoystickInputValue.x <= firstDirection.x + tolerance &&
+                    JoystickInputValue.y >= firstDirection.y - tolerance && JoystickInputValue.y <= firstDirection.y + tolerance)
+                {
+                    IncreaseGaugeUnearthingChallenge();
+                    _lastJoystickInputValue = firstDirection;
+                }
+            }
+        }
+    }
+
+    private void IncreaseGaugeUnearthingChallenge()
+    {
+        unearthingHapticChallengeGaugeImage.fillAmount += _currentUnearthingHapticChallengeSo.GaugeIncreasePart;
+    }
 
 
     private void OnDrawGizmos()
     {
         if (collectHapticChallengeListSo)
         {
-            foreach (var ingredientTypeHapticChallenge in collectHapticChallengeListSo.HapticChallengesByIngredientType)
+            foreach (IngredientTypeHapticChallenge ingredientTypeHapticChallenge in collectHapticChallengeListSo.
+                         HapticChallengesByIngredientType)
             {
                 if (ingredientTypeHapticChallenge.CollectHapticChallengeSo is GaugeHapticChallengeSo gaugeHapticChallengeSo)
                 {
