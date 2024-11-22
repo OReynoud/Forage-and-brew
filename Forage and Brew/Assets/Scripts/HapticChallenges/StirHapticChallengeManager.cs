@@ -67,17 +67,6 @@ public class StirHapticChallengeManager : MonoBehaviour
     
     private void PickRightPotion()
     {
-        List<IngredientValuesSo> cauldronIngredients = new();
-
-        // Store all ingredients in the cauldron
-        foreach (TemperatureChallengeIngredients temperatureChallengeIngredients in CurrentCauldron.TemperatureAndIngredients)
-        {
-            foreach (CookedIngredientForm cookedIngredientForm in temperatureChallengeIngredients.CookedIngredients)
-            {
-                cauldronIngredients.Add(cookedIngredientForm.Ingredient);
-            }
-        }
-        
         foreach (PotionValuesSo potion in potionListSo.Potions) // For each potion
         {
             if (potion.TemperatureChallengeIngredients.Length != CurrentCauldron.TemperatureAndIngredients.Count) continue;
@@ -88,7 +77,13 @@ public class StirHapticChallengeManager : MonoBehaviour
             {
                 List<IngredientValuesSo> ingredients = new();
                 List<IngredientType> ingredientTypes = new();
-                List<IngredientValuesSo> cauldronIngredientsCopy = new(cauldronIngredients);
+                List<IngredientValuesSo> cauldronIngredients = new();
+
+                // Store all ingredients in the cauldron
+                foreach (CookedIngredientForm cookedIngredientForm in CurrentCauldron.TemperatureAndIngredients[i].CookedIngredients)
+                {
+                    cauldronIngredients.Add(cookedIngredientForm.Ingredient);
+                }
 
                 // Store all ingredients and ingredient types in the potion step
                 foreach (CookedIngredientForm cookedIngredientForm in potion.TemperatureChallengeIngredients[i].CookedIngredients)
@@ -103,30 +98,39 @@ public class StirHapticChallengeManager : MonoBehaviour
                     }
                 }
 
-                // Check if the cauldron has the right ingredients
-                if (cauldronIngredients.Count != ingredients.Count + ingredientTypes.Count) continue;
+                // Check if the cauldron has the right ingredient count
+                if (cauldronIngredients.Count != ingredients.Count + ingredientTypes.Count) break;
 
+                // Check if the cauldron has the right ingredients
                 foreach (IngredientValuesSo ingredient in ingredients)
                 {
-                    if (!cauldronIngredientsCopy.Remove(ingredient))
+                    if (!cauldronIngredients.Remove(ingredient))
                     {
                         isRightPotion = false;
                         break;
                     }
                 }
 
-                if (!isRightPotion) continue;
+                if (!isRightPotion) break;
 
                 foreach (IngredientType ingredientType in ingredientTypes)
                 {
-                    if (!cauldronIngredientsCopy.Exists(ingredient => ingredient.Type == ingredientType))
+                    if (!cauldronIngredients.Exists(ingredient => ingredient.Type == ingredientType))
                     {
                         isRightPotion = false;
                         break;
                     }
 
-                    cauldronIngredientsCopy.Remove(cauldronIngredientsCopy.Find(ingredient =>
-                        ingredient.Type == ingredientType));
+                    cauldronIngredients.Remove(cauldronIngredients.Find(ingredient => ingredient.Type == ingredientType));
+                }
+
+                if (!isRightPotion) break;
+                
+                // Check if the cauldron has the right temperature
+                if (potion.TemperatureChallengeIngredients[i].Temperature != CurrentCauldron.TemperatureAndIngredients[i].Temperature)
+                {
+                    isRightPotion = false;
+                    break;
                 }
             }
 
