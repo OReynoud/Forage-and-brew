@@ -48,8 +48,6 @@ public class AutoFlip : Singleton<AutoFlip>
         Cursor.lockState = CursorLockMode.Confined;
         proportions = new Vector2(codexProportions.rect.width ,codexProportions.rect.height);
 
-        Debug.Log(codexProportions.rect.height);
-        Debug.Log(codexProportions.rect.width);
  
 
     }
