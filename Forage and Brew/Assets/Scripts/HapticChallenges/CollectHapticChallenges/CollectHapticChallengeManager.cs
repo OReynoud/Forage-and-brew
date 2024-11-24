@@ -206,6 +206,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
         _isUnearthingHapticChallengeActive = true;
         _isCollectHapticChallengeActive = true;
         _currentUnearthingHapticChallengeTime = 0f;
+        unearthingHapticChallengeGaugeImage.fillAmount = 0f;
         _hasMovementDirectionBeenTriggeredOnce = false;
 
         foreach (HapticChallengeMovementDirectionRectTransform unearthingHapticChallengeRectTransform in unearthingHapticChallengeRectTransforms)
