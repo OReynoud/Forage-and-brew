@@ -11,13 +11,11 @@ public class CollectHapticChallengeManager : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] private CollectHapticChallengeListSo collectHapticChallengeListSo;
 
-    [Header("Gauge Haptic Challenge UI")]
-    [SerializeField] private GameObject gaugeHapticChallengeGameObject;
-    [SerializeField] private RectTransform gaugeRectTransform;
-    [SerializeField] private RectTransform wrongGaugeRectTransform;
-    [SerializeField] private RectTransform correctGaugeRectTransform;
-    [SerializeField] private RectTransform perfectGaugeRectTransform;
-    [SerializeField] private RectTransform gaugeArrowRectTransform;
+    [Header("Scything Haptic Challenge UI")]
+    [SerializeField] private GameObject scythingHapticChallengeGameObject;
+    [SerializeField] private RectTransform scythingHapticChallengeGaugeRectTransform;
+    [SerializeField] private RectTransform scythingHapticChallengeCutLineRectTransform;
+    [SerializeField] private RectTransform scythingHapticChallengeGaugeArrowRectTransform;
 
     [Header("Unearthing Haptic Challenge UI")]
     [SerializeField] private GameObject unearthingHapticChallengeGameObject;
@@ -30,10 +28,12 @@ public class CollectHapticChallengeManager : MonoBehaviour
     public Vector2 JoystickInputValue { get; set; }
     private Vector2 _lastJoystickInputValue;
     
-    // Gauge Haptic Challenge
-    private GaugeHapticChallengeSo _currentGaugeHapticChallengeSo;
-    private bool _isGaugeHapticChallengeActive;
-    private bool _isGaugeHapticChallengeGoingUp;
+    // Scything Haptic Challenge
+    private ScythingHapticChallengeSo _currentScythingHapticChallengeSo;
+    private bool _isScythingHapticChallengeActive;
+    private bool _isScythingHapticChallengeGoingUp;
+    private List<HapticChallengeGaugeParts> _currentScythingHapticChallengeGaugeParts;
+    private int _currentScythingHapticChallengeTurn;
     
     // Unearthing Haptic Challenge
     private UnearthingHapticChallengeSo _currentUnearthingHapticChallengeSo;
@@ -50,14 +50,15 @@ public class CollectHapticChallengeManager : MonoBehaviour
     
     private void Start()
     {
-        gaugeHapticChallengeGameObject.SetActive(false);
+        scythingHapticChallengeGameObject.SetActive(false);
+        unearthingHapticChallengeGameObject.SetActive(false);
     }
 
     private void Update()
     {
-        if (_isGaugeHapticChallengeActive)
+        if (_isScythingHapticChallengeActive)
         {
-            UpdateGaugeHapticChallenge();
+            UpdateScythingHapticChallenge();
         }
         
         if (_isUnearthingHapticChallengeActive)
@@ -75,10 +76,10 @@ public class CollectHapticChallengeManager : MonoBehaviour
         {
             if (ingredientTypeHapticChallenge.IngredientType == _currentIngredientToCollectBehaviour.IngredientValuesSo.Type)
             {
-                if (ingredientTypeHapticChallenge.CollectHapticChallengeSo is GaugeHapticChallengeSo gaugeHapticChallengeSo)
+                if (ingredientTypeHapticChallenge.CollectHapticChallengeSo is ScythingHapticChallengeSo scythingHapticChallengeSo)
                 {
-                    _currentGaugeHapticChallengeSo = gaugeHapticChallengeSo;
-                    StartGaugeHapticChallenge();
+                    _currentScythingHapticChallengeSo = scythingHapticChallengeSo;
+                    StartScythingHapticChallenge();
                 }
                 
                 if (ingredientTypeHapticChallenge.CollectHapticChallengeSo is UnearthingHapticChallengeSo unearthingHapticChallengeSo)
@@ -101,47 +102,104 @@ public class CollectHapticChallengeManager : MonoBehaviour
     }
 
     
-    private void StartGaugeHapticChallenge()
+    private void StartScythingHapticChallenge()
     {
-        gaugeHapticChallengeGameObject.SetActive(true);
-        gaugeArrowRectTransform.anchoredPosition = new Vector2(gaugeArrowRectTransform.anchoredPosition.x,
-            Random.Range(_currentGaugeHapticChallengeSo.GaugeTotalHeight * -0.5f,
-                _currentGaugeHapticChallengeSo.GaugeTotalHeight * 0.5f));
-        _isGaugeHapticChallengeGoingUp = Random.Range(0, 2) == 0;
-        _isGaugeHapticChallengeActive = true;
+        scythingHapticChallengeGameObject.SetActive(true);
+        _currentScythingHapticChallengeGaugeParts = _currentScythingHapticChallengeSo
+            .GaugeParts[Random.Range(0, _currentScythingHapticChallengeSo.GaugeParts.Count)].GaugeParts;
+        scythingHapticChallengeGaugeArrowRectTransform.anchoredPosition = 
+            new Vector2(scythingHapticChallengeGaugeArrowRectTransform.anchoredPosition.x,
+            Random.Range(scythingHapticChallengeGaugeRectTransform.sizeDelta.y * -0.5f,
+                scythingHapticChallengeGaugeRectTransform.sizeDelta.y * 0.5f));
+        _isScythingHapticChallengeGoingUp = Random.Range(0, 2) == 0;
+        _currentScythingHapticChallengeTurn = 0;
+        _isScythingHapticChallengeActive = true;
         _isCollectHapticChallengeActive = true;
+        
+        StartTurnScythingChallenge();
     }
 
-    public void StopGaugeHapticChallenge()
+    public void StopScythingHapticChallenge()
     {
-        if (!_isGaugeHapticChallengeActive) return;
+        if (!_isScythingHapticChallengeActive) return;
         
-        gaugeHapticChallengeGameObject.SetActive(false);
-        _isGaugeHapticChallengeActive = false;
+        scythingHapticChallengeGameObject.SetActive(false);
+        _isScythingHapticChallengeActive = false;
         StopCollectHapticChallenge();
     }
     
-    private void UpdateGaugeHapticChallenge()
+    private void UpdateScythingHapticChallenge()
     {
-        if (_isGaugeHapticChallengeGoingUp)
+        if (CheckInputScythingChallenge()) return;
+        
+        if (_isScythingHapticChallengeGoingUp)
         {
-            gaugeArrowRectTransform.anchoredPosition += new Vector2(0f, _currentGaugeHapticChallengeSo.ArrowSpeed * Time.deltaTime);
-            if (gaugeArrowRectTransform.anchoredPosition.y >= gaugeRectTransform.sizeDelta.y * 0.5f)
+            scythingHapticChallengeGaugeArrowRectTransform.anchoredPosition += new Vector2(0f,
+                _currentScythingHapticChallengeSo.ArrowSpeed * scythingHapticChallengeGaugeRectTransform.sizeDelta.y * Time.deltaTime);
+            if (scythingHapticChallengeGaugeArrowRectTransform.anchoredPosition.y >= scythingHapticChallengeGaugeRectTransform.sizeDelta.y * 0.5f)
             {
-                _isGaugeHapticChallengeGoingUp = false;
+                _isScythingHapticChallengeGoingUp = false;
             }
         }
         else
         {
-            gaugeArrowRectTransform.anchoredPosition -= new Vector2(0f, _currentGaugeHapticChallengeSo.ArrowSpeed * Time.deltaTime);
-            if (gaugeArrowRectTransform.anchoredPosition.y <= gaugeRectTransform.sizeDelta.y * -0.5f)
+            scythingHapticChallengeGaugeArrowRectTransform.anchoredPosition -= new Vector2(0f,
+                _currentScythingHapticChallengeSo.ArrowSpeed * scythingHapticChallengeGaugeRectTransform.sizeDelta.y * Time.deltaTime);
+            if (scythingHapticChallengeGaugeArrowRectTransform.anchoredPosition.y <= scythingHapticChallengeGaugeRectTransform.sizeDelta.y * -0.5f)
             {
-                _isGaugeHapticChallengeGoingUp = true;
+                _isScythingHapticChallengeGoingUp = true;
             }
         }
     }
+
+    private bool CheckInputScythingChallenge()
+    {
+        if (JoystickInputValue == Vector2.zero || JoystickInputValue == Vector2.left ||
+            JoystickInputValue == Vector2.up || JoystickInputValue == Vector2.down)
+        {
+            _lastJoystickInputValue = JoystickInputValue;
+            return false;
+        }
+
+        if (JoystickInputValue == Vector2.right)
+        {
+            if (_lastJoystickInputValue == Vector2.zero)
+            {
+                _lastJoystickInputValue = JoystickInputValue;
+                NextTurnScythingChallenge();
+                return true;
+            }
+            
+            _lastJoystickInputValue = JoystickInputValue;
+            return false;
+        }
+
+        return false;
+    }
     
+    private void StartTurnScythingChallenge()
+    {
+        HapticChallengeGaugeParts currentGaugeParts = _currentScythingHapticChallengeGaugeParts[_currentScythingHapticChallengeTurn];
+        scythingHapticChallengeCutLineRectTransform.anchoredPosition = new Vector2(
+            scythingHapticChallengeCutLineRectTransform.anchoredPosition.x,
+            ((currentGaugeParts.PerfectGaugeMaxValue - currentGaugeParts.PerfectGaugeMinValue) * 0.5f +
+             currentGaugeParts.PerfectGaugeMinValue) * scythingHapticChallengeGaugeRectTransform.sizeDelta.y);
+    }
     
+    private void NextTurnScythingChallenge()
+    {
+        _currentScythingHapticChallengeTurn++;
+        
+        if (_currentScythingHapticChallengeTurn == _currentScythingHapticChallengeGaugeParts.Count)
+        {
+            StopScythingHapticChallenge();
+            return;
+        }
+        
+        StartTurnScythingChallenge();
+    }
+
+
     private void StartUnearthingHapticChallenge()
     {
         unearthingHapticChallengeGameObject.SetActive(true);
@@ -278,28 +336,5 @@ public class CollectHapticChallengeManager : MonoBehaviour
     private void IncreaseGaugeUnearthingChallenge()
     {
         unearthingHapticChallengeGaugeImage.fillAmount += _currentUnearthingHapticChallengeSo.GaugeIncreasePart;
-    }
-
-
-    private void OnDrawGizmos()
-    {
-        if (collectHapticChallengeListSo)
-        {
-            foreach (IngredientTypeHapticChallenge ingredientTypeHapticChallenge in collectHapticChallengeListSo.
-                         HapticChallengesByIngredientType)
-            {
-                if (ingredientTypeHapticChallenge.CollectHapticChallengeSo is GaugeHapticChallengeSo gaugeHapticChallengeSo)
-                {
-                    gaugeRectTransform.sizeDelta = new Vector2(wrongGaugeRectTransform.sizeDelta.x,
-                        gaugeHapticChallengeSo.GaugeTotalHeight);
-                    wrongGaugeRectTransform.sizeDelta = new Vector2(wrongGaugeRectTransform.sizeDelta.x,
-                        gaugeHapticChallengeSo.GaugeTotalHeight);
-                    correctGaugeRectTransform.sizeDelta = new Vector2(correctGaugeRectTransform.sizeDelta.x,
-                        gaugeHapticChallengeSo.GaugeTotalHeight * gaugeHapticChallengeSo.CorrectGaugePart);
-                    perfectGaugeRectTransform.sizeDelta = new Vector2(perfectGaugeRectTransform.sizeDelta.x,
-                        gaugeHapticChallengeSo.GaugeTotalHeight * gaugeHapticChallengeSo.PerfectGaugePart);
-                }
-            }
-        }
     }
 }
