@@ -1,18 +1,18 @@
+using System;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CharacterInteractController : MonoBehaviour
 {
-    public IngredientToCollectBehaviour CurrentIngredientToCollectBehaviour { get; private set; }
+    [field:Foldout("Debug")] [ReadOnly] public List<CollectedIngredientStack> collectedIngredientStack = new();
 
-    public CollectedIngredientBehaviour CurrentCollectedIngredientBehaviour { get; private set; }
-    public List<CollectedIngredientStack> collectedIngredientStack = new List<CollectedIngredientStack>();
-
+    [Serializable]
     public class CollectedIngredientStack
     {
-        public CollectedIngredientBehaviour ingredient { get; set; }
-        public bool isPickedUp { get; set; }
+        [field:SerializeField] [field:ReadOnly] public CollectedIngredientBehaviour ingredient { get; set; }
+        [field:SerializeField] [field:ReadOnly] public bool isPickedUp { get; set; }
 
         public CollectedIngredientStack(CollectedIngredientBehaviour Ingredient)
         {
@@ -20,10 +20,13 @@ public class CharacterInteractController : MonoBehaviour
             isPickedUp = false;
         }
     }
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public IngredientToCollectBehaviour CurrentIngredientToCollectBehaviour { get; private set; }
 
-    public BedBehaviour CurrentNearBed { get; set; }
-    public bool handsFull { get; set; }
-    public bool nextToCauldron { get; set; }
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public CollectedIngredientBehaviour CurrentCollectedIngredientBehaviour { get; private set; }
+
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public BedBehaviour CurrentNearBed { get; set; }
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public CauldronBehaviour CurrentNearCauldron { get; set; }
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public bool AreHandsFull { get; private set; }
 
     private Rigidbody rb { get; set; }
 
@@ -73,21 +76,20 @@ public class CharacterInteractController : MonoBehaviour
 
     public void Interact()
     {
-        if (nextToCauldron && collectedIngredientStack.Count > 0)
+        if (CurrentNearCauldron && collectedIngredientStack.Count > 0)
         {
+            CurrentNearCauldron.DisableInteract(true);
             ShoveStackInCauldron();
         }
         if (CurrentIngredientToCollectBehaviour)
         {
             CharacterInputManager.Instance.DisableMoveInputs();
             CurrentIngredientToCollectBehaviour.DisableCollect();
-            HapticChallengeManager.Instance.StartHapticChallenge(CurrentIngredientToCollectBehaviour);
+            CollectHapticChallengeManager.Instance.StartCollectHapticChallenge(CurrentIngredientToCollectBehaviour);
             CurrentIngredientToCollectBehaviour = null;
         }
         else if (CurrentCollectedIngredientBehaviour)
         {
-            
-
             AddToPile(CurrentCollectedIngredientBehaviour);
         }
         else if (CurrentNearBed && collectedIngredientStack.Count == 0)
@@ -95,6 +97,7 @@ public class CharacterInteractController : MonoBehaviour
             CurrentNearBed.Sleep();
         }
     }
+    
     public void Cancel()
     {
         if (collectedIngredientStack.Count > 0)
@@ -107,6 +110,8 @@ public class CharacterInteractController : MonoBehaviour
                 collectedIngredientStack[0].ingredient.transform.SetParent(null);
                 collectedIngredientStack.RemoveAt(0);
             }
+            
+            AreHandsFull = false;
         }
     }
 
@@ -119,12 +124,12 @@ public class CharacterInteractController : MonoBehaviour
                 return;
         }
         
-        CurrentCollectedIngredientBehaviour.DisableGrab();
         CurrentCollectedIngredientBehaviour.GrabMethod(true);
         CurrentCollectedIngredientBehaviour.transform.SetParent(transform);
         collectedIngredientStack.Add(new CollectedIngredientStack(CurrentCollectedIngredientBehaviour));
         CurrentCollectedIngredientBehaviour = null;
-        //CurrentCollectedIngredientBehaviour.transform.SetParent(stackPlacement);
+        
+        AreHandsFull = true;
     }
 
     void ShoveStackInCauldron()
@@ -133,20 +138,20 @@ public class CharacterInteractController : MonoBehaviour
         {
             //collectedIngredientStack[i].ingredient.GrabMethod(false);
             collectedIngredientStack[i].ingredient.transform.SetParent(CauldronBehaviour.instance.transform);
-            collectedIngredientStack[i].ingredient.transform.position = Vector3.zero;
-            CauldronBehaviour.instance.ingredients.Add(collectedIngredientStack[i].ingredient);
+            collectedIngredientStack[i].ingredient.CauldronMethod();
         }
         collectedIngredientStack.Clear();
+        AreHandsFull = false;
     }
 
     private void FixedUpdate()
     {
-        UpdateStack();
+        DisplaceStack();
     }
 
     float clampedDisplacement;
 
-    void UpdateStack()
+    void DisplaceStack()
     {
         for (var i = 0; i < collectedIngredientStack.Count; i++)
         {
@@ -159,6 +164,8 @@ public class CharacterInteractController : MonoBehaviour
                 ingredient.transform.localPosition = Vector3.Lerp(ingredient.transform.localPosition,
                     new Vector3(ingredient.transform.localPosition.x, ingredient.stackHeight * i,
                         ingredient.transform.localPosition.z), pickupLerp);
+                
+                //x and z lerp
                 if (i == 0)
                 {
                     ingredient.transform.localPosition = Vector3.Lerp(ingredient.transform.localPosition,

@@ -46,6 +46,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""StartPageNavigation"",
+                    ""type"": ""Button"",
+                    ""id"": ""65a3e502-1f69-4d8c-922b-6dcf82ea299a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""HapticChallenge"",
                     ""type"": ""Button"",
                     ""id"": ""e7ab67af-0c8f-419b-8411-4ca88fa1feb1"",
@@ -53,6 +62,42 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HapticChallengeSecond"",
+                    ""type"": ""Button"",
+                    ""id"": ""84641f2e-0d01-40e3-920b-90832d499c02"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HapticChallengeJoystick"",
+                    ""type"": ""Value"",
+                    ""id"": ""7762633a-ca37-45db-beab-67e631eb1415"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""HapticChallengeJoystickHorizontalAxis"",
+                    ""type"": ""Value"",
+                    ""id"": ""43a3a000-c0b2-49f3-9488-79fe0b49114d"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""HapticChallengeJoystickVerticalAxis"",
+                    ""type"": ""Value"",
+                    ""id"": ""7802f24e-27b8-4af7-bebf-9779185dd35f"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Previous"",
@@ -103,6 +148,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""name"": ""Cancel"",
                     ""type"": ""Button"",
                     ""id"": ""0b61c09d-6b48-457f-accc-3d78878e3c8e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ExitPageNavigation"",
+                    ""type"": ""Button"",
+                    ""id"": ""e329b180-c82a-41b8-a669-0b394bd50036"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -234,10 +288,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""3ea4d645-4504-4529-b061-ab81934c3752"",
-                    ""path"": ""<Joystick>/stick"",
+                    ""path"": ""<HID::PowerA NSW wired controller>/stick"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Joystick"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -321,6 +375,39 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""1dd190c6-d5d9-4456-89f0-6673a675043a"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""StartPageNavigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""13cf0867-15f9-4a2f-9c48-ab4036138b9c"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""StartPageNavigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""01ec2cbd-805b-4688-be08-dcfe4bb58f2c"",
+                    ""path"": ""<HID::PowerA NSW wired controller>/button3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""StartPageNavigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""7a1ecd98-51b7-4e89-8b07-f58654c818e0"",
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
@@ -349,6 +436,39 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""HapticChallenge"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""03753926-cfa2-4c94-b339-501d56a3a761"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""HapticChallengeSecond"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bafa3918-be96-42fa-a1e7-96e1f9710e86"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""HapticChallengeSecond"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""799a63c7-6fbf-4fd1-9e74-f49a92c1cc95"",
+                    ""path"": ""<HID::PowerA NSW wired controller>/trigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""HapticChallengeSecond"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -432,7 +552,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""0c94976d-c90f-4b4d-bb16-c5083b1bc63d"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -448,6 +568,83 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f9fa3aad-4fe3-4c1a-afc1-817329c8a678"",
+                    ""path"": ""<HID::PowerA NSW wired controller>/button2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3a9828e3-f6d9-493a-b2a1-7b49edf9c947"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExitPageNavigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""da42467b-6ad9-4dd9-a4a3-6f048bc47a9e"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExitPageNavigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ca5e5577-c337-4b3d-8094-968ef1229eff"",
+                    ""path"": ""<HID::PowerA NSW wired controller>/button2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ExitPageNavigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""df68684a-dd13-47db-8ea5-808993c6f87d"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""HapticChallengeJoystick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9723b9f6-24a9-4c2f-99fb-f4deb0a46cab"",
+                    ""path"": ""<HID::PowerA NSW wired controller>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""HapticChallengeJoystickHorizontalAxis"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b8c336b3-3a11-4f7b-83f6-d956b9d32998"",
+                    ""path"": ""<HID::PowerA NSW wired controller>/rz"",
+                    ""interactions"": """",
+                    ""processors"": ""Invert"",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""HapticChallengeJoystickVerticalAxis"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1037,13 +1234,19 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
+        m_Player_StartPageNavigation = m_Player.FindAction("StartPageNavigation", throwIfNotFound: true);
         m_Player_HapticChallenge = m_Player.FindAction("HapticChallenge", throwIfNotFound: true);
+        m_Player_HapticChallengeSecond = m_Player.FindAction("HapticChallengeSecond", throwIfNotFound: true);
+        m_Player_HapticChallengeJoystick = m_Player.FindAction("HapticChallengeJoystick", throwIfNotFound: true);
+        m_Player_HapticChallengeJoystickHorizontalAxis = m_Player.FindAction("HapticChallengeJoystickHorizontalAxis", throwIfNotFound: true);
+        m_Player_HapticChallengeJoystickVerticalAxis = m_Player.FindAction("HapticChallengeJoystickVerticalAxis", throwIfNotFound: true);
         m_Player_Previous = m_Player.FindAction("Previous", throwIfNotFound: true);
         m_Player_Next = m_Player.FindAction("Next", throwIfNotFound: true);
         m_Player_Codex = m_Player.FindAction("Codex", throwIfNotFound: true);
         m_Player_BookMarkRight = m_Player.FindAction("BookMarkRight", throwIfNotFound: true);
         m_Player_BookMarkLeft = m_Player.FindAction("BookMarkLeft", throwIfNotFound: true);
         m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
+        m_Player_ExitPageNavigation = m_Player.FindAction("ExitPageNavigation", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1125,26 +1328,38 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Interact;
+    private readonly InputAction m_Player_StartPageNavigation;
     private readonly InputAction m_Player_HapticChallenge;
+    private readonly InputAction m_Player_HapticChallengeSecond;
+    private readonly InputAction m_Player_HapticChallengeJoystick;
+    private readonly InputAction m_Player_HapticChallengeJoystickHorizontalAxis;
+    private readonly InputAction m_Player_HapticChallengeJoystickVerticalAxis;
     private readonly InputAction m_Player_Previous;
     private readonly InputAction m_Player_Next;
     private readonly InputAction m_Player_Codex;
     private readonly InputAction m_Player_BookMarkRight;
     private readonly InputAction m_Player_BookMarkLeft;
     private readonly InputAction m_Player_Cancel;
+    private readonly InputAction m_Player_ExitPageNavigation;
     public struct PlayerActions
     {
         private @InputSystem_Actions m_Wrapper;
         public PlayerActions(@InputSystem_Actions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
+        public InputAction @StartPageNavigation => m_Wrapper.m_Player_StartPageNavigation;
         public InputAction @HapticChallenge => m_Wrapper.m_Player_HapticChallenge;
+        public InputAction @HapticChallengeSecond => m_Wrapper.m_Player_HapticChallengeSecond;
+        public InputAction @HapticChallengeJoystick => m_Wrapper.m_Player_HapticChallengeJoystick;
+        public InputAction @HapticChallengeJoystickHorizontalAxis => m_Wrapper.m_Player_HapticChallengeJoystickHorizontalAxis;
+        public InputAction @HapticChallengeJoystickVerticalAxis => m_Wrapper.m_Player_HapticChallengeJoystickVerticalAxis;
         public InputAction @Previous => m_Wrapper.m_Player_Previous;
         public InputAction @Next => m_Wrapper.m_Player_Next;
         public InputAction @Codex => m_Wrapper.m_Player_Codex;
         public InputAction @BookMarkRight => m_Wrapper.m_Player_BookMarkRight;
         public InputAction @BookMarkLeft => m_Wrapper.m_Player_BookMarkLeft;
         public InputAction @Cancel => m_Wrapper.m_Player_Cancel;
+        public InputAction @ExitPageNavigation => m_Wrapper.m_Player_ExitPageNavigation;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1160,9 +1375,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @StartPageNavigation.started += instance.OnStartPageNavigation;
+            @StartPageNavigation.performed += instance.OnStartPageNavigation;
+            @StartPageNavigation.canceled += instance.OnStartPageNavigation;
             @HapticChallenge.started += instance.OnHapticChallenge;
             @HapticChallenge.performed += instance.OnHapticChallenge;
             @HapticChallenge.canceled += instance.OnHapticChallenge;
+            @HapticChallengeSecond.started += instance.OnHapticChallengeSecond;
+            @HapticChallengeSecond.performed += instance.OnHapticChallengeSecond;
+            @HapticChallengeSecond.canceled += instance.OnHapticChallengeSecond;
+            @HapticChallengeJoystick.started += instance.OnHapticChallengeJoystick;
+            @HapticChallengeJoystick.performed += instance.OnHapticChallengeJoystick;
+            @HapticChallengeJoystick.canceled += instance.OnHapticChallengeJoystick;
+            @HapticChallengeJoystickHorizontalAxis.started += instance.OnHapticChallengeJoystickHorizontalAxis;
+            @HapticChallengeJoystickHorizontalAxis.performed += instance.OnHapticChallengeJoystickHorizontalAxis;
+            @HapticChallengeJoystickHorizontalAxis.canceled += instance.OnHapticChallengeJoystickHorizontalAxis;
+            @HapticChallengeJoystickVerticalAxis.started += instance.OnHapticChallengeJoystickVerticalAxis;
+            @HapticChallengeJoystickVerticalAxis.performed += instance.OnHapticChallengeJoystickVerticalAxis;
+            @HapticChallengeJoystickVerticalAxis.canceled += instance.OnHapticChallengeJoystickVerticalAxis;
             @Previous.started += instance.OnPrevious;
             @Previous.performed += instance.OnPrevious;
             @Previous.canceled += instance.OnPrevious;
@@ -1181,6 +1411,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Cancel.started += instance.OnCancel;
             @Cancel.performed += instance.OnCancel;
             @Cancel.canceled += instance.OnCancel;
+            @ExitPageNavigation.started += instance.OnExitPageNavigation;
+            @ExitPageNavigation.performed += instance.OnExitPageNavigation;
+            @ExitPageNavigation.canceled += instance.OnExitPageNavigation;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1191,9 +1424,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @StartPageNavigation.started -= instance.OnStartPageNavigation;
+            @StartPageNavigation.performed -= instance.OnStartPageNavigation;
+            @StartPageNavigation.canceled -= instance.OnStartPageNavigation;
             @HapticChallenge.started -= instance.OnHapticChallenge;
             @HapticChallenge.performed -= instance.OnHapticChallenge;
             @HapticChallenge.canceled -= instance.OnHapticChallenge;
+            @HapticChallengeSecond.started -= instance.OnHapticChallengeSecond;
+            @HapticChallengeSecond.performed -= instance.OnHapticChallengeSecond;
+            @HapticChallengeSecond.canceled -= instance.OnHapticChallengeSecond;
+            @HapticChallengeJoystick.started -= instance.OnHapticChallengeJoystick;
+            @HapticChallengeJoystick.performed -= instance.OnHapticChallengeJoystick;
+            @HapticChallengeJoystick.canceled -= instance.OnHapticChallengeJoystick;
+            @HapticChallengeJoystickHorizontalAxis.started -= instance.OnHapticChallengeJoystickHorizontalAxis;
+            @HapticChallengeJoystickHorizontalAxis.performed -= instance.OnHapticChallengeJoystickHorizontalAxis;
+            @HapticChallengeJoystickHorizontalAxis.canceled -= instance.OnHapticChallengeJoystickHorizontalAxis;
+            @HapticChallengeJoystickVerticalAxis.started -= instance.OnHapticChallengeJoystickVerticalAxis;
+            @HapticChallengeJoystickVerticalAxis.performed -= instance.OnHapticChallengeJoystickVerticalAxis;
+            @HapticChallengeJoystickVerticalAxis.canceled -= instance.OnHapticChallengeJoystickVerticalAxis;
             @Previous.started -= instance.OnPrevious;
             @Previous.performed -= instance.OnPrevious;
             @Previous.canceled -= instance.OnPrevious;
@@ -1212,6 +1460,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Cancel.started -= instance.OnCancel;
             @Cancel.performed -= instance.OnCancel;
             @Cancel.canceled -= instance.OnCancel;
+            @ExitPageNavigation.started -= instance.OnExitPageNavigation;
+            @ExitPageNavigation.performed -= instance.OnExitPageNavigation;
+            @ExitPageNavigation.canceled -= instance.OnExitPageNavigation;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1396,13 +1647,19 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnStartPageNavigation(InputAction.CallbackContext context);
         void OnHapticChallenge(InputAction.CallbackContext context);
+        void OnHapticChallengeSecond(InputAction.CallbackContext context);
+        void OnHapticChallengeJoystick(InputAction.CallbackContext context);
+        void OnHapticChallengeJoystickHorizontalAxis(InputAction.CallbackContext context);
+        void OnHapticChallengeJoystickVerticalAxis(InputAction.CallbackContext context);
         void OnPrevious(InputAction.CallbackContext context);
         void OnNext(InputAction.CallbackContext context);
         void OnCodex(InputAction.CallbackContext context);
         void OnBookMarkRight(InputAction.CallbackContext context);
         void OnBookMarkLeft(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
+        void OnExitPageNavigation(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

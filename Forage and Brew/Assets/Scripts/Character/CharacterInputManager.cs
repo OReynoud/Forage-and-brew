@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -9,11 +10,16 @@ public class CharacterInputManager : MonoBehaviour
 
     private InputSystem_Actions _inputs;
 
-    [SerializeField] private CharacterMovementController movementController;
-    [SerializeField] private CharacterInteractController characterInteractController;
-    [SerializeField] private AutoFlip codexController;
-    public UnityEvent OnCodexShow;
-    public bool showCodex;
+    private CharacterMovementController movementController;
+    private CharacterInteractController characterInteractController;
+    private AutoFlip codexController;
+
+    public UnityEvent OnCodexShow { get; set; } = new();
+    public UnityEvent<bool> OnNavigationChange { get; set; } = new();
+    
+    
+
+    [BoxGroup("Debug")]public bool showCodex;
 
 
     #region Unity Callbacks
@@ -27,6 +33,8 @@ public class CharacterInputManager : MonoBehaviour
     {
         _inputs = new InputSystem_Actions();
         EnableInputs();
+        movementController = GetComponent<CharacterMovementController>();
+        characterInteractController = GetComponent<CharacterInteractController>();
         codexController = AutoFlip.instance;
     }
 
@@ -61,13 +69,20 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.Codex.performed += CodexOnPerformed;
         _inputs.Player.BookMarkLeft.performed += BookMarkLeftOnPerformed;
         _inputs.Player.BookMarkRight.performed += BookMarkRightOnPerformed;
+        _inputs.Player.StartPageNavigation.performed += StartPageNavigationOnPerformed;
+        _inputs.Player.ExitPageNavigation.performed += ExitPageNavigationOnPerformed;
     }
+
+
+
     private void DisableCodexInputs()
     {
         _inputs.Player.Codex.Disable();
         _inputs.Player.Codex.performed -= CodexOnPerformed;
         _inputs.Player.BookMarkLeft.performed -= BookMarkLeftOnPerformed;
         _inputs.Player.BookMarkRight.performed -= BookMarkRightOnPerformed;
+        _inputs.Player.StartPageNavigation.performed -= StartPageNavigationOnPerformed;
+        _inputs.Player.ExitPageNavigation.performed -= ExitPageNavigationOnPerformed;
     }
 
     private void BookMarkRightOnPerformed(InputAction.CallbackContext obj)
@@ -87,10 +102,27 @@ public class CharacterInputManager : MonoBehaviour
     {
         movementController.Move(Vector2.zero);
         showCodex = !showCodex;
+
+        if (!showCodex)
+        {
+            OnNavigationChange.Invoke(false);
+        }
         
         if (OnCodexShow != null)
             OnCodexShow.Invoke();
-        
+    }
+    private void ExitPageNavigationOnPerformed(InputAction.CallbackContext obj)
+    {
+        if (!showCodex)return;
+        if (OnNavigationChange != null)
+            OnNavigationChange.Invoke(false);
+    }
+
+    private void StartPageNavigationOnPerformed(InputAction.CallbackContext obj)
+    {
+        if (!showCodex)return;
+        if (OnCodexShow != null)
+            OnNavigationChange.Invoke(true);
     }
 
     public void EnableMoveInputs()
@@ -113,14 +145,30 @@ public class CharacterInputManager : MonoBehaviour
     {
         _inputs.Player.HapticChallenge.Enable();
         _inputs.Player.HapticChallenge.performed += HapticChallengeOnPerformed;
+        _inputs.Player.HapticChallengeSecond.Enable();
+        _inputs.Player.HapticChallengeSecond.performed += HapticChallengeSecondOnPerformed;
+        EnableHapticChallengeJoystickInputs();
+    }
+    
+    public void EnableHapticChallengeJoystickInputs()
+    {
+        _inputs.Player.HapticChallengeJoystick.Enable();
+        _inputs.Player.HapticChallengeJoystick.performed += HapticChallengeJoystickOnPerformed;
+        _inputs.Player.HapticChallengeJoystick.canceled += HapticChallengeJoystickOnPerformed;
+        _inputs.Player.HapticChallengeJoystickHorizontalAxis.Enable();
+        _inputs.Player.HapticChallengeJoystickHorizontalAxis.performed += HapticChallengeJoystickHorizontalAxisOnPerformed;
+        _inputs.Player.HapticChallengeJoystickHorizontalAxis.canceled += HapticChallengeJoystickHorizontalAxisOnPerformed;
+        _inputs.Player.HapticChallengeJoystickVerticalAxis.Enable();
+        _inputs.Player.HapticChallengeJoystickVerticalAxis.performed += HapticChallengeJoystickVerticalAxisOnPerformed;
+        _inputs.Player.HapticChallengeJoystickVerticalAxis.canceled += HapticChallengeJoystickVerticalAxisOnPerformed;
     }
 
     public void DisableInputs()
     {
-        _inputs.Player.Disable();
         DisableMoveInputs();
         DisableInteractInputs();
         DisableHapticChallengeInputs();
+        DisableCodexInputs();
     }
     
     public void DisableMoveInputs()
@@ -141,6 +189,22 @@ public class CharacterInputManager : MonoBehaviour
     {
         _inputs.Player.HapticChallenge.Disable();
         _inputs.Player.HapticChallenge.performed -= HapticChallengeOnPerformed;
+        _inputs.Player.HapticChallengeSecond.Disable();
+        _inputs.Player.HapticChallengeSecond.performed -= HapticChallengeSecondOnPerformed;
+        DisableHapticChallengeJoystickInputs();
+    }
+    
+    public void DisableHapticChallengeJoystickInputs()
+    {
+        _inputs.Player.HapticChallengeJoystick.Disable();
+        _inputs.Player.HapticChallengeJoystick.performed -= HapticChallengeJoystickOnPerformed;
+        _inputs.Player.HapticChallengeJoystick.canceled -= HapticChallengeJoystickOnPerformed;
+        _inputs.Player.HapticChallengeJoystickHorizontalAxis.Disable();
+        _inputs.Player.HapticChallengeJoystickHorizontalAxis.performed -= HapticChallengeJoystickHorizontalAxisOnPerformed;
+        _inputs.Player.HapticChallengeJoystickHorizontalAxis.canceled -= HapticChallengeJoystickHorizontalAxisOnPerformed;
+        _inputs.Player.HapticChallengeJoystickVerticalAxis.Disable();
+        _inputs.Player.HapticChallengeJoystickVerticalAxis.performed -= HapticChallengeJoystickVerticalAxisOnPerformed;
+        _inputs.Player.HapticChallengeJoystickVerticalAxis.canceled -= HapticChallengeJoystickVerticalAxisOnPerformed;
     }
 
     
@@ -160,6 +224,32 @@ public class CharacterInputManager : MonoBehaviour
 
     private void HapticChallengeOnPerformed(InputAction.CallbackContext obj)
     {
-        HapticChallengeManager.Instance.StopHapticChallenge();
+        TemperatureHapticChallengeManager.Instance.StartTemperatureChallenge();
+    }
+
+    private void HapticChallengeSecondOnPerformed(InputAction.CallbackContext obj)
+    {
+        StirHapticChallengeManager.Instance.StartStirChallenge();
+    }
+    
+    private void HapticChallengeJoystickOnPerformed(InputAction.CallbackContext obj)
+    {
+        StirHapticChallengeManager.Instance.JoystickInputValue = obj.ReadValue<Vector2>();
+        TemperatureHapticChallengeManager.Instance.JoystickInputValue = obj.ReadValue<Vector2>();
+        CollectHapticChallengeManager.Instance.JoystickInputValue = obj.ReadValue<Vector2>();
+    }
+    
+    private void HapticChallengeJoystickHorizontalAxisOnPerformed(InputAction.CallbackContext obj)
+    {
+        StirHapticChallengeManager.Instance.JoystickInputValue = new Vector2(obj.ReadValue<float>(), StirHapticChallengeManager.Instance.JoystickInputValue.y);
+        TemperatureHapticChallengeManager.Instance.JoystickInputValue = new Vector2(obj.ReadValue<float>(), TemperatureHapticChallengeManager.Instance.JoystickInputValue.y);
+        CollectHapticChallengeManager.Instance.JoystickInputValue = new Vector2(obj.ReadValue<float>(), CollectHapticChallengeManager.Instance.JoystickInputValue.y);
+    }
+    
+    private void HapticChallengeJoystickVerticalAxisOnPerformed(InputAction.CallbackContext obj)
+    {
+        StirHapticChallengeManager.Instance.JoystickInputValue = new Vector2(StirHapticChallengeManager.Instance.JoystickInputValue.x, obj.ReadValue<float>());
+        TemperatureHapticChallengeManager.Instance.JoystickInputValue = new Vector2(TemperatureHapticChallengeManager.Instance.JoystickInputValue.x, obj.ReadValue<float>());
+        CollectHapticChallengeManager.Instance.JoystickInputValue = new Vector2(CollectHapticChallengeManager.Instance.JoystickInputValue.x, obj.ReadValue<float>());
     }
 }

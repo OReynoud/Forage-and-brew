@@ -10,3 +10,19 @@ public enum TimeOfDay
     Daytime,
     Nighttime
 }
+
+public enum Temperature
+{
+    None,
+    LowHeat,
+    MediumHeat,
+    HighHeat
+}
+
+public enum HapticChallengeMovementDirection
+{
+    UpDown,
+    LeftRight,
+    UpLeftDownRight,
+    UpRightDownLeft
+}
