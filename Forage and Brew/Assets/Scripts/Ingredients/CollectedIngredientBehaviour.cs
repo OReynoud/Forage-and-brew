@@ -66,7 +66,21 @@ public class CollectedIngredientBehaviour : MonoBehaviour
         grabTrigger.enabled = !grab;
         ingredientCollider.enabled = !grab;
         rb.AddForce(Random.insideUnitSphere,ForceMode.Impulse);
+
+        if (grab)
+        {
+            DisableGrab();
+        }
         
+    }
+
+    public void CauldronMethod()
+    {
+        originControl = transform.position;
+        startControl = originControl + Vector3.up + new Vector3(Random.Range(-1f, 1f), Random.value, Random.Range(-1f, 1f));
+        endControl = Vector3.up + new Vector3(Random.Range(-1f, 1f), Random.value, Random.Range(-1f, 1f));
+        isPutInCauldron = true;
+        CauldronBehaviour.instance.AddIngredient(this);
     }
 
     #region Trigger

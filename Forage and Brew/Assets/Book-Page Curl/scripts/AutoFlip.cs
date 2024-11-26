@@ -48,8 +48,6 @@ public class AutoFlip : Singleton<AutoFlip>
         Cursor.lockState = CursorLockMode.Confined;
         proportions = new Vector2(codexProportions.rect.width ,codexProportions.rect.height);
 
-        Debug.Log(codexProportions.rect.height);
-        Debug.Log(codexProportions.rect.width);
  
 
     }
@@ -210,6 +208,10 @@ public class AutoFlip : Singleton<AutoFlip>
 
     public void JumpToBookMark(int index)
     {
+        if (index % 2 == 1)
+        {
+            index++;
+        }
         var pageDiff = Mathf.Abs(index - ControledBook.currentPage);
         
         FlipXPages(Mathf.CeilToInt(pageDiff * 0.5f), index <= ControledBook.currentPage);
