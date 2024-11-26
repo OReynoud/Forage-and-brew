@@ -1,3 +1,4 @@
+using System.Linq;
 using NaughtyAttributes;
 using UnityEditor;
 using UnityEngine;
@@ -34,8 +35,12 @@ public class ScrapingHapticChallengeRouteDataSaveBehaviour : MonoBehaviour
 
         scrapingHapticChallengeSo.Routes.Add(scrapingHapticChallengeRouteSo);
 
+        string[] currentFiles = AssetDatabase.FindAssets("t:ScriptableObject", new[] {AssetDatabase.GetAssetPath(scrapingHapticChallengeRouteDataFolder)})
+            .Select(AssetDatabase.GUIDToAssetPath).ToArray();
+        
         int i = 1;
-        while (scrapingHapticChallengeSo.Routes.Exists(route => route.name == $"D_ScrapingHapticChallengeRoute{i}"))
+        while (currentFiles.Contains(AssetDatabase.GetAssetPath(scrapingHapticChallengeRouteDataFolder) +
+            $"/D_ScrapingHapticChallengeRoute{i}.asset"))
         {
             i++;
         }
