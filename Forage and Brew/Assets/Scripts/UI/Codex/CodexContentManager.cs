@@ -42,16 +42,16 @@ public class CodexContentManager : MonoBehaviour
         var temp = new List<PotionDemand>();
         temp.Add(new PotionDemand(true,testPotion,potionIcon));
         tickets[0].gameObject.SetActive(true);
-        tickets[0].InitializeOrder("Jean-Eude","Je me suis coupé le doigt, tu peux me passer de la pommade s'il te plait?",temp);
+        tickets[0].InitializeOrder("Jean-Eude","Je me suis coupé le doigt, tu peux me passer de la pommade s'il te plait?",temp, 10);
         temp.Clear();
         temp.Add(new PotionDemand(false,testTag,potionIcon,"Something against a fever"));
         tickets[1].gameObject.SetActive(true);
-        tickets[1].InitializeOrder("Paul","J'ai de la fièvre, t'as quelque chose pour m'aider?",temp);
+        tickets[1].InitializeOrder("Paul","J'ai de la fièvre, t'as quelque chose pour m'aider?",temp, 15);
         temp.Clear();
         temp.Add(new PotionDemand(true,testPotion,potionIcon));
         temp.Add(new PotionDemand(true,testPotion,potionIcon));
         tickets[2].gameObject.SetActive(true);
-        tickets[2].InitializeOrder("Marie","J'ai besoin de comparer la saveur de ces deux jus, peux-tu me les préparer?",temp);
+        tickets[2].InitializeOrder("Marie","J'ai besoin de comparer la saveur de ces deux jus, peux-tu me les préparer?",temp,25);
     }
 
     // Update is called once per frame

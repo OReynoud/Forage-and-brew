@@ -26,3 +26,19 @@ public enum HapticChallengeMovementDirection
     UpLeftDownRight,
     UpRightDownLeft
 }
+
+public enum OrdersQuestLineTags
+{
+    Tutorial,
+    FirstOrders,
+    RoutineOrders
+    
+}
+
+public enum LetterType
+{
+    Orders,
+    Thanks,
+    ShippingError,
+    Narrative
+}
