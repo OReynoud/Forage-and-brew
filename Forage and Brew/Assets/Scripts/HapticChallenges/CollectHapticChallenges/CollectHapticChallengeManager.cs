@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Splines;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -22,6 +23,16 @@ public class CollectHapticChallengeManager : MonoBehaviour
     [SerializeField] private List<HapticChallengeMovementDirectionRectTransform> unearthingHapticChallengeRectTransforms;
     [SerializeField] private Image unearthingHapticChallengeGaugeImage;
     
+    [Header("Scraping Haptic Challenge UI")]
+    [SerializeField] private GameObject scrapingHapticChallengeGameObject;
+    [SerializeField] private SplineContainer scrapingHapticChallengePreviewSplineContainer;
+    [SerializeField] private SplineExtrude scrapingHapticChallengePreviewSplineExtrude;
+    [SerializeField] private SplineContainer scrapingHapticChallengeDrawnSplineContainer;
+    [SerializeField] private SplineExtrude scrapingHapticChallengeDrawnSplineExtrude;
+    [SerializeField] private Image scrapingHapticChallengeStartPositionImage;
+    [SerializeField] private Image scrapingHapticChallengeEndPositionImage;
+    [SerializeField] private Image scrapingHapticChallengeCurrentPositionImage;
+    
     // Global variables
     private bool _isCollectHapticChallengeActive;
     private IngredientToCollectBehaviour _currentIngredientToCollectBehaviour;
@@ -41,6 +52,11 @@ public class CollectHapticChallengeManager : MonoBehaviour
     private int _currentUnearthingHapticChallengeIndex;
     private float _currentUnearthingHapticChallengeTime;
     private bool _hasMovementDirectionBeenTriggeredOnce;
+    
+    // Scraping Haptic Challenge
+    private ScrapingHapticChallengeSo _currentScrapingHapticChallengeSo;
+    private bool _isScrapingHapticChallengeActive;
+    private int _currentScrapingHapticChallengeRouteIndex;
     
     
     private void Awake()
@@ -88,6 +104,12 @@ public class CollectHapticChallengeManager : MonoBehaviour
                     StartUnearthingHapticChallenge();
                 }
                 
+                if (ingredientTypeHapticChallenge.CollectHapticChallengeSo is ScrapingHapticChallengeSo scrapingHapticChallengeSo)
+                {
+                    _currentScrapingHapticChallengeSo = scrapingHapticChallengeSo;
+                    StartScrapingHapticChallenge();
+                }
+                
                 return;
             }
         }
@@ -101,7 +123,9 @@ public class CollectHapticChallengeManager : MonoBehaviour
         CharacterInputManager.Instance.EnableMoveInputs();
     }
 
-    
+
+    #region Scything Haptic Challenge
+
     private void StartScythingHapticChallenge()
     {
         scythingHapticChallengeGameObject.SetActive(true);
@@ -109,8 +133,8 @@ public class CollectHapticChallengeManager : MonoBehaviour
             .GaugeParts[Random.Range(0, _currentScythingHapticChallengeSo.GaugeParts.Count)].GaugeParts;
         scythingHapticChallengeGaugeArrowRectTransform.anchoredPosition = 
             new Vector2(scythingHapticChallengeGaugeArrowRectTransform.anchoredPosition.x,
-            Random.Range(scythingHapticChallengeGaugeRectTransform.sizeDelta.y * -0.5f,
-                scythingHapticChallengeGaugeRectTransform.sizeDelta.y * 0.5f));
+                Random.Range(scythingHapticChallengeGaugeRectTransform.sizeDelta.y * -0.5f,
+                    scythingHapticChallengeGaugeRectTransform.sizeDelta.y * 0.5f));
         _isScythingHapticChallengeGoingUp = Random.Range(0, 2) == 0;
         _currentScythingHapticChallengeTurn = 0;
         _isScythingHapticChallengeActive = true;
@@ -199,6 +223,10 @@ public class CollectHapticChallengeManager : MonoBehaviour
         StartTurnScythingChallenge();
     }
 
+    #endregion
+
+
+    #region Unearthing Haptic Challenge
 
     private void StartUnearthingHapticChallenge()
     {
@@ -338,4 +366,25 @@ public class CollectHapticChallengeManager : MonoBehaviour
     {
         unearthingHapticChallengeGaugeImage.fillAmount += _currentUnearthingHapticChallengeSo.GaugeIncreasePart;
     }
+
+    #endregion
+    
+    
+    #region Scraping Haptic Challenge
+    
+    private void StartScrapingHapticChallenge()
+    {
+        scrapingHapticChallengeGameObject.SetActive(true);
+        _isScrapingHapticChallengeActive = true;
+        _isCollectHapticChallengeActive = true;
+        _currentScrapingHapticChallengeRouteIndex = Random.Range(0, _currentScrapingHapticChallengeSo.Routes.Count);
+        scrapingHapticChallengePreviewSplineContainer.Spline.Clear();
+        foreach (Vector3 point in _currentScrapingHapticChallengeSo.Routes[_currentScrapingHapticChallengeRouteIndex].Points)
+        {
+            scrapingHapticChallengePreviewSplineContainer.Spline.Add(new BezierKnot(point), TangentMode.AutoSmooth);
+        }
+        scrapingHapticChallengePreviewSplineExtrude.Rebuild();
+    }
+    
+    #endregion
 }

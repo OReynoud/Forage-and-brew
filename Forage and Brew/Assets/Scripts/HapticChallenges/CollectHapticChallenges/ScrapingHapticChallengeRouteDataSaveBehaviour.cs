@@ -48,5 +48,7 @@ public class ScrapingHapticChallengeRouteDataSaveBehaviour : MonoBehaviour
         AssetDatabase.CreateAsset(scrapingHapticChallengeRouteSo,
             AssetDatabase.GetAssetPath(scrapingHapticChallengeRouteDataFolder) +
             $"/D_ScrapingHapticChallengeRoute{i}.asset");
+        
+        EditorUtility.SetDirty(scrapingHapticChallengeSo);
     }
 }
