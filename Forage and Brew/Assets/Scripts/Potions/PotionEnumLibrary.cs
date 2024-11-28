@@ -1,11 +1,15 @@
+using System;
+
 public enum PotionTag
 {
     None = 0,
-    Refreshing = 1 << 0,
-    GeneralMedicine = 1 << 1,
-    CoughMedicine = 1 << 2,
-    Painkiller = 1 << 3,
-    ShallowCut = 1 << 4,
-    Laxative = 1 << 5,
-    Catnip = 1 << 6,
+    FullHeal = 1 << 3,
+    Breakfast = 1 << 7,
+    FullEffects = 1 << 4,
+    Colds = 1 << 0,
+    Illness = 1 << 1,
+    ShallowCuts = 1 << 2,
+    Beverage = 1 << 5,
+    EnergyDrink = 1 << 6,
+    
 }

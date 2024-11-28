@@ -16,6 +16,8 @@ public class OrderTicket : MonoBehaviour
 
     public Image[] potionImages;
     public TextMeshProUGUI[] potionKeywords;
+    public float moneyReward;
+    public int daysLeftToComplete;
     
 
     
@@ -45,10 +47,11 @@ public class OrderTicket : MonoBehaviour
         }
     }
     
-    public void InitializeOrder(string client,string description, List<CodexContentManager.PotionDemand> Potions)
+    public void InitializeOrder(string client,string description, List<CodexContentManager.PotionDemand> Potions, float Reward)
     {
         clientNameText.text = client;
         descriptionText.text = description;
+        moneyReward = Reward;
         potionsDemanded.Clear();
         potionsDemanded.AddRange(Potions);
         
