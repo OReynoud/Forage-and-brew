@@ -32,6 +32,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
     [SerializeField] private Image scrapingHapticChallengeStartPositionImage;
     [SerializeField] private Image scrapingHapticChallengeEndPositionImage;
     [SerializeField] private Image scrapingHapticChallengeCurrentPositionImage;
+    [SerializeField] private float scrapingHapticChallengeCanvasSplineScale = 108f;
     
     // Global variables
     private bool _isCollectHapticChallengeActive;
@@ -57,6 +58,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
     private ScrapingHapticChallengeSo _currentScrapingHapticChallengeSo;
     private bool _isScrapingHapticChallengeActive;
     private int _currentScrapingHapticChallengeRouteIndex;
+    private float _currentScrapingHapticChallengeTime;
     
     
     private void Awake()
@@ -68,6 +70,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
     {
         scythingHapticChallengeGameObject.SetActive(false);
         unearthingHapticChallengeGameObject.SetActive(false);
+        scrapingHapticChallengeGameObject.SetActive(false);
     }
 
     private void Update()
@@ -80,6 +83,11 @@ public class CollectHapticChallengeManager : MonoBehaviour
         if (_isUnearthingHapticChallengeActive)
         {
             UpdateUnearthingHapticChallenge();
+        }
+        
+        if (_isScrapingHapticChallengeActive)
+        {
+            UpdateScrapingHapticChallenge();
         }
     }
 
@@ -378,13 +386,78 @@ public class CollectHapticChallengeManager : MonoBehaviour
         _isScrapingHapticChallengeActive = true;
         _isCollectHapticChallengeActive = true;
         _currentScrapingHapticChallengeRouteIndex = Random.Range(0, _currentScrapingHapticChallengeSo.Routes.Count);
+        _currentScrapingHapticChallengeTime = 0f;
+        
         scrapingHapticChallengePreviewSplineContainer.Spline.Clear();
         foreach (Vector3 point in _currentScrapingHapticChallengeSo.Routes[_currentScrapingHapticChallengeRouteIndex].Points)
         {
             scrapingHapticChallengePreviewSplineContainer.Spline.Add(new BezierKnot(point), TangentMode.AutoSmooth);
         }
         scrapingHapticChallengePreviewSplineExtrude.Rebuild();
+        
+        scrapingHapticChallengeDrawnSplineContainer.Spline.Clear();
+        scrapingHapticChallengeDrawnSplineContainer.Spline.Add(new BezierKnot(_currentScrapingHapticChallengeSo.Routes[_currentScrapingHapticChallengeRouteIndex].Points[0]), TangentMode.AutoSmooth);
+        scrapingHapticChallengeDrawnSplineExtrude.Rebuild();
+        
+        scrapingHapticChallengeStartPositionImage.rectTransform.anchoredPosition = new Vector2(
+            _currentScrapingHapticChallengeSo.Routes[_currentScrapingHapticChallengeRouteIndex].Points[0].x * scrapingHapticChallengeCanvasSplineScale,
+            _currentScrapingHapticChallengeSo.Routes[_currentScrapingHapticChallengeRouteIndex].Points[0].y * scrapingHapticChallengeCanvasSplineScale);
+        scrapingHapticChallengeEndPositionImage.rectTransform.anchoredPosition = new Vector2(
+            _currentScrapingHapticChallengeSo.Routes[_currentScrapingHapticChallengeRouteIndex].Points[^1].x * scrapingHapticChallengeCanvasSplineScale,
+            _currentScrapingHapticChallengeSo.Routes[_currentScrapingHapticChallengeRouteIndex].Points[^1].y * scrapingHapticChallengeCanvasSplineScale);
+        scrapingHapticChallengeCurrentPositionImage.rectTransform.anchoredPosition = new Vector2(
+            _currentScrapingHapticChallengeSo.Routes[_currentScrapingHapticChallengeRouteIndex].Points[0].x * scrapingHapticChallengeCanvasSplineScale,
+            _currentScrapingHapticChallengeSo.Routes[_currentScrapingHapticChallengeRouteIndex].Points[0].y * scrapingHapticChallengeCanvasSplineScale);
     }
     
+    public void StopScrapingHapticChallenge()
+    {
+        if (!_isScrapingHapticChallengeActive) return;
+        
+        scrapingHapticChallengeGameObject.SetActive(false);
+        _isScrapingHapticChallengeActive = false;
+        StopCollectHapticChallenge();
+    }
+    
+    private void UpdateScrapingHapticChallenge()
+    {
+        if (!ProcessInputScrapingChallenge()) return;
+
+        if (CheckEndScrapingChallenge()) return;
+        
+        _currentScrapingHapticChallengeTime += Time.deltaTime;
+        
+        if (_currentScrapingHapticChallengeTime >= 1f / _currentScrapingHapticChallengeSo.DrawnPositionsSaveRate)
+        {
+            _currentScrapingHapticChallengeTime = 0f;
+            scrapingHapticChallengeDrawnSplineContainer.Spline.Add(new BezierKnot(
+                (Vector3)(scrapingHapticChallengeCurrentPositionImage.rectTransform.anchoredPosition / 
+                          scrapingHapticChallengeCanvasSplineScale)), TangentMode.AutoSmooth);
+            scrapingHapticChallengeDrawnSplineExtrude.Rebuild();
+        }
+    }
+
+    private bool ProcessInputScrapingChallenge()
+    {
+        if (JoystickInputValue == Vector2.zero) return false;
+        
+        scrapingHapticChallengeCurrentPositionImage.rectTransform.anchoredPosition += JoystickInputValue.normalized *
+            (_currentScrapingHapticChallengeSo.CursorSpeed * Time.deltaTime);
+        
+        return true;
+    }
+
+    private bool CheckEndScrapingChallenge()
+    {
+        if (Vector2.Distance(scrapingHapticChallengeCurrentPositionImage.rectTransform.anchoredPosition,
+            scrapingHapticChallengeEndPositionImage.rectTransform.anchoredPosition) <= _currentScrapingHapticChallengeSo.EndPointDistanceTolerance)
+        {
+            StopScrapingHapticChallenge();
+            return true;
+        }
+        
+        return false;
+    }
+
     #endregion
 }
