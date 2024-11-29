@@ -25,6 +25,7 @@ public class BedBehaviour : MonoBehaviour
     public void Sleep()
     {
         GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay = TimeOfDay.Daytime;
+        GameDontDestroyOnLoadManager.Instance.generateLetters = true;
         WeatherManager.Instance.PassToNextWeatherState();
         LunarCycleManager.Instance.PassToNextLunarCycleState();
         Debug.Log("It's daytime now");

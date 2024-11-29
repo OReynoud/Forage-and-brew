@@ -1,16 +1,19 @@
 using System.Collections.Generic;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OrderTicket : MonoBehaviour
+public class LetterContainer : MonoBehaviour
 {
-
     public TextMeshProUGUI clientNameText;
 
     public Image clientPortraitImage;
     
     public TextMeshProUGUI descriptionText;
+    
+    public TextMeshProUGUI moneyText;
+    public TextMeshProUGUI timeText;
 
     public List<CodexContentManager.PotionDemand> potionsDemanded = new List<CodexContentManager.PotionDemand>();
 
@@ -18,45 +21,21 @@ public class OrderTicket : MonoBehaviour
     public TextMeshProUGUI[] potionKeywords;
     public float moneyReward;
     public int daysLeftToComplete;
-    public bool hasAnOrder;
-    
+
 
     
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    public void InitializeOrder(string client,string description, Sprite clientPortrait, CodexContentManager.PotionDemand[] Potions)
+    public void InitLetter(string clientName, string letterDescription, CodexContentManager.PotionDemand[] Potions, float money, int daysToComplete)
     {
-        clientNameText.text = client;
-        descriptionText.text = description;
-        clientPortraitImage.sprite = clientPortrait;
+        clientNameText.text = clientName;
+        descriptionText.text = letterDescription;
+        moneyText.text = money.ToString(CultureInfo.InvariantCulture);
+        timeText.text = daysToComplete.ToString();
         potionsDemanded.Clear();
         potionsDemanded.AddRange(Potions);
+        moneyReward = money;
+        daysLeftToComplete = daysToComplete;
 
-        foreach (var potionImage in potionImages)
-        {
-            potionImage.enabled = false;
-        }
-        for (int i = 0; i < potionsDemanded.Count; i++)
-        {
-            potionImages[i].enabled = true;
-            potionImages[i].sprite = potionsDemanded[i].relatedIcon;
-        }
-    }
-    
-    public void InitializeOrder(string client,string description, CodexContentManager.PotionDemand[] Potions, float Reward, int TTC)
-    {
-        clientNameText.text = client;
-        descriptionText.text = description;
-        moneyReward = Reward;
-        potionsDemanded.Clear();
-        potionsDemanded.AddRange(Potions);
-        daysLeftToComplete = TTC;
-        
         foreach (var potionImage in potionImages)
         {
             potionImage.gameObject.SetActive(false);
@@ -79,13 +58,5 @@ public class OrderTicket : MonoBehaviour
                 potionKeywords[i].text = potionsDemanded[i].keywords;
             }
         }
-        //Debug.Log("Oui");
-        hasAnOrder = true;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

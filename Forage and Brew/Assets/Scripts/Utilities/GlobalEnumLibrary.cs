@@ -29,6 +29,7 @@ public enum HapticChallengeMovementDirection
 
 public enum OrdersQuestLineTags
 {
+    None,
     Tutorial,
     FirstOrders,
     RoutineOrders

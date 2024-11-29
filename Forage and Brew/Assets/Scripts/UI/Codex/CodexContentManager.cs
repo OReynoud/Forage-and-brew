@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CodexContentManager : MonoBehaviour
 {
+    [Serializable]
     public class PotionDemand
     {
         public bool isSpecific;
@@ -42,18 +44,29 @@ public class CodexContentManager : MonoBehaviour
         var temp = new List<PotionDemand>();
         temp.Add(new PotionDemand(true,testPotion,potionIcon));
         tickets[0].gameObject.SetActive(true);
-        tickets[0].InitializeOrder("Jean-Eude","Je me suis coupé le doigt, tu peux me passer de la pommade s'il te plait?",temp, 10);
+        tickets[0].InitializeOrder("Jean-Eude","Je me suis coupé le doigt, tu peux me passer de la pommade s'il te plait?",temp.ToArray(), 10, 3);
         temp.Clear();
         temp.Add(new PotionDemand(false,testTag,potionIcon,"Something against a fever"));
         tickets[1].gameObject.SetActive(true);
-        tickets[1].InitializeOrder("Paul","J'ai de la fièvre, t'as quelque chose pour m'aider?",temp, 15);
+        tickets[1].InitializeOrder("Paul","J'ai de la fièvre, t'as quelque chose pour m'aider?",temp.ToArray(), 15, 3);
         temp.Clear();
         temp.Add(new PotionDemand(true,testPotion,potionIcon));
         temp.Add(new PotionDemand(true,testPotion,potionIcon));
         tickets[2].gameObject.SetActive(true);
-        tickets[2].InitializeOrder("Marie","J'ai besoin de comparer la saveur de ces deux jus, peux-tu me les préparer?",temp,25);
+        tickets[2].InitializeOrder("Marie","J'ai besoin de comparer la saveur de ces deux jus, peux-tu me les préparer?",temp.ToArray(),25, 3);
     }
 
+
+    void ReceiveNewOrder(string clientName,string orderDescription, PotionDemand[] potionsRequested, int moneyReward, int timeToComplete)
+    {
+        for (int i = 0; i < tickets.Count; i++)
+        {
+            if (tickets[i].hasAnOrder)
+                continue;
+            tickets[i].InitializeOrder(clientName, orderDescription, potionsRequested, moneyReward, timeToComplete);
+            break;
+        }
+    }
     // Update is called once per frame
     void Update()
     {

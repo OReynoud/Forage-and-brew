@@ -25,6 +25,8 @@ public class CharacterInteractController : MonoBehaviour
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public CollectedIngredientBehaviour CurrentCollectedIngredientBehaviour { get; private set; }
 
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public BedBehaviour CurrentNearBed { get; set; }
+    
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public MailBox CurrentNearMailBox { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public CauldronBehaviour CurrentNearCauldron { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public bool AreHandsFull { get; private set; }
 
@@ -95,6 +97,11 @@ public class CharacterInteractController : MonoBehaviour
         else if (CurrentNearBed && collectedIngredientStack.Count == 0)
         {
             CurrentNearBed.Sleep();
+        }
+        else if (CurrentNearMailBox)
+        {
+            CurrentNearMailBox.ShowLetters();
+            Debug.Log("Check letters");
         }
     }
     
