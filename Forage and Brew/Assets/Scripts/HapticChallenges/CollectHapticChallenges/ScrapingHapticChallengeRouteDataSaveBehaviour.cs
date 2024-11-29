@@ -51,4 +51,30 @@ public class ScrapingHapticChallengeRouteDataSaveBehaviour : MonoBehaviour
         
         EditorUtility.SetDirty(scrapingHapticChallengeSo);
     }
+    
+    private void OnDrawGizmos()
+    {
+        for (int i = 0; i < splineContainer.Spline.Count; i++)
+        {
+            if (splineContainer.Spline.Knots.ToArray()[i].Position.x < -3f)
+            {
+                splineContainer.Spline.SetKnot(i, new BezierKnot(new Vector3(-3f, splineContainer.Spline.Knots.ToArray()[i].Position.y, 0f)));
+            }
+            else if (splineContainer.Spline.Knots.ToArray()[i].Position.x > 3f)
+            {
+                splineContainer.Spline.SetKnot(i, new BezierKnot(new Vector3(3f, splineContainer.Spline.Knots.ToArray()[i].Position.y, 0f)));
+            }
+
+            if (splineContainer.Spline.Knots.ToArray()[i].Position.y < -1f)
+            {
+                splineContainer.Spline.SetKnot(i, new BezierKnot(new Vector3(splineContainer.Spline.Knots.ToArray()[i].Position.x, -1f, 0f)));
+            }
+            else if (splineContainer.Spline.Knots.ToArray()[i].Position.y > 1f)
+            {
+                splineContainer.Spline.SetKnot(i, new BezierKnot(new Vector3(splineContainer.Spline.Knots.ToArray()[i].Position.x, 1f, 0f)));
+            }
+            
+            splineContainer.Spline.SetTangentMode(i, TangentMode.AutoSmooth);
+        }
+    }
 }
