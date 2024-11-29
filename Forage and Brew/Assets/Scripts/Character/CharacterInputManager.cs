@@ -145,6 +145,7 @@ public class CharacterInputManager : MonoBehaviour
     {
         _inputs.Player.HapticChallenge.Enable();
         _inputs.Player.HapticChallenge.performed += HapticChallengeOnPerformed;
+        _inputs.Player.HapticChallenge.canceled += HapticChallengeOnCanceled;
         _inputs.Player.HapticChallengeSecond.Enable();
         _inputs.Player.HapticChallengeSecond.performed += HapticChallengeSecondOnPerformed;
         EnableHapticChallengeJoystickInputs();
@@ -189,6 +190,7 @@ public class CharacterInputManager : MonoBehaviour
     {
         _inputs.Player.HapticChallenge.Disable();
         _inputs.Player.HapticChallenge.performed -= HapticChallengeOnPerformed;
+        _inputs.Player.HapticChallenge.canceled -= HapticChallengeOnCanceled;
         _inputs.Player.HapticChallengeSecond.Disable();
         _inputs.Player.HapticChallengeSecond.performed -= HapticChallengeSecondOnPerformed;
         DisableHapticChallengeJoystickInputs();
@@ -225,6 +227,12 @@ public class CharacterInputManager : MonoBehaviour
     private void HapticChallengeOnPerformed(InputAction.CallbackContext obj)
     {
         TemperatureHapticChallengeManager.Instance.StartTemperatureChallenge();
+        CollectHapticChallengeManager.Instance.ActivateHarvestHapticChallenge();
+    }
+    
+    private void HapticChallengeOnCanceled(InputAction.CallbackContext obj)
+    {
+        CollectHapticChallengeManager.Instance.StopTurnHarvestChallenge();
     }
 
     private void HapticChallengeSecondOnPerformed(InputAction.CallbackContext obj)

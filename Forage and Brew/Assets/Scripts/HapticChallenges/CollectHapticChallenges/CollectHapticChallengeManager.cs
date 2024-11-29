@@ -34,6 +34,12 @@ public class CollectHapticChallengeManager : MonoBehaviour
     [SerializeField] private Image scrapingHapticChallengeCurrentPositionImage;
     [SerializeField] private float scrapingHapticChallengeCanvasSplineScale = 108f;
     
+    [Header("Harvest Haptic Challenge UI")]
+    [SerializeField] private GameObject harvestHapticChallengeGameObject;
+    [SerializeField] private RectTransform harvestHapticChallengeGaugeRectTransform;
+    [SerializeField] private RectTransform harvestHapticChallengeCutLineRectTransform;
+    [SerializeField] private RectTransform harvestHapticChallengeGaugeArrowRectTransform;
+    
     // Global variables
     private bool _isCollectHapticChallengeActive;
     private IngredientToCollectBehaviour _currentIngredientToCollectBehaviour;
@@ -60,6 +66,13 @@ public class CollectHapticChallengeManager : MonoBehaviour
     private int _currentScrapingHapticChallengeRouteIndex;
     private float _currentScrapingHapticChallengeTime;
     
+    // Harvest Haptic Challenge
+    private HarvestHapticChallengeSo _currentHarvestHapticChallengeSo;
+    private bool _isHarvestHapticChallengeActive;
+    private bool _hasHarvestHapticChallengeBeenTriggered;
+    private List<HapticChallengeGaugeParts> _currentHarvestHapticChallengeGaugeParts;
+    private int _currentHarvestHapticChallengeTurn;
+    
     
     private void Awake()
     {
@@ -71,6 +84,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
         scythingHapticChallengeGameObject.SetActive(false);
         unearthingHapticChallengeGameObject.SetActive(false);
         scrapingHapticChallengeGameObject.SetActive(false);
+        harvestHapticChallengeGameObject.SetActive(false);
     }
 
     private void Update()
@@ -88,6 +102,11 @@ public class CollectHapticChallengeManager : MonoBehaviour
         if (_isScrapingHapticChallengeActive)
         {
             UpdateScrapingHapticChallenge();
+        }
+        
+        if (_isHarvestHapticChallengeActive)
+        {
+            UpdateHarvestHapticChallenge();
         }
     }
 
@@ -116,6 +135,12 @@ public class CollectHapticChallengeManager : MonoBehaviour
                 {
                     _currentScrapingHapticChallengeSo = scrapingHapticChallengeSo;
                     StartScrapingHapticChallenge();
+                }
+                
+                if (ingredientTypeHapticChallenge.CollectHapticChallengeSo is HarvestHapticChallengeSo harvestHapticChallengeSo)
+                {
+                    _currentHarvestHapticChallengeSo = harvestHapticChallengeSo;
+                    StartHarvestHapticChallenge();
                 }
                 
                 return;
@@ -459,5 +484,78 @@ public class CollectHapticChallengeManager : MonoBehaviour
         return false;
     }
 
+    #endregion
+    
+    
+    #region Harvest Haptic Challenge
+    
+    private void StartHarvestHapticChallenge()
+    {
+        harvestHapticChallengeGameObject.SetActive(true);
+        _isHarvestHapticChallengeActive = true;
+        _isCollectHapticChallengeActive = true;
+        _hasHarvestHapticChallengeBeenTriggered = false;
+        _currentHarvestHapticChallengeGaugeParts = _currentHarvestHapticChallengeSo
+            .GaugeParts[Random.Range(0, _currentHarvestHapticChallengeSo.GaugeParts.Count)].GaugeParts;
+        _currentHarvestHapticChallengeTurn = 0;
+        
+        StartTurnHarvestChallenge();
+    }
+    
+    public void StopHarvestHapticChallenge()
+    {
+        if (!_isHarvestHapticChallengeActive) return;
+        
+        harvestHapticChallengeGameObject.SetActive(false);
+        _isHarvestHapticChallengeActive = false;
+        StopCollectHapticChallenge();
+    }
+    
+    private void UpdateHarvestHapticChallenge()
+    {
+        if (!_hasHarvestHapticChallengeBeenTriggered) return;
+        
+        harvestHapticChallengeGaugeArrowRectTransform.anchoredPosition += new Vector2(
+            harvestHapticChallengeGaugeRectTransform.sizeDelta.x * _currentHarvestHapticChallengeSo.ArrowSpeed *
+            Time.deltaTime, 0f);
+    }
+    
+    private void StartTurnHarvestChallenge()
+    {
+        harvestHapticChallengeGaugeArrowRectTransform.anchoredPosition = 
+            new Vector2(0f, harvestHapticChallengeGaugeArrowRectTransform.anchoredPosition.y);
+        HapticChallengeGaugeParts currentGaugeParts = _currentHarvestHapticChallengeGaugeParts[_currentHarvestHapticChallengeTurn];
+        harvestHapticChallengeCutLineRectTransform.anchoredPosition = new Vector2(
+            ((currentGaugeParts.PerfectGaugeMaxValue - currentGaugeParts.PerfectGaugeMinValue) * 0.5f + 
+             currentGaugeParts.PerfectGaugeMinValue) * harvestHapticChallengeGaugeRectTransform.sizeDelta.x,
+            harvestHapticChallengeCutLineRectTransform.anchoredPosition.y);
+        _hasHarvestHapticChallengeBeenTriggered = false;
+    }
+    
+    public void StopTurnHarvestChallenge()
+    {
+        // Check arrow position
+        
+        NextTurnHarvestChallenge();
+    }
+    
+    private void NextTurnHarvestChallenge()
+    {
+        _currentHarvestHapticChallengeTurn++;
+        
+        if (_currentHarvestHapticChallengeTurn == _currentHarvestHapticChallengeGaugeParts.Count)
+        {
+            StopHarvestHapticChallenge();
+            return;
+        }
+        
+        StartTurnHarvestChallenge();
+    }
+    
+    public void ActivateHarvestHapticChallenge()
+    {
+        _hasHarvestHapticChallengeBeenTriggered = true;
+    }
+    
     #endregion
 }
