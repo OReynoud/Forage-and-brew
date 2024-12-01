@@ -63,12 +63,34 @@ public class CharacterInputManager : MonoBehaviour
         EnableCodexInputs();
     }
 
+    public void EnableMailInputs()
+    {
+        _inputs.Player.PassLetters.Enable();
+        _inputs.Player.PassLetters.performed += PassLettersOnperformed;
+    }
+
+    public void DisableMailInputs()
+    {
+        _inputs.Player.PassLetters.Disable();
+        _inputs.Player.PassLetters.performed -= PassLettersOnperformed;
+    }
+    private void PassLettersOnperformed(InputAction.CallbackContext obj)
+    {
+        if (!MailBox.instance) 
+            return;
+        MailBox.instance.PassToNextLetter();
+    }
+
     private void EnableCodexInputs()
     {
         _inputs.Player.Codex.Enable();
         _inputs.Player.Codex.performed += CodexOnPerformed;
+        _inputs.Player.BookMarkLeft.Enable();
+        _inputs.Player.BookMarkRight.Enable();
         _inputs.Player.BookMarkLeft.performed += BookMarkLeftOnPerformed;
         _inputs.Player.BookMarkRight.performed += BookMarkRightOnPerformed;
+        _inputs.Player.StartPageNavigation.Enable();
+        _inputs.Player.ExitPageNavigation.Enable();
         _inputs.Player.StartPageNavigation.performed += StartPageNavigationOnPerformed;
         _inputs.Player.ExitPageNavigation.performed += ExitPageNavigationOnPerformed;
     }
@@ -170,6 +192,7 @@ public class CharacterInputManager : MonoBehaviour
         DisableInteractInputs();
         DisableHapticChallengeInputs();
         DisableCodexInputs();
+        DisableMailInputs();
     }
     
     public void DisableMoveInputs()

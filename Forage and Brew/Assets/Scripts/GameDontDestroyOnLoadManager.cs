@@ -16,10 +16,11 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     [Serializable]
     public class Letter
     {
+        public LetterContainer associatedLetter;
         public LetterContentSO LetterContent;
         public int days;
 
-        public Letter(LetterContentSO Letter, int delay)
+        public Letter(LetterContentSO Letter, int delay )
         {
             LetterContent = Letter;
             days = delay;
@@ -42,12 +43,11 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Update()
     {
-        if (generateLetters && MailBox.instance != null)
-        {
-            generateLetters = false;
-            MailBox.instance.GenerateLetters();
-        }
+        if (!generateLetters || MailBox.instance == null) return;
+        Debug.Log("GeneratedLetters");
+        generateLetters = false;
+        MailBox.instance.GenerateLetters();
     }
 }

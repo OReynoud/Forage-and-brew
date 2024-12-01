@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using UnityEngine;
 
 public class MailBox : Singleton<MailBox>
@@ -24,9 +25,15 @@ public class MailBox : Singleton<MailBox>
     public Vector2 targetPos;
 
 
+    [BoxGroup("LetterAnimation")] public AnimationCurve animCurve;
+    [BoxGroup("LetterAnimation")] public Vector2 aimedPos;
+    [BoxGroup("LetterAnimation")] public float animSpeed;
+
+
     private void Start()
     {
         interactInputCanvasGameObject.SetActive(false);
+        CharacterInputManager.Instance.DisableMailInputs();
     }
 
     private void Update()
@@ -64,21 +71,64 @@ public class MailBox : Singleton<MailBox>
     public void GenerateLetters()
     {
         GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new GameDontDestroyOnLoadManager.Letter(PossibleLettersPool[0],PossibleLettersPool[0].TimeToFulfill));
+        GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new GameDontDestroyOnLoadManager.Letter(PossibleLettersPool[1],PossibleLettersPool[1].TimeToFulfill));
+        GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new GameDontDestroyOnLoadManager.Letter(PossibleLettersPool[2],PossibleLettersPool[2].TimeToFulfill));
         foreach (var letter in GameDontDestroyOnLoadManager.Instance.GeneratedLetters)
         {
+            
             var current = Instantiate(letterPrefab,letterPile);
             current.InitLetter(
                 letter.LetterContent.ClientName,
                 letter.LetterContent.Description,
                 letter.LetterContent.RequestedPotions,
                 letter.LetterContent.MoneyReward,
-                letter.LetterContent.TimeToFulfill);
+                letter.LetterContent.TimeToFulfill,
+                letter.LetterContent.LetterType);
+            letter.associatedLetter = current;
+            current.transform.SetSiblingIndex(1);
         }
     }
 
     public void ShowLetters()
     {
+        if (GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Count == 0)
+            return;
+        
         CharacterInputManager.Instance.DisableMoveInputs();
+        CharacterInputManager.Instance.DisableInteractInputs();
+        CharacterInputManager.Instance.EnableMailInputs();
         targetPos = Vector2.zero;
+    }
+
+    public void PassToNextLetter()
+    {
+        for (int i = 0; i < GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Count; i++)
+        {
+            if (GameDontDestroyOnLoadManager.Instance.GeneratedLetters[i].associatedLetter.isMoved)
+                continue;
+            GameDontDestroyOnLoadManager.Instance.GeneratedLetters[i].associatedLetter.AnimateLetter(true);
+            if (i != GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Count - 1)
+                return;
+        }
+        Debug.Log("Finished Reading all letters");
+        CharacterInputManager.Instance.EnableMoveInputs();
+        CharacterInputManager.Instance.EnableInteractInputs();
+        CharacterInputManager.Instance.DisableMailInputs();
+        targetPos = new Vector2(0,-1500);
+
+
+        foreach (var letter in GameDontDestroyOnLoadManager.Instance.GeneratedLetters)
+        {
+            if (letter.LetterContent.LetterType == LetterType.Orders)
+            {
+                CodexContentManager.instance.ReceiveNewOrder(                
+                    letter.LetterContent.ClientName,
+                    letter.LetterContent.Description,
+                    letter.LetterContent.RequestedPotions,
+                    letter.LetterContent.MoneyReward,
+                    letter.LetterContent.TimeToFulfill);
+            }
+        }
+        
     }
 }

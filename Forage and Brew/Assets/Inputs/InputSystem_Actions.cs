@@ -161,6 +161,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PassLetters"",
+                    ""type"": ""Button"",
+                    ""id"": ""b6fd6e36-69b9-42e3-8eef-a8bab2d31cbc"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -403,6 +412,39 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""StartPageNavigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8eb73d7b-c03e-44b5-9001-1d6650d7230a"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""PassLetters"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""57e007ae-4eb8-41f5-8fa7-748ff1ee3d3f"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""PassLetters"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e3b24f5b-58f7-493c-b31b-478c6853a93f"",
+                    ""path"": ""<HID::PowerA NSW wired controller>/button3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""PassLetters"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1247,6 +1289,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_BookMarkLeft = m_Player.FindAction("BookMarkLeft", throwIfNotFound: true);
         m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
         m_Player_ExitPageNavigation = m_Player.FindAction("ExitPageNavigation", throwIfNotFound: true);
+        m_Player_PassLetters = m_Player.FindAction("PassLetters", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1341,6 +1384,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_BookMarkLeft;
     private readonly InputAction m_Player_Cancel;
     private readonly InputAction m_Player_ExitPageNavigation;
+    private readonly InputAction m_Player_PassLetters;
     public struct PlayerActions
     {
         private @InputSystem_Actions m_Wrapper;
@@ -1360,6 +1404,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @BookMarkLeft => m_Wrapper.m_Player_BookMarkLeft;
         public InputAction @Cancel => m_Wrapper.m_Player_Cancel;
         public InputAction @ExitPageNavigation => m_Wrapper.m_Player_ExitPageNavigation;
+        public InputAction @PassLetters => m_Wrapper.m_Player_PassLetters;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1414,6 +1459,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ExitPageNavigation.started += instance.OnExitPageNavigation;
             @ExitPageNavigation.performed += instance.OnExitPageNavigation;
             @ExitPageNavigation.canceled += instance.OnExitPageNavigation;
+            @PassLetters.started += instance.OnPassLetters;
+            @PassLetters.performed += instance.OnPassLetters;
+            @PassLetters.canceled += instance.OnPassLetters;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1463,6 +1511,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ExitPageNavigation.started -= instance.OnExitPageNavigation;
             @ExitPageNavigation.performed -= instance.OnExitPageNavigation;
             @ExitPageNavigation.canceled -= instance.OnExitPageNavigation;
+            @PassLetters.started -= instance.OnPassLetters;
+            @PassLetters.performed -= instance.OnPassLetters;
+            @PassLetters.canceled -= instance.OnPassLetters;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1660,6 +1711,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnBookMarkLeft(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
         void OnExitPageNavigation(InputAction.CallbackContext context);
+        void OnPassLetters(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

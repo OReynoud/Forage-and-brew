@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CodexContentManager : MonoBehaviour
+public class CodexContentManager : Singleton<CodexContentManager>
 {
     [Serializable]
     public class PotionDemand
@@ -41,6 +41,13 @@ public class CodexContentManager : MonoBehaviour
         {
             ticket.gameObject.SetActive(false);
         }
+        //DebugTickets();
+    }
+
+
+
+    public void DebugTickets()
+    {
         var temp = new List<PotionDemand>();
         temp.Add(new PotionDemand(true,testPotion,potionIcon));
         tickets[0].gameObject.SetActive(true);
@@ -55,14 +62,13 @@ public class CodexContentManager : MonoBehaviour
         tickets[2].gameObject.SetActive(true);
         tickets[2].InitializeOrder("Marie","J'ai besoin de comparer la saveur de ces deux jus, peux-tu me les préparer?",temp.ToArray(),25, 3);
     }
-
-
-    void ReceiveNewOrder(string clientName,string orderDescription, PotionDemand[] potionsRequested, int moneyReward, int timeToComplete)
+    public void ReceiveNewOrder(string clientName,string orderDescription, PotionDemand[] potionsRequested, float moneyReward, int timeToComplete)
     {
         for (int i = 0; i < tickets.Count; i++)
         {
             if (tickets[i].hasAnOrder)
                 continue;
+            tickets[i].gameObject.SetActive(true);
             tickets[i].InitializeOrder(clientName, orderDescription, potionsRequested, moneyReward, timeToComplete);
             break;
         }

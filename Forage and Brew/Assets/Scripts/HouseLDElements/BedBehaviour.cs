@@ -8,6 +8,7 @@ public class BedBehaviour : MonoBehaviour
     private void Start()
     {
         interactInputCanvasGameObject.SetActive(false);
+        GameDontDestroyOnLoadManager.Instance.generateLetters = true;
     }
 
 

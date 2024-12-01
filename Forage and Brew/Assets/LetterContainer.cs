@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using TMPro;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,9 +25,13 @@ public class LetterContainer : MonoBehaviour
     public int daysLeftToComplete;
 
 
-    
+    public bool isMoved;
+    public LetterType letterType;
+    public float animIndex;
 
-    public void InitLetter(string clientName, string letterDescription, CodexContentManager.PotionDemand[] Potions, float money, int daysToComplete)
+    public AnimationClip animClip;
+
+    public void InitLetter(string clientName, string letterDescription, CodexContentManager.PotionDemand[] Potions, float money, int daysToComplete, LetterType typeOfLetter)
     {
         clientNameText.text = clientName;
         descriptionText.text = letterDescription;
@@ -57,6 +63,24 @@ public class LetterContainer : MonoBehaviour
                 potionKeywords[i].transform.parent.gameObject.SetActive(true);
                 potionKeywords[i].text = potionsDemanded[i].keywords;
             }
+        }
+
+        letterType = typeOfLetter;
+    }
+
+    public void AnimateLetter(bool toMove)
+    {
+        isMoved = toMove;
+        
+        animIndex = 0;
+
+    }
+    public void Update()
+    {
+        if (isMoved)
+        {
+            animIndex += Time.deltaTime * MailBox.instance.animSpeed;
+            animClip.SampleAnimation(gameObject,MailBox.instance.animCurve.Evaluate(animIndex));
         }
     }
 }
