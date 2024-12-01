@@ -534,6 +534,8 @@ public class CollectHapticChallengeManager : MonoBehaviour
     
     public void StopTurnHarvestChallenge()
     {
+        if (!_isHarvestHapticChallengeActive) return;
+        
         // Check arrow position
         
         NextTurnHarvestChallenge();
@@ -554,6 +556,8 @@ public class CollectHapticChallengeManager : MonoBehaviour
     
     public void ActivateHarvestHapticChallenge()
     {
+        if (!_isHarvestHapticChallengeActive) return;
+        
         _hasHarvestHapticChallengeBeenTriggered = true;
     }
     
