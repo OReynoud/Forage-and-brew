@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -7,6 +6,7 @@ public class CollectedIngredientBehaviour : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] private CollectedIngredientGlobalValuesSo collectedIngredientGlobalValuesSo;
     [field: SerializeField] public IngredientValuesSo IngredientValuesSo { get; set; }
+    public CookHapticChallengeSo CookedForm { get; set; }
     [SerializeField] private SphereCollider grabTrigger;
     private Rigidbody rb;
     [SerializeField] private Collider ingredientCollider;

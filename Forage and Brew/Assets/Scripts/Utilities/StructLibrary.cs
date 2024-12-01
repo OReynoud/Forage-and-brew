@@ -35,7 +35,7 @@ public struct WeatherStateEndProbability
 }
 
 [Serializable]
-public struct CookedIngredientForm
+public struct CookedIngredientForm : IEquatable<CookedIngredientForm>
 {
     public CookedIngredientForm(IngredientValuesSo ingredient, CookHapticChallengeSo cookedForm)
     {
@@ -57,6 +57,21 @@ public struct CookedIngredientForm
     [field: AllowNesting] [field: HideIf("IsAType")] [field: SerializeField] public IngredientValuesSo Ingredient { get; private set; }
     [field: AllowNesting] [field: ShowIf("IsAType")] [field: SerializeField] public IngredientType IngredientType { get; private set; }
     [field: SerializeField] public CookHapticChallengeSo CookedForm { get; private set; }
+
+    public bool Equals(CookedIngredientForm other)
+    {
+        return IsAType == other.IsAType && Equals(Ingredient, other.Ingredient) && IngredientType == other.IngredientType && Equals(CookedForm, other.CookedForm);
+    }
+
+    public override bool Equals(object obj)
+    {
+        return obj is CookedIngredientForm other && Equals(other);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(IsAType, Ingredient, (int)IngredientType, CookedForm);
+    }
 }
 
 [Serializable]

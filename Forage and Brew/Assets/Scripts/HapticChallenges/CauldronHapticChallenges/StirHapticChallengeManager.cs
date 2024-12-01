@@ -75,36 +75,30 @@ public class StirHapticChallengeManager : MonoBehaviour
 
             for (int i = 0; i < potion.TemperatureChallengeIngredients.Length; i++)
             {
-                List<IngredientValuesSo> ingredients = new();
-                List<IngredientType> ingredientTypes = new();
-                List<IngredientValuesSo> cauldronIngredients = new();
+                List<CookedIngredientForm> potionIngredients = new();
+                List<CookedIngredientForm> cauldronIngredients = new();
 
                 // Store all ingredients in the cauldron
                 foreach (CookedIngredientForm cookedIngredientForm in CurrentCauldron.TemperatureAndIngredients[i].CookedIngredients)
                 {
-                    cauldronIngredients.Add(cookedIngredientForm.Ingredient);
+                    cauldronIngredients.Add(cookedIngredientForm);
                 }
 
                 // Store all ingredients and ingredient types in the potion step
                 foreach (CookedIngredientForm cookedIngredientForm in potion.TemperatureChallengeIngredients[i].CookedIngredients)
                 {
-                    if (cookedIngredientForm.IsAType)
-                    {
-                        ingredientTypes.Add(cookedIngredientForm.IngredientType);
-                    }
-                    else
-                    {
-                        ingredients.Add(cookedIngredientForm.Ingredient);
-                    }
+                    potionIngredients.Add(cookedIngredientForm);
                 }
 
                 // Check if the cauldron has the right ingredient count
-                if (cauldronIngredients.Count != ingredients.Count + ingredientTypes.Count) break;
+                if (cauldronIngredients.Count != potionIngredients.Count) break;
 
                 // Check if the cauldron has the right ingredients
-                foreach (IngredientValuesSo ingredient in ingredients)
+                foreach (CookedIngredientForm cookedIngredientForm in potionIngredients)
                 {
-                    if (!cauldronIngredients.Remove(ingredient))
+                    if (cookedIngredientForm.IsAType) continue;
+                    
+                    if (!cauldronIngredients.Remove(cookedIngredientForm))
                     {
                         isRightPotion = false;
                         break;
@@ -113,15 +107,19 @@ public class StirHapticChallengeManager : MonoBehaviour
 
                 if (!isRightPotion) break;
 
-                foreach (IngredientType ingredientType in ingredientTypes)
+                foreach (CookedIngredientForm cookedIngredientForm in potionIngredients)
                 {
-                    if (!cauldronIngredients.Exists(ingredient => ingredient.Type == ingredientType))
+                    if (!cookedIngredientForm.IsAType) continue;
+                    
+                    IngredientType ingredientType = cookedIngredientForm.IngredientType;
+                    
+                    if (!cauldronIngredients.Exists(ingredient => ingredient.Ingredient.Type == cookedIngredientForm.IngredientType))
                     {
                         isRightPotion = false;
                         break;
                     }
 
-                    cauldronIngredients.Remove(cauldronIngredients.Find(ingredient => ingredient.Type == ingredientType));
+                    cauldronIngredients.Remove(cauldronIngredients.Find(ingredient => ingredient.Ingredient.Type == ingredientType));
                 }
 
                 if (!isRightPotion) break;

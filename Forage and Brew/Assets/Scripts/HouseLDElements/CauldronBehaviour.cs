@@ -49,7 +49,7 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>
         }
         
         TemperatureAndIngredients[^1].CookedIngredients.Add(new CookedIngredientForm(
-            collectedIngredientBehaviour.IngredientValuesSo, null));
+            collectedIngredientBehaviour.IngredientValuesSo, collectedIngredientBehaviour.CookedForm));
     }
     
     public void AddTemperature(Temperature temperature)
