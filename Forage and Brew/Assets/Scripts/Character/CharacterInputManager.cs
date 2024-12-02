@@ -53,7 +53,9 @@ public class CharacterInputManager : MonoBehaviour
 
     #endregion
 
-    
+
+    #region Enable Inputs
+
     public void EnableInputs()
     {
         _inputs.Player.Enable();
@@ -61,90 +63,6 @@ public class CharacterInputManager : MonoBehaviour
         EnableInteractInputs();
         EnableHapticChallengeInputs();
         EnableCodexInputs();
-    }
-
-    public void EnableMailInputs()
-    {
-        _inputs.Player.PassLetters.Enable();
-        _inputs.Player.PassLetters.performed += PassLettersOnperformed;
-    }
-
-    public void DisableMailInputs()
-    {
-        _inputs.Player.PassLetters.Disable();
-        _inputs.Player.PassLetters.performed -= PassLettersOnperformed;
-    }
-    private void PassLettersOnperformed(InputAction.CallbackContext obj)
-    {
-        if (!MailBox.instance) 
-            return;
-        MailBox.instance.PassToNextLetter();
-    }
-
-    private void EnableCodexInputs()
-    {
-        _inputs.Player.Codex.Enable();
-        _inputs.Player.Codex.performed += CodexOnPerformed;
-        _inputs.Player.BookMarkLeft.Enable();
-        _inputs.Player.BookMarkRight.Enable();
-        _inputs.Player.BookMarkLeft.performed += BookMarkLeftOnPerformed;
-        _inputs.Player.BookMarkRight.performed += BookMarkRightOnPerformed;
-        _inputs.Player.StartPageNavigation.Enable();
-        _inputs.Player.ExitPageNavigation.Enable();
-        _inputs.Player.StartPageNavigation.performed += StartPageNavigationOnPerformed;
-        _inputs.Player.ExitPageNavigation.performed += ExitPageNavigationOnPerformed;
-    }
-
-
-
-    private void DisableCodexInputs()
-    {
-        _inputs.Player.Codex.Disable();
-        _inputs.Player.Codex.performed -= CodexOnPerformed;
-        _inputs.Player.BookMarkLeft.performed -= BookMarkLeftOnPerformed;
-        _inputs.Player.BookMarkRight.performed -= BookMarkRightOnPerformed;
-        _inputs.Player.StartPageNavigation.performed -= StartPageNavigationOnPerformed;
-        _inputs.Player.ExitPageNavigation.performed -= ExitPageNavigationOnPerformed;
-    }
-
-    private void BookMarkRightOnPerformed(InputAction.CallbackContext obj)
-    {
-        if (!showCodex)return;
-        
-        codexController.PlayerInputNavigateBookmarks(false);
-    }
-    private void BookMarkLeftOnPerformed(InputAction.CallbackContext obj)
-    {
-        if (!showCodex)return;
-        
-        codexController.PlayerInputNavigateBookmarks(true);
-    }
-
-    private void CodexOnPerformed(InputAction.CallbackContext obj)
-    {
-        movementController.Move(Vector2.zero);
-        showCodex = !showCodex;
-
-        if (!showCodex)
-        {
-            OnNavigationChange.Invoke(false);
-        }
-        
-        if (OnCodexShow != null)
-            OnCodexShow.Invoke();
-    }
-    private void ExitPageNavigationOnPerformed(InputAction.CallbackContext obj)
-    {
-        if (!showCodex)return;
-        if (OnNavigationChange != null)
-            OnNavigationChange.Invoke(false);
-    }
-
-    private void StartPageNavigationOnPerformed(InputAction.CallbackContext obj)
-    {
-        if (!showCodex)return;
-        if (OnCodexShow != null)
-            OnNavigationChange.Invoke(true);
     }
 
     public void EnableMoveInputs()
@@ -161,8 +79,6 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.Cancel.performed += CancelOnPerformed;
     }
 
-
-
     public void EnableHapticChallengeInputs()
     {
         _inputs.Player.HapticChallenge.Enable();
@@ -170,7 +86,18 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.HapticChallenge.canceled += HapticChallengeOnCanceled;
         _inputs.Player.HapticChallengeSecond.Enable();
         _inputs.Player.HapticChallengeSecond.performed += HapticChallengeSecondOnPerformed;
+        EnableChoppingHapticChallengeInputs();
         EnableHapticChallengeJoystickInputs();
+    }
+    
+    public void EnableChoppingHapticChallengeInputs()
+    {
+        _inputs.Player.ChoppingHapticChallenge1.Enable();
+        _inputs.Player.ChoppingHapticChallenge1.performed += ChoppingHapticChallenge1OnPerformed;
+        _inputs.Player.ChoppingHapticChallenge2.Enable();
+        _inputs.Player.ChoppingHapticChallenge2.performed += ChoppingHapticChallenge2OnPerformed;
+        _inputs.Player.ChoppingHapticChallenge3.Enable();
+        _inputs.Player.ChoppingHapticChallenge3.performed += ChoppingHapticChallenge3OnPerformed;
     }
     
     public void EnableHapticChallengeJoystickInputs()
@@ -185,6 +112,31 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.HapticChallengeJoystickVerticalAxis.performed += HapticChallengeJoystickVerticalAxisOnPerformed;
         _inputs.Player.HapticChallengeJoystickVerticalAxis.canceled += HapticChallengeJoystickVerticalAxisOnPerformed;
     }
+
+    private void EnableCodexInputs()
+    {
+        _inputs.Player.Codex.Enable();
+        _inputs.Player.Codex.performed += CodexOnPerformed;
+        _inputs.Player.BookMarkLeft.Enable();
+        _inputs.Player.BookMarkRight.Enable();
+        _inputs.Player.BookMarkLeft.performed += BookMarkLeftOnPerformed;
+        _inputs.Player.BookMarkRight.performed += BookMarkRightOnPerformed;
+        _inputs.Player.StartPageNavigation.Enable();
+        _inputs.Player.ExitPageNavigation.Enable();
+        _inputs.Player.StartPageNavigation.performed += StartPageNavigationOnPerformed;
+        _inputs.Player.ExitPageNavigation.performed += ExitPageNavigationOnPerformed;
+    }
+
+    public void EnableMailInputs()
+    {
+        _inputs.Player.PassLetters.Enable();
+        _inputs.Player.PassLetters.performed += PassLettersOnPerformed;
+    }
+
+    #endregion
+
+    
+    #region Disable Inputs
 
     public void DisableInputs()
     {
@@ -216,7 +168,18 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.HapticChallenge.canceled -= HapticChallengeOnCanceled;
         _inputs.Player.HapticChallengeSecond.Disable();
         _inputs.Player.HapticChallengeSecond.performed -= HapticChallengeSecondOnPerformed;
+        DisableChoppingHapticChallengeInputs();
         DisableHapticChallengeJoystickInputs();
+    }
+    
+    public void DisableChoppingHapticChallengeInputs()
+    {
+        _inputs.Player.ChoppingHapticChallenge1.Disable();
+        _inputs.Player.ChoppingHapticChallenge1.performed -= ChoppingHapticChallenge1OnPerformed;
+        _inputs.Player.ChoppingHapticChallenge2.Disable();
+        _inputs.Player.ChoppingHapticChallenge2.performed -= ChoppingHapticChallenge2OnPerformed;
+        _inputs.Player.ChoppingHapticChallenge3.Disable();
+        _inputs.Player.ChoppingHapticChallenge3.performed -= ChoppingHapticChallenge3OnPerformed;
     }
     
     public void DisableHapticChallengeJoystickInputs()
@@ -231,8 +194,32 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.HapticChallengeJoystickVerticalAxis.performed -= HapticChallengeJoystickVerticalAxisOnPerformed;
         _inputs.Player.HapticChallengeJoystickVerticalAxis.canceled -= HapticChallengeJoystickVerticalAxisOnPerformed;
     }
-
     
+    private void DisableCodexInputs()
+    {
+        _inputs.Player.Codex.Disable();
+        _inputs.Player.Codex.performed -= CodexOnPerformed;
+        _inputs.Player.BookMarkLeft.Disable();
+        _inputs.Player.BookMarkRight.Disable();
+        _inputs.Player.BookMarkLeft.performed -= BookMarkLeftOnPerformed;
+        _inputs.Player.BookMarkRight.performed -= BookMarkRightOnPerformed;
+        _inputs.Player.StartPageNavigation.Disable();
+        _inputs.Player.ExitPageNavigation.Disable();
+        _inputs.Player.StartPageNavigation.performed -= StartPageNavigationOnPerformed;
+        _inputs.Player.ExitPageNavigation.performed -= ExitPageNavigationOnPerformed;
+    }
+
+    public void DisableMailInputs()
+    {
+        _inputs.Player.PassLetters.Disable();
+        _inputs.Player.PassLetters.performed -= PassLettersOnPerformed;
+    }
+
+    #endregion
+
+
+    #region Main Input Callbacks
+
     private void MoveOnPerformed(InputAction.CallbackContext obj)
     {
         // Debug.Log(obj.ReadValue<Vector2>());
@@ -247,10 +234,16 @@ public class CharacterInputManager : MonoBehaviour
         characterInteractController.Cancel();
     }
 
+    #endregion
+
+
+    #region Haptic Challenge Input Callbacks
+
     private void HapticChallengeOnPerformed(InputAction.CallbackContext obj)
     {
         TemperatureHapticChallengeManager.Instance.StartTemperatureChallenge();
         CollectHapticChallengeManager.Instance.ActivateHarvestHapticChallenge();
+        ChoppingHapticChallengeManager.Instance.StartChoppingChallenge();
     }
     
     private void HapticChallengeOnCanceled(InputAction.CallbackContext obj)
@@ -261,6 +254,21 @@ public class CharacterInputManager : MonoBehaviour
     private void HapticChallengeSecondOnPerformed(InputAction.CallbackContext obj)
     {
         StirHapticChallengeManager.Instance.StartStirChallenge();
+    }
+    
+    private void ChoppingHapticChallenge1OnPerformed(InputAction.CallbackContext obj)
+    {
+        ChoppingHapticChallengeManager.Instance.NextChoppingTurn(1);
+    }
+    
+    private void ChoppingHapticChallenge2OnPerformed(InputAction.CallbackContext obj)
+    {
+        ChoppingHapticChallengeManager.Instance.NextChoppingTurn(2);
+    }
+    
+    private void ChoppingHapticChallenge3OnPerformed(InputAction.CallbackContext obj)
+    {
+        ChoppingHapticChallengeManager.Instance.NextChoppingTurn(3);
     }
     
     private void HapticChallengeJoystickOnPerformed(InputAction.CallbackContext obj)
@@ -283,4 +291,60 @@ public class CharacterInputManager : MonoBehaviour
         TemperatureHapticChallengeManager.Instance.JoystickInputValue = new Vector2(TemperatureHapticChallengeManager.Instance.JoystickInputValue.x, obj.ReadValue<float>());
         CollectHapticChallengeManager.Instance.JoystickInputValue = new Vector2(CollectHapticChallengeManager.Instance.JoystickInputValue.x, obj.ReadValue<float>());
     }
+
+    #endregion
+
+
+    #region Codex Input Callbacks
+
+    private void CodexOnPerformed(InputAction.CallbackContext obj)
+    {
+        movementController.Move(Vector2.zero);
+        showCodex = !showCodex;
+
+        if (!showCodex)
+        {
+            OnNavigationChange.Invoke(false);
+        }
+        
+        if (OnCodexShow != null)
+            OnCodexShow.Invoke();
+    }
+    
+    private void BookMarkLeftOnPerformed(InputAction.CallbackContext obj)
+    {
+        if (!showCodex)return;
+        
+        codexController.PlayerInputNavigateBookmarks(true);
+    }
+    
+    private void BookMarkRightOnPerformed(InputAction.CallbackContext obj)
+    {
+        if (!showCodex)return;
+        
+        codexController.PlayerInputNavigateBookmarks(false);
+    }
+
+    private void StartPageNavigationOnPerformed(InputAction.CallbackContext obj)
+    {
+        if (!showCodex)return;
+        if (OnCodexShow != null)
+            OnNavigationChange.Invoke(true);
+    }
+    
+    private void ExitPageNavigationOnPerformed(InputAction.CallbackContext obj)
+    {
+        if (!showCodex)return;
+        if (OnNavigationChange != null)
+            OnNavigationChange.Invoke(false);
+    }
+    
+    private void PassLettersOnPerformed(InputAction.CallbackContext obj)
+    {
+        if (!MailBox.instance) 
+            return;
+        MailBox.instance.PassToNextLetter();
+    }
+
+    #endregion
 }

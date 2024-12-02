@@ -170,6 +170,33 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChoppingHapticChallenge1"",
+                    ""type"": ""Button"",
+                    ""id"": ""9f70e8ce-1e40-4798-97eb-f4215dd20944"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChoppingHapticChallenge2"",
+                    ""type"": ""Button"",
+                    ""id"": ""b44e7dfc-18d7-4ff6-95ac-35c70cf61eca"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChoppingHapticChallenge3"",
+                    ""type"": ""Button"",
+                    ""id"": ""56b3bdfb-3f60-4c27-98c3-5776950e4d15"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -687,6 +714,72 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": ""Invert"",
                     ""groups"": "";Gamepad"",
                     ""action"": ""HapticChallengeJoystickVerticalAxis"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""756eb906-cb51-4bc7-8fd7-f6b2fb4907c9"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ChoppingHapticChallenge1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4ec8e1ac-cc1a-4e4d-957a-2359ee0daac7"",
+                    ""path"": ""<HID::PowerA NSW wired controller>/button3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ChoppingHapticChallenge1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a09ddcd5-0a44-45b5-8d4a-ff5e1106c049"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ChoppingHapticChallenge2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4bb14adc-bf1f-4b55-ad82-ea20db86cc43"",
+                    ""path"": ""<HID::PowerA NSW wired controller>/button4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ChoppingHapticChallenge2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""545f0d06-1876-48a7-a695-fa974d3580bd"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ChoppingHapticChallenge3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f4dc77dc-144c-431f-974b-441e5baaec03"",
+                    ""path"": ""<HID::PowerA NSW wired controller>/trigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ChoppingHapticChallenge3"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1290,6 +1383,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
         m_Player_ExitPageNavigation = m_Player.FindAction("ExitPageNavigation", throwIfNotFound: true);
         m_Player_PassLetters = m_Player.FindAction("PassLetters", throwIfNotFound: true);
+        m_Player_ChoppingHapticChallenge1 = m_Player.FindAction("ChoppingHapticChallenge1", throwIfNotFound: true);
+        m_Player_ChoppingHapticChallenge2 = m_Player.FindAction("ChoppingHapticChallenge2", throwIfNotFound: true);
+        m_Player_ChoppingHapticChallenge3 = m_Player.FindAction("ChoppingHapticChallenge3", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1385,6 +1481,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Cancel;
     private readonly InputAction m_Player_ExitPageNavigation;
     private readonly InputAction m_Player_PassLetters;
+    private readonly InputAction m_Player_ChoppingHapticChallenge1;
+    private readonly InputAction m_Player_ChoppingHapticChallenge2;
+    private readonly InputAction m_Player_ChoppingHapticChallenge3;
     public struct PlayerActions
     {
         private @InputSystem_Actions m_Wrapper;
@@ -1405,6 +1504,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @Cancel => m_Wrapper.m_Player_Cancel;
         public InputAction @ExitPageNavigation => m_Wrapper.m_Player_ExitPageNavigation;
         public InputAction @PassLetters => m_Wrapper.m_Player_PassLetters;
+        public InputAction @ChoppingHapticChallenge1 => m_Wrapper.m_Player_ChoppingHapticChallenge1;
+        public InputAction @ChoppingHapticChallenge2 => m_Wrapper.m_Player_ChoppingHapticChallenge2;
+        public InputAction @ChoppingHapticChallenge3 => m_Wrapper.m_Player_ChoppingHapticChallenge3;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1462,6 +1564,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @PassLetters.started += instance.OnPassLetters;
             @PassLetters.performed += instance.OnPassLetters;
             @PassLetters.canceled += instance.OnPassLetters;
+            @ChoppingHapticChallenge1.started += instance.OnChoppingHapticChallenge1;
+            @ChoppingHapticChallenge1.performed += instance.OnChoppingHapticChallenge1;
+            @ChoppingHapticChallenge1.canceled += instance.OnChoppingHapticChallenge1;
+            @ChoppingHapticChallenge2.started += instance.OnChoppingHapticChallenge2;
+            @ChoppingHapticChallenge2.performed += instance.OnChoppingHapticChallenge2;
+            @ChoppingHapticChallenge2.canceled += instance.OnChoppingHapticChallenge2;
+            @ChoppingHapticChallenge3.started += instance.OnChoppingHapticChallenge3;
+            @ChoppingHapticChallenge3.performed += instance.OnChoppingHapticChallenge3;
+            @ChoppingHapticChallenge3.canceled += instance.OnChoppingHapticChallenge3;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1514,6 +1625,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @PassLetters.started -= instance.OnPassLetters;
             @PassLetters.performed -= instance.OnPassLetters;
             @PassLetters.canceled -= instance.OnPassLetters;
+            @ChoppingHapticChallenge1.started -= instance.OnChoppingHapticChallenge1;
+            @ChoppingHapticChallenge1.performed -= instance.OnChoppingHapticChallenge1;
+            @ChoppingHapticChallenge1.canceled -= instance.OnChoppingHapticChallenge1;
+            @ChoppingHapticChallenge2.started -= instance.OnChoppingHapticChallenge2;
+            @ChoppingHapticChallenge2.performed -= instance.OnChoppingHapticChallenge2;
+            @ChoppingHapticChallenge2.canceled -= instance.OnChoppingHapticChallenge2;
+            @ChoppingHapticChallenge3.started -= instance.OnChoppingHapticChallenge3;
+            @ChoppingHapticChallenge3.performed -= instance.OnChoppingHapticChallenge3;
+            @ChoppingHapticChallenge3.canceled -= instance.OnChoppingHapticChallenge3;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1712,6 +1832,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnCancel(InputAction.CallbackContext context);
         void OnExitPageNavigation(InputAction.CallbackContext context);
         void OnPassLetters(InputAction.CallbackContext context);
+        void OnChoppingHapticChallenge1(InputAction.CallbackContext context);
+        void OnChoppingHapticChallenge2(InputAction.CallbackContext context);
+        void OnChoppingHapticChallenge3(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

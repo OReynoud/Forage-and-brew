@@ -148,6 +148,33 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ChoppingHapticChallenge1",
+                    "type": "Button",
+                    "id": "9f70e8ce-1e40-4798-97eb-f4215dd20944",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ChoppingHapticChallenge2",
+                    "type": "Button",
+                    "id": "b44e7dfc-18d7-4ff6-95ac-35c70cf61eca",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ChoppingHapticChallenge3",
+                    "type": "Button",
+                    "id": "56b3bdfb-3f60-4c27-98c3-5776950e4d15",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -665,6 +692,72 @@
                     "processors": "Invert",
                     "groups": ";Gamepad",
                     "action": "HapticChallengeJoystickVerticalAxis",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "756eb906-cb51-4bc7-8fd7-f6b2fb4907c9",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "ChoppingHapticChallenge1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4ec8e1ac-cc1a-4e4d-957a-2359ee0daac7",
+                    "path": "<HID::PowerA NSW wired controller>/button3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "ChoppingHapticChallenge1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a09ddcd5-0a44-45b5-8d4a-ff5e1106c049",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "ChoppingHapticChallenge2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4bb14adc-bf1f-4b55-ad82-ea20db86cc43",
+                    "path": "<HID::PowerA NSW wired controller>/button4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "ChoppingHapticChallenge2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "545f0d06-1876-48a7-a695-fa974d3580bd",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "ChoppingHapticChallenge3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f4dc77dc-144c-431f-974b-441e5baaec03",
+                    "path": "<HID::PowerA NSW wired controller>/trigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "ChoppingHapticChallenge3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
