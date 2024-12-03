@@ -11,15 +11,17 @@ public class CollectedIngredientBehaviour : MonoBehaviour
     private Rigidbody rb;
     [SerializeField] private Collider ingredientCollider;
     [SerializeField] private Transform meshParentTransform;
-    public float stackHeight { get; set; }
-    public bool isPutInCauldron { get; set; }
     
-    public Vector3 startControl { get; set; }
-    public Vector3 endControl { get; set; }
+    public float StackHeight { get; private set; }
     
-    public Vector3 originControl{ get; set; }
-    public float cauldronLerp { get; set; }
-    
+    private bool _isBeingDroppedInTarget;
+    private Vector3 _startControl;
+    private Vector3 _endControl;
+    private Vector3 _originControl;
+    private float _dropInTargetLerp;
+    private Transform _dropTarget;
+    private float _lerp;
+
     [Header("UI")]
     [SerializeField] private GameObject grabInputCanvasGameObject;
 
@@ -28,24 +30,21 @@ public class CollectedIngredientBehaviour : MonoBehaviour
     {
         Instantiate(IngredientValuesSo.MeshGameObject, meshParentTransform);
         grabInputCanvasGameObject.SetActive(false);
-        stackHeight = collectedIngredientGlobalValuesSo.StackHeight;
+        StackHeight = collectedIngredientGlobalValuesSo.StackHeight;
         rb = GetComponent<Rigidbody>();
-        cauldronLerp = Random.Range(collectedIngredientGlobalValuesSo.MinCauldronLerp, collectedIngredientGlobalValuesSo.MaxCauldronLerp);
-
+        _dropInTargetLerp = Random.Range(collectedIngredientGlobalValuesSo.MinDropInTargetLerp,
+            collectedIngredientGlobalValuesSo.MaxDropInTargetLerp);
     }
-
-    private float lerp = 0;
 
     private void Update()
     {
-        if (!isPutInCauldron || lerp > 1) return;
-        lerp += Time.deltaTime * cauldronLerp;
+        if (!_isBeingDroppedInTarget || _lerp > 1) return;
+        _lerp += Time.deltaTime * _dropInTargetLerp;
         transform.position =
-            Mathf.Pow(1 - lerp, 3) * originControl +
-            3 * Mathf.Pow(1 - lerp, 2) * lerp * startControl +
-            3 * (1 - lerp) * Mathf.Pow(lerp, 2) * endControl +
-            Mathf.Pow(lerp, 3) * Vector3.zero; //Last line is obsolete but for understanding purposes ill leave it in
-
+            Mathf.Pow(1 - _lerp, 3) * _originControl +
+            3 * Mathf.Pow(1 - _lerp, 2) * _lerp * _startControl +
+            3 * (1 - _lerp) * Mathf.Pow(_lerp, 2) * _endControl +
+            Mathf.Pow(_lerp, 3) * _dropTarget.position;
     }
 
 
@@ -71,16 +70,16 @@ public class CollectedIngredientBehaviour : MonoBehaviour
         {
             DisableGrab();
         }
-        
     }
 
-    public void CauldronMethod()
+    public void DropInTarget(Transform target)
     {
-        originControl = transform.position;
-        startControl = originControl + Vector3.up + new Vector3(Random.Range(-1f, 1f), Random.value, Random.Range(-1f, 1f));
-        endControl = Vector3.up + new Vector3(Random.Range(-1f, 1f), Random.value, Random.Range(-1f, 1f));
-        isPutInCauldron = true;
-        CauldronBehaviour.instance.AddIngredient(this);
+        _dropTarget = target;
+        _originControl = transform.position;
+        _startControl = _originControl + Vector3.up + new Vector3(Random.Range(-1f, 1f), Random.value, Random.Range(-1f, 1f));
+        _endControl = Vector3.up + new Vector3(Random.Range(-1f, 1f), Random.value, Random.Range(-1f, 1f));
+        _lerp = 0f;
+        _isBeingDroppedInTarget = true;
     }
 
     #region Trigger

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CauldronBehaviour : Singleton<CauldronBehaviour>
+public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddable
 {
     [SerializeField] private GameObject interactInputCanvasGameObject;
     [SerializeField] private GameObject buttonAGameObject;

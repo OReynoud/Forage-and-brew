@@ -81,7 +81,7 @@ public class CharacterInteractController : MonoBehaviour
         if (CurrentNearCauldron && collectedIngredientStack.Count > 0)
         {
             CurrentNearCauldron.DisableInteract(true);
-            ShoveStackInCauldron();
+            ShoveStackInTarget(CurrentNearCauldron.transform, CurrentNearCauldron);
         }
         if (CurrentIngredientToCollectBehaviour)
         {
@@ -139,14 +139,15 @@ public class CharacterInteractController : MonoBehaviour
         AreHandsFull = true;
     }
 
-    void ShoveStackInCauldron()
+    private void ShoveStackInTarget(Transform targetTransform, IIngredientAddable targetBehaviour)
     {
         for (int i = 0; i < collectedIngredientStack.Count; i++)
         {
-            //collectedIngredientStack[i].ingredient.GrabMethod(false);
-            collectedIngredientStack[i].ingredient.transform.SetParent(CauldronBehaviour.instance.transform);
-            collectedIngredientStack[i].ingredient.CauldronMethod();
+            collectedIngredientStack[i].ingredient.transform.SetParent(targetTransform);
+            collectedIngredientStack[i].ingredient.DropInTarget(targetTransform);
+            targetBehaviour.AddIngredient(collectedIngredientStack[i].ingredient);
         }
+        
         collectedIngredientStack.Clear();
         AreHandsFull = false;
     }
@@ -169,7 +170,7 @@ public class CharacterInteractController : MonoBehaviour
             {
                 //y lerp
                 ingredient.transform.localPosition = Vector3.Lerp(ingredient.transform.localPosition,
-                    new Vector3(ingredient.transform.localPosition.x, ingredient.stackHeight * i,
+                    new Vector3(ingredient.transform.localPosition.x, ingredient.StackHeight * i,
                         ingredient.transform.localPosition.z), pickupLerp);
                 
                 //x and z lerp
@@ -190,7 +191,7 @@ public class CharacterInteractController : MonoBehaviour
 
             //y lerp
             ingredient.transform.position = Vector3.Lerp(ingredient.transform.position,
-                new Vector3(ingredient.transform.position.x, stackPlacement.position.y + ingredient.stackHeight * i,
+                new Vector3(ingredient.transform.position.x, stackPlacement.position.y + ingredient.StackHeight * i,
                     ingredient.transform.position.z), pickupLerp);
 
             //x and z lerp

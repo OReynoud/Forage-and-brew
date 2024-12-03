@@ -1,8 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class ChoppingCountertopBehaviour : MonoBehaviour
+public class ChoppingCountertopBehaviour : MonoBehaviour, IIngredientAddable
 {
     [SerializeField] private GameObject interactInputCanvasGameObject;
+    
+    private List<CollectedIngredientBehaviour> _collectedIngredients = new();
 
     
     private void Start()
@@ -19,6 +22,12 @@ public class ChoppingCountertopBehaviour : MonoBehaviour
     public void DisableInteract()
     {
         interactInputCanvasGameObject.SetActive(false);
+    }
+    
+    
+    public void AddIngredient(CollectedIngredientBehaviour collectedIngredientBehaviour)
+    {
+        _collectedIngredients.Add(collectedIngredientBehaviour);
     }
     
     
