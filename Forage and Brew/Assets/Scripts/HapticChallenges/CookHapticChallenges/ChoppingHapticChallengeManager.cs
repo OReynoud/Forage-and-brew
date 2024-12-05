@@ -57,6 +57,8 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
     
     public void StartChoppingChallenge()
     {
+        if (!CurrentChoppingCountertopBehaviour) return;
+        
         // Challenge variables
         _isChallengeActive = true;
         _currentChoppingChallenge = choppingHapticChallengeListSo.ChoppingHapticChallenges[Random.Range(0,
