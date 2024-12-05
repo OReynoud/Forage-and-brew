@@ -88,7 +88,7 @@ public class CollectedIngredientBehaviour : MonoBehaviour
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
-            characterInteractController.SetNewCollectedIngredient(this);
+            characterInteractController.AddNewCollectedIngredient(this);
             EnableGrab();
         }
     }
@@ -98,7 +98,7 @@ public class CollectedIngredientBehaviour : MonoBehaviour
         if (other.TryGetComponent(out CharacterInteractController characterInteractController) /*&&
             characterInteractController.CurrentIngredientToCollectBehaviour == this*/)
         {
-            characterInteractController.SetNewCollectedIngredient(null);
+            characterInteractController.RemoveCollectedIngredient(this);
             DisableGrab(); // Temporary
         }
     }

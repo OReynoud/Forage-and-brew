@@ -22,7 +22,7 @@ public class CharacterInteractController : MonoBehaviour
     }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public IngredientToCollectBehaviour CurrentIngredientToCollectBehaviour { get; private set; }
 
-    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public CollectedIngredientBehaviour CurrentCollectedIngredientBehaviour { get; private set; }
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<CollectedIngredientBehaviour> CurrentCollectedIngredientBehaviours { get; private set; } = new();
 
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public BedBehaviour CurrentNearBed { get; set; }
     
@@ -66,14 +66,24 @@ public class CharacterInteractController : MonoBehaviour
         CurrentIngredientToCollectBehaviour = newIngredientToCollectBehaviour;
     }
 
-    public void SetNewCollectedIngredient(CollectedIngredientBehaviour newCollectedIngredientBehaviour)
+    public void AddNewCollectedIngredient(CollectedIngredientBehaviour newCollectedIngredientBehaviour)
     {
-        if (CurrentCollectedIngredientBehaviour)
+        if (CurrentCollectedIngredientBehaviours.Count > 0)
         {
-            CurrentCollectedIngredientBehaviour.DisableGrab();
+            CurrentCollectedIngredientBehaviours[^1].DisableGrab();
         }
 
-        CurrentCollectedIngredientBehaviour = newCollectedIngredientBehaviour;
+        CurrentCollectedIngredientBehaviours.Add(newCollectedIngredientBehaviour);
+    }
+
+    public void RemoveCollectedIngredient(CollectedIngredientBehaviour newCollectedIngredientBehaviour)
+    {
+        CurrentCollectedIngredientBehaviours.Remove(newCollectedIngredientBehaviour);
+        
+        if (CurrentCollectedIngredientBehaviours.Count > 0)
+        {
+            CurrentCollectedIngredientBehaviours[^1].EnableGrab();
+        }
     }
 
     public void Interact()
@@ -90,9 +100,9 @@ public class CharacterInteractController : MonoBehaviour
             CollectHapticChallengeManager.Instance.StartCollectHapticChallenge(CurrentIngredientToCollectBehaviour);
             CurrentIngredientToCollectBehaviour = null;
         }
-        else if (CurrentCollectedIngredientBehaviour)
+        else if (CurrentCollectedIngredientBehaviours.Count > 0)
         {
-            AddToPile(CurrentCollectedIngredientBehaviour);
+            AddToPile(CurrentCollectedIngredientBehaviours[^1]);
         }
         else if (CurrentNearBed && collectedIngredientStack.Count == 0)
         {
@@ -131,10 +141,10 @@ public class CharacterInteractController : MonoBehaviour
                 return;
         }
         
-        CurrentCollectedIngredientBehaviour.GrabMethod(true);
-        CurrentCollectedIngredientBehaviour.transform.SetParent(transform);
-        collectedIngredientStack.Add(new CollectedIngredientStack(CurrentCollectedIngredientBehaviour));
-        CurrentCollectedIngredientBehaviour = null;
+        ingredient.GrabMethod(true);
+        ingredient.transform.SetParent(transform);
+        collectedIngredientStack.Add(new CollectedIngredientStack(ingredient));
+        RemoveCollectedIngredient(ingredient);
         
         AreHandsFull = true;
     }
