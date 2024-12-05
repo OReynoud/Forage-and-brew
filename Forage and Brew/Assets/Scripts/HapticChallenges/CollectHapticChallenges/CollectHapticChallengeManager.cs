@@ -89,6 +89,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(JoystickInputValue);
         if (_isScythingHapticChallengeActive)
         {
             UpdateScythingHapticChallenge();
@@ -211,23 +212,48 @@ public class CollectHapticChallengeManager : MonoBehaviour
 
     private bool CheckInputScythingChallenge()
     {
-        if (JoystickInputValue == Vector2.zero || JoystickInputValue == Vector2.left ||
-            JoystickInputValue == Vector2.up || JoystickInputValue == Vector2.down)
+        if (JoystickInputValue == Vector2.zero)
         {
             _lastJoystickInputValue = JoystickInputValue;
             return false;
         }
+        
+        if (JoystickInputValue.x < -1f + _currentScythingHapticChallengeSo.InputDetectionTolerance &&
+            JoystickInputValue.y < _currentScythingHapticChallengeSo.InputDetectionTolerance &&
+            JoystickInputValue.y > -_currentScythingHapticChallengeSo.InputDetectionTolerance)
+        {
+            _lastJoystickInputValue = Vector2.left;
+            return false;
+        }
+        
+        if (JoystickInputValue.y > 1f - _currentScythingHapticChallengeSo.InputDetectionTolerance &&
+            JoystickInputValue.x < _currentScythingHapticChallengeSo.InputDetectionTolerance &&
+            JoystickInputValue.x > -_currentScythingHapticChallengeSo.InputDetectionTolerance)
+        {
+            _lastJoystickInputValue = Vector2.up;
+            return false;
+        }
+        
+        if (JoystickInputValue.y < -1f + _currentScythingHapticChallengeSo.InputDetectionTolerance &&
+            JoystickInputValue.x < _currentScythingHapticChallengeSo.InputDetectionTolerance &&
+            JoystickInputValue.x > -_currentScythingHapticChallengeSo.InputDetectionTolerance)
+        {
+            _lastJoystickInputValue = Vector2.down;
+            return false;
+        }
 
-        if (JoystickInputValue == Vector2.right)
+        if (JoystickInputValue.x > 1f - _currentScythingHapticChallengeSo.InputDetectionTolerance &&
+            JoystickInputValue.y < _currentScythingHapticChallengeSo.InputDetectionTolerance &&
+            JoystickInputValue.y > -_currentScythingHapticChallengeSo.InputDetectionTolerance)
         {
             if (_lastJoystickInputValue == Vector2.zero)
             {
-                _lastJoystickInputValue = JoystickInputValue;
+                _lastJoystickInputValue = Vector2.right;
                 NextTurnScythingChallenge();
                 return true;
             }
             
-            _lastJoystickInputValue = JoystickInputValue;
+            _lastJoystickInputValue = Vector2.right;
             return false;
         }
 

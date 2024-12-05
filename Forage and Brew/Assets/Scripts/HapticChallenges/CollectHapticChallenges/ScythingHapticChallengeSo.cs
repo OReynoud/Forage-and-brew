@@ -9,4 +9,7 @@ public class ScythingHapticChallengeSo : CollectHapticChallengeSo
     
     [field: SerializeField] [field: Tooltip("The speed of the arrow (in gauge part).")]
     [field: Range(0f, 1f)] public float ArrowSpeed { get; private set; } = 0.4f;
+    
+    [field: SerializeField] [field: Tooltip("The tolerance of the detection of the joystick input.")]
+    [field: Range(0f, 1f)] public float InputDetectionTolerance { get; private set; } = 0.1f;
 }

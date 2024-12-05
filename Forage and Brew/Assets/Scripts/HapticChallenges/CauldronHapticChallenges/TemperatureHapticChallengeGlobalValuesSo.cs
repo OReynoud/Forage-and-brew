@@ -13,4 +13,5 @@ public class TemperatureHapticChallengeGlobalValuesSo : ScriptableObject
     [field: SerializeField] [field: Min(0f)] public float HeatIncreaseDuration { get; private set; }
     [field: SerializeField] [field: Min(0f)] public float HeatIncreaseQuantity { get; private set; }
     [field: SerializeField] [field: Min(0f)] public float TemperatureMaintenanceDuration { get; private set; }
+    [field: SerializeField] [field: Range(0f, 1f)] public float InputDetectionTolerance { get; private set; } = 0.15f;
 }

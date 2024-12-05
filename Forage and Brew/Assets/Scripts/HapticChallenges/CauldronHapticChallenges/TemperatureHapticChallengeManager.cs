@@ -231,7 +231,9 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
 
     private bool CheckInput()
     {
-        return JoystickInputValue == Vector2.down;
+        return JoystickInputValue.y < -1f + temperatureHapticChallengeGlobalValuesSo.InputDetectionTolerance &&
+               JoystickInputValue.x < temperatureHapticChallengeGlobalValuesSo.InputDetectionTolerance &&
+               JoystickInputValue.x > -temperatureHapticChallengeGlobalValuesSo.InputDetectionTolerance;
     }
     
     private bool CheckInputReset()
