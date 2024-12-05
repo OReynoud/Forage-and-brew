@@ -7,24 +7,41 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     [SerializeField] private IngredientToCollectSpawnManager ingredientToCollectSpawnManager;
     [SerializeField] private SphereCollider collectTrigger;
     [SerializeField] private Transform meshParentTransform;
+    [field: SerializeField] public IngredientValuesSo IngredientValuesSo { get; set; }
     
     [Header("Data")]
     [field: SerializeField] public SpawnLocation SpawnLocation { get; private set; }
     
     [Header("UI")]
     [SerializeField] private GameObject collectInputCanvasGameObject;
-
-    public IngredientValuesSo IngredientValuesSo { get; set; }
     
 
     private void Awake()
     {
-        ingredientToCollectSpawnManager.IngredientToCollectBehaviours.Add(this);
+        if (ingredientToCollectSpawnManager)
+        {
+            ingredientToCollectSpawnManager.IngredientToCollectBehaviours.Add(this);
+        }
+        else
+        {
+            Debug.LogWarning("IngredientToCollectSpawnManager is not assigned in " + name + ".\n" +
+                             "The ingredient won't spawn according to the cycles and the spawn locations.");
+        }
     }
 
     private void Start()
     {
+        for (int i = 0; i < meshParentTransform.childCount; i++)
+        {
+            Destroy(meshParentTransform.GetChild(i).gameObject);
+        }
+        
         collectInputCanvasGameObject.SetActive(false);
+
+        if (!ingredientToCollectSpawnManager && ingredientToCollectGlobalValuesSo)
+        {
+            SpawnMesh();
+        }
     }
     
     
