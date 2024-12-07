@@ -1,9 +1,9 @@
 public enum IngredientType
 {
-    Mushroom,
-    Herb,
-    Moss,
-    Berry
+    Mushroom = 0,
+    Herb = 1,
+    Moss = 2,
+    Berry = 3
 }
 
 public enum Biome
