@@ -51,6 +51,8 @@ public class CharacterInteractController : MonoBehaviour
 
     [BoxGroup("Collected ingredients stack variables")] [field: Min(0f)]
     public float stackDisplacementClamp;
+    
+    [SerializeField] private Vector3 choppingOffset = new(0f, 1.15f, -0.05f);
 
 
     private void Awake()
@@ -144,7 +146,7 @@ public class CharacterInteractController : MonoBehaviour
         if (!CurrentNearChoppingCountertop || collectedIngredientStack.Count == 0) return;
         
         CurrentNearChoppingCountertop.DisableInteract();
-        ShoveStackInTarget(CurrentNearChoppingCountertop.transform, CurrentNearChoppingCountertop, new Vector3(0.5f, 1.15f, -0.05f));
+        ShoveStackInTarget(CurrentNearChoppingCountertop.transform, CurrentNearChoppingCountertop, choppingOffset);
         
         ChoppingHapticChallengeManager.Instance.StartChoppingChallenge();
     }
