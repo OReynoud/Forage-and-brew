@@ -89,7 +89,6 @@ public class CollectHapticChallengeManager : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(JoystickInputValue);
         if (_isScythingHapticChallengeActive)
         {
             UpdateScythingHapticChallenge();
