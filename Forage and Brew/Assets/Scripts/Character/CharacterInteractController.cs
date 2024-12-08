@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class CharacterInteractController : MonoBehaviour
 {
+    public static CharacterInteractController Instance { get; private set; }
+    
     [field:Foldout("Debug")] [ReadOnly] public List<CollectedIngredientStack> collectedIngredientStack = new();
 
     [Serializable]
@@ -28,6 +29,7 @@ public class CharacterInteractController : MonoBehaviour
     
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public MailBox CurrentNearMailBox { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public CauldronBehaviour CurrentNearCauldron { get; set; }
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public ChoppingCountertopBehaviour CurrentNearChoppingCountertop { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public bool AreHandsFull { get; private set; }
 
     private Rigidbody rb { get; set; }
@@ -51,6 +53,11 @@ public class CharacterInteractController : MonoBehaviour
     public float stackDisplacementClamp;
 
 
+    private void Awake()
+    {
+        Instance = this;
+    }
+    
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -93,7 +100,7 @@ public class CharacterInteractController : MonoBehaviour
             CurrentNearCauldron.DisableInteract(true);
             ShoveStackInTarget(CurrentNearCauldron.transform, CurrentNearCauldron);
         }
-        if (CurrentIngredientToCollectBehaviour)
+        else if (CurrentIngredientToCollectBehaviour)
         {
             CharacterInputManager.Instance.DisableMoveInputs();
             CurrentIngredientToCollectBehaviour.DisableCollect();
@@ -131,9 +138,19 @@ public class CharacterInteractController : MonoBehaviour
             AreHandsFull = false;
         }
     }
+    
+    public void DropIngredientsInChoppingCountertop()
+    {
+        if (!CurrentNearChoppingCountertop || collectedIngredientStack.Count == 0) return;
+        
+        CurrentNearChoppingCountertop.DisableInteract();
+        ShoveStackInTarget(CurrentNearChoppingCountertop.transform, CurrentNearChoppingCountertop, new Vector3(0.5f, 1.15f, -0.05f));
+        
+        ChoppingHapticChallengeManager.Instance.StartChoppingChallenge();
+    }
 
 
-    void AddToPile(CollectedIngredientBehaviour ingredient)
+    public void AddToPile(CollectedIngredientBehaviour ingredient)
     {
         if (collectedIngredientStack.Count > 0 && collectedIngredientStack.Count < maxStackSize)
         {
@@ -149,12 +166,12 @@ public class CharacterInteractController : MonoBehaviour
         AreHandsFull = true;
     }
 
-    private void ShoveStackInTarget(Transform targetTransform, IIngredientAddable targetBehaviour)
+    private void ShoveStackInTarget(Transform targetTransform, IIngredientAddable targetBehaviour, Vector3 offset = default)
     {
         for (int i = 0; i < collectedIngredientStack.Count; i++)
         {
             collectedIngredientStack[i].ingredient.transform.SetParent(targetTransform);
-            collectedIngredientStack[i].ingredient.DropInTarget(targetTransform);
+            collectedIngredientStack[i].ingredient.DropInTarget(targetTransform, offset);
             targetBehaviour.AddIngredient(collectedIngredientStack[i].ingredient);
         }
         

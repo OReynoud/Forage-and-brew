@@ -29,23 +29,38 @@ public class ChoppingCountertopBehaviour : MonoBehaviour, IIngredientAddable
     {
         _collectedIngredients.Add(collectedIngredientBehaviour);
     }
+
+    public void ChopIngredient(CookHapticChallengeSo cookHapticChallengeSo)
+    {
+        _collectedIngredients[0].CookedForm = cookHapticChallengeSo;
+        CharacterInteractController.Instance.AddToPile(_collectedIngredients[0]);
+        _collectedIngredients.RemoveAt(0);
+
+        if (_collectedIngredients.Count > 0)
+        {
+            ChoppingHapticChallengeManager.Instance.StartChoppingChallenge();
+        }
+    }
     
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out ChoppingHapticChallengeManager cookHapticChallengeManager))
+        if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
+            other.TryGetComponent(out ChoppingHapticChallengeManager choppingHapticChallengeManager))
         {
-            cookHapticChallengeManager.CurrentChoppingCountertopBehaviour = this;
+            characterInteractController.CurrentNearChoppingCountertop = this;
+            choppingHapticChallengeManager.CurrentChoppingCountertopBehaviour = this;
             EnableInteract();
         }
     }
     
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out ChoppingHapticChallengeManager cookHapticChallengeManager) &&
-            cookHapticChallengeManager.CurrentChoppingCountertopBehaviour == this)
+        if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
+            other.TryGetComponent(out ChoppingHapticChallengeManager choppingHapticChallengeManager) &&
+            characterInteractController.CurrentNearChoppingCountertop == this)
         {
-            cookHapticChallengeManager.CurrentChoppingCountertopBehaviour = null;
+            characterInteractController.CurrentNearChoppingCountertop = null;
             DisableInteract();
         }
     }

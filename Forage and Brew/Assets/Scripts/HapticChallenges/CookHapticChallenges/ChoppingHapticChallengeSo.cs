@@ -4,9 +4,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "D_ChoppingHapticChallenge", menuName = "Haptic Challenges/ChoppingHapticChallengeSo")]
 public class ChoppingHapticChallengeSo : ScriptableObject
 {
-    [field: SerializeField] [field: Tooltip("The time before the next chopping (in seconds).")]
-    public float TimeBeforeNextChopping { get; private set; } = 1.5f;
-    
     [field: SerializeField] [field: Tooltip("The sequence of inputs to perform.")] [field: Range(1, 3)]
     public List<int> ChoppingInputIndices { get; private set; }
     

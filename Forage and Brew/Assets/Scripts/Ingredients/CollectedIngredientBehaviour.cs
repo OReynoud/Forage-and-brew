@@ -20,6 +20,7 @@ public class CollectedIngredientBehaviour : MonoBehaviour
     private Vector3 _originControl;
     private float _dropInTargetLerp;
     private Transform _dropTarget;
+    private Vector3 _dropTargetOffset;
     private float _lerp;
 
     [Header("UI")]
@@ -44,7 +45,7 @@ public class CollectedIngredientBehaviour : MonoBehaviour
             Mathf.Pow(1 - _lerp, 3) * _originControl +
             3 * Mathf.Pow(1 - _lerp, 2) * _lerp * _startControl +
             3 * (1 - _lerp) * Mathf.Pow(_lerp, 2) * _endControl +
-            Mathf.Pow(_lerp, 3) * _dropTarget.position;
+            Mathf.Pow(_lerp, 3) * _dropTarget.position + _dropTargetOffset;
     }
 
 
@@ -72,12 +73,13 @@ public class CollectedIngredientBehaviour : MonoBehaviour
         }
     }
 
-    public void DropInTarget(Transform target)
+    public void DropInTarget(Transform target, Vector3 offset = default)
     {
         _dropTarget = target;
+        _dropTargetOffset = offset;
         _originControl = transform.position;
         _startControl = _originControl + Vector3.up + new Vector3(Random.Range(-1f, 1f), Random.value, Random.Range(-1f, 1f));
-        _endControl = Vector3.up + new Vector3(Random.Range(-1f, 1f), Random.value, Random.Range(-1f, 1f));
+        _endControl = target.position + _dropTargetOffset + Vector3.up + new Vector3(Random.Range(-1f, 1f), Random.value, Random.Range(-1f, 1f));
         _lerp = 0f;
         _isBeingDroppedInTarget = true;
     }

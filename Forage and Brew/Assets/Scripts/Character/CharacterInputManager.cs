@@ -243,7 +243,7 @@ public class CharacterInputManager : MonoBehaviour
     {
         TemperatureHapticChallengeManager.Instance.StartTemperatureChallenge();
         CollectHapticChallengeManager.Instance.ActivateHarvestHapticChallenge();
-        ChoppingHapticChallengeManager.Instance.StartChoppingChallenge();
+        characterInteractController.DropIngredientsInChoppingCountertop();
     }
     
     private void HapticChallengeOnCanceled(InputAction.CallbackContext obj)

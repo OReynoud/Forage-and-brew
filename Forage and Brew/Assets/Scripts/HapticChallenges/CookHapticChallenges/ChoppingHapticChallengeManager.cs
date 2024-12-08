@@ -97,6 +97,7 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         CameraController.instance.ApplyScriptableCamSettings(_previousCameraPreset, choppingCameraTransitionTime);
         CharacterInputManager.Instance.EnableInputs();
         CurrentChoppingCountertopBehaviour.EnableInteract();
+        CurrentChoppingCountertopBehaviour.ChopIngredient(choppingHapticChallengeListSo);
     }
     
     private void UpdateChoppingChallenge()
@@ -105,7 +106,7 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         
         _currentChoppingWaitTime += Time.deltaTime;
         
-        if (_currentChoppingWaitTime >= _currentChoppingChallenge.TimeBeforeNextChopping)
+        if (_currentChoppingWaitTime >= choppingHapticChallengeListSo.TimeBeforeNextChopping)
         {
             _currentChoppingWaitTime = 0f;
             _isWaitingForNextChopping = false;
