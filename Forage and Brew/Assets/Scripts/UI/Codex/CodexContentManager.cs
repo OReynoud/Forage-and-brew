@@ -40,6 +40,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
     public Sprite[] allDifficultySprites;
     public Sprite[] allIngredientTypeSprites;
+    public Sprite[] allBrewingActionSprites;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private List<Sprite> tempIngredientsList = new List<Sprite>();
@@ -75,12 +76,8 @@ public class CodexContentManager : Singleton<CodexContentManager>
             }
 
             recipes[i].InitPage(
-                allPotions[i].Name,
-                allPotions[i].Description,
-                allPotions[i].SalePrice,
-                allDifficultySprites[allPotions[i].Difficulty],
-                allPotions[i].icon,
-                tempIngredientsList.ToArray());
+                tempIngredientsList.ToArray(),
+                allPotions[i]);
             tempIngredientsList.Clear();
         }
         //DebugTickets();
