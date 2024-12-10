@@ -30,6 +30,7 @@ public class CharacterInteractController : MonoBehaviour
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public MailBox CurrentNearMailBox { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public CauldronBehaviour CurrentNearCauldron { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public ChoppingCountertopBehaviour CurrentNearChoppingCountertop { get; set; }
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<BasketBehaviour> CurrentNearBaskets { get; set; } = new();
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public bool AreHandsFull { get; private set; }
 
     private Rigidbody rb { get; set; }
@@ -97,7 +98,11 @@ public class CharacterInteractController : MonoBehaviour
 
     public void Interact()
     {
-        if (CurrentNearCauldron && collectedIngredientStack.Count > 0)
+        if (CurrentNearBaskets.Count > 0)
+        {
+            ChooseBasket();
+        }
+        else if (CurrentNearCauldron && collectedIngredientStack.Count > 0)
         {
             CurrentNearCauldron.DisableInteract(true);
             ShoveStackInTarget(CurrentNearCauldron.transform, CurrentNearCauldron);
@@ -123,7 +128,7 @@ public class CharacterInteractController : MonoBehaviour
             Debug.Log("Check letters");
         }
     }
-    
+
     public void Cancel()
     {
         if (collectedIngredientStack.Count > 0)
@@ -140,6 +145,78 @@ public class CharacterInteractController : MonoBehaviour
             AreHandsFull = false;
         }
     }
+
+    
+    private void ChooseBasket()
+    {
+        if (collectedIngredientStack.Count >= maxStackSize) return;
+
+        if (collectedIngredientStack.Count > 0)
+        {
+            int index;
+            
+            for (index = 0; index < CurrentNearBaskets.Count; index++)
+            {
+                if (collectedIngredientStack[0].ingredient.IngredientValuesSo == CurrentNearBaskets[index].ingredient)
+                {
+                    AddToPile(CurrentNearBaskets[index].InstantiateCollectedIngredient());
+                    break;
+                }
+            }
+            
+            if (index != CurrentNearBaskets.Count)
+            {
+                BasketBehaviour item = CurrentNearBaskets[index];
+                CurrentNearBaskets.RemoveAt(index);
+                index = CurrentNearBaskets.Count;
+                CurrentNearBaskets.Insert(CurrentNearBaskets.Count, item);
+            }
+            
+            int length = CurrentNearBaskets.Count;
+            
+            for (int i = 0; i < length; i++)
+            {
+                if (i != index)
+                {
+                    CurrentNearBaskets[0].DisableInteract();
+                    CurrentNearBaskets.RemoveAt(0);
+                }
+            }
+
+            return;
+        }
+
+        (int index, float dotValue) largestDot = (0, -1);
+        
+        for (int i = 0; i < CurrentNearBaskets.Count; i++)
+        {
+            float dotValue = Vector3.Dot(transform.forward, CurrentNearBaskets[i].transform.position - transform.position);
+            
+            if (dotValue > largestDot.dotValue)
+            {
+                largestDot = (i, dotValue);
+            }
+        }
+        
+        AddToPile(CurrentNearBaskets[largestDot.index].InstantiateCollectedIngredient());
+            
+        BasketBehaviour basket = CurrentNearBaskets[largestDot.index];
+        CurrentNearBaskets.RemoveAt(largestDot.index);
+        largestDot.index = CurrentNearBaskets.Count;
+        CurrentNearBaskets.Insert(CurrentNearBaskets.Count, basket);
+            
+        int count = CurrentNearBaskets.Count;
+            
+        for (int i = 0; i < count; i++)
+        {
+            if (i != largestDot.index)
+            {
+                CurrentNearBaskets[0].DisableInteract();
+                CurrentNearBaskets.RemoveAt(0);
+            }
+        }
+    }
+    
     
     public void DropIngredientsInChoppingCountertop()
     {
@@ -156,7 +233,7 @@ public class CharacterInteractController : MonoBehaviour
     {
         if (collectedIngredientStack.Count > 0 && collectedIngredientStack.Count < maxStackSize)
         {
-            if (collectedIngredientStack[0].ingredient.IngredientValuesSo.Type != ingredient.IngredientValuesSo.Type)
+            if (collectedIngredientStack[0].ingredient.IngredientValuesSo != ingredient.IngredientValuesSo)
                 return;
         }
         
