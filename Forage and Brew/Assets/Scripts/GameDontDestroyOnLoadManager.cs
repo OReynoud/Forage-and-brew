@@ -6,7 +6,8 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
 {
     public static GameDontDestroyOnLoadManager Instance { get; private set; }
     
-    public Scene PreviousScene { get; set; }
+
+    [field: SerializeField] public Scene PreviousScene { get; set; }
     public TimeOfDay CurrentTimeOfDay { get; set; } = TimeOfDay.Daytime;
 
     [field: SerializeField] public bool generateLetters { get; set; }
@@ -41,6 +42,11 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
         {
             DestroyImmediate(gameObject);
         }
+    }
+
+    private void FixedUpdate()
+    {
+        Debug.Log(PreviousScene);
     }
 
     private void Update()
