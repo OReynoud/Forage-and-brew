@@ -8,7 +8,7 @@ public class CollectedIngredientBehaviour : MonoBehaviour
     [field: SerializeField] public IngredientValuesSo IngredientValuesSo { get; set; }
     public CookHapticChallengeSo CookedForm { get; set; }
     [SerializeField] private SphereCollider grabTrigger;
-    private Rigidbody rb;
+    [SerializeField] private Rigidbody rb;
     [SerializeField] private Collider ingredientCollider;
     [SerializeField] private Transform meshParentTransform;
     
@@ -32,7 +32,6 @@ public class CollectedIngredientBehaviour : MonoBehaviour
         Instantiate(IngredientValuesSo.MeshGameObject, meshParentTransform);
         grabInputCanvasGameObject.SetActive(false);
         StackHeight = collectedIngredientGlobalValuesSo.StackHeight;
-        rb = GetComponent<Rigidbody>();
         _dropInTargetLerp = Random.Range(collectedIngredientGlobalValuesSo.MinDropInTargetLerp,
             collectedIngredientGlobalValuesSo.MaxDropInTargetLerp);
     }
