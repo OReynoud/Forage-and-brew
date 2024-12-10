@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class RecipeContainer : MonoBehaviour
 {
+    public PotionValuesSo storedPotion;
     public TextMeshProUGUI potionName;
     public TextMeshProUGUI potionFlavorText;
     public TextMeshProUGUI potionPrice;
@@ -48,6 +49,7 @@ public class RecipeContainer : MonoBehaviour
     private string writingText;
     public void InitPage(Sprite[] PotionIngredients, PotionValuesSo PotionSteps)
     {
+        storedPotion = PotionSteps;
         potionName.text = PotionSteps.Name;
         potionFlavorText.text = PotionSteps.Description;
         potionPrice.text = PotionSteps.SalePrice.ToString(CultureInfo.InvariantCulture);
@@ -71,7 +73,7 @@ public class RecipeContainer : MonoBehaviour
                 switch (cookedIngredient.CookedForm)
                 {
                     case null:
-                        BeginWriteBrewingStep(CodexContentManager.instance.allBrewingActionSprites.Length-1,"Add ");
+                        BeginWriteBrewingStep(CodexContentManager.instance.allBrewingActionSprites.Length-1,"Add 1 X");
                         
                         ingredientStepImage[writingIndex].enabled = true;
                         HandleWritingIngredientType(cookedIngredient);
@@ -80,7 +82,7 @@ public class RecipeContainer : MonoBehaviour
                         secondaryActionText[writingIndex].text = "to cauldron";
                         break;
                     case ChoppingHapticChallengeListSo:
-                        BeginWriteBrewingStep(1,"Mince ");
+                        BeginWriteBrewingStep(1,"Mince 1 X");
                         
                         ingredientStepImage[writingIndex].enabled = true;
                         HandleWritingIngredientType(cookedIngredient);
@@ -123,10 +125,13 @@ public class RecipeContainer : MonoBehaviour
     {
         if (cookedIngredient.IsAType)
         {
-            mainActionText[writingIndex].text += "type of ";
+            mainActionText[writingIndex].text += " type of";
             ingredientStepImage[writingIndex].sprite =
                 CodexContentManager.instance.allIngredientTypeSprites[
                     (int)cookedIngredient.IngredientType];
+            ingredientStepImage[writingIndex].transform.position += Vector3.right * 20;
+            secondaryActionImage[writingIndex].transform.position += Vector3.right* 20;
+            secondaryActionText[writingIndex].transform.position += Vector3.right* 20;
         }
         else
         {
