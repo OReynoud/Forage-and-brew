@@ -12,7 +12,7 @@ public class RecipeContainer : MonoBehaviour
     public TextMeshProUGUI potionPrice;
     public Image potionDifficulty;
     public Image potionIcon;
-    public Image[] potionIngredients;
+    public Image[] potionIngredientsImage;
     
     //BrewingSteps
     private int writingIndex;
@@ -47,6 +47,8 @@ public class RecipeContainer : MonoBehaviour
     }
 
     private string writingText;
+    public Sprite[] potionIngredients { get; set; }
+
     public void InitPage(Sprite[] PotionIngredients, PotionValuesSo PotionSteps)
     {
         storedPotion = PotionSteps;
@@ -55,15 +57,17 @@ public class RecipeContainer : MonoBehaviour
         potionPrice.text = PotionSteps.SalePrice.ToString(CultureInfo.InvariantCulture);
         potionDifficulty.sprite = CodexContentManager.instance.allDifficultySprites[PotionSteps.Difficulty - 1];
         potionIcon.sprite = PotionSteps.icon;
-        foreach (var ingredient in potionIngredients)
+        potionIngredients = PotionIngredients;
+        
+        foreach (var ingredient in potionIngredientsImage)
         {
             ingredient.transform.parent.gameObject.SetActive(false);
         }
 
         for (int i = 0; i < PotionIngredients.Length; i++)
         {
-            potionIngredients[i].transform.parent.gameObject.SetActive(true);
-            potionIngredients[i].sprite = PotionIngredients[i];
+            potionIngredientsImage[i].transform.parent.gameObject.SetActive(true);
+            potionIngredientsImage[i].sprite = PotionIngredients[i];
         }
         foreach (var t in PotionSteps.TemperatureChallengeIngredients)
         {

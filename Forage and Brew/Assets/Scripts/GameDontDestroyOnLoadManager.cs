@@ -44,10 +44,6 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
-    {
-        Debug.Log(PreviousScene);
-    }
 
     private void Update()
     {
