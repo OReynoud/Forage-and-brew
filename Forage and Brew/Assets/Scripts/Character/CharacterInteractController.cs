@@ -137,16 +137,25 @@ public class CharacterInteractController : MonoBehaviour
     {
         if (collectedIngredientStack.Count > 0)
         {
-            int length = collectedIngredientStack.Count;
-
-            for (int i = 0; i < length; i++)
+            if (CurrentNearBaskets.Count > 0)
             {
-                collectedIngredientStack[0].ingredient.GrabMethod(false);
-                collectedIngredientStack[0].ingredient.transform.SetParent(null);
-                collectedIngredientStack.RemoveAt(0);
+                ShoveStackInTarget(CurrentNearBaskets[0].transform, CurrentNearBaskets[0]);
+                CurrentNearBaskets[0].EnableInteract();
+                CurrentNearBaskets[0].DisableCancel();
             }
-            
-            AreHandsFull = false;
+            else
+            {
+                int length = collectedIngredientStack.Count;
+
+                for (int i = 0; i < length; i++)
+                {
+                    collectedIngredientStack[0].ingredient.GrabMethod(false);
+                    collectedIngredientStack[0].ingredient.transform.SetParent(null);
+                    collectedIngredientStack.RemoveAt(0);
+                }
+
+                AreHandsFull = false;
+            }
         }
     }
 
@@ -161,6 +170,8 @@ public class CharacterInteractController : MonoBehaviour
             
             for (index = 0; index < CurrentNearBaskets.Count; index++)
             {
+                if (CurrentNearBaskets[index].IngredientCount == 0) return;
+                
                 if (collectedIngredientStack[0].ingredient.IngredientValuesSo == CurrentNearBaskets[index].ingredient)
                 {
                     AddToPile(CurrentNearBaskets[index].InstantiateCollectedIngredient());
@@ -170,17 +181,15 @@ public class CharacterInteractController : MonoBehaviour
             
             if (index != CurrentNearBaskets.Count)
             {
-                if (CurrentNearBaskets[index].IngredientCount > 0)
+                if (CurrentNearBaskets[index].IngredientCount == 0)
                 {
-                    BasketBehaviour item = CurrentNearBaskets[index];
-                    CurrentNearBaskets.RemoveAt(index);
-                    index = CurrentNearBaskets.Count;
-                    CurrentNearBaskets.Insert(CurrentNearBaskets.Count, item);
+                    CurrentNearBaskets[index].DisableInteract();
                 }
-                else
-                {
-                    index = CurrentNearBaskets.Count;
-                }
+                
+                BasketBehaviour item = CurrentNearBaskets[index];
+                CurrentNearBaskets.RemoveAt(index);
+                index = CurrentNearBaskets.Count;
+                CurrentNearBaskets.Insert(CurrentNearBaskets.Count, item);
             }
             
             int length = CurrentNearBaskets.Count;
@@ -210,18 +219,17 @@ public class CharacterInteractController : MonoBehaviour
         }
         
         AddToPile(CurrentNearBaskets[largestDot.index].InstantiateCollectedIngredient());
+        CurrentNearBaskets[largestDot.index].EnableCancel();
+        
+        if (CurrentNearBaskets[largestDot.index].IngredientCount == 0)
+        {
+            CurrentNearBaskets[largestDot.index].DisableInteract();
+        }
 
-        if (CurrentNearBaskets[largestDot.index].IngredientCount > 0)
-        {
-            BasketBehaviour basket = CurrentNearBaskets[largestDot.index];
-            CurrentNearBaskets.RemoveAt(largestDot.index);
-            largestDot.index = CurrentNearBaskets.Count;
-            CurrentNearBaskets.Insert(CurrentNearBaskets.Count, basket);
-        }
-        else
-        {
-            largestDot.index = CurrentNearBaskets.Count;
-        }
+        BasketBehaviour basket = CurrentNearBaskets[largestDot.index];
+        CurrentNearBaskets.RemoveAt(largestDot.index);
+        largestDot.index = CurrentNearBaskets.Count;
+        CurrentNearBaskets.Insert(CurrentNearBaskets.Count, basket);
         
         int count = CurrentNearBaskets.Count;
             
