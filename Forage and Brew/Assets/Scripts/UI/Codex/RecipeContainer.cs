@@ -85,7 +85,6 @@ public class RecipeContainer : MonoBehaviour
         {
             for (var i = 0; i < t.CookedIngredients.Count; i++)
             {
-                
                 stepText[writingIndex].transform.parent.gameObject.SetActive(true);
                 stepText[writingIndex].enabled = true;
 
@@ -129,7 +128,7 @@ public class RecipeContainer : MonoBehaviour
 
                 i += numberOfIngredients;
                 writingIndex++;
-                writingIndex += numberOfIngredients;
+                //writingIndex += numberOfIngredients;
             }
 
             stepText[writingIndex].transform.parent.gameObject.SetActive(true);
