@@ -136,6 +136,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""PinLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""ad316aad-64a3-407b-a6fa-d29c8b1d3e76"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PinRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""ee278bd2-905c-4e72-9e34-e76ea3119654"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""BookMarkLeft"",
                     ""type"": ""Button"",
                     ""id"": ""53c75319-d22d-4c37-818d-0aa5483c0a85"",
@@ -598,6 +616,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""094c2b9a-f4fb-4138-badc-bb01471981cb"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PinRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""09f5b112-a7f9-40a9-90bd-efdcd077e68b"",
+                    ""path"": ""<HID::PowerA NSW wired controller>/button8"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PinRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""929ca3f9-7933-4070-bc2c-08e935870801"",
                     ""path"": ""<Gamepad>/leftTrigger"",
                     ""interactions"": """",
@@ -615,6 +655,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""BookMarkLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""803dcf3c-c3b7-4328-8ad9-5d132e04fe2b"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PinLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7bd7b7b1-51c4-4a4c-b17c-25957121b156"",
+                    ""path"": ""<HID::PowerA NSW wired controller>/button7"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PinLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1379,6 +1441,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Next = m_Player.FindAction("Next", throwIfNotFound: true);
         m_Player_Codex = m_Player.FindAction("Codex", throwIfNotFound: true);
         m_Player_BookMarkRight = m_Player.FindAction("BookMarkRight", throwIfNotFound: true);
+        m_Player_PinLeft = m_Player.FindAction("PinLeft", throwIfNotFound: true);
+        m_Player_PinRight = m_Player.FindAction("PinRight", throwIfNotFound: true);
         m_Player_BookMarkLeft = m_Player.FindAction("BookMarkLeft", throwIfNotFound: true);
         m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
         m_Player_ExitPageNavigation = m_Player.FindAction("ExitPageNavigation", throwIfNotFound: true);
@@ -1477,6 +1541,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Next;
     private readonly InputAction m_Player_Codex;
     private readonly InputAction m_Player_BookMarkRight;
+    private readonly InputAction m_Player_PinLeft;
+    private readonly InputAction m_Player_PinRight;
     private readonly InputAction m_Player_BookMarkLeft;
     private readonly InputAction m_Player_Cancel;
     private readonly InputAction m_Player_ExitPageNavigation;
@@ -1500,6 +1566,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @Next => m_Wrapper.m_Player_Next;
         public InputAction @Codex => m_Wrapper.m_Player_Codex;
         public InputAction @BookMarkRight => m_Wrapper.m_Player_BookMarkRight;
+        public InputAction @PinLeft => m_Wrapper.m_Player_PinLeft;
+        public InputAction @PinRight => m_Wrapper.m_Player_PinRight;
         public InputAction @BookMarkLeft => m_Wrapper.m_Player_BookMarkLeft;
         public InputAction @Cancel => m_Wrapper.m_Player_Cancel;
         public InputAction @ExitPageNavigation => m_Wrapper.m_Player_ExitPageNavigation;
@@ -1552,6 +1620,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @BookMarkRight.started += instance.OnBookMarkRight;
             @BookMarkRight.performed += instance.OnBookMarkRight;
             @BookMarkRight.canceled += instance.OnBookMarkRight;
+            @PinLeft.started += instance.OnPinLeft;
+            @PinLeft.performed += instance.OnPinLeft;
+            @PinLeft.canceled += instance.OnPinLeft;
+            @PinRight.started += instance.OnPinRight;
+            @PinRight.performed += instance.OnPinRight;
+            @PinRight.canceled += instance.OnPinRight;
             @BookMarkLeft.started += instance.OnBookMarkLeft;
             @BookMarkLeft.performed += instance.OnBookMarkLeft;
             @BookMarkLeft.canceled += instance.OnBookMarkLeft;
@@ -1613,6 +1687,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @BookMarkRight.started -= instance.OnBookMarkRight;
             @BookMarkRight.performed -= instance.OnBookMarkRight;
             @BookMarkRight.canceled -= instance.OnBookMarkRight;
+            @PinLeft.started -= instance.OnPinLeft;
+            @PinLeft.performed -= instance.OnPinLeft;
+            @PinLeft.canceled -= instance.OnPinLeft;
+            @PinRight.started -= instance.OnPinRight;
+            @PinRight.performed -= instance.OnPinRight;
+            @PinRight.canceled -= instance.OnPinRight;
             @BookMarkLeft.started -= instance.OnBookMarkLeft;
             @BookMarkLeft.performed -= instance.OnBookMarkLeft;
             @BookMarkLeft.canceled -= instance.OnBookMarkLeft;
@@ -1828,6 +1908,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnNext(InputAction.CallbackContext context);
         void OnCodex(InputAction.CallbackContext context);
         void OnBookMarkRight(InputAction.CallbackContext context);
+        void OnPinLeft(InputAction.CallbackContext context);
+        void OnPinRight(InputAction.CallbackContext context);
         void OnBookMarkLeft(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
         void OnExitPageNavigation(InputAction.CallbackContext context);

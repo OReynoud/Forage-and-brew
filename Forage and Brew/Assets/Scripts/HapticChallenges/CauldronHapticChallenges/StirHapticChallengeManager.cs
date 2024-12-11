@@ -11,6 +11,7 @@ public class StirHapticChallengeManager : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] private StirHapticChallengeGlobalValuesSo stirHapticChallengeGlobalValuesSo;
     [SerializeField] private PotionListSo potionListSo;
+    [SerializeField] private CollectedPotionBehaviour collectedPotionPrefab;
     
     [Header("UI")]
     [SerializeField] private GameObject stirChallengeGameObject;
@@ -284,6 +285,11 @@ public class StirHapticChallengeManager : MonoBehaviour
         Debug.Log("Average Difference: " + averageDifference);
         
         Debug.Log(_currentPotion.Name + " Stir Challenge Finished");
+
+        CollectedPotionBehaviour collectedPotionBehaviour = Instantiate(collectedPotionPrefab,
+            CurrentCauldron.transform.position, Quaternion.identity);
+        collectedPotionBehaviour.PotionValuesSo = _currentPotion;
+        CharacterInteractController.Instance.AddToPile(collectedPotionBehaviour);
         
         stirChallengeGameObject.SetActive(false);
         _currentPotion = null;

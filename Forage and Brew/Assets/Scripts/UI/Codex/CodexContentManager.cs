@@ -46,6 +46,8 @@ public class CodexContentManager : Singleton<CodexContentManager>
     private List<Sprite> tempIngredientsList = new List<Sprite>();
     void Start()
     {
+        
+        CharacterInputManager.Instance.OnSelectRecipe.AddListener(SelectRecipe);
         foreach (var ticket in tickets)
         {
             ticket.gameObject.SetActive(false);
@@ -97,7 +99,24 @@ public class CodexContentManager : Singleton<CodexContentManager>
             break;
         }
     }
-    
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="side"> true = right, false = left</param>
+    public void SelectRecipe(bool side)
+    {
+        int recipeIndex = 0;
+        if (AutoFlip.instance.ControledBook.currentPage > AutoFlip.instance.ControledBook.bookMarks[1].index &&
+            AutoFlip.instance.ControledBook.currentPage < AutoFlip.instance.ControledBook.bookMarks[2].index )
+        {
+            recipeIndex = AutoFlip.instance.ControledBook.currentPage -
+                          AutoFlip.instance.ControledBook.bookMarks[1].index;
+            //PinnedRecipe.instance.
+        }
+        
+    }
     
     
     

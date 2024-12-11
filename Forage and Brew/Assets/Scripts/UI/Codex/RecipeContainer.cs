@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using TMPro;
 using UnityEngine;
@@ -16,27 +17,32 @@ public class RecipeContainer : MonoBehaviour
     
     //BrewingSteps
     private int writingIndex;
-    public Image[] mainActionImage;
-    public TextMeshProUGUI[] mainActionText;
+    public TextMeshProUGUI[] stepText;
     public Image[] ingredientStepImage;
-    public TextMeshProUGUI[] secondaryActionText;
+    public Image[] mainActionImage;
     public Image[] secondaryActionImage;
+    public Image[] mainArrow;
+    public Image[] secondaryArrow;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         for (int i = 0; i < mainActionImage.Length; i++)
         {
-            mainActionImage[i].sprite = null;
+            stepText[i].text = " ";
             ingredientStepImage[i].sprite = null;
+            mainActionImage[i].sprite = null;
             secondaryActionImage[i].sprite = null;
-            mainActionText[i].text = " ";
-            secondaryActionText[i].text = " ";
-            mainActionImage[i].enabled = false;
+            
+            
+            
+            stepText[i].enabled = false;
             ingredientStepImage[i].enabled = false;
+            mainActionImage[i].enabled = false;
             secondaryActionImage[i].enabled = false;
-            mainActionText[i].enabled = false;
-            secondaryActionText[i].enabled = false;
+            
+            mainArrow[i].enabled = false;
+            secondaryArrow[i].enabled = false;
         }
     }
 
@@ -69,53 +75,83 @@ public class RecipeContainer : MonoBehaviour
             potionIngredientsImage[i].transform.parent.gameObject.SetActive(true);
             potionIngredientsImage[i].sprite = PotionIngredients[i];
         }
+
+        foreach (var t in stepText)
+        {
+            t.transform.parent.gameObject.SetActive(false);
+        }
+        
         foreach (var t in PotionSteps.TemperatureChallengeIngredients)
         {
-            foreach (var cookedIngredient in t.CookedIngredients)
+            for (var i = 0; i < t.CookedIngredients.Count; i++)
             {
+                
+                stepText[writingIndex].transform.parent.gameObject.SetActive(true);
+                stepText[writingIndex].enabled = true;
+
+                int numberOfIngredients = CheckForSameElementsIngredientSo(i, 0, t.CookedIngredients);
+                stepText[writingIndex].text = (1 + numberOfIngredients).ToString();
+
+                var cookedIngredient = t.CookedIngredients[i];
+
+
+                ingredientStepImage[writingIndex].enabled = true;
+                mainArrow[writingIndex].enabled = true;
 
                 switch (cookedIngredient.CookedForm)
                 {
                     case null:
-                        BeginWriteBrewingStep(CodexContentManager.instance.allBrewingActionSprites.Length-1,"Add 1 X");
-                        
-                        ingredientStepImage[writingIndex].enabled = true;
+
                         HandleWritingIngredientType(cookedIngredient);
-                        
-                        secondaryActionText[writingIndex].enabled = true;
-                        secondaryActionText[writingIndex].text = "to cauldron";
+
+
+                        mainActionImage[writingIndex].enabled = true;
+                        mainActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[^1];
+
                         break;
                     case ChoppingHapticChallengeListSo:
-                        BeginWriteBrewingStep(1,"Mince 1 X");
-                        
-                        ingredientStepImage[writingIndex].enabled = true;
+
                         HandleWritingIngredientType(cookedIngredient);
-                        
-                        secondaryActionText[writingIndex].enabled = true;
-                        secondaryActionText[writingIndex].text = "then add to cauldron";
-                        
+
+
+                        mainActionImage[writingIndex].enabled = true;
+                        mainActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[1];
+
+                        secondaryArrow[writingIndex].enabled = true;
+
                         secondaryActionImage[writingIndex].enabled = true;
-                        secondaryActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[^1];
+                        secondaryActionImage[writingIndex].sprite =
+                            CodexContentManager.instance.allBrewingActionSprites[^1];
+
                         break;
                 }
 
 
-
+                i += numberOfIngredients;
                 writingIndex++;
+                writingIndex += numberOfIngredients;
             }
-            BeginWriteBrewingStep(0,"Stir ");
+
+            stepText[writingIndex].transform.parent.gameObject.SetActive(true);
+
+            ingredientStepImage[writingIndex].enabled = true;
+
+
             switch (t.Temperature)
             {
                 case Temperature.None:
                     break;
                 case Temperature.LowHeat:
-                    mainActionText[writingIndex].text += "at LOW heat";
+                    ingredientStepImage[writingIndex].sprite = null;
+                    ingredientStepImage[writingIndex].color = Color.cyan;
                     break;
                 case Temperature.MediumHeat:
-                    mainActionText[writingIndex].text += "at MEDIUM heat";
+                    ingredientStepImage[writingIndex].sprite = null;
+                    ingredientStepImage[writingIndex].color = Color.yellow;
                     break;
                 case Temperature.HighHeat:
-                    mainActionText[writingIndex].text += "at HIGH heat";
+                    ingredientStepImage[writingIndex].sprite = null;
+                    ingredientStepImage[writingIndex].color = Color.red;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -123,19 +159,19 @@ public class RecipeContainer : MonoBehaviour
 
             writingIndex++;
         }
+        stepText[writingIndex].transform.parent.gameObject.SetActive(true);
+
+        ingredientStepImage[writingIndex].enabled = true;
+        ingredientStepImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[0];
     }
 
     private void HandleWritingIngredientType(CookedIngredientForm cookedIngredient)
     {
         if (cookedIngredient.IsAType)
         {
-            mainActionText[writingIndex].text += " type of";
             ingredientStepImage[writingIndex].sprite =
                 CodexContentManager.instance.allIngredientTypeSprites[
                     (int)cookedIngredient.IngredientType];
-            ingredientStepImage[writingIndex].transform.position += Vector3.right * 20;
-            secondaryActionImage[writingIndex].transform.position += Vector3.right* 20;
-            secondaryActionText[writingIndex].transform.position += Vector3.right* 20;
         }
         else
         {
@@ -143,13 +179,20 @@ public class RecipeContainer : MonoBehaviour
         }
     }
 
-    void BeginWriteBrewingStep(int actionSpriteIndex, string text)
+    int CheckForSameElementsIngredientSo(int index, int similes, List<CookedIngredientForm> list)
     {
-        mainActionImage[writingIndex].enabled = true;
-        mainActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[actionSpriteIndex];
-        
-        mainActionText[writingIndex].enabled = true;
-        mainActionText[writingIndex].text = text;
+        if (index + similes + 1 < list.Count)
+        {
+            if (list[index].Ingredient ==
+                list[index + similes + 1].Ingredient)
+            {
+                similes++;
+                return CheckForSameElementsIngredientSo(index, similes, list);
+            }
+
+            return similes;
+        }
+        return similes;
     }
     
 }

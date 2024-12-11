@@ -16,6 +16,7 @@ public class CharacterInputManager : MonoBehaviour
 
     public UnityEvent OnCodexShow { get; set; } = new();
     public UnityEvent<bool> OnNavigationChange { get; set; } = new();
+    public UnityEvent<bool> OnSelectRecipe { get; set; } = new();
     
     
 
@@ -125,7 +126,13 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.ExitPageNavigation.Enable();
         _inputs.Player.StartPageNavigation.performed += StartPageNavigationOnPerformed;
         _inputs.Player.ExitPageNavigation.performed += ExitPageNavigationOnPerformed;
+        _inputs.Player.PinLeft.Enable();
+        _inputs.Player.PinRight.Enable();
+        _inputs.Player.PinLeft.performed += PinLeftOnPerformed;
+        _inputs.Player.PinRight.performed += PinRightOnPerformed;
     }
+
+
 
     public void EnableMailInputs()
     {
@@ -207,6 +214,10 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.ExitPageNavigation.Disable();
         _inputs.Player.StartPageNavigation.performed -= StartPageNavigationOnPerformed;
         _inputs.Player.ExitPageNavigation.performed -= ExitPageNavigationOnPerformed;
+        _inputs.Player.PinLeft.Disable();
+        _inputs.Player.PinRight.Disable();
+        _inputs.Player.PinLeft.performed -= PinLeftOnPerformed;
+        _inputs.Player.PinRight.performed -= PinRightOnPerformed;
     }
 
     public void DisableMailInputs()
@@ -325,6 +336,17 @@ public class CharacterInputManager : MonoBehaviour
         codexController.PlayerInputNavigateBookmarks(false);
     }
 
+    private void PinRightOnPerformed(InputAction.CallbackContext obj)
+    {
+        if (OnSelectRecipe != null)
+            OnSelectRecipe.Invoke(true);
+    }
+
+    private void PinLeftOnPerformed(InputAction.CallbackContext obj)
+    {
+        if (OnSelectRecipe != null)
+            OnSelectRecipe.Invoke(false);
+    }
     private void StartPageNavigationOnPerformed(InputAction.CallbackContext obj)
     {
         if (!showCodex)return;

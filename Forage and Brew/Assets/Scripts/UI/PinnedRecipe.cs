@@ -4,11 +4,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PinnedRecipe : MonoBehaviour
+public class PinnedRecipe : Singleton<PinnedRecipe>
 {
     public PotionValuesSo pinnedRecipe;
 
     public TextMeshProUGUI title;
+    public Vector3 restingPos;
+    public Vector3 pinnedPos;
+    public float lerp;
+    
     public Sprite arrowSprite;
     public Sprite[] potionIngredients;
     private int writingIndex;
@@ -31,6 +35,11 @@ public class PinnedRecipe : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("start");
+        for (int i = 0; i < potionIngredientsImage.Length; i++)
+        {
+            potionIngredientsImage[i].preserveAspect = true;
+        }
         PinRecipe(pinnedRecipe, potionIngredients);
         //if (pinnedRecipe)
     }
@@ -59,17 +68,19 @@ public class PinnedRecipe : MonoBehaviour
             secondaryArrow[i].enabled = false;
         }
 
-        recipeStepsList.alpha = 1;
-        ShowRecipeSteps();
 
-        // if (GameDontDestroyOnLoadManager.Instance.PreviousScene == Scene.House)
-        // {
-        // }
-        // else
-        // {
-        //     ingredientsList.alpha = 1;
-        //     ShowRecipeIngredients();
-        // }
+        if (GameDontDestroyOnLoadManager.Instance.PreviousScene != Scene.House)
+        {
+            title.text = "How to make " + pinnedRecipe.Name;
+            recipeStepsList.alpha = 1;
+            ShowRecipeSteps();
+        }
+        else
+        {
+            title.text = "Ingredients for " + pinnedRecipe.Name;
+            ingredientsList.alpha = 1;
+            ShowRecipeIngredients();
+        }
     }
 
     void ShowRecipeSteps()
@@ -78,95 +89,91 @@ public class PinnedRecipe : MonoBehaviour
         {
             t.transform.parent.gameObject.SetActive(false);
         }
-        
+
         foreach (var t in pinnedRecipe.TemperatureChallengeIngredients)
         {
             for (var i = 0; i < t.CookedIngredients.Count; i++)
             {
-                
-                stepText[i].transform.parent.gameObject.SetActive(true);
-                stepText[i].enabled = true;
-                
+                stepText[writingIndex].transform.parent.gameObject.SetActive(true);
+                stepText[writingIndex].enabled = true;
+
                 int numberOfIngredients = CheckForSameElementsIngredientSo(i, 0, t.CookedIngredients);
-                
-                stepText[i].text = (1 + numberOfIngredients).ToString();
-                
+
+
+                Debug.Log(numberOfIngredients);
+                stepText[writingIndex].text = (1 + numberOfIngredients).ToString();
+
                 var cookedIngredient = t.CookedIngredients[i];
-                
-                
-                ingredientStepImage[i].enabled = true;
-                mainArrow[i].enabled = true;
+
+
+                ingredientStepImage[writingIndex].enabled = true;
+                mainArrow[writingIndex].enabled = true;
 
                 switch (cookedIngredient.CookedForm)
                 {
                     case null:
-                
+
                         HandleWritingIngredientType(cookedIngredient);
-                
-                
-                        mainActionImage[i].enabled = true;
-                        mainActionImage[i].sprite = CodexContentManager.instance.allBrewingActionSprites[^1];
-                
+
+
+                        mainActionImage[writingIndex].enabled = true;
+                        mainActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[^1];
+
                         break;
                     case ChoppingHapticChallengeListSo:
-                
+
                         HandleWritingIngredientType(cookedIngredient);
-                
-                
-                        mainActionImage[i].enabled = true;
-                        mainActionImage[i].sprite = CodexContentManager.instance.allBrewingActionSprites[1];
-                
-                        secondaryArrow[i].enabled = true;
-                
-                        secondaryActionImage[i].enabled = true;
-                        secondaryActionImage[i].sprite =
+
+
+                        mainActionImage[writingIndex].enabled = true;
+                        mainActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[1];
+
+                        secondaryArrow[writingIndex].enabled = true;
+
+                        secondaryActionImage[writingIndex].enabled = true;
+                        secondaryActionImage[writingIndex].sprite =
                             CodexContentManager.instance.allBrewingActionSprites[^1];
-                
+
                         break;
                 }
 
 
                 i += numberOfIngredients;
-                Debug.Log(i);
+                writingIndex++;
+                writingIndex += numberOfIngredients;
             }
-        //
-        //     stepText[writingIndex].transform.parent.gameObject.SetActive(true);
-        //
-        //     ingredientStepImage[writingIndex].enabled = true;
-        //     ingredientStepImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[^1];
-        //
-        //
-        //     switch (t.Temperature)
-        //     {
-        //         case Temperature.None:
-        //             break;
-        //         case Temperature.LowHeat:
-        //             mainArrow[writingIndex].enabled = true;
-        //
-        //             mainActionImage[writingIndex].enabled = true;
-        //             mainActionImage[writingIndex].sprite = null;
-        //             mainActionImage[writingIndex].color = Color.cyan;
-        //             break;
-        //         case Temperature.MediumHeat:
-        //             mainArrow[writingIndex].enabled = true;
-        //
-        //             mainActionImage[writingIndex].enabled = true;
-        //             mainActionImage[writingIndex].sprite = null;
-        //             mainActionImage[writingIndex].color = Color.yellow;
-        //             break;
-        //         case Temperature.HighHeat:
-        //             mainArrow[writingIndex].enabled = true;
-        //
-        //             mainActionImage[writingIndex].enabled = true;
-        //             mainActionImage[writingIndex].sprite = null;
-        //             mainActionImage[writingIndex].color = Color.red;
-        //             break;
-        //         default:
-        //             throw new ArgumentOutOfRangeException();
-        //     }
-        //
-        //     writingIndex++;
+
+            stepText[writingIndex].transform.parent.gameObject.SetActive(true);
+
+            ingredientStepImage[writingIndex].enabled = true;
+
+
+            switch (t.Temperature)
+            {
+                case Temperature.None:
+                    break;
+                case Temperature.LowHeat:
+                    ingredientStepImage[writingIndex].sprite = null;
+                    ingredientStepImage[writingIndex].color = Color.cyan;
+                    break;
+                case Temperature.MediumHeat:
+                    ingredientStepImage[writingIndex].sprite = null;
+                    ingredientStepImage[writingIndex].color = Color.yellow;
+                    break;
+                case Temperature.HighHeat:
+                    ingredientStepImage[writingIndex].sprite = null;
+                    ingredientStepImage[writingIndex].color = Color.red;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            writingIndex++;
         }
+        stepText[writingIndex].transform.parent.gameObject.SetActive(true);
+
+        ingredientStepImage[writingIndex].enabled = true;
+        ingredientStepImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[0];
     }
 
     void ShowRecipeIngredients()
@@ -221,16 +228,11 @@ public class PinnedRecipe : MonoBehaviour
                 list[index + similes + 1].Ingredient)
             {
                 similes++;
-                //Debug.Log("Similar element detected");
-                return CheckForSameElementsSprite(index, similes);
+                return CheckForSameElementsIngredientSo(index, similes, list);
             }
 
-            //Debug.Log("Different element detected" );
             return similes;
         }
-
-
-        //Debug.Log("Reached end of list" );
         return similes;
     }
 
