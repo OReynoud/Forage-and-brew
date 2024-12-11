@@ -6,17 +6,23 @@ public class BasketBehaviour : MonoBehaviour
     [field: SerializeField] public IngredientValuesSo ingredient { get; set; }
     [SerializeField] private CollectedIngredientBehaviour collectedIngredientBehaviourPrefab;
     [SerializeField] private GameObject interactInputCanvasGameObject;
+    public int IngredientCount { get; private set; }
     
     
     private void Start()
     {
         interactInputCanvasGameObject.SetActive(false);
         
-        foreach (IngredientValuesSo collectedIngredient in GameDontDestroyOnLoadManager.Instance.CollectedIngredients)
+        if (GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Contains(ingredient))
         {
-            if (collectedIngredient == ingredient)
+            Instantiate(ingredient.MeshGameObject, meshParentTransform);
+
+            foreach (IngredientValuesSo collectedIngredient in GameDontDestroyOnLoadManager.Instance.CollectedIngredients)
             {
-                Instantiate(collectedIngredient.MeshGameObject, meshParentTransform);
+                if (collectedIngredient == ingredient)
+                {
+                    IngredientCount++;
+                }
             }
         }
     }
@@ -38,6 +44,12 @@ public class BasketBehaviour : MonoBehaviour
         CollectedIngredientBehaviour collectedIngredientBehaviour =
             Instantiate(collectedIngredientBehaviourPrefab, transform);
         collectedIngredientBehaviour.IngredientValuesSo = ingredient;
+        IngredientCount--;
+
+        if (IngredientCount == 0)
+        {
+            meshParentTransform.gameObject.SetActive(false);
+        }
         
         return collectedIngredientBehaviour;
     }
@@ -48,7 +60,7 @@ public class BasketBehaviour : MonoBehaviour
         if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
             (characterInteractController.collectedIngredientStack.Count == 0 ||
              characterInteractController.collectedIngredientStack[0].ingredient.IngredientValuesSo == ingredient) &&
-            GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Contains(ingredient))
+            IngredientCount > 0)
         {
             characterInteractController.CurrentNearBaskets.Add(this);
             EnableInteract();

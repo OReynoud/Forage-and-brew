@@ -105,6 +105,10 @@ public class CharacterInteractController : MonoBehaviour
         else if (CurrentNearCauldron && collectedIngredientStack.Count > 0)
         {
             CurrentNearCauldron.DisableInteract(true);
+            for (int i = 0; i < collectedIngredientStack.Count; i++)
+            {
+                GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Remove(collectedIngredientStack[i].ingredient.IngredientValuesSo);
+            }
             ShoveStackInTarget(CurrentNearCauldron.transform, CurrentNearCauldron);
         }
         else if (CurrentIngredientToCollectBehaviour)
@@ -166,10 +170,17 @@ public class CharacterInteractController : MonoBehaviour
             
             if (index != CurrentNearBaskets.Count)
             {
-                BasketBehaviour item = CurrentNearBaskets[index];
-                CurrentNearBaskets.RemoveAt(index);
-                index = CurrentNearBaskets.Count;
-                CurrentNearBaskets.Insert(CurrentNearBaskets.Count, item);
+                if (CurrentNearBaskets[index].IngredientCount > 0)
+                {
+                    BasketBehaviour item = CurrentNearBaskets[index];
+                    CurrentNearBaskets.RemoveAt(index);
+                    index = CurrentNearBaskets.Count;
+                    CurrentNearBaskets.Insert(CurrentNearBaskets.Count, item);
+                }
+                else
+                {
+                    index = CurrentNearBaskets.Count;
+                }
             }
             
             int length = CurrentNearBaskets.Count;
@@ -199,12 +210,19 @@ public class CharacterInteractController : MonoBehaviour
         }
         
         AddToPile(CurrentNearBaskets[largestDot.index].InstantiateCollectedIngredient());
-            
-        BasketBehaviour basket = CurrentNearBaskets[largestDot.index];
-        CurrentNearBaskets.RemoveAt(largestDot.index);
-        largestDot.index = CurrentNearBaskets.Count;
-        CurrentNearBaskets.Insert(CurrentNearBaskets.Count, basket);
-            
+
+        if (CurrentNearBaskets[largestDot.index].IngredientCount > 0)
+        {
+            BasketBehaviour basket = CurrentNearBaskets[largestDot.index];
+            CurrentNearBaskets.RemoveAt(largestDot.index);
+            largestDot.index = CurrentNearBaskets.Count;
+            CurrentNearBaskets.Insert(CurrentNearBaskets.Count, basket);
+        }
+        else
+        {
+            largestDot.index = CurrentNearBaskets.Count;
+        }
+        
         int count = CurrentNearBaskets.Count;
             
         for (int i = 0; i < count; i++)
