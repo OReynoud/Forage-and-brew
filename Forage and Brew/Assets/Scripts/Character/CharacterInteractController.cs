@@ -31,7 +31,7 @@ public class CharacterInteractController : MonoBehaviour
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public MailBox CurrentNearMailBox { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public CauldronBehaviour CurrentNearCauldron { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public ChoppingCountertopBehaviour CurrentNearChoppingCountertop { get; set; }
-    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<BasketBehaviour> CurrentNearBaskets { get; set; } = new();
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<IngredientBasketBehaviour> CurrentNearBaskets { get; set; } = new();
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public bool AreHandsFull { get; private set; }
 
     private Rigidbody rb { get; set; }
@@ -190,7 +190,7 @@ public class CharacterInteractController : MonoBehaviour
                     CurrentNearBaskets[index].DisableInteract();
                 }
                 
-                BasketBehaviour item = CurrentNearBaskets[index];
+                IngredientBasketBehaviour item = CurrentNearBaskets[index];
                 CurrentNearBaskets.RemoveAt(index);
                 index = CurrentNearBaskets.Count;
                 CurrentNearBaskets.Insert(CurrentNearBaskets.Count, item);
@@ -230,10 +230,10 @@ public class CharacterInteractController : MonoBehaviour
             CurrentNearBaskets[largestDot.index].DisableInteract();
         }
 
-        BasketBehaviour basket = CurrentNearBaskets[largestDot.index];
+        IngredientBasketBehaviour ingredientBasket = CurrentNearBaskets[largestDot.index];
         CurrentNearBaskets.RemoveAt(largestDot.index);
         largestDot.index = CurrentNearBaskets.Count;
-        CurrentNearBaskets.Insert(CurrentNearBaskets.Count, basket);
+        CurrentNearBaskets.Insert(CurrentNearBaskets.Count, ingredientBasket);
         
         int count = CurrentNearBaskets.Count;
             

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BasketBehaviour : MonoBehaviour, IIngredientAddable
+public class IngredientBasketBehaviour : MonoBehaviour, IIngredientAddable
 {
     [SerializeField] private Transform meshParentTransform;
     [field: SerializeField] public IngredientValuesSo ingredient { get; set; }
