@@ -3,7 +3,7 @@ using NaughtyAttributes;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "D_PotionValues", menuName = "Potions/PotionValuesSo")]
-public class PotionValuesSo : ScriptableObject
+public class PotionValuesSo : StackableValuesSo
 {
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField] public string Description { get; private set; }
