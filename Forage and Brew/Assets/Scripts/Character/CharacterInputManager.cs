@@ -28,11 +28,11 @@ public class CharacterInputManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        _inputs = new InputSystem_Actions();
     }
     
     private void Start()
     {
-        _inputs = new InputSystem_Actions();
         EnableInputs();
         movementController = GetComponent<CharacterMovementController>();
         characterInteractController = GetComponent<CharacterInteractController>();
