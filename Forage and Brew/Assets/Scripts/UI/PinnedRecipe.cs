@@ -8,7 +8,9 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 {
     public PotionValuesSo pinnedRecipe;
 
+    private RectTransform ownTransform;
     public TextMeshProUGUI title;
+    private bool isPinned;
     public Vector3 restingPos;
     public Vector3 pinnedPos;
     public float lerp;
@@ -35,7 +37,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
     private void Start()
     {
-        Debug.Log("start");
+        ownTransform = GetComponent<RectTransform>();
         for (int i = 0; i < potionIngredientsImage.Length; i++)
         {
             potionIngredientsImage[i].preserveAspect = true;
@@ -44,6 +46,22 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         //if (pinnedRecipe)
     }
 
+    private void Update()
+    {
+        if (CharacterInputManager.Instance.showCodex) 
+            return;
+        
+        ownTransform.anchoredPosition = Vector2.Lerp(
+            ownTransform.anchoredPosition, 
+            isPinned ? pinnedPos : restingPos, 
+            lerp);
+    }
+
+    public void UnpinRecipe()
+    {
+        isPinned = false;
+        pinnedRecipe = null;
+    }
     public void PinRecipe(PotionValuesSo PotionToPin, Sprite[] PotionIngredients)
     {
         ingredientsList.alpha = 0;
@@ -81,6 +99,8 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
             ingredientsList.alpha = 1;
             ShowRecipeIngredients();
         }
+
+        isPinned = true;
     }
 
     void ShowRecipeSteps()
@@ -140,7 +160,6 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
                 i += numberOfIngredients;
                 writingIndex++;
-                writingIndex += numberOfIngredients;
             }
 
             stepText[writingIndex].transform.parent.gameObject.SetActive(true);

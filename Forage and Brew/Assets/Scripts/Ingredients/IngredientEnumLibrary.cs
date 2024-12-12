@@ -25,7 +25,15 @@ public enum SpawnLocation
     RiverBed = 1 << 6,
     Pond = 1 << 7,
     Mud = 1 << 8,
-    Rock = 1 << 9,
+    BaseOfRock = 1 << 9,
     RockWall = 1 << 10,
-    Cliff = 1 << 11
+    Cliff = 1 << 11,
+    BaseOfBigTree = 1 << 12,
+    MagicTreeStump = 1 << 13,
+    MagicDeadTrunk = 1 << 14,
+    SpikyBush = 1 << 15,
+    RockBig = 1 << 16,
+    RockMedium = 1 << 17,
+    RockSmall = 1 << 18,
+    
 }
