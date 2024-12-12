@@ -10,6 +10,7 @@ public class ScrapingHapticChallengeRouteDataSaveBehaviour : MonoBehaviour
     [SerializeField] private SplineContainer splineContainer;
     [SerializeField] private Object scrapingHapticChallengeRouteDataFolder;
 
+#if UNITY_EDITOR
     [Button]
     private void SaveRouteData()
     {
@@ -77,4 +78,5 @@ public class ScrapingHapticChallengeRouteDataSaveBehaviour : MonoBehaviour
             splineContainer.Spline.SetTangentMode(i, TangentMode.AutoSmooth);
         }
     }
+#endif
 }
