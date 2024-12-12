@@ -75,7 +75,7 @@ Shader "CustomRenderTexture/Simple"
 #endif
             // shadow strength
             clouds *= _Strength;
-            return float4(1,1,1,clouds);
+            return float4(clouds,clouds,clouds,1);
  
             }
             ENDCG
