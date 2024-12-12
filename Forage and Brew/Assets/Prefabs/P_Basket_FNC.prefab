@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 12316459076810268}
   - component: {fileID: 5749652384784223150}
   - component: {fileID: 7328966115980511658}
-  - component: {fileID: 7493162393584554782}
+  - component: {fileID: 8974469437234720104}
   m_Layer: 0
   m_Name: P_Basket_FNC
   m_TagString: Untagged
@@ -147,12 +147,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshParentTransform: {fileID: 4710974407444214730}
-  <ingredient>k__BackingField: {fileID: 0}
-  collectedIngredientBehaviourPrefab: {fileID: 1796566677407692209, guid: 02cea023ea110ae438589f2ce871207b, type: 3}
   interactInputCanvasGameObject: {fileID: 7657304163649414592}
   cancelInputCanvasGameObject: {fileID: 2218794364113902900}
---- !u!135 &7493162393584554782
-SphereCollider:
+  <ingredient>k__BackingField: {fileID: 0}
+  collectedIngredientBehaviourPrefab: {fileID: 1796566677407692209, guid: 02cea023ea110ae438589f2ce871207b, type: 3}
+--- !u!65 &8974469437234720104
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -170,8 +170,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Size: {x: 1.5, y: 1.4, z: 1.5}
+  m_Center: {x: 0, y: 0.7, z: 0}
 --- !u!1 &2218794364113902900
 GameObject:
   m_ObjectHideFlags: 0

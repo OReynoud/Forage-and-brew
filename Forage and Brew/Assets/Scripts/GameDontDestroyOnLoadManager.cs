@@ -9,10 +9,14 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
 
     [field: SerializeField] public Scene PreviousScene { get; set; }
     public TimeOfDay CurrentTimeOfDay { get; set; } = TimeOfDay.Daytime;
+    
+    public int dayPassed { get; set; }
 
+    
     [field: SerializeField] public bool generateLetters { get; set; }
     
     public List<IngredientValuesSo> CollectedIngredients { get; private set; } = new();
+    public List<List<PotionValuesSo>> OrderPotions { get; private set; } = new();
     
     [Serializable]
     public class Letter
@@ -27,6 +31,7 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
             days = delay;
         }
     }
+    public List<LetterContentSO> AllLetters = new List<LetterContentSO>();
 
     public List<Letter> GeneratedLetters = new List<Letter>();
     public List<Letter> ActiveLetters = new List<Letter>();
@@ -49,6 +54,15 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     {
         if (!generateLetters || MailBox.instance == null) return;
         Debug.Log("GeneratedLetters");
+        switch (dayPassed)
+        {
+            case 0:
+                break;            
+            case 1:
+                break;
+            case 2:
+                break;
+        }
         generateLetters = false;
         MailBox.instance.GenerateLetters();
     }
