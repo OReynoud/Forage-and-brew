@@ -7,39 +7,24 @@ public class CharacterInteractController : MonoBehaviour
 {
     public static CharacterInteractController Instance { get; private set; }
     
-    [field:Foldout("Debug")] [ReadOnly] public List<CollectedIngredientStack> collectedIngredientStack = new();
-    [field:Foldout("Debug")] [ReadOnly] public List<CollectedPotionStack> collectedPotionStack = new();
+    [field:Foldout("Debug")] [ReadOnly] public List<CollectedStack> collectedStack = new();
 
     [Serializable]
-    public class CollectedIngredientStack
+    public class CollectedStack
     {
-        [field:SerializeField] [field:ReadOnly] public CollectedIngredientBehaviour ingredient { get; set; }
+        [field:SerializeField] [field:ReadOnly] public IStackable stackable { get; set; }
         [field:SerializeField] [field:ReadOnly] public bool isPickedUp { get; set; }
 
-        public CollectedIngredientStack(CollectedIngredientBehaviour Ingredient)
+        public CollectedStack(IStackable Stackable)
         {
-            ingredient = Ingredient;
-            isPickedUp = false;
-        }
-    }
-
-    [Serializable]
-    public class CollectedPotionStack
-    {
-        [field:SerializeField] [field:ReadOnly] public CollectedPotionBehaviour potion { get; set; }
-        [field:SerializeField] [field:ReadOnly] public bool isPickedUp { get; set; }
-
-        public CollectedPotionStack(CollectedPotionBehaviour Potion)
-        {
-            potion = Potion;
+            stackable = Stackable;
             isPickedUp = false;
         }
     }
     
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public IngredientToCollectBehaviour CurrentIngredientToCollectBehaviour { get; private set; }
 
-    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<CollectedIngredientBehaviour> CurrentCollectedIngredientBehaviours { get; private set; } = new();
-    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<CollectedPotionBehaviour> CurrentCollectedPotionBehaviours { get; private set; } = new();
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<IStackable> CurrentStackableBehaviours { get; private set; } = new();
 
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public BedBehaviour CurrentNearBed { get; set; }
     
@@ -92,45 +77,26 @@ public class CharacterInteractController : MonoBehaviour
         CurrentIngredientToCollectBehaviour = newIngredientToCollectBehaviour;
     }
 
-    public void AddNewCollectedIngredient(CollectedIngredientBehaviour newCollectedIngredientBehaviour)
+    public void AddNewCollectedStackable(IStackable newStackable)
     {
-        if (CurrentCollectedIngredientBehaviours.Count > 0)
+        if (CurrentStackableBehaviours.Count > 0)
         {
-            CurrentCollectedIngredientBehaviours[^1].DisableGrab();
+            CurrentStackableBehaviours[^1].DisableGrab();
         }
 
-        CurrentCollectedIngredientBehaviours.Add(newCollectedIngredientBehaviour);
+        CurrentStackableBehaviours.Add(newStackable);
     }
 
-    public void RemoveCollectedIngredient(CollectedIngredientBehaviour newCollectedIngredientBehaviour)
+    public void RemoveCollectedStackable(IStackable newStackable)
     {
-        CurrentCollectedIngredientBehaviours.Remove(newCollectedIngredientBehaviour);
+        CurrentStackableBehaviours.Remove(newStackable);
         
-        if (CurrentCollectedIngredientBehaviours.Count > 0)
+        if (CurrentStackableBehaviours.Count > 0)
         {
-            CurrentCollectedIngredientBehaviours[^1].EnableGrab();
+            CurrentStackableBehaviours[^1].EnableGrab();
         }
     }
-
-    public void AddNewCollectedPotion(CollectedPotionBehaviour newCollectedPotionBehaviour)
-    {
-        if (CurrentCollectedPotionBehaviours.Count > 0)
-        {
-            CurrentCollectedPotionBehaviours[^1].DisableGrab();
-        }
-
-        CurrentCollectedPotionBehaviours.Add(newCollectedPotionBehaviour);
-    }
-
-    public void RemoveCollectedPotion(CollectedPotionBehaviour newCollectedPotionBehaviour)
-    {
-        CurrentCollectedPotionBehaviours.Remove(newCollectedPotionBehaviour);
-        
-        if (CurrentCollectedPotionBehaviours.Count > 0)
-        {
-            CurrentCollectedPotionBehaviours[^1].EnableGrab();
-        }
-    }
+    
 
     public void Interact()
     {
@@ -138,12 +104,13 @@ public class CharacterInteractController : MonoBehaviour
         {
             ChooseBasket();
         }
-        else if (CurrentNearCauldron && collectedIngredientStack.Count > 0)
+        else if (CurrentNearCauldron && collectedStack.Count > 0 && (CollectedIngredientBehaviour) collectedStack[0].stackable)
         {
             CurrentNearCauldron.DisableInteract(true);
-            for (int i = 0; i < collectedIngredientStack.Count; i++)
+            for (int i = 0; i < collectedStack.Count; i++)
             {
-                GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Remove(collectedIngredientStack[i].ingredient.IngredientValuesSo);
+                GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Remove(
+                    ((CollectedIngredientBehaviour)collectedStack[i].stackable).IngredientValuesSo);
             }
             ShoveStackInTarget(CurrentNearCauldron.transform, CurrentNearCauldron);
         }
@@ -154,15 +121,11 @@ public class CharacterInteractController : MonoBehaviour
             CollectHapticChallengeManager.Instance.StartCollectHapticChallenge(CurrentIngredientToCollectBehaviour);
             CurrentIngredientToCollectBehaviour = null;
         }
-        else if (CurrentCollectedIngredientBehaviours.Count > 0)
+        else if (CurrentStackableBehaviours.Count > 0)
         {
-            AddToPile(CurrentCollectedIngredientBehaviours[^1]);
+            AddToPile(CurrentStackableBehaviours[^1]);
         }
-        else if (CurrentCollectedPotionBehaviours.Count > 0)
-        {
-            AddToPile(CurrentCollectedPotionBehaviours[^1]);
-        }
-        else if (CurrentNearBed && collectedIngredientStack.Count == 0)
+        else if (CurrentNearBed && collectedStack.Count == 0)
         {
             CurrentNearBed.Sleep();
         }
@@ -175,7 +138,7 @@ public class CharacterInteractController : MonoBehaviour
 
     public void Cancel()
     {
-        if (collectedIngredientStack.Count > 0)
+        if (collectedStack.Count > 0)
         {
             if (CurrentNearBaskets.Count > 0)
             {
@@ -185,40 +148,26 @@ public class CharacterInteractController : MonoBehaviour
             }
             else
             {
-                int length = collectedIngredientStack.Count;
+                int length = collectedStack.Count;
 
                 for (int i = 0; i < length; i++)
                 {
-                    collectedIngredientStack[0].ingredient.GrabMethod(false);
-                    collectedIngredientStack[0].ingredient.transform.SetParent(null);
-                    collectedIngredientStack.RemoveAt(0);
+                    collectedStack[0].stackable.GrabMethod(false);
+                    collectedStack[0].stackable.GetTransform().SetParent(null);
+                    collectedStack.RemoveAt(0);
                 }
 
                 AreHandsFull = false;
             }
-        }
-        
-        if (collectedPotionStack.Count > 0)
-        {
-            int length = collectedPotionStack.Count;
-
-            for (int i = 0; i < length; i++)
-            {
-                collectedPotionStack[0].potion.GrabMethod(false);
-                collectedPotionStack[0].potion.transform.SetParent(null);
-                collectedPotionStack.RemoveAt(0);
-            }
-
-            AreHandsFull = false;
         }
     }
 
     
     private void ChooseBasket()
     {
-        if (collectedIngredientStack.Count >= maxStackSize) return;
+        if (collectedStack.Count >= maxStackSize) return;
 
-        if (collectedIngredientStack.Count > 0)
+        if (collectedStack.Count > 0)
         {
             int index;
             
@@ -226,7 +175,8 @@ public class CharacterInteractController : MonoBehaviour
             {
                 if (CurrentNearBaskets[index].IngredientCount == 0) return;
                 
-                if (collectedIngredientStack[0].ingredient.IngredientValuesSo == CurrentNearBaskets[index].ingredient)
+                if ((CollectedIngredientBehaviour)collectedStack[0].stackable &&
+                    ((CollectedIngredientBehaviour)collectedStack[0].stackable).IngredientValuesSo == CurrentNearBaskets[index].ingredient)
                 {
                     AddToPile(CurrentNearBaskets[index].InstantiateCollectedIngredient());
                     break;
@@ -300,7 +250,7 @@ public class CharacterInteractController : MonoBehaviour
     
     public void DropIngredientsInChoppingCountertop()
     {
-        if (!CurrentNearChoppingCountertop || collectedIngredientStack.Count == 0) return;
+        if (!CurrentNearChoppingCountertop || collectedStack.Count == 0) return;
         
         CurrentNearChoppingCountertop.DisableInteract();
         ShoveStackInTarget(CurrentNearChoppingCountertop.transform, CurrentNearChoppingCountertop, choppingOffset);
@@ -309,48 +259,35 @@ public class CharacterInteractController : MonoBehaviour
     }
 
 
-    public void AddToPile(CollectedIngredientBehaviour ingredient)
+    public void AddToPile(IStackable stackable)
     {
-        if (collectedIngredientStack.Count > 0 && collectedIngredientStack.Count < maxStackSize)
+        if (collectedStack.Count > 0 && collectedStack.Count < maxStackSize)
         {
-            if (collectedIngredientStack[0].ingredient.IngredientValuesSo != ingredient.IngredientValuesSo)
+            if (collectedStack[0].stackable.GetStackableValuesSo() != stackable.GetStackableValuesSo())
                 return;
         }
         
-        ingredient.GrabMethod(true);
-        ingredient.transform.SetParent(transform);
-        collectedIngredientStack.Add(new CollectedIngredientStack(ingredient));
-        RemoveCollectedIngredient(ingredient);
-        
-        AreHandsFull = true;
-    }
-
-    public void AddToPile(CollectedPotionBehaviour potion)
-    {
-        if (collectedPotionStack.Count > 0 && collectedPotionStack.Count < maxStackSize)
-        {
-            if (collectedPotionStack[0].potion.PotionValuesSo != potion.PotionValuesSo)
-                return;
-        }
-        
-        potion.GrabMethod(true);
-        potion.transform.SetParent(transform);
-        collectedPotionStack.Add(new CollectedPotionStack(potion));
-        RemoveCollectedPotion(potion);
+        stackable.GrabMethod(true);
+        stackable.GetTransform().SetParent(transform);
+        collectedStack.Add(new CollectedStack(stackable));
+        RemoveCollectedStackable(stackable);
         
         AreHandsFull = true;
     }
 
     private void ShoveStackInTarget(Transform targetTransform, IIngredientAddable targetBehaviour, Vector3 offset = default)
     {
-        for (int i = 0; i < collectedIngredientStack.Count; i++)
+        for (int i = 0; i < collectedStack.Count; i++)
         {
-            collectedIngredientStack[i].ingredient.transform.SetParent(targetTransform);
-            collectedIngredientStack[i].ingredient.DropInTarget(targetTransform, offset);
-            targetBehaviour.AddIngredient(collectedIngredientStack[i].ingredient);
+            collectedStack[i].stackable.GetTransform().SetParent(targetTransform);
+            collectedStack[i].stackable.DropInTarget(targetTransform, offset);
+            if ((CollectedIngredientBehaviour)collectedStack[i].stackable)
+            {
+                targetBehaviour.AddIngredient((CollectedIngredientBehaviour)collectedStack[i].stackable);
+            }
         }
         
-        collectedIngredientStack.Clear();
+        collectedStack.Clear();
         AreHandsFull = false;
     }
 
@@ -363,28 +300,28 @@ public class CharacterInteractController : MonoBehaviour
 
     void DisplaceStack()
     {
-        for (var i = 0; i < collectedIngredientStack.Count; i++)
+        for (var i = 0; i < collectedStack.Count; i++)
         {
             clampedDisplacement = Mathf.Clamp(rb.linearVelocity.magnitude, 0, stackDisplacementClamp);
-            var ingredient = collectedIngredientStack[i].ingredient;
+            var stackable = collectedStack[i].stackable;
 
-            if (collectedIngredientStack[i].isPickedUp)
+            if (collectedStack[i].isPickedUp)
             {
                 //y lerp
-                ingredient.transform.localPosition = Vector3.Lerp(ingredient.transform.localPosition,
-                    new Vector3(ingredient.transform.localPosition.x, ingredient.StackHeight * i,
-                        ingredient.transform.localPosition.z), pickupLerp);
+                stackable.GetTransform().localPosition = Vector3.Lerp(stackable.GetTransform().localPosition,
+                    new Vector3(stackable.GetTransform().localPosition.x, stackable.GetStackHeight() * i,
+                        stackable.GetTransform().localPosition.z), pickupLerp);
                 
                 //x and z lerp
                 if (i == 0)
                 {
-                    ingredient.transform.localPosition = Vector3.Lerp(ingredient.transform.localPosition,
-                        new Vector3(0, ingredient.transform.localPosition.y, 0), stackLerp);
+                    stackable.GetTransform().localPosition = Vector3.Lerp(stackable.GetTransform().localPosition,
+                        new Vector3(0, stackable.GetTransform().localPosition.y, 0), stackLerp);
                 }
                 else
                 {
-                    ingredient.transform.localPosition = Vector3.Lerp(ingredient.transform.localPosition,
-                        new Vector3(0, ingredient.transform.localPosition.y, -clampedDisplacement * i), stackLerp);
+                    stackable.GetTransform().localPosition = Vector3.Lerp(stackable.GetTransform().localPosition,
+                        new Vector3(0, stackable.GetTransform().localPosition.y, -clampedDisplacement * i), stackLerp);
                 }
 
                 continue;
@@ -392,76 +329,25 @@ public class CharacterInteractController : MonoBehaviour
 
 
             //y lerp
-            ingredient.transform.position = Vector3.Lerp(ingredient.transform.position,
-                new Vector3(ingredient.transform.position.x, stackPlacement.position.y + ingredient.StackHeight * i,
-                    ingredient.transform.position.z), pickupLerp);
+            stackable.GetTransform().position = Vector3.Lerp(stackable.GetTransform().position,
+                new Vector3(stackable.GetTransform().position.x, stackPlacement.position.y + stackable.GetStackHeight() * i,
+                    stackable.GetTransform().position.z), pickupLerp);
 
             //x and z lerp
-            if (Vector2.Distance(new Vector2(ingredient.transform.position.x, ingredient.transform.position.z),
+            if (Vector2.Distance(new Vector2(stackable.GetTransform().position.x, stackable.GetTransform().position.z),
                     new Vector2(stackPlacement.position.x, stackPlacement.position.z)) > stackRadius)
             {
-                ingredient.transform.position = Vector3.Lerp(ingredient.transform.position,
-                    new Vector3(stackPlacement.position.x, ingredient.transform.position.y, stackPlacement.position.z),
+                stackable.GetTransform().position = Vector3.Lerp(stackable.GetTransform().position,
+                    new Vector3(stackPlacement.position.x, stackable.GetTransform().position.y, stackPlacement.position.z),
                     pickupLerp);
             }
-            else if (!collectedIngredientStack[i].isPickedUp)
+            else if (!collectedStack[i].isPickedUp)
             {
-                collectedIngredientStack[i].isPickedUp = true;
-                ingredient.transform.SetParent(stackPlacement);
-            }
-
-        }
-        
-        for (var i = 0; i < collectedPotionStack.Count; i++)
-        {
-            clampedDisplacement = Mathf.Clamp(rb.linearVelocity.magnitude, 0, stackDisplacementClamp);
-            var potion = collectedPotionStack[i].potion;
-
-            if (collectedPotionStack[i].isPickedUp)
-            {
-                //y lerp
-                potion.transform.localPosition = Vector3.Lerp(potion.transform.localPosition,
-                    new Vector3(potion.transform.localPosition.x, potion.StackHeight * i,
-                        potion.transform.localPosition.z), pickupLerp);
-                
-                //x and z lerp
-                if (i == 0)
-                {
-                    potion.transform.localPosition = Vector3.Lerp(potion.transform.localPosition,
-                        new Vector3(0, potion.transform.localPosition.y, 0), stackLerp);
-                }
-                else
-                {
-                    potion.transform.localPosition = Vector3.Lerp(potion.transform.localPosition,
-                        new Vector3(0, potion.transform.localPosition.y, -clampedDisplacement * i), stackLerp);
-                }
-
-                continue;
-            }
-
-
-            //y lerp
-            potion.transform.position = Vector3.Lerp(potion.transform.position,
-                new Vector3(potion.transform.position.x, stackPlacement.position.y + potion.StackHeight * i,
-                    potion.transform.position.z), pickupLerp);
-
-            //x and z lerp
-            if (Vector2.Distance(new Vector2(potion.transform.position.x, potion.transform.position.z),
-                    new Vector2(stackPlacement.position.x, stackPlacement.position.z)) > stackRadius)
-            {
-                potion.transform.position = Vector3.Lerp(potion.transform.position,
-                    new Vector3(stackPlacement.position.x, potion.transform.position.y, stackPlacement.position.z),
-                    pickupLerp);
-            }
-            else if (!collectedPotionStack[i].isPickedUp)
-            {
-                collectedPotionStack[i].isPickedUp = true;
-                potion.transform.SetParent(stackPlacement);
+                collectedStack[i].isPickedUp = true;
+                stackable.GetTransform().SetParent(stackPlacement);
             }
 
         }
     }
-
-    
 }
     

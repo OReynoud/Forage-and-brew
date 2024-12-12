@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CollectedPotionBehaviour : MonoBehaviour
+public class CollectedPotionBehaviour : MonoBehaviour, IStackable
 {
     [Header("Dependencies")]
     [SerializeField] private CollectedPotionGlobalValuesSo collectedPotionGlobalValuesSo;
@@ -23,6 +23,10 @@ public class CollectedPotionBehaviour : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private GameObject grabInputCanvasGameObject;
+
+    public Transform GetTransform() => transform;
+    public StackableValuesSo GetStackableValuesSo() => PotionValuesSo;
+    public float GetStackHeight() => StackHeight;
 
 
     private void Start()
@@ -87,7 +91,7 @@ public class CollectedPotionBehaviour : MonoBehaviour
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
-            characterInteractController.AddNewCollectedPotion(this);
+            characterInteractController.AddNewCollectedStackable(this);
             EnableGrab();
         }
     }
@@ -97,7 +101,7 @@ public class CollectedPotionBehaviour : MonoBehaviour
         if (other.TryGetComponent(out CharacterInteractController characterInteractController) /*&&
             characterInteractController.CurrentIngredientToCollectBehaviour == this*/)
         {
-            characterInteractController.RemoveCollectedPotion(this);
+            characterInteractController.RemoveCollectedStackable(this);
             DisableGrab(); // Temporary
         }
     }
