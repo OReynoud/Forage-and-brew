@@ -31,7 +31,8 @@ public class CharacterInteractController : MonoBehaviour
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public MailBox CurrentNearMailBox { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public CauldronBehaviour CurrentNearCauldron { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public ChoppingCountertopBehaviour CurrentNearChoppingCountertop { get; set; }
-    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<IngredientBasketBehaviour> CurrentNearBaskets { get; set; } = new();
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<IngredientBasketBehaviour> CurrentNearIngredientBaskets { get; set; } = new();
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<PotionBasketBehaviour> CurrentNearPotionBaskets { get; set; } = new();
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public bool AreHandsFull { get; private set; }
 
     private Rigidbody rb { get; set; }
@@ -100,7 +101,7 @@ public class CharacterInteractController : MonoBehaviour
 
     public void Interact()
     {
-        if (CurrentNearBaskets.Count > 0)
+        if (CurrentNearIngredientBaskets.Count > 0)
         {
             ChooseBasket();
         }
@@ -140,11 +141,11 @@ public class CharacterInteractController : MonoBehaviour
     {
         if (collectedStack.Count > 0)
         {
-            if (CurrentNearBaskets.Count > 0)
+            if (CurrentNearIngredientBaskets.Count > 0)
             {
-                ShoveStackInTarget(CurrentNearBaskets[0].transform, CurrentNearBaskets[0]);
-                CurrentNearBaskets[0].EnableInteract();
-                CurrentNearBaskets[0].DisableCancel();
+                ShoveStackInTarget(CurrentNearIngredientBaskets[0].transform, CurrentNearIngredientBaskets[0]);
+                CurrentNearIngredientBaskets[0].EnableInteract();
+                CurrentNearIngredientBaskets[0].DisableCancel();
             }
             else
             {
@@ -171,39 +172,39 @@ public class CharacterInteractController : MonoBehaviour
         {
             int index;
             
-            for (index = 0; index < CurrentNearBaskets.Count; index++)
+            for (index = 0; index < CurrentNearIngredientBaskets.Count; index++)
             {
-                if (CurrentNearBaskets[index].IngredientCount == 0) return;
+                if (CurrentNearIngredientBaskets[index].IngredientCount == 0) return;
                 
                 if ((CollectedIngredientBehaviour)collectedStack[0].stackable &&
-                    ((CollectedIngredientBehaviour)collectedStack[0].stackable).IngredientValuesSo == CurrentNearBaskets[index].ingredient)
+                    ((CollectedIngredientBehaviour)collectedStack[0].stackable).IngredientValuesSo == CurrentNearIngredientBaskets[index].ingredient)
                 {
-                    AddToPile(CurrentNearBaskets[index].InstantiateCollectedIngredient());
+                    AddToPile(CurrentNearIngredientBaskets[index].InstantiateCollectedIngredient());
                     break;
                 }
             }
             
-            if (index != CurrentNearBaskets.Count)
+            if (index != CurrentNearIngredientBaskets.Count)
             {
-                if (CurrentNearBaskets[index].IngredientCount == 0)
+                if (CurrentNearIngredientBaskets[index].IngredientCount == 0)
                 {
-                    CurrentNearBaskets[index].DisableInteract();
+                    CurrentNearIngredientBaskets[index].DisableInteract();
                 }
                 
-                IngredientBasketBehaviour item = CurrentNearBaskets[index];
-                CurrentNearBaskets.RemoveAt(index);
-                index = CurrentNearBaskets.Count;
-                CurrentNearBaskets.Insert(CurrentNearBaskets.Count, item);
+                IngredientBasketBehaviour item = CurrentNearIngredientBaskets[index];
+                CurrentNearIngredientBaskets.RemoveAt(index);
+                index = CurrentNearIngredientBaskets.Count;
+                CurrentNearIngredientBaskets.Insert(CurrentNearIngredientBaskets.Count, item);
             }
             
-            int length = CurrentNearBaskets.Count;
+            int length = CurrentNearIngredientBaskets.Count;
             
             for (int i = 0; i < length; i++)
             {
                 if (i != index)
                 {
-                    CurrentNearBaskets[0].DisableInteract();
-                    CurrentNearBaskets.RemoveAt(0);
+                    CurrentNearIngredientBaskets[0].DisableInteract();
+                    CurrentNearIngredientBaskets.RemoveAt(0);
                 }
             }
 
@@ -212,9 +213,9 @@ public class CharacterInteractController : MonoBehaviour
 
         (int index, float dotValue) largestDot = (0, -1);
         
-        for (int i = 0; i < CurrentNearBaskets.Count; i++)
+        for (int i = 0; i < CurrentNearIngredientBaskets.Count; i++)
         {
-            float dotValue = Vector3.Dot(transform.forward, CurrentNearBaskets[i].transform.position - transform.position);
+            float dotValue = Vector3.Dot(transform.forward, CurrentNearIngredientBaskets[i].transform.position - transform.position);
             
             if (dotValue > largestDot.dotValue)
             {
@@ -222,27 +223,27 @@ public class CharacterInteractController : MonoBehaviour
             }
         }
         
-        AddToPile(CurrentNearBaskets[largestDot.index].InstantiateCollectedIngredient());
-        CurrentNearBaskets[largestDot.index].EnableCancel();
+        AddToPile(CurrentNearIngredientBaskets[largestDot.index].InstantiateCollectedIngredient());
+        CurrentNearIngredientBaskets[largestDot.index].EnableCancel();
         
-        if (CurrentNearBaskets[largestDot.index].IngredientCount == 0)
+        if (CurrentNearIngredientBaskets[largestDot.index].IngredientCount == 0)
         {
-            CurrentNearBaskets[largestDot.index].DisableInteract();
+            CurrentNearIngredientBaskets[largestDot.index].DisableInteract();
         }
 
-        IngredientBasketBehaviour ingredientBasket = CurrentNearBaskets[largestDot.index];
-        CurrentNearBaskets.RemoveAt(largestDot.index);
-        largestDot.index = CurrentNearBaskets.Count;
-        CurrentNearBaskets.Insert(CurrentNearBaskets.Count, ingredientBasket);
+        IngredientBasketBehaviour ingredientBasket = CurrentNearIngredientBaskets[largestDot.index];
+        CurrentNearIngredientBaskets.RemoveAt(largestDot.index);
+        largestDot.index = CurrentNearIngredientBaskets.Count;
+        CurrentNearIngredientBaskets.Insert(CurrentNearIngredientBaskets.Count, ingredientBasket);
         
-        int count = CurrentNearBaskets.Count;
+        int count = CurrentNearIngredientBaskets.Count;
             
         for (int i = 0; i < count; i++)
         {
             if (i != largestDot.index)
             {
-                CurrentNearBaskets[0].DisableInteract();
-                CurrentNearBaskets.RemoveAt(0);
+                CurrentNearIngredientBaskets[0].DisableInteract();
+                CurrentNearIngredientBaskets.RemoveAt(0);
             }
         }
     }

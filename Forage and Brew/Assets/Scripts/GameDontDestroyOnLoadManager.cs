@@ -16,6 +16,7 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     [field: SerializeField] public bool generateLetters { get; set; }
     
     public List<IngredientValuesSo> CollectedIngredients { get; private set; } = new();
+    public List<List<PotionValuesSo>> OrderPotions { get; private set; } = new();
     
     [Serializable]
     public class Letter

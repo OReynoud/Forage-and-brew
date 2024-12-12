@@ -1,12 +1,9 @@
 using UnityEngine;
 
-public class IngredientBasketBehaviour : MonoBehaviour, IIngredientAddable
+public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
 {
-    [SerializeField] private Transform meshParentTransform;
     [field: SerializeField] public IngredientValuesSo ingredient { get; set; }
     [SerializeField] private CollectedIngredientBehaviour collectedIngredientBehaviourPrefab;
-    [SerializeField] private GameObject interactInputCanvasGameObject;
-    [SerializeField] private GameObject cancelInputCanvasGameObject;
     public int IngredientCount { get; private set; }
     
     
@@ -26,28 +23,6 @@ public class IngredientBasketBehaviour : MonoBehaviour, IIngredientAddable
                 }
             }
         }
-    }
-
-
-    public void EnableInteract()
-    {
-        interactInputCanvasGameObject.SetActive(true);
-    }
-    
-    public void DisableInteract()
-    {
-        interactInputCanvasGameObject.SetActive(false);
-    }
-
-
-    public void EnableCancel()
-    {
-        cancelInputCanvasGameObject.SetActive(true);
-    }
-    
-    public void DisableCancel()
-    {
-        cancelInputCanvasGameObject.SetActive(false);
     }
     
     
@@ -75,7 +50,7 @@ public class IngredientBasketBehaviour : MonoBehaviour, IIngredientAddable
                 (CollectedIngredientBehaviour)characterInteractController.collectedStack[0].stackable &&
                 ((CollectedIngredientBehaviour)characterInteractController.collectedStack[0].stackable).IngredientValuesSo == ingredient)
             {
-                characterInteractController.CurrentNearBaskets.Add(this);
+                characterInteractController.CurrentNearIngredientBaskets.Add(this);
                 EnableCancel();
 
                 if (IngredientCount > 0)
@@ -85,7 +60,7 @@ public class IngredientBasketBehaviour : MonoBehaviour, IIngredientAddable
             }
             else if (characterInteractController.collectedStack.Count == 0 && IngredientCount > 0)
             {
-                characterInteractController.CurrentNearBaskets.Add(this);
+                characterInteractController.CurrentNearIngredientBaskets.Add(this);
                 EnableInteract();
             }
         }
@@ -94,9 +69,9 @@ public class IngredientBasketBehaviour : MonoBehaviour, IIngredientAddable
     private void OnTriggerExit(Collider other)
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
-            characterInteractController.CurrentNearBaskets.Contains(this))
+            characterInteractController.CurrentNearIngredientBaskets.Contains(this))
         {
-            characterInteractController.CurrentNearBaskets.Remove(this);
+            characterInteractController.CurrentNearIngredientBaskets.Remove(this);
             DisableInteract();
             DisableCancel();
         }

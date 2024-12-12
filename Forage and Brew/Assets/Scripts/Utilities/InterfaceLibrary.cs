@@ -5,6 +5,11 @@ public interface IIngredientAddable
     void AddIngredient(CollectedIngredientBehaviour collectedIngredientBehaviour);
 }
 
+public interface IPotionAddable
+{
+    void AddPotion(CollectedPotionBehaviour collectedPotionBehaviour);
+}
+
 public interface IStackable
 {
     void EnableGrab();

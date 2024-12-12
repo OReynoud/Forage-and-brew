@@ -139,6 +139,11 @@ public class MailBox : Singleton<MailBox>
                     letter.LetterContent.MoneyReward,
                     letter.LetterContent.TimeToFulfill);
                 GameDontDestroyOnLoadManager.Instance.ActiveLetters.Add(letter);
+                GameDontDestroyOnLoadManager.Instance.OrderPotions.Add(new List<PotionValuesSo>());
+                for (int i = 0; i < letter.LetterContent.RequestedPotions.Length; i++)
+                {
+                    GameDontDestroyOnLoadManager.Instance.OrderPotions[^1].Add(null);
+                }
             }
         }
         
