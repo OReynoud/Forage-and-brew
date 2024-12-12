@@ -44,7 +44,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         //if (pinnedRecipe)
     }
 
-    void PinRecipe(PotionValuesSo PotionToPin, Sprite[] PotionIngredients)
+    public void PinRecipe(PotionValuesSo PotionToPin, Sprite[] PotionIngredients)
     {
         ingredientsList.alpha = 0;
         recipeStepsList.alpha = 0;
@@ -69,7 +69,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         }
 
 
-        if (GameDontDestroyOnLoadManager.Instance.PreviousScene != Scene.House)
+        if (GameDontDestroyOnLoadManager.Instance.PreviousScene == Scene.House)
         {
             title.text = "How to make " + pinnedRecipe.Name;
             recipeStepsList.alpha = 1;

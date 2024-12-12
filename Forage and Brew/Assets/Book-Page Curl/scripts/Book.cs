@@ -334,7 +334,6 @@ public class Book : MonoBehaviour {
     }
     public void DragRightPageToPoint(Vector3 point)
     {
-        Debug.Log("Tourne a droite");
         if (currentPage >= bookPages.Count) return;
         pageDragging = true;
         mode = FlipMode.RightToLeft;
