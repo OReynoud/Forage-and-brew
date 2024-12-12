@@ -31,7 +31,10 @@ public enum OrdersQuestLineTags
 {
     None,
     Tutorial,
-    FirstOrders,
+    FirstOrdersFromGrandma1,
+    FirstOrdersFromGrandma2,
+    HelpingAnOldMan,
+    WorkersNeedAMeal,
     RoutineOrders
     
 }
