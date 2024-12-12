@@ -107,13 +107,18 @@ public class CodexContentManager : Singleton<CodexContentManager>
     /// <param name="side"> true = right, false = left</param>
     public void SelectRecipe(bool side)
     {
-        int recipeIndex = 0;
-        if (AutoFlip.instance.ControledBook.currentPage > AutoFlip.instance.ControledBook.bookMarks[1].index &&
+        if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[1].index &&
             AutoFlip.instance.ControledBook.currentPage < AutoFlip.instance.ControledBook.bookMarks[2].index )
         {
-            recipeIndex = AutoFlip.instance.ControledBook.currentPage -
-                          AutoFlip.instance.ControledBook.bookMarks[1].index;
-            //PinnedRecipe.instance.
+            var recipeIndex = AutoFlip.instance.ControledBook.currentPage -
+                              AutoFlip.instance.ControledBook.bookMarks[1].index;
+            recipeIndex = side ? recipeIndex : recipeIndex - 1;
+            PinnedRecipe.instance.PinRecipe(recipes[recipeIndex].storedPotion,recipes[recipeIndex].potionIngredients);
+            Debug.Log("Pinned recipe: " + recipes[recipeIndex].storedPotion.Name);
+        }
+        else
+        {
+            Debug.LogError("Not in recipe pages");
         }
         
     }

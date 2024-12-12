@@ -1,7 +1,7 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class CollectedIngredientBehaviour : MonoBehaviour
+public class CollectedIngredientBehaviour : MonoBehaviour, IStackable
 {
     [Header("Dependencies")]
     [SerializeField] private CollectedIngredientGlobalValuesSo collectedIngredientGlobalValuesSo;
@@ -25,6 +25,10 @@ public class CollectedIngredientBehaviour : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private GameObject grabInputCanvasGameObject;
+
+    public Transform GetTransform() => transform;
+    public StackableValuesSo GetStackableValuesSo() => IngredientValuesSo;
+    public float GetStackHeight() => StackHeight;
 
 
     private void Start()
@@ -89,7 +93,7 @@ public class CollectedIngredientBehaviour : MonoBehaviour
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
-            characterInteractController.AddNewCollectedIngredient(this);
+            characterInteractController.AddNewCollectedStackable(this);
             EnableGrab();
         }
     }
@@ -99,7 +103,7 @@ public class CollectedIngredientBehaviour : MonoBehaviour
         if (other.TryGetComponent(out CharacterInteractController characterInteractController) /*&&
             characterInteractController.CurrentIngredientToCollectBehaviour == this*/)
         {
-            characterInteractController.RemoveCollectedIngredient(this);
+            characterInteractController.RemoveCollectedStackable(this);
             DisableGrab(); // Temporary
         }
     }

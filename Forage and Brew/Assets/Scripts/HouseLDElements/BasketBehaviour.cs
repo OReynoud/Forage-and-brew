@@ -71,8 +71,9 @@ public class BasketBehaviour : MonoBehaviour, IIngredientAddable
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
-            if (characterInteractController.collectedIngredientStack.Count > 0 &&
-                characterInteractController.collectedIngredientStack[0].ingredient.IngredientValuesSo == ingredient)
+            if (characterInteractController.collectedStack.Count > 0 &&
+                (CollectedIngredientBehaviour)characterInteractController.collectedStack[0].stackable &&
+                ((CollectedIngredientBehaviour)characterInteractController.collectedStack[0].stackable).IngredientValuesSo == ingredient)
             {
                 characterInteractController.CurrentNearBaskets.Add(this);
                 EnableCancel();
@@ -82,7 +83,7 @@ public class BasketBehaviour : MonoBehaviour, IIngredientAddable
                     EnableInteract();
                 }
             }
-            else if (characterInteractController.collectedIngredientStack.Count == 0 && IngredientCount > 0)
+            else if (characterInteractController.collectedStack.Count == 0 && IngredientCount > 0)
             {
                 characterInteractController.CurrentNearBaskets.Add(this);
                 EnableInteract();

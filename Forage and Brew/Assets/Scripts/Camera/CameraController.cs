@@ -107,7 +107,6 @@ public class CameraController : Singleton<CameraController>
 
     private void UpdateCamWithCodex()
     {
-        Debug.Log("Event called");
         if (CharacterInputManager.Instance.showCodex)
         {
             ApplyScriptableCamSettings(codexEnterTime);
