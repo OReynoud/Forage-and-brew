@@ -112,13 +112,22 @@ public class CodexContentManager : Singleton<CodexContentManager>
         {
             var recipeIndex = AutoFlip.instance.ControledBook.currentPage -
                               AutoFlip.instance.ControledBook.bookMarks[1].index;
-            recipeIndex = side ? recipeIndex : recipeIndex - 1;
+            recipeIndex = side ? recipeIndex + 1 : recipeIndex;
+            Debug.Log(recipeIndex);
+            if (PinnedRecipe.instance.pinnedRecipe.Name == recipes[recipeIndex].storedPotion.Name)
+            {
+                
+                Debug.Log("Selected same recipe, unpinning");
+                PinnedRecipe.instance.UnpinRecipe();
+                return;
+            }
             PinnedRecipe.instance.PinRecipe(recipes[recipeIndex].storedPotion,recipes[recipeIndex].potionIngredients);
             Debug.Log("Pinned recipe: " + recipes[recipeIndex].storedPotion.Name);
         }
         else
         {
-            Debug.LogError("Not in recipe pages");
+            PinnedRecipe.instance.UnpinRecipe();
+            Debug.Log("Not in recipe pages");
         }
         
     }

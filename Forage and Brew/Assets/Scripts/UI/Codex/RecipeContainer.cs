@@ -1,28 +1,29 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class RecipeContainer : MonoBehaviour
 {
-    public PotionValuesSo storedPotion;
-    public TextMeshProUGUI potionName;
-    public TextMeshProUGUI potionFlavorText;
-    public TextMeshProUGUI potionPrice;
-    public Image potionDifficulty;
-    public Image potionIcon;
-    public Image[] potionIngredientsImage;
+    [BoxGroup("Potion Description")] public PotionValuesSo storedPotion;
+    [BoxGroup("Potion Description")] public TextMeshProUGUI potionName;
+    [BoxGroup("Potion Description")] public TextMeshProUGUI potionFlavorText;
+    [BoxGroup("Potion Description")] public TextMeshProUGUI potionPrice;
+    [BoxGroup("Potion Description")] public Image potionDifficulty;
+    [BoxGroup("Potion Description")] public Image potionIcon;
+    [BoxGroup("Potion Description")] public Image[] potionIngredientsImage;
     
     //BrewingSteps
     private int writingIndex;
-    public TextMeshProUGUI[] stepText;
-    public Image[] ingredientStepImage;
-    public Image[] mainActionImage;
-    public Image[] secondaryActionImage;
-    public Image[] mainArrow;
-    public Image[] secondaryArrow;
+    [BoxGroup("Brewing Steps")] public TextMeshProUGUI[] stepText;
+    [BoxGroup("Brewing Steps")] public Image[] ingredientStepImage;
+    [BoxGroup("Brewing Steps")] public Image[] mainActionImage;
+    [BoxGroup("Brewing Steps")] public Image[] secondaryActionImage;
+    [BoxGroup("Brewing Steps")] public Image[] mainArrow;
+    [BoxGroup("Brewing Steps")] public Image[] secondaryArrow;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -53,7 +54,7 @@ public class RecipeContainer : MonoBehaviour
     }
 
     private string writingText;
-    public Sprite[] potionIngredients { get; set; }
+    public Sprite[] potionIngredients;
 
     public void InitPage(Sprite[] PotionIngredients, PotionValuesSo PotionSteps)
     {
