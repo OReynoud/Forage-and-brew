@@ -3,7 +3,8 @@ using UnityEngine;
 public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
 {
     [SerializeField] private CollectedPotionBehaviour collectedPotionBehaviourPrefab;
-    [SerializeField] private int potionBasketIndex;
+    public PotionBasketManagerBehaviour PotionBasketManagerBehaviour { get; set; }
+    public int PotionBasketIndex { get; set; }
     public int OrderIndex { get; private set; }
     
     
@@ -22,16 +23,16 @@ public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
         
         OrderIndex = orderIndex;
         
-        if (GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][potionBasketIndex] != null)
+        if (GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][PotionBasketIndex] != null)
         {
-            Instantiate(GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][potionBasketIndex].MeshGameObject,
+            Instantiate(GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][PotionBasketIndex].MeshGameObject,
                 meshParentTransform);
         }
     }
 
     public void AddPotion(CollectedPotionBehaviour collectedPotionBehaviour)
     {
-        GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][potionBasketIndex] = collectedPotionBehaviour.PotionValuesSo;
+        GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][PotionBasketIndex] = collectedPotionBehaviour.PotionValuesSo;
         Instantiate(collectedPotionBehaviour.PotionValuesSo.MeshGameObject, meshParentTransform);
         Destroy(collectedPotionBehaviour.gameObject);
     }
@@ -39,8 +40,8 @@ public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
     public CollectedPotionBehaviour InstantiateCollectedPotion()
     {
         CollectedPotionBehaviour collectedPotionBehaviour = Instantiate(collectedPotionBehaviourPrefab, transform);
-        collectedPotionBehaviour.PotionValuesSo = GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][potionBasketIndex];
-        GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][potionBasketIndex] = null;
+        collectedPotionBehaviour.PotionValuesSo = GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][PotionBasketIndex];
+        GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][PotionBasketIndex] = null;
 
         Destroy(meshParentTransform.GetChild(0).gameObject);
         
@@ -52,6 +53,8 @@ public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
+            PotionBasketManagerBehaviour.ManageTriggerEnter();
+            
             if (characterInteractController.collectedStack.Count > 0 &&
                 (CollectedPotionBehaviour)characterInteractController.collectedStack[0].stackable)
             {
@@ -59,7 +62,7 @@ public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
                 EnableInteract();
             }
             else if (characterInteractController.collectedStack.Count == 0 &&
-                     GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][potionBasketIndex] != null)
+                     GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][PotionBasketIndex] != null)
             {
                 characterInteractController.CurrentNearPotionBaskets.Add(this);
                 EnableCancel();
@@ -69,12 +72,16 @@ public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
     
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
-            characterInteractController.CurrentNearPotionBaskets.Contains(this))
+        if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
-            characterInteractController.CurrentNearPotionBaskets.Remove(this);
-            DisableInteract();
-            DisableCancel();
+            PotionBasketManagerBehaviour.ManageTriggerExit();
+            
+            if (characterInteractController.CurrentNearPotionBaskets.Contains(this))
+            {
+                characterInteractController.CurrentNearPotionBaskets.Remove(this);
+                DisableInteract();
+                DisableCancel();
+            }
         }
     }
 }

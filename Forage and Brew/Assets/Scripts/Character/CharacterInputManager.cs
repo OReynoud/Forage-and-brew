@@ -78,6 +78,10 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.Interact.performed += InteractOnPerformed;
         _inputs.Player.Cancel.Enable();
         _inputs.Player.Cancel.performed += CancelOnPerformed;
+        _inputs.Player.PreviousBasketSet.Enable();
+        _inputs.Player.PreviousBasketSet.performed += PreviousBasketSetOnPerformed;
+        _inputs.Player.NextBasketSet.Enable();
+        _inputs.Player.NextBasketSet.performed += NextBasketSetOnPerformed;
     }
 
     public void EnableHapticChallengeInputs()
@@ -132,8 +136,6 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.PinRight.performed += PinRightOnPerformed;
     }
 
-
-
     public void EnableMailInputs()
     {
         _inputs.Player.PassLetters.Enable();
@@ -166,6 +168,10 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.Interact.performed -= InteractOnPerformed;
         _inputs.Player.Cancel.Disable();
         _inputs.Player.Cancel.performed -= CancelOnPerformed;
+        _inputs.Player.PreviousBasketSet.Disable();
+        _inputs.Player.PreviousBasketSet.performed -= PreviousBasketSetOnPerformed;
+        _inputs.Player.NextBasketSet.Disable();
+        _inputs.Player.NextBasketSet.performed -= NextBasketSetOnPerformed;
     }
     
     public void DisableHapticChallengeInputs()
@@ -243,6 +249,16 @@ public class CharacterInputManager : MonoBehaviour
     private void CancelOnPerformed(InputAction.CallbackContext obj)
     {
         characterInteractController.Cancel();
+    }
+    
+    private void PreviousBasketSetOnPerformed(InputAction.CallbackContext obj)
+    {
+        BasketInputManager.Instance.PreviousBasketSet();
+    }
+    
+    private void NextBasketSetOnPerformed(InputAction.CallbackContext obj)
+    {
+        BasketInputManager.Instance.NextBasketSet();
     }
 
     #endregion
