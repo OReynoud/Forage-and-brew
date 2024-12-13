@@ -96,6 +96,8 @@ public class CameraController : Singleton<CameraController>
         TargetCamSettings = preset;
         transitionTime = TransitionTime == 0 ? 0.001f : TransitionTime;
         counter = 0;
+        
+        //Debug.Log("Cam Settings: " + preset.name);
     }
 
     private void ApplyScriptableCamSettings(float TransitionTime)
@@ -119,10 +121,12 @@ public class CameraController : Singleton<CameraController>
 
     public void InstantCamUpdate()
     {
-        transform.parent.position = player.position + cameraOffset;
-        transform.localRotation = Quaternion.Euler(cameraRotation);
-        transform.localPosition = -transform.forward * distanceFromPlayer;
-        cam.focalLength = targetFocalLength;
+        transform.parent.position = player.position + TargetCamSettings.cameraOffset;
+        transform.localRotation = Quaternion.Euler(TargetCamSettings.cameraRotation);
+        transform.localPosition = -transform.forward * TargetCamSettings.distanceFromPlayer;
+        cam.focalLength = TargetCamSettings.targetFocalLength;
+        
+        Debug.Log("Cam Settings: " + TargetCamSettings.name);
     }
 
     void Start()
