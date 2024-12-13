@@ -193,6 +193,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "PreviousBasketSet",
+                    "type": "Button",
+                    "id": "500b7e45-8ebd-4a73-b662-6549fea826de",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "NextBasketSet",
+                    "type": "Button",
+                    "id": "4b2605d0-0fe6-44f3-a164-409c7bf1c9d9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -842,6 +860,28 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "ChoppingHapticChallenge3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d3f18fe6-d5fa-46c1-96a7-362a573dc724",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "PreviousBasketSet",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cf70bb32-c292-44ed-af9d-79cc49be1197",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "NextBasketSet",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
