@@ -20,7 +20,6 @@ public class CameraTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Changing Cam Settings to " + camSettings.name);
         CameraController.instance.ApplyScriptableCamSettings(camSettings, transitionTime);
     }
 }
