@@ -3,28 +3,46 @@ using UnityEngine;
 public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
 {
     [SerializeField] private CollectedPotionBehaviour collectedPotionBehaviourPrefab;
-    public int OrderIndex { get; set; }
-    public int PotionBasketIndex { get; set; }
+    [SerializeField] private int potionBasketIndex;
+    public int OrderIndex { get; private set; }
     
     
     private void Start()
     {
         interactInputCanvasGameObject.SetActive(false);
-        
-        if (GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][PotionBasketIndex] != null)
+    }
+    
+
+    public void SetBasketContent(int orderIndex)
+    {
+        if (meshParentTransform.childCount > 0)
         {
-            Instantiate(GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][PotionBasketIndex].MeshGameObject,
+            Destroy(meshParentTransform.GetChild(0).gameObject);
+        }
+        
+        OrderIndex = orderIndex;
+        
+        if (GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][potionBasketIndex] != null)
+        {
+            Instantiate(GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][potionBasketIndex].MeshGameObject,
                 meshParentTransform);
         }
     }
-    
-    
+
+    public void AddPotion(CollectedPotionBehaviour collectedPotionBehaviour)
+    {
+        GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][potionBasketIndex] = collectedPotionBehaviour.PotionValuesSo;
+        Instantiate(collectedPotionBehaviour.PotionValuesSo.MeshGameObject, meshParentTransform);
+        Destroy(collectedPotionBehaviour.gameObject);
+    }
+
     public CollectedPotionBehaviour InstantiateCollectedPotion()
     {
         CollectedPotionBehaviour collectedPotionBehaviour = Instantiate(collectedPotionBehaviourPrefab, transform);
-        collectedPotionBehaviour.PotionValuesSo = GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][PotionBasketIndex];
+        collectedPotionBehaviour.PotionValuesSo = GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][potionBasketIndex];
+        GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][potionBasketIndex] = null;
 
-        meshParentTransform.gameObject.SetActive(false);
+        Destroy(meshParentTransform.GetChild(0).gameObject);
         
         return collectedPotionBehaviour;
     }
@@ -40,7 +58,8 @@ public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
                 characterInteractController.CurrentNearPotionBaskets.Add(this);
                 EnableInteract();
             }
-            else if (characterInteractController.collectedStack.Count == 0)
+            else if (characterInteractController.collectedStack.Count == 0 &&
+                     GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][potionBasketIndex] != null)
             {
                 characterInteractController.CurrentNearPotionBaskets.Add(this);
                 EnableCancel();
@@ -57,11 +76,5 @@ public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
             DisableInteract();
             DisableCancel();
         }
-    }
-
-    public void AddPotion(CollectedPotionBehaviour collectedPotionBehaviour)
-    {
-        Destroy(collectedPotionBehaviour.gameObject);
-        meshParentTransform.gameObject.SetActive(true);
     }
 }
