@@ -4,12 +4,27 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
 {
     [field: SerializeField] public IngredientValuesSo ingredient { get; set; }
     [SerializeField] private CollectedIngredientBehaviour collectedIngredientBehaviourPrefab;
+    public IngredientBasketManagerBehaviour IngredientBasketManagerBehaviour { get; set; }
     public int IngredientCount { get; private set; }
     
     
     private void Start()
     {
         interactInputCanvasGameObject.SetActive(false);
+        
+        SetBasketContent(ingredient);
+    }
+    
+
+    public void SetBasketContent(IngredientValuesSo newIngredient)
+    {
+        if (meshParentTransform.childCount > 0)
+        {
+            Destroy(meshParentTransform.GetChild(0).gameObject);
+        }
+        
+        IngredientCount = 0;
+        ingredient = newIngredient;
         
         if (GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Contains(ingredient))
         {
@@ -25,7 +40,6 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
         }
     }
     
-    
     public CollectedIngredientBehaviour InstantiateCollectedIngredient()
     {
         CollectedIngredientBehaviour collectedIngredientBehaviour =
@@ -39,6 +53,13 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
         }
         
         return collectedIngredientBehaviour;
+    }
+
+    public void AddIngredient(CollectedIngredientBehaviour collectedIngredientBehaviour)
+    {
+        IngredientCount++;
+        Destroy(collectedIngredientBehaviour.gameObject);
+        meshParentTransform.gameObject.SetActive(true);
     }
     
     
@@ -75,12 +96,5 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
             DisableInteract();
             DisableCancel();
         }
-    }
-
-    public void AddIngredient(CollectedIngredientBehaviour collectedIngredientBehaviour)
-    {
-        IngredientCount++;
-        Destroy(collectedIngredientBehaviour.gameObject);
-        meshParentTransform.gameObject.SetActive(true);
     }
 }
