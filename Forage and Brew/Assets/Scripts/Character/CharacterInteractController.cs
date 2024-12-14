@@ -101,9 +101,13 @@ public class CharacterInteractController : MonoBehaviour
 
     public void Interact()
     {
-        if (CurrentNearIngredientBaskets.Count > 0)
+        if (CurrentNearPotionBaskets.Count > 0 && collectedStack.Count > 0)
         {
-            ChooseBasket();
+            ChoosePotionBasket();
+        }
+        else if (CurrentNearIngredientBaskets.Count > 0)
+        {
+            ChooseIngredientBasket();
         }
         else if (CurrentNearCauldron && collectedStack.Count > 0 && (CollectedIngredientBehaviour) collectedStack[0].stackable)
         {
@@ -161,10 +165,14 @@ public class CharacterInteractController : MonoBehaviour
                 AreHandsFull = false;
             }
         }
+        else if (CurrentNearPotionBaskets.Count > 0 && collectedStack.Count == 0)
+        {
+            ChoosePotionBasket(true);
+        }
     }
 
     
-    private void ChooseBasket()
+    private void ChooseIngredientBasket()
     {
         if (collectedStack.Count >= maxStackSize) return;
 
@@ -248,6 +256,40 @@ public class CharacterInteractController : MonoBehaviour
         }
     }
     
+    private void ChoosePotionBasket(bool hasToGrab = false)
+    {
+        (int index, float dotValue) largestDot = (0, -1);
+        
+        for (int i = 0; i < CurrentNearPotionBaskets.Count; i++)
+        {
+            float dotValue = Vector3.Dot(transform.forward, CurrentNearPotionBaskets[i].transform.position - transform.position);
+
+            if (hasToGrab && !GameDontDestroyOnLoadManager.Instance.OrderPotions[CurrentNearPotionBaskets[i].OrderIndex]
+                    [CurrentNearPotionBaskets[i].PotionBasketIndex]) continue;
+
+            if (!hasToGrab && GameDontDestroyOnLoadManager.Instance.OrderPotions[CurrentNearPotionBaskets[i].OrderIndex]
+                    [CurrentNearPotionBaskets[i].PotionBasketIndex]) continue;
+            
+            if (dotValue > largestDot.dotValue)
+            {
+                largestDot = (i, dotValue);
+            }
+        }
+
+        if (hasToGrab)
+        {
+            AddToPile(CurrentNearPotionBaskets[largestDot.index].InstantiateCollectedPotion());
+            CurrentNearPotionBaskets[largestDot.index].DisableCancel();
+            CurrentNearPotionBaskets[largestDot.index].EnableInteract();
+        }
+        else
+        {
+            ShoveStackInTarget(CurrentNearPotionBaskets[0].transform, CurrentNearPotionBaskets[0]);
+            CurrentNearPotionBaskets[largestDot.index].EnableCancel();
+            CurrentNearPotionBaskets[largestDot.index].DisableInteract();
+        }
+    }
+    
     
     public void DropIngredientsInChoppingCountertop()
     {
@@ -285,6 +327,22 @@ public class CharacterInteractController : MonoBehaviour
             if ((CollectedIngredientBehaviour)collectedStack[i].stackable)
             {
                 targetBehaviour.AddIngredient((CollectedIngredientBehaviour)collectedStack[i].stackable);
+            }
+        }
+        
+        collectedStack.Clear();
+        AreHandsFull = false;
+    }
+
+    private void ShoveStackInTarget(Transform targetTransform, IPotionAddable targetBehaviour, Vector3 offset = default)
+    {
+        for (int i = 0; i < collectedStack.Count; i++)
+        {
+            collectedStack[i].stackable.GetTransform().SetParent(targetTransform);
+            collectedStack[i].stackable.DropInTarget(targetTransform, offset);
+            if ((CollectedPotionBehaviour)collectedStack[i].stackable)
+            {
+                targetBehaviour.AddPotion((CollectedPotionBehaviour)collectedStack[i].stackable);
             }
         }
         

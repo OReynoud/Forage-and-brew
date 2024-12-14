@@ -215,6 +215,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PreviousBasketSet"",
+                    ""type"": ""Button"",
+                    ""id"": ""500b7e45-8ebd-4a73-b662-6549fea826de"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NextBasketSet"",
+                    ""type"": ""Button"",
+                    ""id"": ""4b2605d0-0fe6-44f3-a164-409c7bf1c9d9"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -866,6 +884,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""ChoppingHapticChallenge3"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d3f18fe6-d5fa-46c1-96a7-362a573dc724"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""PreviousBasketSet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cf70bb32-c292-44ed-af9d-79cc49be1197"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""NextBasketSet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1472,6 +1512,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_ChoppingHapticChallenge1 = m_Player.FindAction("ChoppingHapticChallenge1", throwIfNotFound: true);
         m_Player_ChoppingHapticChallenge2 = m_Player.FindAction("ChoppingHapticChallenge2", throwIfNotFound: true);
         m_Player_ChoppingHapticChallenge3 = m_Player.FindAction("ChoppingHapticChallenge3", throwIfNotFound: true);
+        m_Player_PreviousBasketSet = m_Player.FindAction("PreviousBasketSet", throwIfNotFound: true);
+        m_Player_NextBasketSet = m_Player.FindAction("NextBasketSet", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1572,6 +1614,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ChoppingHapticChallenge1;
     private readonly InputAction m_Player_ChoppingHapticChallenge2;
     private readonly InputAction m_Player_ChoppingHapticChallenge3;
+    private readonly InputAction m_Player_PreviousBasketSet;
+    private readonly InputAction m_Player_NextBasketSet;
     public struct PlayerActions
     {
         private @InputSystem_Actions m_Wrapper;
@@ -1597,6 +1641,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @ChoppingHapticChallenge1 => m_Wrapper.m_Player_ChoppingHapticChallenge1;
         public InputAction @ChoppingHapticChallenge2 => m_Wrapper.m_Player_ChoppingHapticChallenge2;
         public InputAction @ChoppingHapticChallenge3 => m_Wrapper.m_Player_ChoppingHapticChallenge3;
+        public InputAction @PreviousBasketSet => m_Wrapper.m_Player_PreviousBasketSet;
+        public InputAction @NextBasketSet => m_Wrapper.m_Player_NextBasketSet;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1669,6 +1715,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ChoppingHapticChallenge3.started += instance.OnChoppingHapticChallenge3;
             @ChoppingHapticChallenge3.performed += instance.OnChoppingHapticChallenge3;
             @ChoppingHapticChallenge3.canceled += instance.OnChoppingHapticChallenge3;
+            @PreviousBasketSet.started += instance.OnPreviousBasketSet;
+            @PreviousBasketSet.performed += instance.OnPreviousBasketSet;
+            @PreviousBasketSet.canceled += instance.OnPreviousBasketSet;
+            @NextBasketSet.started += instance.OnNextBasketSet;
+            @NextBasketSet.performed += instance.OnNextBasketSet;
+            @NextBasketSet.canceled += instance.OnNextBasketSet;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1736,6 +1788,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ChoppingHapticChallenge3.started -= instance.OnChoppingHapticChallenge3;
             @ChoppingHapticChallenge3.performed -= instance.OnChoppingHapticChallenge3;
             @ChoppingHapticChallenge3.canceled -= instance.OnChoppingHapticChallenge3;
+            @PreviousBasketSet.started -= instance.OnPreviousBasketSet;
+            @PreviousBasketSet.performed -= instance.OnPreviousBasketSet;
+            @PreviousBasketSet.canceled -= instance.OnPreviousBasketSet;
+            @NextBasketSet.started -= instance.OnNextBasketSet;
+            @NextBasketSet.performed -= instance.OnNextBasketSet;
+            @NextBasketSet.canceled -= instance.OnNextBasketSet;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1939,6 +1997,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnChoppingHapticChallenge1(InputAction.CallbackContext context);
         void OnChoppingHapticChallenge2(InputAction.CallbackContext context);
         void OnChoppingHapticChallenge3(InputAction.CallbackContext context);
+        void OnPreviousBasketSet(InputAction.CallbackContext context);
+        void OnNextBasketSet(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

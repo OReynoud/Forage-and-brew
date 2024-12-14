@@ -118,9 +118,6 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
                 stepText[writingIndex].enabled = true;
 
                 int numberOfIngredients = CheckForSameElementsIngredientSo(i, 0, t.CookedIngredients);
-
-
-                Debug.Log(numberOfIngredients);
                 stepText[writingIndex].text = (1 + numberOfIngredients).ToString();
 
                 var cookedIngredient = t.CookedIngredients[i];
