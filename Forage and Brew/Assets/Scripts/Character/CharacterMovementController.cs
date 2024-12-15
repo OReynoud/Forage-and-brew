@@ -16,6 +16,7 @@ public class CharacterMovementController : MonoBehaviour
     [Foldout("Debug")] [SerializeField] [ReadOnly] private float accelerationCurveIndex;
     [Foldout("Debug")] [SerializeField] [ReadOnly] private bool isGrounded;
     [Foldout("Debug")] [SerializeField] [ReadOnly] private bool isMoving;
+    [Foldout("Debug")] public bool isRunning;
     
     private Rigidbody rb;
     private LayerMask groundMask;

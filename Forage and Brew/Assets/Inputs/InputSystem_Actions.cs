@@ -233,6 +233,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleRun"",
+                    ""type"": ""Button"",
+                    ""id"": ""8278c01a-9c9c-4bcf-8ccc-308b8209ed28"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -906,6 +915,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""NextBasketSet"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ee8cd2d3-4f6e-45fd-9416-d3f66b96bb65"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ToggleRun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1514,6 +1534,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_ChoppingHapticChallenge3 = m_Player.FindAction("ChoppingHapticChallenge3", throwIfNotFound: true);
         m_Player_PreviousBasketSet = m_Player.FindAction("PreviousBasketSet", throwIfNotFound: true);
         m_Player_NextBasketSet = m_Player.FindAction("NextBasketSet", throwIfNotFound: true);
+        m_Player_ToggleRun = m_Player.FindAction("ToggleRun", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1616,6 +1637,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ChoppingHapticChallenge3;
     private readonly InputAction m_Player_PreviousBasketSet;
     private readonly InputAction m_Player_NextBasketSet;
+    private readonly InputAction m_Player_ToggleRun;
     public struct PlayerActions
     {
         private @InputSystem_Actions m_Wrapper;
@@ -1643,6 +1665,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @ChoppingHapticChallenge3 => m_Wrapper.m_Player_ChoppingHapticChallenge3;
         public InputAction @PreviousBasketSet => m_Wrapper.m_Player_PreviousBasketSet;
         public InputAction @NextBasketSet => m_Wrapper.m_Player_NextBasketSet;
+        public InputAction @ToggleRun => m_Wrapper.m_Player_ToggleRun;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1721,6 +1744,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @NextBasketSet.started += instance.OnNextBasketSet;
             @NextBasketSet.performed += instance.OnNextBasketSet;
             @NextBasketSet.canceled += instance.OnNextBasketSet;
+            @ToggleRun.started += instance.OnToggleRun;
+            @ToggleRun.performed += instance.OnToggleRun;
+            @ToggleRun.canceled += instance.OnToggleRun;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1794,6 +1820,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @NextBasketSet.started -= instance.OnNextBasketSet;
             @NextBasketSet.performed -= instance.OnNextBasketSet;
             @NextBasketSet.canceled -= instance.OnNextBasketSet;
+            @ToggleRun.started -= instance.OnToggleRun;
+            @ToggleRun.performed -= instance.OnToggleRun;
+            @ToggleRun.canceled -= instance.OnToggleRun;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1999,6 +2028,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnChoppingHapticChallenge3(InputAction.CallbackContext context);
         void OnPreviousBasketSet(InputAction.CallbackContext context);
         void OnNextBasketSet(InputAction.CallbackContext context);
+        void OnToggleRun(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

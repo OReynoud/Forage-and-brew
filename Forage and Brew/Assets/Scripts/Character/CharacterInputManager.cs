@@ -89,7 +89,10 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.PinLeft.performed += PinLeftOnPerformed;
         _inputs.Player.PinRight.performed += PinRightOnPerformed;
         _inputs.Player.PassLetters.performed += PassLettersOnPerformed;
+        _inputs.Player.ToggleRun.performed += ToggleRunOnPerformed;
     }
+
+
 
     public void DestroyInputs()
     {
@@ -112,6 +115,7 @@ public class CharacterInputManager : MonoBehaviour
     public void EnableMoveInputs()
     {
         _inputs.Player.Move.Enable();
+        _inputs.Player.ToggleRun.Enable();
     }
     
     public void EnableInteractInputs()
@@ -178,6 +182,7 @@ public class CharacterInputManager : MonoBehaviour
     public void DisableMoveInputs()
     {
         _inputs.Player.Move.Disable();
+        _inputs.Player.ToggleRun.Disable();
     }
     
     public void DisableInteractInputs()
@@ -234,6 +239,10 @@ public class CharacterInputManager : MonoBehaviour
     private void MoveOnPerformed(InputAction.CallbackContext obj)
     {
         // Debug.Log(obj.ReadValue<Vector2>());
+    }
+    private void ToggleRunOnPerformed(InputAction.CallbackContext obj)
+    {
+        movementController.isRunning = true;
     }
 
     private void InteractOnPerformed(InputAction.CallbackContext obj)
