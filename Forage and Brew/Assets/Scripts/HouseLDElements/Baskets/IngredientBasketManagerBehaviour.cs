@@ -77,6 +77,7 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
             {
                 ingredientBaskets[i].SetBasketContent(_ingredientSets[_currentIngredientSetIndex][i]);
                 ingredientBaskets[i].gameObject.SetActive(true);
+                ingredientBaskets[i].DoesNeedToCheckAvailability = true;
             }
             else
             {
