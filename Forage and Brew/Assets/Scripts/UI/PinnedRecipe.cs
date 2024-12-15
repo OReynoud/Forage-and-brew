@@ -42,8 +42,8 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         {
             potionIngredientsImage[i].preserveAspect = true;
         }
-        PinRecipe(pinnedRecipe, potionIngredients);
-        //if (pinnedRecipe)
+        if (pinnedRecipe)
+            PinRecipe(pinnedRecipe, potionIngredients);
     }
 
     private void Update()
