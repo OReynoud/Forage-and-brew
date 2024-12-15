@@ -21,6 +21,7 @@ public class CharacterSpawnBehaviour : MonoBehaviour
                 {
                     GameDontDestroyOnLoadManager.Instance.PreviousScene = sceneName.Scene;
                     CharacterVfxManager.Instance.CheckForRainVfx(sceneName.Scene);
+                    WeatherLightingManager.Instance?.SetRightLighting(sceneName.Scene);
                     break;
                 }
             }
