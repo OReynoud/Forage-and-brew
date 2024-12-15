@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
@@ -55,21 +56,49 @@ public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
         {
             PotionBasketManagerBehaviour.ManageTriggerEnter();
             
+            characterInteractController.CurrentNearPotionBaskets.Add(this);
+            
             if (characterInteractController.collectedStack.Count > 0 &&
                 (CollectedPotionBehaviour)characterInteractController.collectedStack[0].stackable)
             {
-                characterInteractController.CurrentNearPotionBaskets.Add(this);
                 EnableInteract();
             }
             else if (characterInteractController.collectedStack.Count == 0 &&
                      GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][PotionBasketIndex] != null)
             {
-                characterInteractController.CurrentNearPotionBaskets.Add(this);
                 EnableCancel();
             }
         }
     }
-    
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (!DoesNeedToCheckAvailability) return;
+        
+        if (other.TryGetComponent(out CharacterInteractController characterInteractController))
+        {
+            if (characterInteractController.collectedStack.Count > 0 &&
+                (CollectedPotionBehaviour)characterInteractController.collectedStack[0].stackable)
+            {
+                EnableInteract();
+                DisableCancel();
+            }
+            else if (characterInteractController.collectedStack.Count == 0 &&
+                     GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][PotionBasketIndex] != null)
+            {
+                EnableCancel();
+                DisableInteract();
+            }
+            else
+            {
+                DisableInteract();
+                DisableCancel();
+            }
+            
+            DoesNeedToCheckAvailability = false;
+        }
+    }
+
     private void OnTriggerExit(Collider other)
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))

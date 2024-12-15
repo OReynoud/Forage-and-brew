@@ -4,12 +4,27 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
 {
     [field: SerializeField] public IngredientValuesSo ingredient { get; set; }
     [SerializeField] private CollectedIngredientBehaviour collectedIngredientBehaviourPrefab;
+    public IngredientBasketManagerBehaviour IngredientBasketManagerBehaviour { get; set; }
     public int IngredientCount { get; private set; }
     
     
     private void Start()
     {
         interactInputCanvasGameObject.SetActive(false);
+        
+        SetBasketContent(ingredient);
+    }
+    
+
+    public void SetBasketContent(IngredientValuesSo newIngredient)
+    {
+        if (meshParentTransform.childCount > 0)
+        {
+            Destroy(meshParentTransform.GetChild(0).gameObject);
+        }
+        
+        IngredientCount = 0;
+        ingredient = newIngredient;
         
         if (GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Contains(ingredient))
         {
@@ -25,7 +40,6 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
         }
     }
     
-    
     public CollectedIngredientBehaviour InstantiateCollectedIngredient()
     {
         CollectedIngredientBehaviour collectedIngredientBehaviour =
@@ -40,17 +54,27 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
         
         return collectedIngredientBehaviour;
     }
+
+    public void AddIngredient(CollectedIngredientBehaviour collectedIngredientBehaviour)
+    {
+        IngredientCount++;
+        Destroy(collectedIngredientBehaviour.gameObject);
+        meshParentTransform.gameObject.SetActive(true);
+    }
     
     
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
+            IngredientBasketManagerBehaviour.ManageTriggerEnter();
+            
+            characterInteractController.CurrentNearIngredientBaskets.Add(this);
+            
             if (characterInteractController.collectedStack.Count > 0 &&
                 (CollectedIngredientBehaviour)characterInteractController.collectedStack[0].stackable &&
                 ((CollectedIngredientBehaviour)characterInteractController.collectedStack[0].stackable).IngredientValuesSo == ingredient)
             {
-                characterInteractController.CurrentNearIngredientBaskets.Add(this);
                 EnableCancel();
 
                 if (IngredientCount > 0)
@@ -60,27 +84,59 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
             }
             else if (characterInteractController.collectedStack.Count == 0 && IngredientCount > 0)
             {
-                characterInteractController.CurrentNearIngredientBaskets.Add(this);
                 EnableInteract();
             }
         }
     }
     
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
-            characterInteractController.CurrentNearIngredientBaskets.Contains(this))
+        if (!DoesNeedToCheckAvailability) return;
+        
+        if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
-            characterInteractController.CurrentNearIngredientBaskets.Remove(this);
-            DisableInteract();
-            DisableCancel();
+            if (characterInteractController.collectedStack.Count > 0 &&
+                (CollectedIngredientBehaviour)characterInteractController.collectedStack[0].stackable &&
+                ((CollectedIngredientBehaviour)characterInteractController.collectedStack[0].stackable).IngredientValuesSo == ingredient)
+            {
+                EnableCancel();
+
+                if (IngredientCount > 0)
+                {
+                    EnableInteract();
+                }
+                else
+                {
+                    DisableInteract();
+                }
+            }
+            else if (characterInteractController.collectedStack.Count == 0 && IngredientCount > 0)
+            {
+                EnableInteract();
+                DisableCancel();
+            }
+            else
+            {
+                DisableInteract();
+                DisableCancel();
+            }
+        
+            DoesNeedToCheckAvailability = false;
         }
     }
-
-    public void AddIngredient(CollectedIngredientBehaviour collectedIngredientBehaviour)
+    
+    private void OnTriggerExit(Collider other)
     {
-        IngredientCount++;
-        Destroy(collectedIngredientBehaviour.gameObject);
-        meshParentTransform.gameObject.SetActive(true);
+        if (other.TryGetComponent(out CharacterInteractController characterInteractController))
+        {
+            IngredientBasketManagerBehaviour.ManageTriggerExit();
+            
+            if (characterInteractController.CurrentNearIngredientBaskets.Contains(this))
+            {
+                characterInteractController.CurrentNearIngredientBaskets.Remove(this);
+                DisableInteract();
+                DisableCancel();
+            }
+        }
     }
 }

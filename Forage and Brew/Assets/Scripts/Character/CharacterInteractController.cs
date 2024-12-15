@@ -147,9 +147,18 @@ public class CharacterInteractController : MonoBehaviour
         {
             if (CurrentNearIngredientBaskets.Count > 0)
             {
-                ShoveStackInTarget(CurrentNearIngredientBaskets[0].transform, CurrentNearIngredientBaskets[0]);
-                CurrentNearIngredientBaskets[0].EnableInteract();
-                CurrentNearIngredientBaskets[0].DisableCancel();
+                foreach (IngredientBasketBehaviour ingredientBasket in CurrentNearIngredientBaskets)
+                {
+                    if (ingredientBasket.ingredient != ((CollectedIngredientBehaviour)collectedStack[0].stackable).IngredientValuesSo) continue;
+                
+                    ShoveStackInTarget(ingredientBasket.transform, ingredientBasket);
+                    break;
+                }
+                
+                foreach (IngredientBasketBehaviour ingredientBasket in CurrentNearIngredientBaskets)
+                {
+                    ingredientBasket.DoesNeedToCheckAvailability = true;
+                }
             }
             else
             {
@@ -192,101 +201,72 @@ public class CharacterInteractController : MonoBehaviour
                 }
             }
             
-            if (index != CurrentNearIngredientBaskets.Count)
+            for (index = 0; index < CurrentNearIngredientBaskets.Count; index++)
             {
-                if (CurrentNearIngredientBaskets[index].IngredientCount == 0)
-                {
-                    CurrentNearIngredientBaskets[index].DisableInteract();
-                }
-                
-                IngredientBasketBehaviour item = CurrentNearIngredientBaskets[index];
-                CurrentNearIngredientBaskets.RemoveAt(index);
-                index = CurrentNearIngredientBaskets.Count;
-                CurrentNearIngredientBaskets.Insert(CurrentNearIngredientBaskets.Count, item);
-            }
-            
-            int length = CurrentNearIngredientBaskets.Count;
-            
-            for (int i = 0; i < length; i++)
-            {
-                if (i != index)
-                {
-                    CurrentNearIngredientBaskets[0].DisableInteract();
-                    CurrentNearIngredientBaskets.RemoveAt(0);
-                }
+                CurrentNearIngredientBaskets[index].DoesNeedToCheckAvailability = true;
             }
 
             return;
         }
 
-        (int index, float dotValue) largestDot = (0, -1);
+        (int index, float distance) lowestDistance = (-1, float.MaxValue);
         
         for (int i = 0; i < CurrentNearIngredientBaskets.Count; i++)
         {
-            float dotValue = Vector3.Dot(transform.forward, CurrentNearIngredientBaskets[i].transform.position - transform.position);
+            if (CurrentNearIngredientBaskets[i].IngredientCount == 0) continue;
             
-            if (dotValue > largestDot.dotValue)
+            float distance = Vector3.Distance(transform.position, CurrentNearIngredientBaskets[i].transform.position);
+            
+            if (distance < lowestDistance.distance)
             {
-                largestDot = (i, dotValue);
+                lowestDistance = (i, distance);
             }
-        }
-        
-        AddToPile(CurrentNearIngredientBaskets[largestDot.index].InstantiateCollectedIngredient());
-        CurrentNearIngredientBaskets[largestDot.index].EnableCancel();
-        
-        if (CurrentNearIngredientBaskets[largestDot.index].IngredientCount == 0)
-        {
-            CurrentNearIngredientBaskets[largestDot.index].DisableInteract();
         }
 
-        IngredientBasketBehaviour ingredientBasket = CurrentNearIngredientBaskets[largestDot.index];
-        CurrentNearIngredientBaskets.RemoveAt(largestDot.index);
-        largestDot.index = CurrentNearIngredientBaskets.Count;
-        CurrentNearIngredientBaskets.Insert(CurrentNearIngredientBaskets.Count, ingredientBasket);
+        if (lowestDistance.index < 0) return;
         
-        int count = CurrentNearIngredientBaskets.Count;
+        AddToPile(CurrentNearIngredientBaskets[lowestDistance.index].InstantiateCollectedIngredient());
             
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < CurrentNearIngredientBaskets.Count; i++)
         {
-            if (i != largestDot.index)
-            {
-                CurrentNearIngredientBaskets[0].DisableInteract();
-                CurrentNearIngredientBaskets.RemoveAt(0);
-            }
+            CurrentNearIngredientBaskets[i].DoesNeedToCheckAvailability = true;
         }
     }
     
     private void ChoosePotionBasket(bool hasToGrab = false)
     {
-        (int index, float dotValue) largestDot = (0, -1);
+        (int index, float distance) lowestDistance = (-1, float.MaxValue);
         
         for (int i = 0; i < CurrentNearPotionBaskets.Count; i++)
         {
-            float dotValue = Vector3.Dot(transform.forward, CurrentNearPotionBaskets[i].transform.position - transform.position);
-
             if (hasToGrab && !GameDontDestroyOnLoadManager.Instance.OrderPotions[CurrentNearPotionBaskets[i].OrderIndex]
                     [CurrentNearPotionBaskets[i].PotionBasketIndex]) continue;
 
             if (!hasToGrab && GameDontDestroyOnLoadManager.Instance.OrderPotions[CurrentNearPotionBaskets[i].OrderIndex]
                     [CurrentNearPotionBaskets[i].PotionBasketIndex]) continue;
             
-            if (dotValue > largestDot.dotValue)
+            float distance = Vector3.Distance(transform.position, CurrentNearPotionBaskets[i].transform.position);
+            
+            if (distance < lowestDistance.distance)
             {
-                largestDot = (i, dotValue);
+                lowestDistance = (i, distance);
             }
         }
+        
+        if (lowestDistance.index < 0) return;
 
         if (hasToGrab)
         {
-            AddToPile(CurrentNearPotionBaskets[largestDot.index].InstantiateCollectedPotion());
-            CurrentNearPotionBaskets[largestDot.index].DisableCancel();
-            CurrentNearPotionBaskets[largestDot.index].EnableInteract();
+            AddToPile(CurrentNearPotionBaskets[lowestDistance.index].InstantiateCollectedPotion());
         }
         else
         {
-            ShoveStackInTarget(CurrentNearPotionBaskets[0].transform, CurrentNearPotionBaskets[0]);
-            CurrentNearPotionBaskets[largestDot.index].EnableCancel();
-            CurrentNearPotionBaskets[largestDot.index].DisableInteract();
+            ShoveStackInTarget(CurrentNearPotionBaskets[lowestDistance.index].transform, CurrentNearPotionBaskets[lowestDistance.index]);
+        }
+
+        foreach (PotionBasketBehaviour potionBasket in CurrentNearPotionBaskets)
+        {
+            potionBasket.DoesNeedToCheckAvailability = true;
         }
     }
     

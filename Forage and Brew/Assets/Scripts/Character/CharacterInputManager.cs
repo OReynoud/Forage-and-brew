@@ -18,8 +18,6 @@ public class CharacterInputManager : MonoBehaviour
     public UnityEvent<bool> OnNavigationChange { get; set; } = new();
     public UnityEvent<bool> OnSelectRecipe { get; set; } = new();
     
-    
-
     [BoxGroup("Debug")]public bool showCodex;
 
 
@@ -33,10 +31,12 @@ public class CharacterInputManager : MonoBehaviour
     
     private void Start()
     {
-        EnableInputs();
         movementController = GetComponent<CharacterMovementController>();
         characterInteractController = GetComponent<CharacterInteractController>();
         codexController = AutoFlip.instance;
+        
+        SetupInputs();
+        EnableInputs();
     }
 
     private void Update()
@@ -50,6 +50,49 @@ public class CharacterInputManager : MonoBehaviour
             movementController.Move(_inputs.Player.Move.ReadValue<Vector2>());
         }
         
+    }
+
+    private void OnDestroy()
+    {
+        DisableInputs();
+    }
+
+    #endregion
+
+
+    #region Input Setup
+
+    public void SetupInputs()
+    {
+        _inputs.Player.Move.performed += MoveOnPerformed;
+        _inputs.Player.Interact.performed += InteractOnPerformed;
+        _inputs.Player.Cancel.performed += CancelOnPerformed;
+        _inputs.Player.PreviousBasketSet.performed += PreviousBasketSetOnPerformed;
+        _inputs.Player.NextBasketSet.performed += NextBasketSetOnPerformed;
+        _inputs.Player.HapticChallenge.performed += HapticChallengeOnPerformed;
+        _inputs.Player.HapticChallenge.canceled += HapticChallengeOnCanceled;
+        _inputs.Player.HapticChallengeSecond.performed += HapticChallengeSecondOnPerformed;
+        _inputs.Player.ChoppingHapticChallenge1.performed += ChoppingHapticChallenge1OnPerformed;
+        _inputs.Player.ChoppingHapticChallenge2.performed += ChoppingHapticChallenge2OnPerformed;
+        _inputs.Player.ChoppingHapticChallenge3.performed += ChoppingHapticChallenge3OnPerformed;
+        _inputs.Player.HapticChallengeJoystick.performed += HapticChallengeJoystickOnPerformed;
+        _inputs.Player.HapticChallengeJoystick.canceled += HapticChallengeJoystickOnPerformed;
+        _inputs.Player.HapticChallengeJoystickHorizontalAxis.performed += HapticChallengeJoystickHorizontalAxisOnPerformed;
+        _inputs.Player.HapticChallengeJoystickHorizontalAxis.canceled += HapticChallengeJoystickHorizontalAxisOnPerformed;
+        _inputs.Player.HapticChallengeJoystickVerticalAxis.performed += HapticChallengeJoystickVerticalAxisOnPerformed;
+        _inputs.Player.HapticChallengeJoystickVerticalAxis.canceled += HapticChallengeJoystickVerticalAxisOnPerformed;
+        _inputs.Player.Codex.performed += CodexOnPerformed;
+        _inputs.Player.BookMarkLeft.performed += BookMarkLeftOnPerformed;
+        _inputs.Player.BookMarkRight.performed += BookMarkRightOnPerformed;
+        _inputs.Player.StartPageNavigation.performed += StartPageNavigationOnPerformed;
+        _inputs.Player.ExitPageNavigation.performed += ExitPageNavigationOnPerformed;
+        _inputs.Player.PinLeft.performed += PinLeftOnPerformed;
+        _inputs.Player.PinRight.performed += PinRightOnPerformed;
+        _inputs.Player.PassLetters.performed += PassLettersOnPerformed;
+    }
+
+    public void DestroyInputs()
+    {
     }
 
     #endregion
@@ -69,28 +112,20 @@ public class CharacterInputManager : MonoBehaviour
     public void EnableMoveInputs()
     {
         _inputs.Player.Move.Enable();
-        _inputs.Player.Move.performed += MoveOnPerformed;
     }
     
     public void EnableInteractInputs()
     {
         _inputs.Player.Interact.Enable();
-        _inputs.Player.Interact.performed += InteractOnPerformed;
         _inputs.Player.Cancel.Enable();
-        _inputs.Player.Cancel.performed += CancelOnPerformed;
         _inputs.Player.PreviousBasketSet.Enable();
-        _inputs.Player.PreviousBasketSet.performed += PreviousBasketSetOnPerformed;
         _inputs.Player.NextBasketSet.Enable();
-        _inputs.Player.NextBasketSet.performed += NextBasketSetOnPerformed;
     }
 
     public void EnableHapticChallengeInputs()
     {
         _inputs.Player.HapticChallenge.Enable();
-        _inputs.Player.HapticChallenge.performed += HapticChallengeOnPerformed;
-        _inputs.Player.HapticChallenge.canceled += HapticChallengeOnCanceled;
         _inputs.Player.HapticChallengeSecond.Enable();
-        _inputs.Player.HapticChallengeSecond.performed += HapticChallengeSecondOnPerformed;
         EnableChoppingHapticChallengeInputs();
         EnableHapticChallengeJoystickInputs();
     }
@@ -98,48 +133,31 @@ public class CharacterInputManager : MonoBehaviour
     public void EnableChoppingHapticChallengeInputs()
     {
         _inputs.Player.ChoppingHapticChallenge1.Enable();
-        _inputs.Player.ChoppingHapticChallenge1.performed += ChoppingHapticChallenge1OnPerformed;
         _inputs.Player.ChoppingHapticChallenge2.Enable();
-        _inputs.Player.ChoppingHapticChallenge2.performed += ChoppingHapticChallenge2OnPerformed;
         _inputs.Player.ChoppingHapticChallenge3.Enable();
-        _inputs.Player.ChoppingHapticChallenge3.performed += ChoppingHapticChallenge3OnPerformed;
     }
     
     public void EnableHapticChallengeJoystickInputs()
     {
         _inputs.Player.HapticChallengeJoystick.Enable();
-        _inputs.Player.HapticChallengeJoystick.performed += HapticChallengeJoystickOnPerformed;
-        _inputs.Player.HapticChallengeJoystick.canceled += HapticChallengeJoystickOnPerformed;
         _inputs.Player.HapticChallengeJoystickHorizontalAxis.Enable();
-        _inputs.Player.HapticChallengeJoystickHorizontalAxis.performed += HapticChallengeJoystickHorizontalAxisOnPerformed;
-        _inputs.Player.HapticChallengeJoystickHorizontalAxis.canceled += HapticChallengeJoystickHorizontalAxisOnPerformed;
         _inputs.Player.HapticChallengeJoystickVerticalAxis.Enable();
-        _inputs.Player.HapticChallengeJoystickVerticalAxis.performed += HapticChallengeJoystickVerticalAxisOnPerformed;
-        _inputs.Player.HapticChallengeJoystickVerticalAxis.canceled += HapticChallengeJoystickVerticalAxisOnPerformed;
     }
 
     private void EnableCodexInputs()
     {
         _inputs.Player.Codex.Enable();
-        _inputs.Player.Codex.performed += CodexOnPerformed;
         _inputs.Player.BookMarkLeft.Enable();
         _inputs.Player.BookMarkRight.Enable();
-        _inputs.Player.BookMarkLeft.performed += BookMarkLeftOnPerformed;
-        _inputs.Player.BookMarkRight.performed += BookMarkRightOnPerformed;
         _inputs.Player.StartPageNavigation.Enable();
         _inputs.Player.ExitPageNavigation.Enable();
-        _inputs.Player.StartPageNavigation.performed += StartPageNavigationOnPerformed;
-        _inputs.Player.ExitPageNavigation.performed += ExitPageNavigationOnPerformed;
         _inputs.Player.PinLeft.Enable();
         _inputs.Player.PinRight.Enable();
-        _inputs.Player.PinLeft.performed += PinLeftOnPerformed;
-        _inputs.Player.PinRight.performed += PinRightOnPerformed;
     }
 
     public void EnableMailInputs()
     {
         _inputs.Player.PassLetters.Enable();
-        _inputs.Player.PassLetters.performed += PassLettersOnPerformed;
     }
 
     #endregion
@@ -154,33 +172,26 @@ public class CharacterInputManager : MonoBehaviour
         DisableHapticChallengeInputs();
         DisableCodexInputs();
         DisableMailInputs();
+        _inputs.Player.Disable();
     }
     
     public void DisableMoveInputs()
     {
         _inputs.Player.Move.Disable();
-        _inputs.Player.Move.performed -= MoveOnPerformed;
     }
     
     public void DisableInteractInputs()
     {
         _inputs.Player.Interact.Disable();
-        _inputs.Player.Interact.performed -= InteractOnPerformed;
         _inputs.Player.Cancel.Disable();
-        _inputs.Player.Cancel.performed -= CancelOnPerformed;
         _inputs.Player.PreviousBasketSet.Disable();
-        _inputs.Player.PreviousBasketSet.performed -= PreviousBasketSetOnPerformed;
         _inputs.Player.NextBasketSet.Disable();
-        _inputs.Player.NextBasketSet.performed -= NextBasketSetOnPerformed;
     }
     
     public void DisableHapticChallengeInputs()
     {
         _inputs.Player.HapticChallenge.Disable();
-        _inputs.Player.HapticChallenge.performed -= HapticChallengeOnPerformed;
-        _inputs.Player.HapticChallenge.canceled -= HapticChallengeOnCanceled;
         _inputs.Player.HapticChallengeSecond.Disable();
-        _inputs.Player.HapticChallengeSecond.performed -= HapticChallengeSecondOnPerformed;
         DisableChoppingHapticChallengeInputs();
         DisableHapticChallengeJoystickInputs();
     }
@@ -188,48 +199,31 @@ public class CharacterInputManager : MonoBehaviour
     public void DisableChoppingHapticChallengeInputs()
     {
         _inputs.Player.ChoppingHapticChallenge1.Disable();
-        _inputs.Player.ChoppingHapticChallenge1.performed -= ChoppingHapticChallenge1OnPerformed;
         _inputs.Player.ChoppingHapticChallenge2.Disable();
-        _inputs.Player.ChoppingHapticChallenge2.performed -= ChoppingHapticChallenge2OnPerformed;
         _inputs.Player.ChoppingHapticChallenge3.Disable();
-        _inputs.Player.ChoppingHapticChallenge3.performed -= ChoppingHapticChallenge3OnPerformed;
     }
     
     public void DisableHapticChallengeJoystickInputs()
     {
         _inputs.Player.HapticChallengeJoystick.Disable();
-        _inputs.Player.HapticChallengeJoystick.performed -= HapticChallengeJoystickOnPerformed;
-        _inputs.Player.HapticChallengeJoystick.canceled -= HapticChallengeJoystickOnPerformed;
         _inputs.Player.HapticChallengeJoystickHorizontalAxis.Disable();
-        _inputs.Player.HapticChallengeJoystickHorizontalAxis.performed -= HapticChallengeJoystickHorizontalAxisOnPerformed;
-        _inputs.Player.HapticChallengeJoystickHorizontalAxis.canceled -= HapticChallengeJoystickHorizontalAxisOnPerformed;
         _inputs.Player.HapticChallengeJoystickVerticalAxis.Disable();
-        _inputs.Player.HapticChallengeJoystickVerticalAxis.performed -= HapticChallengeJoystickVerticalAxisOnPerformed;
-        _inputs.Player.HapticChallengeJoystickVerticalAxis.canceled -= HapticChallengeJoystickVerticalAxisOnPerformed;
     }
     
     private void DisableCodexInputs()
     {
         _inputs.Player.Codex.Disable();
-        _inputs.Player.Codex.performed -= CodexOnPerformed;
         _inputs.Player.BookMarkLeft.Disable();
         _inputs.Player.BookMarkRight.Disable();
-        _inputs.Player.BookMarkLeft.performed -= BookMarkLeftOnPerformed;
-        _inputs.Player.BookMarkRight.performed -= BookMarkRightOnPerformed;
         _inputs.Player.StartPageNavigation.Disable();
         _inputs.Player.ExitPageNavigation.Disable();
-        _inputs.Player.StartPageNavigation.performed -= StartPageNavigationOnPerformed;
-        _inputs.Player.ExitPageNavigation.performed -= ExitPageNavigationOnPerformed;
         _inputs.Player.PinLeft.Disable();
         _inputs.Player.PinRight.Disable();
-        _inputs.Player.PinLeft.performed -= PinLeftOnPerformed;
-        _inputs.Player.PinRight.performed -= PinRightOnPerformed;
     }
 
     public void DisableMailInputs()
     {
         _inputs.Player.PassLetters.Disable();
-        _inputs.Player.PassLetters.performed -= PassLettersOnPerformed;
     }
 
     #endregion

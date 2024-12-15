@@ -36,7 +36,7 @@ public class PotionBasketManagerBehaviour : BasketManagerBehaviour
         }
     }
     
-    public override void IncreaseCurrentOrderIndex()
+    public override void IncreaseCurrentSetIndex()
     {
         _currentOrderIndex++;
         _currentOrderIndex %= GameDontDestroyOnLoadManager.Instance.OrderPotions.Count;
@@ -44,10 +44,13 @@ public class PotionBasketManagerBehaviour : BasketManagerBehaviour
         ReactivateRightPotionBaskets();
     }
     
-    public override void DecreaseCurrentOrderIndex()
+    public override void DecreaseCurrentSetIndex()
     {
         _currentOrderIndex--;
-        _currentOrderIndex %= GameDontDestroyOnLoadManager.Instance.OrderPotions.Count;
+        if (_currentOrderIndex < 0)
+        {
+            _currentOrderIndex = GameDontDestroyOnLoadManager.Instance.OrderPotions.Count - 1;
+        }
         
         ReactivateRightPotionBaskets();
     }
@@ -63,6 +66,7 @@ public class PotionBasketManagerBehaviour : BasketManagerBehaviour
         {
             potionBaskets[i].gameObject.SetActive(true);
             potionBaskets[i].SetBasketContent(_currentOrderIndex);
+            potionBaskets[i].DoesNeedToCheckAvailability = true;
         }
     }
     
