@@ -247,11 +247,15 @@ public class CharacterInputManager : MonoBehaviour
     
     private void PreviousBasketSetOnPerformed(InputAction.CallbackContext obj)
     {
+        if (!BasketInputManager.Instance) return;
+        
         BasketInputManager.Instance.PreviousBasketSet();
     }
     
     private void NextBasketSetOnPerformed(InputAction.CallbackContext obj)
     {
+        if (!BasketInputManager.Instance) return;
+        
         BasketInputManager.Instance.NextBasketSet();
     }
 
