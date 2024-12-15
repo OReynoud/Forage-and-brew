@@ -209,7 +209,7 @@ public class CharacterInteractController : MonoBehaviour
             return;
         }
 
-        (int index, float distance) lowestDistance = (0, float.MaxValue);
+        (int index, float distance) lowestDistance = (-1, float.MaxValue);
         
         for (int i = 0; i < CurrentNearIngredientBaskets.Count; i++)
         {
@@ -223,7 +223,7 @@ public class CharacterInteractController : MonoBehaviour
             }
         }
 
-        if (lowestDistance.distance > Mathf.Floor(float.MaxValue)) return;
+        if (lowestDistance.index < 0) return;
         
         AddToPile(CurrentNearIngredientBaskets[lowestDistance.index].InstantiateCollectedIngredient());
             
@@ -235,35 +235,38 @@ public class CharacterInteractController : MonoBehaviour
     
     private void ChoosePotionBasket(bool hasToGrab = false)
     {
-        (int index, float dotValue) largestDot = (0, -1);
+        (int index, float distance) lowestDistance = (-1, float.MaxValue);
         
         for (int i = 0; i < CurrentNearPotionBaskets.Count; i++)
         {
-            float dotValue = Vector3.Dot(transform.forward, CurrentNearPotionBaskets[i].transform.position - transform.position);
-
             if (hasToGrab && !GameDontDestroyOnLoadManager.Instance.OrderPotions[CurrentNearPotionBaskets[i].OrderIndex]
                     [CurrentNearPotionBaskets[i].PotionBasketIndex]) continue;
 
             if (!hasToGrab && GameDontDestroyOnLoadManager.Instance.OrderPotions[CurrentNearPotionBaskets[i].OrderIndex]
                     [CurrentNearPotionBaskets[i].PotionBasketIndex]) continue;
             
-            if (dotValue > largestDot.dotValue)
+            float distance = Vector3.Distance(transform.position, CurrentNearPotionBaskets[i].transform.position);
+            
+            if (distance < lowestDistance.distance)
             {
-                largestDot = (i, dotValue);
+                lowestDistance = (i, distance);
             }
         }
+        
+        if (lowestDistance.index < 0) return;
 
         if (hasToGrab)
         {
-            AddToPile(CurrentNearPotionBaskets[largestDot.index].InstantiateCollectedPotion());
-            CurrentNearPotionBaskets[largestDot.index].DisableCancel();
-            CurrentNearPotionBaskets[largestDot.index].EnableInteract();
+            AddToPile(CurrentNearPotionBaskets[lowestDistance.index].InstantiateCollectedPotion());
         }
         else
         {
-            ShoveStackInTarget(CurrentNearPotionBaskets[0].transform, CurrentNearPotionBaskets[0]);
-            CurrentNearPotionBaskets[largestDot.index].EnableCancel();
-            CurrentNearPotionBaskets[largestDot.index].DisableInteract();
+            ShoveStackInTarget(CurrentNearPotionBaskets[lowestDistance.index].transform, CurrentNearPotionBaskets[lowestDistance.index]);
+        }
+
+        foreach (PotionBasketBehaviour potionBasket in CurrentNearPotionBaskets)
+        {
+            potionBasket.DoesNeedToCheckAvailability = true;
         }
     }
     

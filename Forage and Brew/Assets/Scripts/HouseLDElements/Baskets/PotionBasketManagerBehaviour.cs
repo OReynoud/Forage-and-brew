@@ -66,6 +66,7 @@ public class PotionBasketManagerBehaviour : BasketManagerBehaviour
         {
             potionBaskets[i].gameObject.SetActive(true);
             potionBaskets[i].SetBasketContent(_currentOrderIndex);
+            potionBaskets[i].DoesNeedToCheckAvailability = true;
         }
     }
     

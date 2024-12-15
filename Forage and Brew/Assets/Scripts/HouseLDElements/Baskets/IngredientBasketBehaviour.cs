@@ -6,7 +6,6 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
     [SerializeField] private CollectedIngredientBehaviour collectedIngredientBehaviourPrefab;
     public IngredientBasketManagerBehaviour IngredientBasketManagerBehaviour { get; set; }
     public int IngredientCount { get; private set; }
-    public bool DoesNeedToCheckAvailability { get; set; }
     
     
     private void Start()
@@ -100,11 +99,6 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
                 (CollectedIngredientBehaviour)characterInteractController.collectedStack[0].stackable &&
                 ((CollectedIngredientBehaviour)characterInteractController.collectedStack[0].stackable).IngredientValuesSo == ingredient)
             {
-                if (!characterInteractController.CurrentNearIngredientBaskets.Contains(this))
-                {
-                    characterInteractController.CurrentNearIngredientBaskets.Add(this);
-                }
-                
                 EnableCancel();
 
                 if (IngredientCount > 0)
@@ -118,11 +112,6 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
             }
             else if (characterInteractController.collectedStack.Count == 0 && IngredientCount > 0)
             {
-                if (!characterInteractController.CurrentNearIngredientBaskets.Contains(this))
-                {
-                    characterInteractController.CurrentNearIngredientBaskets.Add(this);
-                }
-                
                 EnableInteract();
                 DisableCancel();
             }
