@@ -26,7 +26,7 @@ public class BasketInputManager : MonoBehaviour
     {
         foreach (BasketManagerBehaviour basketManager in CurrentBasketManagers)
         {
-            basketManager.DecreaseCurrentOrderIndex();
+            basketManager.DecreaseCurrentSetIndex();
         }
     }
     
@@ -34,7 +34,7 @@ public class BasketInputManager : MonoBehaviour
     {
         foreach (BasketManagerBehaviour basketManager in CurrentBasketManagers)
         {
-            basketManager.IncreaseCurrentOrderIndex();
+            basketManager.IncreaseCurrentSetIndex();
         }
     }
 }

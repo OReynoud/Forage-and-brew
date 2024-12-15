@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
     private readonly List<List<IngredientValuesSo>> _ingredientSets = new();
     private int _currentIngredientSetIndex;
 
+    
     private void Awake()
     {
         foreach (IngredientBasketBehaviour ingredientBasket in ingredientBaskets)
@@ -20,59 +22,69 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
 
     private void Start()
     {
-        int setIndex = 0;
+        int setIndex = -1;
         int ingredientIndex = 0;
-        
-        _ingredientSets.Add(new List<IngredientValuesSo>());
-        
-        foreach (IngredientValuesSo ingredient in ingredientListSo.IngredientValues)
+
+        foreach (IngredientType ingredientType in Enum.GetValues(typeof(IngredientType)))
         {
-            if (ingredientIndex == ingredientBaskets.Count)
+            foreach (IngredientValuesSo ingredient in ingredientListSo.IngredientValues)
             {
-                _ingredientSets.Add(new List<IngredientValuesSo>());
-                setIndex++;
-                ingredientIndex = 0;
+                if (ingredientType != ingredient.Type) continue;
+                
+                if (ingredientIndex == 0)
+                {
+                    _ingredientSets.Add(new List<IngredientValuesSo>());
+                    setIndex++;
+                }
+            
+                _ingredientSets[setIndex].Add(ingredient);
+            
+                ingredientIndex++;
+                ingredientIndex %= ingredientBaskets.Count;
             }
             
-            _ingredientSets[setIndex - 1].Add(ingredient);
-            ingredientIndex++;
+            ingredientIndex = 0;
         }
         
-        for (int i = 0; i < ingredientBaskets.Count; i++)
-        {
-            ingredientBaskets[i].SetBasketContent(ingredientListSo.IngredientValues[i]);
-        }
+        ReactivateRightIngredientBaskets();
     }
     
-    public override void IncreaseCurrentOrderIndex()
+    
+    public override void IncreaseCurrentSetIndex()
     {
         _currentIngredientSetIndex++;
-        _currentIngredientSetIndex %= GameDontDestroyOnLoadManager.Instance.OrderPotions.Count;
+        _currentIngredientSetIndex %= _ingredientSets.Count;
         
-        ReactivateRightPotionBaskets();
+        ReactivateRightIngredientBaskets();
     }
     
-    public override void DecreaseCurrentOrderIndex()
+    public override void DecreaseCurrentSetIndex()
     {
         _currentIngredientSetIndex--;
-        _currentIngredientSetIndex %= GameDontDestroyOnLoadManager.Instance.OrderPotions.Count;
+        if (_currentIngredientSetIndex < 0)
+        {
+            _currentIngredientSetIndex = _ingredientSets.Count - 1;
+        }
         
-        ReactivateRightPotionBaskets();
+        ReactivateRightIngredientBaskets();
     }
     
-    private void ReactivateRightPotionBaskets()
+    private void ReactivateRightIngredientBaskets()
     {
-        foreach (PotionBasketBehaviour potionBasket in ingredientBaskets)
+        for (int i = 0; i < ingredientBaskets.Count; i++)
         {
-            potionBasket.gameObject.SetActive(false);
-        }
-        
-        for (int i = 0; i < GameDontDestroyOnLoadManager.Instance.OrderPotions[_currentIngredientSetIndex].Count; i++)
-        {
-            ingredientBaskets[i].gameObject.SetActive(true);
-            ingredientBaskets[i].SetBasketContent(_currentIngredientSetIndex);
+            if (i < _ingredientSets[_currentIngredientSetIndex].Count)
+            {
+                ingredientBaskets[i].SetBasketContent(_ingredientSets[_currentIngredientSetIndex][i]);
+                ingredientBaskets[i].gameObject.SetActive(true);
+            }
+            else
+            {
+                ingredientBaskets[i].gameObject.SetActive(false);
+            }
         }
     }
+    
     
     public void ManageTriggerEnter()
     {
