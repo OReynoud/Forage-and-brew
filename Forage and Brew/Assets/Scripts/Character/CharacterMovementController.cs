@@ -1,64 +1,68 @@
-using System;
 using NaughtyAttributes;
 using UnityEngine;
 
 public class CharacterMovementController : MonoBehaviour
 {
-    public float speed;
-    [Range(0,1)]public float rotationSpeed = 0.1f;
-    public float maxAngle;
-    public AnimationCurve accelerationCurve;
-
-    [Foldout("Debug")] [ReadOnly] private Vector3 playerDir;
-    [Foldout("Debug")] [ReadOnly]  public float accelerationCurveIndex;
-    [Foldout("Debug")] [ReadOnly] public bool isGrounded;
-    [Foldout("Debug")] [ReadOnly] public bool isMoving;
+    [Header("Dependencies")]
+    [SerializeField] private Animator animator;
     
+    [Header("Movement Settings")]
+    [SerializeField] private float speed;
+    [SerializeField] [Range(0,1)] private float rotationSpeed = 0.1f;
+    [SerializeField] private float maxAngle;
+    [SerializeField] private AnimationCurve accelerationCurve;
+
+    [Foldout("Debug")] [SerializeField] [ReadOnly] private Vector3 playerDir;
+    [Foldout("Debug")] [SerializeField] [ReadOnly] private float accelerationCurveIndex;
+    [Foldout("Debug")] [SerializeField] [ReadOnly] private bool isGrounded;
+    [Foldout("Debug")] [SerializeField] [ReadOnly] private bool isMoving;
     
     private Rigidbody rb;
-
     private LayerMask groundMask;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    
+    private Vector3 angledVelocity;
+    private float angle;
+    
+    // Animator Hashes
+    private static readonly int IsWalking = Animator.StringToHash("isWalking");
+
+
+    #region Unity Callbacks
+
+    private void Start()
     {
         rb = GetComponent<Rigidbody>();
         groundMask = LayerMask.GetMask("Default");
     }
 
-    public void Move(Vector2 inputDir)
-    {
-        playerDir = new Vector3(inputDir.x,0,inputDir.y);
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.DrawWireSphere(transform.position,0.4f);
-    }
-
-    // Update is called once per frame
-    private Vector3 angledVelocity;
-    private float angle;
-    void Update()
+    private void Update()
     {
         isGrounded = GroundCheck();
         PlayerMovement();
     }
 
-    
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         if (isMoving)
             RotatePlayer();
     }
 
-    bool GroundCheck()
+    #endregion
+
+    
+    public void Move(Vector2 inputDir)
+    {
+        playerDir = new Vector3(inputDir.x,0,inputDir.y);
+    }
+
+    private bool GroundCheck()
     {
         bool check = Physics.Raycast(transform.position + Vector3.up * 0.6f, Vector3.down, 0.7f, groundMask);
         
         return check;
     }
-    
-    void PlayerMovement()
+
+    private void PlayerMovement()
     {
         angledVelocity = playerDir;
         if (Physics.Raycast(transform.position , transform.forward, out RaycastHit hitForward, 0.7f, groundMask))
@@ -71,12 +75,11 @@ public class CharacterMovementController : MonoBehaviour
         }
         if (isGrounded) 
         {
-
             if (Mathf.Abs(angle) < maxAngle)
             {
                 angledVelocity = Quaternion.AngleAxis(-angle,transform.right) * angledVelocity;
-                angledVelocity *= (speed * accelerationCurve.Evaluate(accelerationCurveIndex) * playerDir.magnitude);
-                rb.linearVelocity = angledVelocity + Vector3.down * 9.81f * Time.deltaTime;
+                angledVelocity *= speed * accelerationCurve.Evaluate(accelerationCurveIndex) * playerDir.magnitude;
+                rb.linearVelocity = angledVelocity + Vector3.down * (9.81f * Time.deltaTime);
             }
             else
             {
@@ -85,34 +88,41 @@ public class CharacterMovementController : MonoBehaviour
                 rb.linearVelocity = new Vector3(angledVelocity.x, rb.linearVelocity.y, angledVelocity.z);
             }
             
-            Debug.DrawRay(transform.position,angledVelocity* 5,Color.blue ,0);
-
+            Debug.DrawRay(transform.position, angledVelocity * 5, Color.blue, 0);
         }
         else
         {
             angledVelocity = playerDir * (speed * accelerationCurve.Evaluate(accelerationCurveIndex) * playerDir.magnitude);
 
-            rb.linearVelocity = new Vector3(angledVelocity.x, rb.linearVelocity.y - 9.81f * Time.deltaTime,angledVelocity.z);
+            rb.linearVelocity = new Vector3(angledVelocity.x, rb.linearVelocity.y - 9.81f * Time.deltaTime, angledVelocity.z);
         }
 
         if (playerDir.magnitude > 0)
         {
             accelerationCurveIndex += Time.deltaTime;
             isMoving = true;
+            animator.SetBool(IsWalking, true);
         }
         else 
         {
             accelerationCurveIndex = 0;
             isMoving = false;
+            animator.SetBool(IsWalking, false);
         }
     }
-
-
-    void RotatePlayer()
+    
+    private void RotatePlayer()
     {
-        float angle = Mathf.Atan2(playerDir.x, playerDir.z) * Mathf.Rad2Deg;
+        float finalAngle = Mathf.Atan2(playerDir.x, playerDir.z) * Mathf.Rad2Deg;
         
-        transform.rotation = Quaternion.Lerp(transform.rotation,Quaternion.Euler(0,angle,0), rotationSpeed);
-        
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, finalAngle, 0), rotationSpeed);
     }
+
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(transform.position,0.4f);
+    }
+#endif
 }
