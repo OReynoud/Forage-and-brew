@@ -85,6 +85,16 @@ public class CollectHapticChallengeManager : MonoBehaviour
         {
             _canValidateUnearthing = false;
             _areBothUnearthingInputsPressed = false;
+            _unearthingInputIndexAlreadyReleased = 0;
+        
+            foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
+            {
+                if (ingredientToCollectBehaviour.IngredientValuesSo.Type != unearthingIngredientType) continue;
+            
+                ingredientToCollectBehaviour.PressUnearthing();
+                
+                break;
+            }
         }
     }
     
@@ -102,6 +112,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
                 if (inputIndex != _unearthingInputIndexAlreadyPressed)
                 {
                     _areBothUnearthingInputsPressed = true;
+                    ingredientToCollectBehaviour.ReleaseUnearthing();
                 }
             }
             else
@@ -121,9 +132,6 @@ public class CollectHapticChallengeManager : MonoBehaviour
             return;
         }
         
-        CurrentIngredientToCollectBehaviours.Sort((a, b) => Vector3.Distance(transform.position, a.transform.position)
-            .CompareTo(Vector3.Distance(transform.position, b.transform.position)));
-        
         foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
         {
             if (ingredientToCollectBehaviour.IngredientValuesSo.Type != unearthingIngredientType) continue;
@@ -134,12 +142,17 @@ public class CollectHapticChallengeManager : MonoBehaviour
                 {
                     ingredientToCollectBehaviour.Collect();
                     CurrentIngredientToCollectBehaviours.Remove(ingredientToCollectBehaviour);
+                    _unearthingInputIndexAlreadyPressed = 0;
+                    _unearthingInputIndexAlreadyReleased = 0;
+                    _areBothUnearthingInputsPressed = false;
+                    _canValidateUnearthing = false;
                     return;
                 }
             }
             else
             {
                 _unearthingInputIndexAlreadyReleased = inputIndex;
+                _unearthingInputIndexAlreadyPressed = inputIndex % 2 + 1;
                 _canValidateUnearthing = true;
                 _currentUnearthingTime = unearthingHapticChallengeSo.InputReleaseDelayTolerance;
             }
@@ -204,6 +217,15 @@ public class CollectHapticChallengeManager : MonoBehaviour
         if (_currentHarvestTime <= 0f)
         {
             _canValidateHarvest = true;
+            
+            foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
+            {
+                if (ingredientToCollectBehaviour.IngredientValuesSo.Type != harvestIngredientType) continue;
+            
+                ingredientToCollectBehaviour.ReleaseHarvest();
+                
+                break;
+            }
         }
     }
     

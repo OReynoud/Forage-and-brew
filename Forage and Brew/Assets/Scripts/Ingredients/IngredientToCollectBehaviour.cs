@@ -141,6 +141,56 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         harvestArrowRightGameObject.SetActive(false);
         harvestReleaseRightGameObject.SetActive(false);
     }
+
+    public void PressUnearthing()
+    {
+        if (isUiRight)
+        {
+            unearthingLeftArrowRightGameObject.SetActive(true);
+            unearthingRightArrowRightGameObject.SetActive(true);
+            unearthingLeftReleaseRightGameObject.SetActive(false);
+            unearthingRightReleaseRightGameObject.SetActive(false);
+        }
+        else
+        {
+            unearthingLeftArrowLeftGameObject.SetActive(true);
+            unearthingRightArrowLeftGameObject.SetActive(true);
+            unearthingLeftReleaseLeftGameObject.SetActive(false);
+            unearthingRightReleaseLeftGameObject.SetActive(false);
+        }
+    }
+
+    public void ReleaseUnearthing()
+    {
+        if (isUiRight)
+        {
+            unearthingLeftArrowRightGameObject.SetActive(false);
+            unearthingRightArrowRightGameObject.SetActive(false);
+            unearthingLeftReleaseRightGameObject.SetActive(true);
+            unearthingRightReleaseRightGameObject.SetActive(true);
+        }
+        else
+        {
+            unearthingLeftArrowLeftGameObject.SetActive(false);
+            unearthingRightArrowLeftGameObject.SetActive(false);
+            unearthingLeftReleaseLeftGameObject.SetActive(true);
+            unearthingRightReleaseLeftGameObject.SetActive(true);
+        }
+    }
+    
+    public void ReleaseHarvest()
+    {
+        if (isUiRight)
+        {
+            harvestArrowRightGameObject.SetActive(false);
+            harvestReleaseRightGameObject.SetActive(true);
+        }
+        else
+        {
+            harvestArrowLeftGameObject.SetActive(false);
+            harvestReleaseLeftGameObject.SetActive(true);
+        }
+    }
     
 
     public void Collect()
