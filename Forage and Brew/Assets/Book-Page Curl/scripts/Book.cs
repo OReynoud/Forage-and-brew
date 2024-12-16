@@ -516,7 +516,6 @@ public class Book : MonoBehaviour {
         else
             RightNext.sprite = background;
 
-        Debug.Log(bookPages[currentPage + 2].UIComponent.name,  bookPages[currentPage + 2].UIComponent);
         if (currentPage + 2 < bookPages.Count)
         {
             
