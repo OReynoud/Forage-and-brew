@@ -14,9 +14,9 @@ public class OrderTicket : MonoBehaviour
 
     public Image[] potionImages;
     public TextMeshProUGUI[] potionKeywords;
+    public int pageNumber;
     public float moneyReward;
     public int daysLeftToComplete;
-    public bool hasAnOrder;
     
 
     
@@ -28,7 +28,7 @@ public class OrderTicket : MonoBehaviour
     }
 
     
-    public void InitializeOrder(string client,string description, CodexContentManager.PotionDemand[] Potions, float Reward, int TTC)
+    public void InitializeOrder(string client,string description, CodexContentManager.PotionDemand[] Potions, float Reward, int TTC, int index)
     {
         clientNameText.text = client;
         descriptionText.text = description;
@@ -36,6 +36,8 @@ public class OrderTicket : MonoBehaviour
         potionsDemanded.Clear();
         potionsDemanded.AddRange(Potions);
         daysLeftToComplete = TTC;
+        pageNumber = index;
+        
         
         foreach (var potionImage in potionImages)
         {
@@ -59,8 +61,6 @@ public class OrderTicket : MonoBehaviour
                 potionKeywords[i].text = potionsDemanded[i].keywords;
             }
         }
-        //Debug.Log("Oui");
-        hasAnOrder = true;
     }
 
     // Update is called once per frame
