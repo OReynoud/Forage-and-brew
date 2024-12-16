@@ -1,9 +1,10 @@
 using System;
+using NaughtyAttributes;
 using UnityEngine;
 
 public class CameraTrigger : MonoBehaviour
 {
-    public CameraPreset camSettings;
+    [Expandable] public CameraPreset camSettings;
 
     public float transitionTime;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
