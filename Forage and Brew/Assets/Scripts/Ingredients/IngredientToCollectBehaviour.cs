@@ -73,19 +73,20 @@ public class IngredientToCollectBehaviour : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out CharacterInteractController characterInteractController))
+        if (other.TryGetComponent(out CollectHapticChallengeManager collectHapticChallengeManager))
         {
-            characterInteractController.SetNewIngredientToCollect(this);
+            collectHapticChallengeManager.CurrentIngredientToCollectBehaviours.Add(this);
             EnableCollect();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
-            characterInteractController.CurrentIngredientToCollectBehaviour == this)
+        if (other.TryGetComponent(out CollectHapticChallengeManager collectHapticChallengeManager) &&
+            collectHapticChallengeManager.CurrentIngredientToCollectBehaviours.Contains(this))
         {
-            characterInteractController.SetNewIngredientToCollect(null);
+            collectHapticChallengeManager.CurrentIngredientToCollectBehaviours.Remove(this);
+            DisableCollect();
         }
     }
 

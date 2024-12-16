@@ -4,19 +4,19 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Splines;
 
-public class ScrapingHapticChallengeRouteDataSaveBehaviour : MonoBehaviour
+public class GrindingHapticChallengeRouteDataSaveBehaviour : MonoBehaviour
 {
-    [SerializeField] private ScrapingHapticChallengeSo scrapingHapticChallengeSo;
+    [SerializeField] private GrindingHapticChallengeSo grindingHapticChallengeSo;
     [SerializeField] private SplineContainer splineContainer;
-    [SerializeField] private Object scrapingHapticChallengeRouteDataFolder;
+    [SerializeField] private Object grindingHapticChallengeRouteDataFolder;
 
 #if UNITY_EDITOR
     [Button]
     private void SaveRouteData()
     {
-        if (scrapingHapticChallengeSo == null)
+        if (grindingHapticChallengeSo == null)
         {
-            Debug.LogError("ScrapingHapticChallengeSo is null.");
+            Debug.LogError("GrindingHapticChallengeSo is null.");
             return;
         }
 
@@ -27,30 +27,30 @@ public class ScrapingHapticChallengeRouteDataSaveBehaviour : MonoBehaviour
             
         }
 
-        ScrapingHapticChallengeRouteSo scrapingHapticChallengeRouteSo = ScriptableObject.CreateInstance<ScrapingHapticChallengeRouteSo>();
+        GrindingHapticChallengeRouteSo grindingHapticChallengeRouteSo = ScriptableObject.CreateInstance<GrindingHapticChallengeRouteSo>();
         
         foreach (BezierKnot knot in splineContainer.Spline.Knots)
         {
-            scrapingHapticChallengeRouteSo.Points.Add(knot.Position);
+            grindingHapticChallengeRouteSo.Points.Add(knot.Position);
         }
 
-        scrapingHapticChallengeSo.Routes.Add(scrapingHapticChallengeRouteSo);
+        grindingHapticChallengeSo.Routes.Add(grindingHapticChallengeRouteSo);
 
-        string[] currentFiles = AssetDatabase.FindAssets("t:ScriptableObject", new[] {AssetDatabase.GetAssetPath(scrapingHapticChallengeRouteDataFolder)})
+        string[] currentFiles = AssetDatabase.FindAssets("t:ScriptableObject", new[] {AssetDatabase.GetAssetPath(grindingHapticChallengeRouteDataFolder)})
             .Select(AssetDatabase.GUIDToAssetPath).ToArray();
         
         int i = 1;
-        while (currentFiles.Contains(AssetDatabase.GetAssetPath(scrapingHapticChallengeRouteDataFolder) +
-            $"/D_ScrapingHapticChallengeRoute{i}.asset"))
+        while (currentFiles.Contains(AssetDatabase.GetAssetPath(grindingHapticChallengeRouteDataFolder) +
+            $"/D_GrindingHapticChallengeRoute{i}.asset"))
         {
             i++;
         }
         
-        AssetDatabase.CreateAsset(scrapingHapticChallengeRouteSo,
-            AssetDatabase.GetAssetPath(scrapingHapticChallengeRouteDataFolder) +
-            $"/D_ScrapingHapticChallengeRoute{i}.asset");
+        AssetDatabase.CreateAsset(grindingHapticChallengeRouteSo,
+            AssetDatabase.GetAssetPath(grindingHapticChallengeRouteDataFolder) +
+            $"/D_GrindingHapticChallengeRoute{i}.asset");
         
-        EditorUtility.SetDirty(scrapingHapticChallengeSo);
+        EditorUtility.SetDirty(grindingHapticChallengeSo);
     }
     
     private void OnDrawGizmos()

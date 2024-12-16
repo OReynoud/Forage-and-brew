@@ -242,6 +242,42 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Scythe"",
+                    ""type"": ""Button"",
+                    ""id"": ""7869f427-b6a4-4d99-acc2-f773d15e455b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Unearth1"",
+                    ""type"": ""Button"",
+                    ""id"": ""1cc488c8-c4f9-494e-b3c7-25fa35e3ce0e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Unearth2"",
+                    ""type"": ""Button"",
+                    ""id"": ""34de6292-83cf-4ded-92e2-0be23452dd84"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Harvest"",
+                    ""type"": ""Button"",
+                    ""id"": ""3977a8c3-ebf6-431b-80c4-8d15ac5748c2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -937,6 +973,61 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""ToggleRun"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c2d83041-24ec-4ec9-96f2-0656f5c3a518"",
+                    ""path"": ""<Gamepad>/rightStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Scythe"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f59206e3-faf2-4118-98df-5e140dff83a3"",
+                    ""path"": ""<Gamepad>/rightStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Scythe"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3096fca1-42ed-4b3d-8ead-97ce6db401e9"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Unearth1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""569c6ccb-4beb-48b4-857e-5ad917eb860a"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Unearth2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f08ece46-18c4-40f3-9fb5-449ae7518570"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Harvest"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1546,6 +1637,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_PreviousBasketSet = m_Player.FindAction("PreviousBasketSet", throwIfNotFound: true);
         m_Player_NextBasketSet = m_Player.FindAction("NextBasketSet", throwIfNotFound: true);
         m_Player_ToggleRun = m_Player.FindAction("ToggleRun", throwIfNotFound: true);
+        m_Player_Scythe = m_Player.FindAction("Scythe", throwIfNotFound: true);
+        m_Player_Unearth1 = m_Player.FindAction("Unearth1", throwIfNotFound: true);
+        m_Player_Unearth2 = m_Player.FindAction("Unearth2", throwIfNotFound: true);
+        m_Player_Harvest = m_Player.FindAction("Harvest", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1649,6 +1744,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_PreviousBasketSet;
     private readonly InputAction m_Player_NextBasketSet;
     private readonly InputAction m_Player_ToggleRun;
+    private readonly InputAction m_Player_Scythe;
+    private readonly InputAction m_Player_Unearth1;
+    private readonly InputAction m_Player_Unearth2;
+    private readonly InputAction m_Player_Harvest;
     public struct PlayerActions
     {
         private @InputSystem_Actions m_Wrapper;
@@ -1677,6 +1776,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @PreviousBasketSet => m_Wrapper.m_Player_PreviousBasketSet;
         public InputAction @NextBasketSet => m_Wrapper.m_Player_NextBasketSet;
         public InputAction @ToggleRun => m_Wrapper.m_Player_ToggleRun;
+        public InputAction @Scythe => m_Wrapper.m_Player_Scythe;
+        public InputAction @Unearth1 => m_Wrapper.m_Player_Unearth1;
+        public InputAction @Unearth2 => m_Wrapper.m_Player_Unearth2;
+        public InputAction @Harvest => m_Wrapper.m_Player_Harvest;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1758,6 +1861,18 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ToggleRun.started += instance.OnToggleRun;
             @ToggleRun.performed += instance.OnToggleRun;
             @ToggleRun.canceled += instance.OnToggleRun;
+            @Scythe.started += instance.OnScythe;
+            @Scythe.performed += instance.OnScythe;
+            @Scythe.canceled += instance.OnScythe;
+            @Unearth1.started += instance.OnUnearth1;
+            @Unearth1.performed += instance.OnUnearth1;
+            @Unearth1.canceled += instance.OnUnearth1;
+            @Unearth2.started += instance.OnUnearth2;
+            @Unearth2.performed += instance.OnUnearth2;
+            @Unearth2.canceled += instance.OnUnearth2;
+            @Harvest.started += instance.OnHarvest;
+            @Harvest.performed += instance.OnHarvest;
+            @Harvest.canceled += instance.OnHarvest;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1834,6 +1949,18 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ToggleRun.started -= instance.OnToggleRun;
             @ToggleRun.performed -= instance.OnToggleRun;
             @ToggleRun.canceled -= instance.OnToggleRun;
+            @Scythe.started -= instance.OnScythe;
+            @Scythe.performed -= instance.OnScythe;
+            @Scythe.canceled -= instance.OnScythe;
+            @Unearth1.started -= instance.OnUnearth1;
+            @Unearth1.performed -= instance.OnUnearth1;
+            @Unearth1.canceled -= instance.OnUnearth1;
+            @Unearth2.started -= instance.OnUnearth2;
+            @Unearth2.performed -= instance.OnUnearth2;
+            @Unearth2.canceled -= instance.OnUnearth2;
+            @Harvest.started -= instance.OnHarvest;
+            @Harvest.performed -= instance.OnHarvest;
+            @Harvest.canceled -= instance.OnHarvest;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -2040,6 +2167,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnPreviousBasketSet(InputAction.CallbackContext context);
         void OnNextBasketSet(InputAction.CallbackContext context);
         void OnToggleRun(InputAction.CallbackContext context);
+        void OnScythe(InputAction.CallbackContext context);
+        void OnUnearth1(InputAction.CallbackContext context);
+        void OnUnearth2(InputAction.CallbackContext context);
+        void OnHarvest(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
