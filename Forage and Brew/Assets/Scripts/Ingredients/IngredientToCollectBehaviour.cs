@@ -35,6 +35,8 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     [SerializeField] private GameObject unearthingRightInputRightGameObject;
     [SerializeField] private GameObject unearthingRightArrowRightGameObject;
     [SerializeField] private GameObject unearthingRightReleaseRightGameObject;
+    [SerializeField] private GameObject scrapingInputLeftGameObject;
+    [SerializeField] private GameObject scrapingInputRightGameObject;
     [SerializeField] private GameObject harvestInputLeftGameObject;
     [SerializeField] private GameObject harvestArrowLeftGameObject;
     [SerializeField] private GameObject harvestReleaseLeftGameObject;
@@ -111,6 +113,17 @@ public class IngredientToCollectBehaviour : MonoBehaviour
                 unearthingRightArrowLeftGameObject.SetActive(true);
             }
         }
+        else if (IngredientValuesSo.Type == scrapingIngredientType)
+        {
+            if (isUiRight)
+            {
+                scrapingInputRightGameObject.SetActive(true);
+            }
+            else
+            {
+                scrapingInputLeftGameObject.SetActive(true);
+            }
+        }
         else if (IngredientValuesSo.Type == harvestIngredientType)
         {
             if (isUiRight)
@@ -149,6 +162,8 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         unearthingRightInputRightGameObject.SetActive(false);
         unearthingRightArrowRightGameObject.SetActive(false);
         unearthingRightReleaseRightGameObject.SetActive(false);
+        scrapingInputLeftGameObject.SetActive(false);
+        scrapingInputRightGameObject.SetActive(false);
         harvestInputLeftGameObject.SetActive(false);
         harvestArrowLeftGameObject.SetActive(false);
         harvestReleaseLeftGameObject.SetActive(false);
