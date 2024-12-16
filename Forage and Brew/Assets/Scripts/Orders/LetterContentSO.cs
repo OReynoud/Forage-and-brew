@@ -5,7 +5,7 @@ using UnityEngine;
 public class LetterContentSO : ScriptableObject
 {
     [field: SerializeField] public string ClientName { get; private set; }
-    [field: SerializeField] public string Description { get; private set; }
+    [field: SerializeField] [field: ResizableTextArea] public string Description { get; private set; }
     [field: SerializeField] public CodexContentManager.PotionDemand[] RequestedPotions { get; private set; }
     [field: SerializeField] public LetterType LetterType { get; private set; }
     [field: SerializeField] public OrdersQuestLineTags Questline { get; private set; }

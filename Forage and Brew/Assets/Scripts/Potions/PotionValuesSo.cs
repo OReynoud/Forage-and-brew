@@ -6,7 +6,7 @@ using UnityEngine;
 public class PotionValuesSo : StackableValuesSo
 {
     [field: SerializeField] public string Name { get; private set; }
-    [field: SerializeField] public string Description { get; private set; }
+    [field: SerializeField] [field: ResizableTextArea]public string Description { get; private set; }
     [field: SerializeField]  public Sprite icon { get; private set; }
     [field: SerializeField] [field: EnumFlags] public PotionTag tags { get; private set; } 
     [field: SerializeField] [field: EnumFlags] [field: ReadOnly] public PotionTag effectiveTags { get; private set; }

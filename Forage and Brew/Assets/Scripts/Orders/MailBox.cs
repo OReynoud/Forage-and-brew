@@ -76,6 +76,7 @@ public class MailBox : Singleton<MailBox>
         {
             case 0:
                 GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new GameDontDestroyOnLoadManager.Letter(PossibleLettersPool[0],PossibleLettersPool[0].TimeToFulfill));
+                GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new GameDontDestroyOnLoadManager.Letter(PossibleLettersPool[1],PossibleLettersPool[1].TimeToFulfill));
                 break;            
             case 1:
                 GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new GameDontDestroyOnLoadManager.Letter(PossibleLettersPool[1],PossibleLettersPool[1].TimeToFulfill));
