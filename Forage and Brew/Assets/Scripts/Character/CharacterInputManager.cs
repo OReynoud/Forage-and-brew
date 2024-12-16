@@ -72,6 +72,8 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.HapticChallenge.performed += HapticChallengeOnPerformed;
         _inputs.Player.HapticChallengeSecond.performed += HapticChallengeSecondOnPerformed;
         _inputs.Player.Scythe.performed += ScytheOnPerformed;
+        _inputs.Player.Unearth1.performed += Unearth1OnPerformed;
+        _inputs.Player.Unearth2.performed += Unearth2OnPerformed;
         _inputs.Player.Unearth1.canceled += Unearth1OnCanceled;
         _inputs.Player.Unearth2.canceled += Unearth2OnCanceled;
         _inputs.Player.Harvest.performed += HarvestOnPerformed;
@@ -295,14 +297,24 @@ public class CharacterInputManager : MonoBehaviour
         CollectHapticChallengeManager.Instance.CheckScythingInput();
     }
     
+    private void Unearth1OnPerformed(InputAction.CallbackContext obj)
+    {
+        CollectHapticChallengeManager.Instance.CheckUnearthingInputPressed(1);
+    }
+    
+    private void Unearth2OnPerformed(InputAction.CallbackContext obj)
+    {
+        CollectHapticChallengeManager.Instance.CheckUnearthingInputPressed(2);
+    }
+    
     private void Unearth1OnCanceled(InputAction.CallbackContext obj)
     {
-        CollectHapticChallengeManager.Instance.CheckUnearthingInput(1);
+        CollectHapticChallengeManager.Instance.CheckUnearthingInputReleased(1);
     }
     
     private void Unearth2OnCanceled(InputAction.CallbackContext obj)
     {
-        CollectHapticChallengeManager.Instance.CheckUnearthingInput(2);
+        CollectHapticChallengeManager.Instance.CheckUnearthingInputReleased(2);
     }
     
     private void HarvestOnPerformed(InputAction.CallbackContext obj)
