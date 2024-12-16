@@ -28,7 +28,13 @@ public class CodexContentManager : Singleton<CodexContentManager>
             relatedIcon = Icon;
         }
     }
+
+    public RectTransform emptyPage;
+    public OrderTicket orderPrefab;
+    public Sprite leftEmptyPage;
+    public Sprite rightEmptyPage;
     public List<OrderTicket> tickets = new List<OrderTicket>();
+    private RectTransform emptyOrderPage;
 
     public Sprite potionIcon;
     public PotionTag testTag;
@@ -41,6 +47,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
     public Sprite[] allDifficultySprites;
     public Sprite[] allIngredientTypeSprites;
     public Sprite[] allBrewingActionSprites;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private List<Sprite> tempIngredientsList = new List<Sprite>();
@@ -88,16 +95,46 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
 
 
+    // public void ReceiveNewOrder(string clientName,string orderDescription, PotionDemand[] potionsRequested, float moneyReward, int timeToComplete)
+    // {
+    //     for (int i = 0; i < tickets.Count; i++)
+    //     {
+    //         if (tickets[i].hasAnOrder)
+    //             continue;
+    //         tickets[i].gameObject.SetActive(true);
+    //         tickets[i].InitializeOrder(clientName, orderDescription, potionsRequested, moneyReward, timeToComplete);
+    //         break;
+    //     }
+    // }
     public void ReceiveNewOrder(string clientName,string orderDescription, PotionDemand[] potionsRequested, float moneyReward, int timeToComplete)
     {
-        for (int i = 0; i < tickets.Count; i++)
+        if (!emptyOrderPage)
         {
-            if (tickets[i].hasAnOrder)
-                continue;
-            tickets[i].gameObject.SetActive(true);
-            tickets[i].InitializeOrder(clientName, orderDescription, potionsRequested, moneyReward, timeToComplete);
-            break;
+            var pageContainer= Instantiate(emptyPage,transform);
+            emptyOrderPage = Instantiate(emptyPage,transform);
+            var order = Instantiate(orderPrefab,pageContainer);
+            pageContainer.anchoredPosition = new Vector2(1500,0);
+            emptyOrderPage.anchoredPosition = new Vector2(1500,0);
+            
+            AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[1].index,new Book.BookPage(rightEmptyPage,emptyOrderPage));
+            
+            AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[1].index,new Book.BookPage(leftEmptyPage,pageContainer));
+            
+            tickets.Add(order);
+            order.InitializeOrder(clientName,orderDescription,potionsRequested,moneyReward,timeToComplete);
+            for (int i = 1; i < AutoFlip.instance.ControledBook.bookMarks.Length; i++)
+            {
+                AutoFlip.instance.ControledBook.bookMarks[i].index += 2;
+            }
         }
+        else
+        {
+            var order = Instantiate(orderPrefab,emptyOrderPage);
+            tickets.Add(order);
+            order.InitializeOrder(clientName,orderDescription,potionsRequested,moneyReward,timeToComplete);
+            emptyOrderPage = null;
+        }
+        AutoFlip.instance.ControledBook.UpdateSprites();
     }
 
 
