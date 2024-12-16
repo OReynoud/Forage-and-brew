@@ -6,6 +6,7 @@ public class CameraController : Singleton<CameraController>
 {
     [HideInInspector]public Camera cam;
     public Transform player;
+    private CharacterMovementController movement;
 
     [BoxGroup("Calculated at Start")] public float targetFocalLength;
     [BoxGroup("Calculated at Start")] public Vector3 cameraRotation;
@@ -47,7 +48,7 @@ public class CameraController : Singleton<CameraController>
         base.Awake();
         
     }
-
+    
 
     [Button]
     public void ApplyScriptableCamSettings()
@@ -126,12 +127,13 @@ public class CameraController : Singleton<CameraController>
         transform.localPosition = -transform.forward * TargetCamSettings.distanceFromPlayer;
         cam.focalLength = TargetCamSettings.targetFocalLength;
         
-        Debug.Log("Cam Settings: " + TargetCamSettings.name);
+        //Debug.Log("Cam Settings: " + TargetCamSettings.name);
     }
 
     void Start()
     {
         cam = Camera.main;
+        movement = CharacterInputManager.Instance.movementController;
         targetFocalLength = cam.focalLength;
         cameraRotation = transform.localRotation.eulerAngles;
         previousCamSettings = scriptableCamSettings;
@@ -156,7 +158,7 @@ public class CameraController : Singleton<CameraController>
     // Update is called once per frame
     void FixedUpdate()
     {
-        transform.parent.position = Vector3.Lerp(transform.parent.position, player.position+cameraOffset,positionLerp);
+        transform.parent.position = Vector3.Lerp(transform.parent.position, player.position+cameraOffset,movement.isRunning ? positionLerp * 2.5f : positionLerp);
         transform.localPosition =
             Vector3.Lerp(transform.localPosition, -transform.forward * distanceFromPlayer, positionLerp);
         cam.focalLength = Mathf.Lerp(cam.focalLength,targetFocalLength,focalLerp);

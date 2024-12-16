@@ -10,7 +10,7 @@ public class CharacterInputManager : MonoBehaviour
 
     private InputSystem_Actions _inputs;
 
-    private CharacterMovementController movementController;
+    public CharacterMovementController movementController { get; set; }
     private CharacterInteractController characterInteractController;
     private AutoFlip codexController;
 
@@ -27,11 +27,11 @@ public class CharacterInputManager : MonoBehaviour
     {
         Instance = this;
         _inputs = new InputSystem_Actions();
+        movementController = GetComponent<CharacterMovementController>();
     }
     
     private void Start()
     {
-        movementController = GetComponent<CharacterMovementController>();
         characterInteractController = GetComponent<CharacterInteractController>();
         codexController = AutoFlip.instance;
         

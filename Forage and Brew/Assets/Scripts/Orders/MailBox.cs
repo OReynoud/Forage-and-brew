@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using NaughtyAttributes;
+using UnityEditor.VersionControl;
 using UnityEngine;
+using Task = System.Threading.Tasks.Task;
 
 public class MailBox : Singleton<MailBox>
 {
@@ -22,6 +24,7 @@ public class MailBox : Singleton<MailBox>
     public float letterPileLerp;
 
     public Vector2 targetPos;
+    public Collider letterTrigger;
 
 
     [BoxGroup("LetterAnimation")] public AnimationCurve animCurve;
@@ -100,13 +103,14 @@ public class MailBox : Singleton<MailBox>
         }
     }
 
-    public void ShowLetters()
+    public async void ShowLetters()
     {
         if (GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Count == 0)
             return;
         
         CharacterInputManager.Instance.DisableMoveInputs();
         CharacterInputManager.Instance.DisableInteractInputs();
+        await Task.Delay(100);
         CharacterInputManager.Instance.EnableMailInputs();
         targetPos = Vector2.zero;
     }
@@ -125,6 +129,7 @@ public class MailBox : Singleton<MailBox>
         CharacterInputManager.Instance.EnableMoveInputs();
         CharacterInputManager.Instance.EnableInteractInputs();
         CharacterInputManager.Instance.DisableMailInputs();
+        letterTrigger.enabled = false;
         targetPos = new Vector2(0,-1500);
 
 
