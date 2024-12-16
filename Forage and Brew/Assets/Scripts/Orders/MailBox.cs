@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEditor.VersionControl;
@@ -103,20 +104,21 @@ public class MailBox : Singleton<MailBox>
         }
     }
 
-    public async void ShowLetters()
+    public void ShowLetters()
     {
         if (GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Count == 0)
             return;
-        
+        StartCoroutine(HandleMultipleExecutions());
         CharacterInputManager.Instance.DisableMoveInputs();
         CharacterInputManager.Instance.DisableInteractInputs();
-        await Task.Delay(100);
         CharacterInputManager.Instance.EnableMailInputs();
         targetPos = Vector2.zero;
     }
 
     public void PassToNextLetter()
     {
+        if (openedMailOnFrame)return;
+        
         for (int i = 0; i < GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Count; i++)
         {
             if (GameDontDestroyOnLoadManager.Instance.GeneratedLetters[i].associatedLetter.isMoved)
@@ -152,5 +154,14 @@ public class MailBox : Singleton<MailBox>
             }
         }
         
+    }
+
+    private bool openedMailOnFrame;
+    
+    IEnumerator HandleMultipleExecutions()
+    {
+        openedMailOnFrame = true;
+        yield return new WaitForEndOfFrame();
+        openedMailOnFrame = false;
     }
 }
