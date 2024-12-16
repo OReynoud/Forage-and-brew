@@ -29,7 +29,6 @@ public class MailBox : Singleton<MailBox>
 
 
     [BoxGroup("LetterAnimation")] public AnimationCurve animCurve;
-    [BoxGroup("LetterAnimation")] public Vector2 aimedPos;
     [BoxGroup("LetterAnimation")] public float animSpeed;
 
 

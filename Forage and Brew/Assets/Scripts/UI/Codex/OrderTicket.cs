@@ -7,8 +7,6 @@ public class OrderTicket : MonoBehaviour
 {
 
     public TextMeshProUGUI clientNameText;
-
-    public Image clientPortraitImage;
     
     public TextMeshProUGUI descriptionText;
 
@@ -29,24 +27,6 @@ public class OrderTicket : MonoBehaviour
         
     }
 
-    public void InitializeOrder(string client,string description, Sprite clientPortrait, CodexContentManager.PotionDemand[] Potions)
-    {
-        clientNameText.text = client;
-        descriptionText.text = description;
-        clientPortraitImage.sprite = clientPortrait;
-        potionsDemanded.Clear();
-        potionsDemanded.AddRange(Potions);
-
-        foreach (var potionImage in potionImages)
-        {
-            potionImage.enabled = false;
-        }
-        for (int i = 0; i < potionsDemanded.Count; i++)
-        {
-            potionImages[i].enabled = true;
-            potionImages[i].sprite = potionsDemanded[i].relatedIcon;
-        }
-    }
     
     public void InitializeOrder(string client,string description, CodexContentManager.PotionDemand[] Potions, float Reward, int TTC)
     {

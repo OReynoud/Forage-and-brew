@@ -47,7 +47,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
     void Start()
     {
         
-        CharacterInputManager.Instance.OnSelectRecipe.AddListener(SelectRecipe);
+        CharacterInputManager.Instance.OnSelectRecipe.AddListener(SelectCodexPage);
         foreach (var ticket in tickets)
         {
             ticket.gameObject.SetActive(false);
@@ -105,9 +105,14 @@ public class CodexContentManager : Singleton<CodexContentManager>
     /// 
     /// </summary>
     /// <param name="side"> true = right, false = left</param>
-    public void SelectRecipe(bool side)
+    public void SelectCodexPage(bool side)
     {
-        if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[1].index &&
+        if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[0].index &&
+            AutoFlip.instance.ControledBook.currentPage < AutoFlip.instance.ControledBook.bookMarks[1].index )
+        {
+            //Select Order
+        }
+        else if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[1].index &&
             AutoFlip.instance.ControledBook.currentPage < AutoFlip.instance.ControledBook.bookMarks[2].index )
         {
             var recipeIndex = AutoFlip.instance.ControledBook.currentPage -
