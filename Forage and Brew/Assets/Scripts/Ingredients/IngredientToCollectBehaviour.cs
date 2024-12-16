@@ -21,6 +21,8 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     [Header("UI")]
     [SerializeField] private bool isUiRight;
     [SerializeField] private GameObject collectInputCanvasGameObject;
+    [SerializeField] private GameObject scythingInputLeftGameObject;
+    [SerializeField] private GameObject scythingInputRightGameObject;
     [SerializeField] private GameObject unearthingLeftInputLeftGameObject;
     [SerializeField] private GameObject unearthingLeftArrowLeftGameObject;
     [SerializeField] private GameObject unearthingLeftReleaseLeftGameObject;
@@ -81,7 +83,18 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     {
         collectInputCanvasGameObject.SetActive(true);
         
-        if (IngredientValuesSo.Type == unearthingIngredientType)
+        if (IngredientValuesSo.Type == scythingIngredientType)
+        {
+            if (isUiRight)
+            {
+                scythingInputRightGameObject.SetActive(true);
+            }
+            else
+            {
+                scythingInputLeftGameObject.SetActive(true);
+            }
+        }
+        else if (IngredientValuesSo.Type == unearthingIngredientType)
         {
             if (isUiRight)
             {
@@ -122,6 +135,8 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     private void DisableCanvas()
     {
         collectInputCanvasGameObject.SetActive(false);
+        scythingInputLeftGameObject.SetActive(false);
+        scythingInputRightGameObject.SetActive(false);
         unearthingLeftInputLeftGameObject.SetActive(false);
         unearthingLeftArrowLeftGameObject.SetActive(false);
         unearthingLeftReleaseLeftGameObject.SetActive(false);
