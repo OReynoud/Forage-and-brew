@@ -25,8 +25,10 @@ public class CollectHapticChallengeManager : MonoBehaviour
     
     // Unearthing
     private float _currentUnearthingTime;
+    private int _unearthingInputIndexAlreadyPressed;
+    private bool _areBothUnearthingInputsPressed;
     private bool _canValidateUnearthing;
-    private int _inputIndexAlreadyDone;
+    private int _unearthingInputIndexAlreadyReleased;
     
     // Scraping
     private Vector2 _firstScrapingJoystickPosition;
@@ -82,11 +84,43 @@ public class CollectHapticChallengeManager : MonoBehaviour
         if (_currentUnearthingTime <= 0f)
         {
             _canValidateUnearthing = false;
+            _areBothUnearthingInputsPressed = false;
         }
     }
     
-    public void CheckUnearthingInput(int inputIndex)
+    public void CheckUnearthingInputPressed(int inputIndex)
     {
+        CurrentIngredientToCollectBehaviours.Sort((a, b) => Vector3.Distance(transform.position, a.transform.position)
+            .CompareTo(Vector3.Distance(transform.position, b.transform.position)));
+        
+        foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
+        {
+            if (ingredientToCollectBehaviour.IngredientValuesSo.Type != unearthingIngredientType) continue;
+            
+            if (_unearthingInputIndexAlreadyPressed != 0)
+            {
+                if (inputIndex != _unearthingInputIndexAlreadyPressed)
+                {
+                    _areBothUnearthingInputsPressed = true;
+                }
+            }
+            else
+            {
+                _unearthingInputIndexAlreadyPressed = inputIndex;
+            }
+                
+            break;
+        }
+    }
+    
+    public void CheckUnearthingInputReleased(int inputIndex)
+    {
+        if (!_areBothUnearthingInputsPressed)
+        {
+            _unearthingInputIndexAlreadyPressed = 0;
+            return;
+        }
+        
         CurrentIngredientToCollectBehaviours.Sort((a, b) => Vector3.Distance(transform.position, a.transform.position)
             .CompareTo(Vector3.Distance(transform.position, b.transform.position)));
         
@@ -96,7 +130,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
             
             if (_canValidateUnearthing)
             {
-                if (inputIndex != _inputIndexAlreadyDone)
+                if (inputIndex != _unearthingInputIndexAlreadyReleased)
                 {
                     ingredientToCollectBehaviour.Collect();
                     CurrentIngredientToCollectBehaviours.Remove(ingredientToCollectBehaviour);
@@ -105,7 +139,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
             }
             else
             {
-                _inputIndexAlreadyDone = inputIndex;
+                _unearthingInputIndexAlreadyReleased = inputIndex;
                 _canValidateUnearthing = true;
                 _currentUnearthingTime = unearthingHapticChallengeSo.InputReleaseDelayTolerance;
             }
