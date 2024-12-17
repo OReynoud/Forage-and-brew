@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class IngredientToCollectBehaviour : MonoBehaviour
@@ -44,6 +45,9 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     [SerializeField] private GameObject harvestArrowRightGameObject;
     [SerializeField] private GameObject harvestReleaseRightGameObject;
     
+    public bool DoesNeedToShowUi { get; set; }
+    private float _currentTriggerTime;
+    
 
     private void Awake()
     {
@@ -67,6 +71,11 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         
         // UI
         DisableCanvas();
+
+        if (GameDontDestroyOnLoadManager.Instance.dayPassed == 0)
+        {
+            DoesNeedToShowUi = true;
+        }
 
         if (!ingredientToCollectSpawnManager && ingredientToCollectGlobalValuesSo)
         {
@@ -237,7 +246,25 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         if (other.TryGetComponent(out CollectHapticChallengeManager collectHapticChallengeManager))
         {
             collectHapticChallengeManager.CurrentIngredientToCollectBehaviours.Add(this);
+            
+            if (!DoesNeedToShowUi) return;
+            
             EnableCollect();
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (DoesNeedToShowUi) return;
+        
+        if (other.CompareTag("Player"))
+        {
+            _currentTriggerTime += Time.deltaTime;
+            
+            if (_currentTriggerTime >= ingredientToCollectGlobalValuesSo.AfkTriggerTime)
+            {
+                EnableCollect();
+            }
         }
     }
 
@@ -248,6 +275,7 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         {
             collectHapticChallengeManager.CurrentIngredientToCollectBehaviours.Remove(this);
             DisableCollect();
+            _currentTriggerTime = 0f;
         }
     }
 
