@@ -27,10 +27,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
     //Recipe steps
     public TextMeshProUGUI[] stepText;
     public Image[] ingredientStepImage;
-    public Image[] mainArrow;
-    public Image[] secondaryArrow;
     public Image[] mainActionImage;
-    public Image[] secondaryActionImage;
 
     public CanvasGroup ingredientsList;
     public CanvasGroup recipeStepsList;
@@ -75,15 +72,9 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
             stepText[i].text = " ";
             ingredientStepImage[i].sprite = null;
             mainActionImage[i].sprite = null;
-            secondaryActionImage[i].sprite = null;
-
             stepText[i].enabled = false;
             ingredientStepImage[i].enabled = false;
             mainActionImage[i].enabled = false;
-            secondaryActionImage[i].enabled = false;
-
-            mainArrow[i].enabled = false;
-            secondaryArrow[i].enabled = false;
         }
 
 
@@ -124,7 +115,6 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
 
                 ingredientStepImage[writingIndex].enabled = true;
-                mainArrow[writingIndex].enabled = true;
 
                 switch (cookedIngredient.CookedForm)
                 {
@@ -144,13 +134,6 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
                         mainActionImage[writingIndex].enabled = true;
                         mainActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[1];
-
-                        secondaryArrow[writingIndex].enabled = true;
-
-                        secondaryActionImage[writingIndex].enabled = true;
-                        secondaryActionImage[writingIndex].sprite =
-                            CodexContentManager.instance.allBrewingActionSprites[^1];
-
                         break;
                 }
 
