@@ -1,40 +1,32 @@
-using System;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using UnityEngine;
 
 public class GameDontDestroyOnLoadManager : MonoBehaviour
 {
+    // Singleton
     public static GameDontDestroyOnLoadManager Instance { get; private set; }
     
-
+    // Debug
+    [SerializeField] private bool debugMode;
+    
+    // Scene
     [field: SerializeField] public Scene PreviousScene { get; set; }
+    
+    // Days
     public TimeOfDay CurrentTimeOfDay { get; set; } = TimeOfDay.Daytime;
+    public int DayPassed { get; set; }
     
-    public int dayPassed { get; set; }
-
-    
-    [field: SerializeField] public bool generateLetters { get; set; }
-    
+    // Ingredients and Potions
     public List<IngredientValuesSo> CollectedIngredients { get; private set; } = new();
     public List<List<PotionValuesSo>> OrderPotions { get; private set; } = new();
     
-    [Serializable]
-    public class Letter
-    {
-        public LetterContainer associatedLetter;
-        public LetterContentSO LetterContent;
-        public int days;
-
-        public Letter(LetterContentSO Letter, int delay )
-        {
-            LetterContent = Letter;
-            days = delay;
-        }
-    }
-    public List<LetterContentSO> AllLetters = new List<LetterContentSO>();
-
-    public List<Letter> GeneratedLetters = new List<Letter>();
-    public List<Letter> ActiveLetters = new List<Letter>();
+    // Letters
+    [field: SerializeField] public bool GenerateLetters { get; set; }
+    [field: SerializeField] public List<LetterContentSO> AllLetters { get; set; } = new();
+    public List<Letter> GeneratedLetters { get; set; } = new();
+    [field: ShowIf("DebugMode")] [field: SerializeField] [field: ReadOnly] public List<Letter> ActiveLetters { get; set; } = new();
+    
     
     private void Awake()
     {
@@ -47,23 +39,5 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
         {
             DestroyImmediate(gameObject);
         }
-    }
-
-
-    private void Update()
-    {
-        if (!generateLetters || MailBox.instance == null) return;
-        Debug.Log("GeneratedLetters");
-        switch (dayPassed)
-        {
-            case 0:
-                break;            
-            case 1:
-                break;
-            case 2:
-                break;
-        }
-        generateLetters = false;
-        MailBox.instance.GenerateLetters();
     }
 }

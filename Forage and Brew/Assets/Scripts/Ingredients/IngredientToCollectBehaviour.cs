@@ -71,7 +71,7 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         // UI
         DisableCanvas();
 
-        if (GameDontDestroyOnLoadManager.Instance.dayPassed == 0)
+        if (GameDontDestroyOnLoadManager.Instance.DayPassed == 0)
         {
             DoesNeedToShowUi = true;
         }
