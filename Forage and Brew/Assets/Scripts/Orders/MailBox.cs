@@ -11,7 +11,7 @@ public class MailBox : Singleton<MailBox>
     public WeatherStateSo[] allPossibleWeatherStates; // 0 = Cloudy, 1 = Rainy, 2 = Sunny
 
 
-    public List<LetterContentSO> PossibleLettersPool;
+    public List<LetterContentSo> PossibleLettersPool;
     
     [SerializeField] private GameObject interactInputCanvasGameObject;
 
