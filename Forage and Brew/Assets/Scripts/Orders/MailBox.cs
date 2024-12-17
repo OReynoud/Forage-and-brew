@@ -1,10 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
-using UnityEditor.VersionControl;
 using UnityEngine;
-using Task = System.Threading.Tasks.Task;
 
 public class MailBox : Singleton<MailBox>
 {
@@ -36,6 +33,12 @@ public class MailBox : Singleton<MailBox>
     {
         interactInputCanvasGameObject.SetActive(false);
         CharacterInputManager.Instance.DisableMailInputs();
+        
+        if (GameDontDestroyOnLoadManager.Instance.GenerateLetters)
+        {
+            GenerateLetters();
+            GameDontDestroyOnLoadManager.Instance.GenerateLetters = false;
+        }
     }
 
     private void Update()
@@ -72,19 +75,19 @@ public class MailBox : Singleton<MailBox>
     }
     public void GenerateLetters()
     {
-        switch (GameDontDestroyOnLoadManager.Instance.dayPassed)
+        switch (GameDontDestroyOnLoadManager.Instance.DayPassed)
         {
             case 0:
-                GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new GameDontDestroyOnLoadManager.Letter(PossibleLettersPool[0],PossibleLettersPool[0].TimeToFulfill));
-                GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new GameDontDestroyOnLoadManager.Letter(PossibleLettersPool[1],PossibleLettersPool[1].TimeToFulfill));
+                GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new Letter(PossibleLettersPool[0],PossibleLettersPool[0].TimeToFulfill));
+                GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new Letter(PossibleLettersPool[1],PossibleLettersPool[1].TimeToFulfill));
                 break;            
             case 1:
-                GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new GameDontDestroyOnLoadManager.Letter(PossibleLettersPool[1],PossibleLettersPool[1].TimeToFulfill));
-                GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new GameDontDestroyOnLoadManager.Letter(PossibleLettersPool[2],PossibleLettersPool[2].TimeToFulfill));
+                GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new Letter(PossibleLettersPool[1],PossibleLettersPool[1].TimeToFulfill));
+                GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new Letter(PossibleLettersPool[2],PossibleLettersPool[2].TimeToFulfill));
                 break;
             case 2:
-                GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new GameDontDestroyOnLoadManager.Letter(PossibleLettersPool[3],PossibleLettersPool[3].TimeToFulfill));
-                GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new GameDontDestroyOnLoadManager.Letter(PossibleLettersPool[4],PossibleLettersPool[4].TimeToFulfill));
+                GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new Letter(PossibleLettersPool[3],PossibleLettersPool[3].TimeToFulfill));
+                GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new Letter(PossibleLettersPool[4],PossibleLettersPool[4].TimeToFulfill));
                 break;
         }
 
