@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8080971898178760940}
   - component: {fileID: 8291985062246855392}
   - component: {fileID: 7883262404921079987}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34,8 +34,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0, y: 371}
-  m_SizeDelta: {x: 571.59, y: 80.6}
+  m_AnchoredPosition: {x: -0, y: 271}
+  m_SizeDelta: {x: 915.4, y: 80.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8291985062246855392
 CanvasRenderer:
@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'How to make Fresh Mush juice:'
+  m_text: Fresh Mush Juice
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f59db89641b740240852c40e46838d0a, type: 2}
   m_sharedMaterial: {fileID: -4117931809452654175, guid: f59db89641b740240852c40e46838d0a, type: 2}
@@ -92,7 +92,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 47.15
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -145,7 +145,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6653276822366642714}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Step (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -188,7 +188,7 @@ GameObject:
   - component: {fileID: 5351552934575496402}
   - component: {fileID: 5801263986593381217}
   - component: {fileID: 8054950266729974640}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Main action arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,8 +261,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5309742415834111023}
-  - component: {fileID: 1275754868343250384}
-  m_Layer: 0
+  - component: {fileID: 7484502254592122911}
+  m_Layer: 6
   m_Name: Images
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -290,10 +290,10 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 17, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1275754868343250384
+--- !u!114 &7484502254592122911
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -302,7 +302,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 610574394747312596}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
@@ -310,15 +310,13 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
-  m_Spacing: 10
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 1
-  m_ChildControlHeight: 1
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
+  m_ChildAlignment: 4
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 100, y: 100}
+  m_Spacing: {x: 50, y: 0}
+  m_Constraint: 2
+  m_ConstraintCount: 1
 --- !u!1 &621442180111206355
 GameObject:
   m_ObjectHideFlags: 0
@@ -328,8 +326,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5644073536273372394}
-  - component: {fileID: 3556171838878667029}
-  m_Layer: 0
+  - component: {fileID: 4363590012016610663}
+  m_Layer: 6
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -357,10 +355,10 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -54.000027, y: 0}
+  m_AnchoredPosition: {x: -17, y: 0}
   m_SizeDelta: {x: 150.25, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3556171838878667029
+--- !u!114 &4363590012016610663
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -369,7 +367,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 621442180111206355}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
@@ -377,15 +375,13 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 1
-  m_Spacing: 0
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 1
-  m_ChildControlHeight: 1
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
+  m_ChildAlignment: 4
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 100, y: 100}
+  m_Spacing: {x: 50, y: 0}
+  m_Constraint: 2
+  m_ConstraintCount: 1
 --- !u!1 &679998736066838071
 GameObject:
   m_ObjectHideFlags: 0
@@ -397,7 +393,7 @@ GameObject:
   - component: {fileID: 8970223292643209254}
   - component: {fileID: 454607424271272499}
   - component: {fileID: 3026548765733014711}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Secondary action
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -472,7 +468,7 @@ GameObject:
   - component: {fileID: 6906725127576997651}
   - component: {fileID: 276458388605244528}
   - component: {fileID: 2079518137955299173}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ingredient Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -547,7 +543,7 @@ GameObject:
   - component: {fileID: 4148423210327278570}
   - component: {fileID: 8856560867794939047}
   - component: {fileID: 4645300288676078519}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Main action arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -622,7 +618,7 @@ GameObject:
   - component: {fileID: 6637565569437538070}
   - component: {fileID: 7679810735347398497}
   - component: {fileID: 1171760415556325466}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Image (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -697,7 +693,7 @@ GameObject:
   - component: {fileID: 4636465678060838893}
   - component: {fileID: 8599452088332810578}
   - component: {fileID: 5480519969461140923}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Main action arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -772,7 +768,7 @@ GameObject:
   - component: {fileID: 6196736928221800820}
   - component: {fileID: 511707472571978523}
   - component: {fileID: 2276835750220629891}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Main action image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -847,7 +843,7 @@ GameObject:
   - component: {fileID: 2204540401473911374}
   - component: {fileID: 4873364550455757023}
   - component: {fileID: 6083596508216646915}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -922,7 +918,7 @@ GameObject:
   - component: {fileID: 7474956968411632851}
   - component: {fileID: 4976785099098532213}
   - component: {fileID: 8579204051178705311}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ingredient Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -997,7 +993,7 @@ GameObject:
   - component: {fileID: 7631390138198722852}
   - component: {fileID: 5252201904306107790}
   - component: {fileID: 5957252124327133798}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Secondary action
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1072,7 +1068,7 @@ GameObject:
   - component: {fileID: 3466328249236559432}
   - component: {fileID: 6641339863902261621}
   - component: {fileID: 6488634272408504481}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Main action arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1145,7 +1141,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8382253176270337865}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Step (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1189,7 +1185,7 @@ GameObject:
   - component: {fileID: 5719572701470749892}
   - component: {fileID: 5358721070688025171}
   - component: {fileID: 4892415885867061183}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: P_Pinned Recipe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1233,7 +1229,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1747587847695943367}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -1268,10 +1264,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7b638a12d689a84fb6f6ced07e28160, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pinnedRecipe: {fileID: 0}
+  pinnedRecipe: {fileID: 11400000, guid: ed8595b7fa83cda4caa39b6c7422b0c0, type: 2}
   title: {fileID: 7883262404921079987}
-  restingPos: {x: 755, y: 850, z: 0}
-  pinnedPos: {x: 755, y: 260, z: 0}
+  restingPos: {x: 0, y: 500, z: 0}
+  pinnedPos: {x: 0, y: 260, z: 0}
   lerp: 0.1
   arrowSprite: {fileID: 21300000, guid: 6d7d6d3cfeadcaf4393fe5a7460af7ca, type: 3}
   potionIngredients:
@@ -1353,7 +1349,7 @@ GameObject:
   - component: {fileID: 6228631607731397883}
   - component: {fileID: 2548445564682626142}
   - component: {fileID: 8514847559759830271}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Secondary action arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1428,7 +1424,7 @@ GameObject:
   - component: {fileID: 4337540219527792894}
   - component: {fileID: 6713712289022059905}
   - component: {fileID: 2523433559644294805}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Secondary action arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1503,7 +1499,7 @@ GameObject:
   - component: {fileID: 5917479573543945779}
   - component: {fileID: 338068241085672806}
   - component: {fileID: 114773465475008964}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Main action image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1578,7 +1574,7 @@ GameObject:
   - component: {fileID: 3540696512487913451}
   - component: {fileID: 3446616441096266549}
   - component: {fileID: 4701551563947217631}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Main action arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1653,7 +1649,7 @@ GameObject:
   - component: {fileID: 8848995261377615474}
   - component: {fileID: 3722507099647623686}
   - component: {fileID: 1231487388425826199}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ingredient Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1726,7 +1722,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8958985724605636591}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Step (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1769,7 +1765,7 @@ GameObject:
   - component: {fileID: 786231995863731046}
   - component: {fileID: 6511566122600250377}
   - component: {fileID: 5019581280440015740}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Text (TMP) (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1832,8 +1828,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1905,7 +1901,7 @@ GameObject:
   - component: {fileID: 2801742310938103882}
   - component: {fileID: 3492145876788879663}
   - component: {fileID: 1251869152915566013}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ingredient Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1980,7 +1976,7 @@ GameObject:
   - component: {fileID: 1537929753964791499}
   - component: {fileID: 2385663752111457567}
   - component: {fileID: 6434159317468252467}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Secondary action
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2055,7 +2051,7 @@ GameObject:
   - component: {fileID: 2748157065333454842}
   - component: {fileID: 5547573299970009191}
   - component: {fileID: 2011745448031240883}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Secondary action
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2130,7 +2126,7 @@ GameObject:
   - component: {fileID: 8042682557741888056}
   - component: {fileID: 3370498614412775889}
   - component: {fileID: 5896450257428816116}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Secondary action arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2205,7 +2201,7 @@ GameObject:
   - component: {fileID: 6065270025639418730}
   - component: {fileID: 1050443607460663800}
   - component: {fileID: 759744319654488542}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ingredient quantity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2341,7 +2337,7 @@ GameObject:
   - component: {fileID: 8380271411804483451}
   - component: {fileID: 393134287077996763}
   - component: {fileID: 842648963223734974}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Main action arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2416,7 +2412,7 @@ GameObject:
   - component: {fileID: 2553429368556391181}
   - component: {fileID: 929223856297264175}
   - component: {fileID: 5803217953553403908}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Secondary action
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2491,7 +2487,7 @@ GameObject:
   - component: {fileID: 5295728897200284111}
   - component: {fileID: 2977423907679800066}
   - component: {fileID: 7200844518170781403}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ingredient quantity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2627,7 +2623,7 @@ GameObject:
   - component: {fileID: 8651942912438604379}
   - component: {fileID: 658671028897747984}
   - component: {fileID: 7686975565423679176}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ingredient Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2702,7 +2698,7 @@ GameObject:
   - component: {fileID: 4568254408468343015}
   - component: {fileID: 2868229024585798601}
   - component: {fileID: 7064162339467880334}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Secondary action
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2777,7 +2773,7 @@ GameObject:
   - component: {fileID: 148329229518555654}
   - component: {fileID: 5242686849188147556}
   - component: {fileID: 7477866945333251162}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Main action arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2851,7 +2847,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6796751229748315362}
   - component: {fileID: 7498032631614472210}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ingredients List
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2876,7 +2872,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 367}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &7498032631614472210
@@ -2887,7 +2883,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4582560556780987693}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -2902,7 +2898,7 @@ GameObject:
   - component: {fileID: 4469175814023140967}
   - component: {fileID: 3259912672446149688}
   - component: {fileID: 6087053620251481346}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Main action image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2975,7 +2971,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7366494242960627297}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Step
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3018,7 +3014,7 @@ GameObject:
   - component: {fileID: 3101845347826749601}
   - component: {fileID: 1787497524339926854}
   - component: {fileID: 7776564255273541240}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ingredient quantity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3152,7 +3148,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 362387840444542214}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Step (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3195,7 +3191,7 @@ GameObject:
   - component: {fileID: 1684617353963588055}
   - component: {fileID: 3040312164523863599}
   - component: {fileID: 4357859018639602713}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Main action image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3270,7 +3266,7 @@ GameObject:
   - component: {fileID: 3985715493871681934}
   - component: {fileID: 5223952857241260138}
   - component: {fileID: 2053640325060521614}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ingredient Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3345,7 +3341,7 @@ GameObject:
   - component: {fileID: 3708983739481821672}
   - component: {fileID: 5575202312995611363}
   - component: {fileID: 9056314715053206732}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ingredient quantity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3481,7 +3477,7 @@ GameObject:
   - component: {fileID: 5283633207521636996}
   - component: {fileID: 5615673325780166274}
   - component: {fileID: 3288671365895372492}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Main action image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3556,7 +3552,7 @@ GameObject:
   - component: {fileID: 871164987409064972}
   - component: {fileID: 5627464875500964498}
   - component: {fileID: 2444222434577086831}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Text (TMP) (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3619,8 +3615,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3692,7 +3688,7 @@ GameObject:
   - component: {fileID: 3045915970036462176}
   - component: {fileID: 8359029552119152118}
   - component: {fileID: 8172829927849914555}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Text (TMP) (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3755,8 +3751,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3826,7 +3822,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5108447861394782812}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Step (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3869,7 +3865,7 @@ GameObject:
   - component: {fileID: 1456195794085731948}
   - component: {fileID: 5993643931434675402}
   - component: {fileID: 6687517167127328293}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ingredient quantity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4003,7 +3999,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4708667586531000455}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Step (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4046,7 +4042,7 @@ GameObject:
   - component: {fileID: 3203168044228052747}
   - component: {fileID: 4850646076106205952}
   - component: {fileID: 4193136486267087865}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Recipe Steps List
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4076,7 +4072,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -184.7, y: 308}
+  m_AnchoredPosition: {x: 0, y: 442}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &4850646076106205952
@@ -4108,12 +4104,12 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
-  m_StartCorner: 0
+  m_ChildAlignment: 4
+  m_StartCorner: 2
   m_StartAxis: 0
-  m_CellSize: {x: 100, y: 100}
+  m_CellSize: {x: 459.76, y: 100}
   m_Spacing: {x: 0, y: 0}
-  m_Constraint: 1
+  m_Constraint: 2
   m_ConstraintCount: 1
 --- !u!1 &6474986727041973044
 GameObject:
@@ -4126,7 +4122,7 @@ GameObject:
   - component: {fileID: 5442819597733454296}
   - component: {fileID: 4360385578580394539}
   - component: {fileID: 6538271366386925700}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ingredient quantity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4262,7 +4258,7 @@ GameObject:
   - component: {fileID: 1136990287196520142}
   - component: {fileID: 6745620273233919179}
   - component: {fileID: 4251760685373938929}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Secondary action arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4337,7 +4333,7 @@ GameObject:
   - component: {fileID: 5378165178355903813}
   - component: {fileID: 8729063456737192567}
   - component: {fileID: 8249781063124806245}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Secondary action arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4412,7 +4408,7 @@ GameObject:
   - component: {fileID: 4381130050884686604}
   - component: {fileID: 6738664099059457895}
   - component: {fileID: 6214501549765573827}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Main action image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4487,7 +4483,7 @@ GameObject:
   - component: {fileID: 5244283765399852216}
   - component: {fileID: 4298674194980010561}
   - component: {fileID: 6907882463615209879}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4550,8 +4546,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4623,7 +4619,7 @@ GameObject:
   - component: {fileID: 5889569535938354267}
   - component: {fileID: 1102983416211707562}
   - component: {fileID: 3667518690694878546}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Secondary action arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4698,7 +4694,7 @@ GameObject:
   - component: {fileID: 2773506745856002616}
   - component: {fileID: 2221665361597185216}
   - component: {fileID: 5960362856045056596}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ingredient Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4773,7 +4769,7 @@ GameObject:
   - component: {fileID: 5869708144067771356}
   - component: {fileID: 2017507809397189162}
   - component: {fileID: 3215194399753214609}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Image (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4848,7 +4844,7 @@ GameObject:
   - component: {fileID: 4862819011931130812}
   - component: {fileID: 9146801701247225341}
   - component: {fileID: 6609150998559927601}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Secondary action
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4923,7 +4919,7 @@ GameObject:
   - component: {fileID: 6651539764494372406}
   - component: {fileID: 194287964481042012}
   - component: {fileID: 8596428809296930197}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Text (TMP) (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4986,8 +4982,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -5059,7 +5055,7 @@ GameObject:
   - component: {fileID: 774726395188121838}
   - component: {fileID: 7456809924733036232}
   - component: {fileID: 7535700192219499386}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Main action image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5134,7 +5130,7 @@ GameObject:
   - component: {fileID: 7735332028936737874}
   - component: {fileID: 1185140563160741254}
   - component: {fileID: 304169901294174072}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Image (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5209,7 +5205,7 @@ GameObject:
   - component: {fileID: 1644541843297244747}
   - component: {fileID: 1485567008399352667}
   - component: {fileID: 4850015434559995067}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ingredient quantity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5345,7 +5341,7 @@ GameObject:
   - component: {fileID: 7615663457144439589}
   - component: {fileID: 8046179178002678391}
   - component: {fileID: 2020363461579792594}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Image (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5420,7 +5416,7 @@ GameObject:
   - component: {fileID: 1327037302745266996}
   - component: {fileID: 2161973978671195570}
   - component: {fileID: 4815150510058734037}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Secondary action arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}

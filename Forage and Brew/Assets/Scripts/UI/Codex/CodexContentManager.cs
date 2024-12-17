@@ -196,6 +196,12 @@ public class CodexContentManager : Singleton<CodexContentManager>
             AutoFlip.instance.ControledBook.currentPage < AutoFlip.instance.ControledBook.bookMarks[1].index )
         {
             //Select Order
+            var recipeIndex = AutoFlip.instance.ControledBook.currentPage -
+                              AutoFlip.instance.ControledBook.bookMarks[0].index;
+            recipeIndex = side ? recipeIndex + 1 : recipeIndex;
+            
+            
+            TerminateOrder(recipeIndex);
         }
         else if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[1].index &&
             AutoFlip.instance.ControledBook.currentPage < AutoFlip.instance.ControledBook.bookMarks[2].index )

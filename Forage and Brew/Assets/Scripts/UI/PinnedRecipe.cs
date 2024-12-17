@@ -89,13 +89,13 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
         if (GameDontDestroyOnLoadManager.Instance.PreviousScene == Scene.House)
         {
-            title.text = "How to make " + pinnedRecipe.Name;
+            title.text = pinnedRecipe.Name;
             recipeStepsList.alpha = 1;
             ShowRecipeSteps();
         }
         else
         {
-            title.text = "Ingredients for " + pinnedRecipe.Name;
+            title.text = pinnedRecipe.Name;
             ingredientsList.alpha = 1;
             ShowRecipeIngredients();
         }
