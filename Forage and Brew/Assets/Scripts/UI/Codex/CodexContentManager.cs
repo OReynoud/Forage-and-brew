@@ -127,14 +127,17 @@ public class CodexContentManager : Singleton<CodexContentManager>
         if (!emptyOrderPage)
         {
             var pageContainer= Instantiate(emptyPage,transform);
+            
             emptyOrderPage = Instantiate(emptyPage,transform);
             var order = Instantiate(orderPrefab,pageContainer);
             pageContainer.anchoredPosition = new Vector2(1500,0);
             emptyOrderPage.anchoredPosition = new Vector2(1500,0);
             
             AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[1].index,new Book.BookPage(rightEmptyPage,emptyOrderPage));
+            emptyOrderPage.name = "Page " + (AutoFlip.instance.ControledBook.bookMarks[1].index + 1);
             
             AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[1].index,new Book.BookPage(leftEmptyPage,pageContainer));
+            pageContainer.name = "Page " + AutoFlip.instance.ControledBook.bookMarks[1].index;
 
             emptyOrderPageIndex = AutoFlip.instance.ControledBook.bookMarks[1].index + 1;
             tickets.Add(order);
@@ -167,10 +170,17 @@ public class CodexContentManager : Singleton<CodexContentManager>
         else
         {
             emptyOrderPage = null;
-            Destroy(AutoFlip.instance.ControledBook.bookPages[emptyOrderPageIndex].UIComponent.gameObject);
-            Destroy(AutoFlip.instance.ControledBook.bookPages[index].UIComponent.gameObject);
             
+            Debug.Log("Removed page " + AutoFlip.instance.ControledBook.bookPages[index].UIComponent.name);
+            Destroy(AutoFlip.instance.ControledBook.bookPages[index].UIComponent.gameObject);
             AutoFlip.instance.ControledBook.bookPages.RemoveAt(index);
+            
+            if (emptyOrderPageIndex > index)
+                emptyOrderPageIndex--;
+            
+            Debug.Log("Removed page " + AutoFlip.instance.ControledBook.bookPages[emptyOrderPageIndex].UIComponent.name);
+            Destroy(AutoFlip.instance.ControledBook.bookPages[emptyOrderPageIndex].UIComponent.gameObject);
+            AutoFlip.instance.ControledBook.bookPages.RemoveAt(emptyOrderPageIndex);
         }
         AutoFlip.instance.ControledBook.UpdateSprites();
     }
@@ -197,17 +207,17 @@ public class CodexContentManager : Singleton<CodexContentManager>
             if (PinnedRecipe.instance.pinnedRecipe.Name == recipes[recipeIndex].storedPotion.Name)
             {
                 
-                Debug.Log("Selected same recipe, unpinning");
+                //Debug.Log("Selected same recipe, unpinning");
                 PinnedRecipe.instance.UnpinRecipe();
                 return;
             }
             PinnedRecipe.instance.PinRecipe(recipes[recipeIndex].storedPotion,recipes[recipeIndex].potionIngredients);
-            Debug.Log("Pinned recipe: " + recipes[recipeIndex].storedPotion.Name);
+            //Debug.Log("Pinned recipe: " + recipes[recipeIndex].storedPotion.Name);
         }
         else
         {
             PinnedRecipe.instance.UnpinRecipe();
-            Debug.Log("Not in recipe pages");
+            //Debug.Log("Not in recipe pages");
         }
         
     }
