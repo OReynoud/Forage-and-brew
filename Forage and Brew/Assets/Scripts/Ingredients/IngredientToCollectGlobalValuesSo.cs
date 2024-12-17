@@ -4,4 +4,5 @@ using UnityEngine;
 public class IngredientToCollectGlobalValuesSo : ScriptableObject
 {
     [field: SerializeField] [field: Min(0f)] public float CollectRadius { get; private set; } = 2f;
+    [field: SerializeField] [field: Min(0f)] public float AfkTriggerTime { get; private set; } = 5f;
 }
