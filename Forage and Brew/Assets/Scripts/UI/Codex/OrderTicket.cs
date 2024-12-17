@@ -5,30 +5,20 @@ using UnityEngine.UI;
 
 public class OrderTicket : MonoBehaviour
 {
-
     public TextMeshProUGUI clientNameText;
     
     public TextMeshProUGUI descriptionText;
 
-    public List<CodexContentManager.PotionDemand> potionsDemanded = new List<CodexContentManager.PotionDemand>();
+    public List<PotionDemand> potionsDemanded = new();
 
     public Image[] potionImages;
     public TextMeshProUGUI[] potionKeywords;
     public int pageNumber;
     public float moneyReward;
     public int daysLeftToComplete;
-    
 
     
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    
-    public void InitializeOrder(string client,string description, CodexContentManager.PotionDemand[] Potions, float Reward, int TTC, int index)
+    public void InitializeOrder(string client,string description, PotionDemand[] Potions, float Reward, int TTC, int index)
     {
         clientNameText.text = client;
         descriptionText.text = description;
@@ -37,7 +27,6 @@ public class OrderTicket : MonoBehaviour
         potionsDemanded.AddRange(Potions);
         daysLeftToComplete = TTC;
         pageNumber = index;
-        
         
         foreach (var potionImage in potionImages)
         {
@@ -48,6 +37,7 @@ public class OrderTicket : MonoBehaviour
         {
             keyword.transform.parent.gameObject.SetActive(false);
         }
+        
         for (int i = 0; i < potionsDemanded.Count; i++)
         {
             if (potionsDemanded[i].isSpecific)
@@ -61,11 +51,5 @@ public class OrderTicket : MonoBehaviour
                 potionKeywords[i].text = potionsDemanded[i].keywords;
             }
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

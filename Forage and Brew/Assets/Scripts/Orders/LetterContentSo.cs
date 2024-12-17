@@ -2,11 +2,11 @@ using NaughtyAttributes;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "LetterContentSO", menuName = "Scriptable Objects/LetterContentSO")]
-public class LetterContentSO : ScriptableObject
+public class LetterContentSo : ScriptableObject
 {
     [field: SerializeField] public string ClientName { get; private set; }
     [field: SerializeField] [field: ResizableTextArea] public string Description { get; private set; }
-    [field: SerializeField] public CodexContentManager.PotionDemand[] RequestedPotions { get; private set; }
+    [field: SerializeField] public PotionDemand[] RequestedPotions { get; private set; }
     [field: SerializeField] public LetterType LetterType { get; private set; }
     [field: SerializeField] public OrdersQuestLineTags Questline { get; private set; }
     [field: ShowIf("LetterType", LetterType.Orders)] [field: SerializeField] public float MoneyReward { get; private set; }

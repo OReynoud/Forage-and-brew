@@ -23,7 +23,7 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     
     // Letters
     [field: SerializeField] public bool GenerateLetters { get; set; }
-    [field: SerializeField] public List<LetterContentSO> AllLetters { get; set; } = new();
+    [field: SerializeField] public List<LetterContentSo> AllLetters { get; set; } = new();
     public List<Letter> GeneratedLetters { get; set; } = new();
     [field: ShowIf("DebugMode")] [field: SerializeField] [field: ReadOnly] public List<Letter> ActiveLetters { get; set; } = new();
     

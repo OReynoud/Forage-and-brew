@@ -4,36 +4,11 @@ using UnityEngine;
 
 public class CodexContentManager : Singleton<CodexContentManager>
 {
-    [Serializable]
-    public class PotionDemand
-    {
-        public bool isSpecific;
-        public PotionValuesSo potion;
-        public string keywords;
-        public PotionTag validTag;
-        public Sprite relatedIcon;
-        public bool isSubmitted = false;
-
-        public PotionDemand(bool Specific, PotionValuesSo Potion, Sprite Icon)
-        {
-            potion = Potion;
-            isSpecific = Specific;
-            relatedIcon = Icon;
-        }
-        public PotionDemand(bool Specific, PotionTag Tag, Sprite Icon, string Keywords)
-        {
-            validTag = Tag;
-            isSpecific = Specific;
-            keywords = Keywords;
-            relatedIcon = Icon;
-        }
-    }
-
     public RectTransform emptyPage;
     public OrderTicket orderPrefab;
     public Sprite leftEmptyPage;
     public Sprite rightEmptyPage;
-    public List<OrderTicket> tickets = new List<OrderTicket>();
+    public List<OrderTicket> tickets = new();
     private RectTransform emptyOrderPage;
     private int emptyOrderPageIndex;
 
@@ -48,13 +23,12 @@ public class CodexContentManager : Singleton<CodexContentManager>
     public Sprite[] allDifficultySprites;
     public Sprite[] allIngredientTypeSprites;
     public Sprite[] allBrewingActionSprites;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    private List<Sprite> tempIngredientsList = new List<Sprite>();
-    void Start()
+    private List<Sprite> tempIngredientsList = new();
+
+
+    private void Start()
     {
-        
         CharacterInputManager.Instance.OnSelectRecipe.AddListener(SelectCodexPage);
         foreach (var ticket in tickets)
         {
@@ -65,15 +39,13 @@ public class CodexContentManager : Singleton<CodexContentManager>
         {
             Debug.LogError("Number of Recipes does not match number of Potions SO, some recipe pages may be broken");
         }
-
         
         for (int i = 0; i < recipes.Length; i++)
         {
-            foreach (var t in allPotions[i].TemperatureChallengeIngredients)
+            foreach (TemperatureChallengeIngredients t in allPotions[i].TemperatureChallengeIngredients)
             {
-                foreach (var cookedIngredient in t.CookedIngredients)
+                foreach (CookedIngredientForm cookedIngredient in t.CookedIngredients)
                 {
-                    // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
                     if (cookedIngredient.IsAType)
                     {
                         tempIngredientsList.Add(allIngredientTypeSprites[(int)cookedIngredient.IngredientType]);
@@ -85,25 +57,25 @@ public class CodexContentManager : Singleton<CodexContentManager>
                 }
             }
 
-            recipes[i].InitPage(
-                tempIngredientsList.ToArray(),
-                allPotions[i]);
+            recipes[i].InitPage(tempIngredientsList.ToArray(), allPotions[i]);
             tempIngredientsList.Clear();
         }
+        
         DebugTickets();
     }
 
     private void Update()
     {
-
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             TerminateOrder(1);
         }
+        
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             TerminateOrder(2);
         }
+        
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             TerminateOrder(3);
@@ -122,6 +94,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
     //         break;
     //     }
     // }
+    
     public void ReceiveNewOrder(string clientName,string orderDescription, PotionDemand[] potionsRequested, float moneyReward, int timeToComplete)
     {
         if (!emptyOrderPage)
@@ -142,6 +115,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
             emptyOrderPageIndex = AutoFlip.instance.ControledBook.bookMarks[1].index + 1;
             tickets.Add(order);
             order.InitializeOrder(clientName,orderDescription,potionsRequested,moneyReward,timeToComplete,AutoFlip.instance.ControledBook.bookMarks[1].index);
+            
             for (int i = 1; i < AutoFlip.instance.ControledBook.bookMarks.Length; i++)
             {
                 AutoFlip.instance.ControledBook.bookMarks[i].index += 2;
@@ -156,6 +130,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
             //Debug.Log(AutoFlip.instance.ControledBook.bookPages[AutoFlip.instance.ControledBook.bookMarks[1].index - 1].UIComponent);
             
         }
+        
         AutoFlip.instance.ControledBook.UpdateSprites();
     }
 
@@ -227,11 +202,6 @@ public class CodexContentManager : Singleton<CodexContentManager>
         }
         
     }
-    
-    
-    
-    
-    
     
     
     public void DebugTickets()
