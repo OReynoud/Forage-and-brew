@@ -15,13 +15,12 @@ public class LetterContainer : MonoBehaviour
     public TextMeshProUGUI moneyText;
     public TextMeshProUGUI timeText;
 
-    public List<CodexContentManager.PotionDemand> potionsDemanded = new List<CodexContentManager.PotionDemand>();
+    public List<PotionDemand> potionsDemanded = new();
 
     public Image[] potionImages;
     public TextMeshProUGUI[] potionKeywords;
     public float moneyReward;
     public int daysLeftToComplete;
-
 
     public bool isMoved;
     public LetterType letterType;
@@ -29,7 +28,8 @@ public class LetterContainer : MonoBehaviour
 
     public AnimationClip animClip;
 
-    public void InitLetter(string clientName, string letterDescription, CodexContentManager.PotionDemand[] Potions, float money, int daysToComplete, LetterType typeOfLetter)
+    
+    public void InitLetter(string clientName, string letterDescription, PotionDemand[] Potions, float money, int daysToComplete, LetterType typeOfLetter)
     {
         clientNameText.text = clientName;
         descriptionText.text = letterDescription;
@@ -73,6 +73,7 @@ public class LetterContainer : MonoBehaviour
         animIndex = 0;
 
     }
+    
     public void Update()
     {
         if (isMoved)

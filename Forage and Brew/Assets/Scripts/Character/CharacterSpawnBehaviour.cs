@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class CharacterSpawnBehaviour : MonoBehaviour
@@ -9,11 +7,6 @@ public class CharacterSpawnBehaviour : MonoBehaviour
     [SerializeField] private Transform characterTransform;
     [SerializeField] private Scene sourceScene;
     [SerializeField] private CameraPreset camSettings;
-
-    private void Awake()
-    {
-
-    }
 
     private void Start()
     {
@@ -28,9 +21,11 @@ public class CharacterSpawnBehaviour : MonoBehaviour
                 {
                     GameDontDestroyOnLoadManager.Instance.PreviousScene = sceneName.Scene;
                     CharacterVfxManager.Instance.CheckForRainVfx(sceneName.Scene);
+                    WeatherLightingManager.Instance?.SetRightLighting(sceneName.Scene);
                     break;
                 }
             }
+            
             if (camSettings != null)
             {
                 CameraController.instance.scriptableCamSettings = camSettings;

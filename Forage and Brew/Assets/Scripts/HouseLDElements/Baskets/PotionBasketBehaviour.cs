@@ -13,7 +13,15 @@ public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
     {
         interactInputCanvasGameObject.SetActive(false);
     }
-    
+
+    private void OnDisable()
+    {
+        if (CharacterInteractController.Instance.CurrentNearPotionBaskets.Contains(this))
+        {
+            CharacterInteractController.Instance.CurrentNearPotionBaskets.Remove(this);
+        }
+    }
+
 
     public void SetBasketContent(int orderIndex)
     {

@@ -80,7 +80,7 @@ public class AutoFlip : Singleton<AutoFlip>
     }
 	public void StartFlipping()
     {
-        StartCoroutine(FlipToEnd(PageFlipTime));
+        FlipToEnd(PageFlipTime);
     }
     public void FlipRightPage(float flipTime)
     {
@@ -107,9 +107,8 @@ public class AutoFlip : Singleton<AutoFlip>
         float dx = (xl) * 2 / AnimationFramesCount;
         StartCoroutine(FlipLTR(xc, xl, h, frameTime, dx));
     }
-    IEnumerator FlipToEnd(float flipTime)
+    void FlipToEnd(float flipTime)
     {
-        yield return new WaitForSeconds(DelayBeforeStarting);
         float frameTime = flipTime / AnimationFramesCount;
         float xc = (ControledBook.EndBottomRight.x + ControledBook.EndBottomLeft.x) / 2;
         float xl = ((ControledBook.EndBottomRight.x - ControledBook.EndBottomLeft.x) / 2)*0.9f;
@@ -136,14 +135,12 @@ public class AutoFlip : Singleton<AutoFlip>
                 while (ControledBook.currentPage < ControledBook.TotalPageCount)
                 {
                     StartCoroutine(FlipRTL(xc, xl, h, frameTime, dx));
-                    yield return new WaitForSeconds(TimeBetweenPages);
                 }
                 break;
             case FlipMode.LeftToRight:
                 while (ControledBook.currentPage > 0)
                 {
                     StartCoroutine(FlipLTR(xc, xl, h, frameTime, dx));
-                    yield return new WaitForSeconds(TimeBetweenPages);
                 }
                 break;
         }

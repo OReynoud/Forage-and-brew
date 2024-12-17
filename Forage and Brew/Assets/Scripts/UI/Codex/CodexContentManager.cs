@@ -4,31 +4,13 @@ using UnityEngine;
 
 public class CodexContentManager : Singleton<CodexContentManager>
 {
-    [Serializable]
-    public class PotionDemand
-    {
-        public bool isSpecific;
-        public PotionValuesSo potion;
-        public string keywords;
-        public PotionTag validTag;
-        public Sprite relatedIcon;
-        public bool isSubmitted = false;
-
-        public PotionDemand(bool Specific, PotionValuesSo Potion, Sprite Icon)
-        {
-            potion = Potion;
-            isSpecific = Specific;
-            relatedIcon = Icon;
-        }
-        public PotionDemand(bool Specific, PotionTag Tag, Sprite Icon, string Keywords)
-        {
-            validTag = Tag;
-            isSpecific = Specific;
-            keywords = Keywords;
-            relatedIcon = Icon;
-        }
-    }
-    public List<OrderTicket> tickets = new List<OrderTicket>();
+    public RectTransform emptyPage;
+    public OrderTicket orderPrefab;
+    public Sprite leftEmptyPage;
+    public Sprite rightEmptyPage;
+    public List<OrderTicket> tickets = new();
+    private RectTransform emptyOrderPage;
+    private int emptyOrderPageIndex;
 
     public Sprite potionIcon;
     public PotionTag testTag;
@@ -41,13 +23,13 @@ public class CodexContentManager : Singleton<CodexContentManager>
     public Sprite[] allDifficultySprites;
     public Sprite[] allIngredientTypeSprites;
     public Sprite[] allBrewingActionSprites;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    private List<Sprite> tempIngredientsList = new List<Sprite>();
-    void Start()
+    private List<Sprite> tempIngredientsList = new();
+
+
+    private void Start()
     {
-        
-        CharacterInputManager.Instance.OnSelectRecipe.AddListener(SelectRecipe);
+        CharacterInputManager.Instance.OnSelectRecipe.AddListener(SelectCodexPage);
         foreach (var ticket in tickets)
         {
             ticket.gameObject.SetActive(false);
@@ -57,15 +39,13 @@ public class CodexContentManager : Singleton<CodexContentManager>
         {
             Debug.LogError("Number of Recipes does not match number of Potions SO, some recipe pages may be broken");
         }
-
         
         for (int i = 0; i < recipes.Length; i++)
         {
-            foreach (var t in allPotions[i].TemperatureChallengeIngredients)
+            foreach (TemperatureChallengeIngredients t in allPotions[i].TemperatureChallengeIngredients)
             {
-                foreach (var cookedIngredient in t.CookedIngredients)
+                foreach (CookedIngredientForm cookedIngredient in t.CookedIngredients)
                 {
-                    // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
                     if (cookedIngredient.IsAType)
                     {
                         tempIngredientsList.Add(allIngredientTypeSprites[(int)cookedIngredient.IngredientType]);
@@ -77,27 +57,107 @@ public class CodexContentManager : Singleton<CodexContentManager>
                 }
             }
 
-            recipes[i].InitPage(
-                tempIngredientsList.ToArray(),
-                allPotions[i]);
+            recipes[i].InitPage(tempIngredientsList.ToArray(), allPotions[i]);
             tempIngredientsList.Clear();
         }
-        //DebugTickets();
+        
+        DebugTickets();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            TerminateOrder(1);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            TerminateOrder(2);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            TerminateOrder(3);
+        }
     }
 
 
-
-
+    // public void ReceiveNewOrder(string clientName,string orderDescription, PotionDemand[] potionsRequested, float moneyReward, int timeToComplete)
+    // {
+    //     for (int i = 0; i < tickets.Count; i++)
+    //     {
+    //         if (tickets[i].hasAnOrder)
+    //             continue;
+    //         tickets[i].gameObject.SetActive(true);
+    //         tickets[i].InitializeOrder(clientName, orderDescription, potionsRequested, moneyReward, timeToComplete);
+    //         break;
+    //     }
+    // }
+    
     public void ReceiveNewOrder(string clientName,string orderDescription, PotionDemand[] potionsRequested, float moneyReward, int timeToComplete)
     {
-        for (int i = 0; i < tickets.Count; i++)
+        if (!emptyOrderPage)
         {
-            if (tickets[i].hasAnOrder)
-                continue;
-            tickets[i].gameObject.SetActive(true);
-            tickets[i].InitializeOrder(clientName, orderDescription, potionsRequested, moneyReward, timeToComplete);
-            break;
+            var pageContainer= Instantiate(emptyPage,transform);
+            
+            emptyOrderPage = Instantiate(emptyPage,transform);
+            var order = Instantiate(orderPrefab,pageContainer);
+            pageContainer.anchoredPosition = new Vector2(1500,0);
+            emptyOrderPage.anchoredPosition = new Vector2(1500,0);
+            
+            AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[1].index,new Book.BookPage(rightEmptyPage,emptyOrderPage));
+            emptyOrderPage.name = "Page " + (AutoFlip.instance.ControledBook.bookMarks[1].index + 1);
+            
+            AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[1].index,new Book.BookPage(leftEmptyPage,pageContainer));
+            pageContainer.name = "Page " + AutoFlip.instance.ControledBook.bookMarks[1].index;
+
+            emptyOrderPageIndex = AutoFlip.instance.ControledBook.bookMarks[1].index + 1;
+            tickets.Add(order);
+            order.InitializeOrder(clientName,orderDescription,potionsRequested,moneyReward,timeToComplete,AutoFlip.instance.ControledBook.bookMarks[1].index);
+            
+            for (int i = 1; i < AutoFlip.instance.ControledBook.bookMarks.Length; i++)
+            {
+                AutoFlip.instance.ControledBook.bookMarks[i].index += 2;
+            }
         }
+        else
+        {
+            var order = Instantiate(orderPrefab,emptyOrderPage);
+            tickets.Add(order);
+            order.InitializeOrder(clientName,orderDescription,potionsRequested,moneyReward,timeToComplete,AutoFlip.instance.ControledBook.bookMarks[1].index - 1);
+            emptyOrderPage = null;
+            //Debug.Log(AutoFlip.instance.ControledBook.bookPages[AutoFlip.instance.ControledBook.bookMarks[1].index - 1].UIComponent);
+            
+        }
+        
+        AutoFlip.instance.ControledBook.UpdateSprites();
+    }
+
+    public void TerminateOrder(int index)
+    {
+        if (!emptyOrderPage)
+        {
+            emptyOrderPage = AutoFlip.instance.ControledBook.bookPages[index].UIComponent;
+            emptyOrderPageIndex = index;
+            Destroy(emptyOrderPage.GetChild(0).gameObject);
+        }
+        else
+        {
+            emptyOrderPage = null;
+            
+            Debug.Log("Removed page " + AutoFlip.instance.ControledBook.bookPages[index].UIComponent.name);
+            Destroy(AutoFlip.instance.ControledBook.bookPages[index].UIComponent.gameObject);
+            AutoFlip.instance.ControledBook.bookPages.RemoveAt(index);
+            
+            if (emptyOrderPageIndex > index)
+                emptyOrderPageIndex--;
+            
+            Debug.Log("Removed page " + AutoFlip.instance.ControledBook.bookPages[emptyOrderPageIndex].UIComponent.name);
+            Destroy(AutoFlip.instance.ControledBook.bookPages[emptyOrderPageIndex].UIComponent.gameObject);
+            AutoFlip.instance.ControledBook.bookPages.RemoveAt(emptyOrderPageIndex);
+        }
+        AutoFlip.instance.ControledBook.UpdateSprites();
     }
 
 
@@ -105,9 +165,20 @@ public class CodexContentManager : Singleton<CodexContentManager>
     /// 
     /// </summary>
     /// <param name="side"> true = right, false = left</param>
-    public void SelectRecipe(bool side)
+    public void SelectCodexPage(bool side)
     {
-        if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[1].index &&
+        if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[0].index &&
+            AutoFlip.instance.ControledBook.currentPage < AutoFlip.instance.ControledBook.bookMarks[1].index )
+        {
+            //Select Order
+            var orderIndex = AutoFlip.instance.ControledBook.currentPage -
+                              AutoFlip.instance.ControledBook.bookMarks[0].index;
+            orderIndex = side ? orderIndex + 1 : orderIndex;
+            
+            
+            TerminateOrder(orderIndex); // Remove order from book
+        }
+        else if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[1].index &&
             AutoFlip.instance.ControledBook.currentPage < AutoFlip.instance.ControledBook.bookMarks[2].index )
         {
             var recipeIndex = AutoFlip.instance.ControledBook.currentPage -
@@ -117,41 +188,36 @@ public class CodexContentManager : Singleton<CodexContentManager>
             if (PinnedRecipe.instance.pinnedRecipe.Name == recipes[recipeIndex].storedPotion.Name)
             {
                 
-                Debug.Log("Selected same recipe, unpinning");
+                //Debug.Log("Selected same recipe, unpinning");
                 PinnedRecipe.instance.UnpinRecipe();
                 return;
             }
             PinnedRecipe.instance.PinRecipe(recipes[recipeIndex].storedPotion,recipes[recipeIndex].potionIngredients);
-            Debug.Log("Pinned recipe: " + recipes[recipeIndex].storedPotion.Name);
+            //Debug.Log("Pinned recipe: " + recipes[recipeIndex].storedPotion.Name);
         }
         else
         {
             PinnedRecipe.instance.UnpinRecipe();
-            Debug.Log("Not in recipe pages");
+            //Debug.Log("Not in recipe pages");
         }
         
     }
-    
-    
-    
-    
-    
     
     
     public void DebugTickets()
     {
         var temp = new List<PotionDemand>();
         temp.Add(new PotionDemand(true,testPotion,potionIcon));
-        tickets[0].gameObject.SetActive(true);
-        tickets[0].InitializeOrder("Jean-Eude","Je me suis coupé le doigt, tu peux me passer de la pommade s'il te plait?",temp.ToArray(), 10, 3);
+        
+        ReceiveNewOrder("Jean-Eude","Je me suis coupé le doigt, tu peux me passer de la pommade s'il te plait?",temp.ToArray(), 10, 3);
         temp.Clear();
+        
         temp.Add(new PotionDemand(false,testTag,potionIcon,"Something against a fever"));
-        tickets[1].gameObject.SetActive(true);
-        tickets[1].InitializeOrder("Paul","J'ai de la fièvre, t'as quelque chose pour m'aider?",temp.ToArray(), 15, 3);
+        ReceiveNewOrder("Paul","J'ai de la fièvre, t'as quelque chose pour m'aider?",temp.ToArray(), 15, 3);
         temp.Clear();
+        
         temp.Add(new PotionDemand(true,testPotion,potionIcon));
         temp.Add(new PotionDemand(true,testPotion,potionIcon));
-        tickets[2].gameObject.SetActive(true);
-        tickets[2].InitializeOrder("Marie","J'ai besoin de comparer la saveur de ces deux jus, peux-tu me les préparer?",temp.ToArray(),25, 3);
+        ReceiveNewOrder("Marie","J'ai besoin de comparer la saveur de ces deux jus, peux-tu me les préparer?",temp.ToArray(),25, 3);
     }
 }

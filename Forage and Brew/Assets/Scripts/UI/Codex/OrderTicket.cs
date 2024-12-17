@@ -5,50 +5,20 @@ using UnityEngine.UI;
 
 public class OrderTicket : MonoBehaviour
 {
-
     public TextMeshProUGUI clientNameText;
-
-    public Image clientPortraitImage;
     
     public TextMeshProUGUI descriptionText;
 
-    public List<CodexContentManager.PotionDemand> potionsDemanded = new List<CodexContentManager.PotionDemand>();
+    public List<PotionDemand> potionsDemanded = new();
 
     public Image[] potionImages;
     public TextMeshProUGUI[] potionKeywords;
+    public int pageNumber;
     public float moneyReward;
     public int daysLeftToComplete;
-    public bool hasAnOrder;
-    
 
     
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    public void InitializeOrder(string client,string description, Sprite clientPortrait, CodexContentManager.PotionDemand[] Potions)
-    {
-        clientNameText.text = client;
-        descriptionText.text = description;
-        clientPortraitImage.sprite = clientPortrait;
-        potionsDemanded.Clear();
-        potionsDemanded.AddRange(Potions);
-
-        foreach (var potionImage in potionImages)
-        {
-            potionImage.enabled = false;
-        }
-        for (int i = 0; i < potionsDemanded.Count; i++)
-        {
-            potionImages[i].enabled = true;
-            potionImages[i].sprite = potionsDemanded[i].relatedIcon;
-        }
-    }
-    
-    public void InitializeOrder(string client,string description, CodexContentManager.PotionDemand[] Potions, float Reward, int TTC)
+    public void InitializeOrder(string client,string description, PotionDemand[] Potions, float Reward, int TTC, int index)
     {
         clientNameText.text = client;
         descriptionText.text = description;
@@ -56,6 +26,7 @@ public class OrderTicket : MonoBehaviour
         potionsDemanded.Clear();
         potionsDemanded.AddRange(Potions);
         daysLeftToComplete = TTC;
+        pageNumber = index;
         
         foreach (var potionImage in potionImages)
         {
@@ -66,6 +37,7 @@ public class OrderTicket : MonoBehaviour
         {
             keyword.transform.parent.gameObject.SetActive(false);
         }
+        
         for (int i = 0; i < potionsDemanded.Count; i++)
         {
             if (potionsDemanded[i].isSpecific)
@@ -79,13 +51,5 @@ public class OrderTicket : MonoBehaviour
                 potionKeywords[i].text = potionsDemanded[i].keywords;
             }
         }
-        //Debug.Log("Oui");
-        hasAnOrder = true;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

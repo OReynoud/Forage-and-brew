@@ -10,7 +10,7 @@ public class CharacterInputManager : MonoBehaviour
 
     private InputSystem_Actions _inputs;
 
-    private CharacterMovementController movementController;
+    public CharacterMovementController movementController { get; set; }
     private CharacterInteractController characterInteractController;
     private AutoFlip codexController;
 
@@ -27,11 +27,11 @@ public class CharacterInputManager : MonoBehaviour
     {
         Instance = this;
         _inputs = new InputSystem_Actions();
+        movementController = GetComponent<CharacterMovementController>();
     }
     
     private void Start()
     {
-        movementController = GetComponent<CharacterMovementController>();
         characterInteractController = GetComponent<CharacterInteractController>();
         codexController = AutoFlip.instance;
         
@@ -70,8 +70,14 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.PreviousBasketSet.performed += PreviousBasketSetOnPerformed;
         _inputs.Player.NextBasketSet.performed += NextBasketSetOnPerformed;
         _inputs.Player.HapticChallenge.performed += HapticChallengeOnPerformed;
-        _inputs.Player.HapticChallenge.canceled += HapticChallengeOnCanceled;
         _inputs.Player.HapticChallengeSecond.performed += HapticChallengeSecondOnPerformed;
+        _inputs.Player.Scythe.performed += ScytheOnPerformed;
+        _inputs.Player.Unearth1.performed += Unearth1OnPerformed;
+        _inputs.Player.Unearth2.performed += Unearth2OnPerformed;
+        _inputs.Player.Unearth1.canceled += Unearth1OnCanceled;
+        _inputs.Player.Unearth2.canceled += Unearth2OnCanceled;
+        _inputs.Player.Harvest.performed += HarvestOnPerformed;
+        _inputs.Player.Harvest.canceled += HarvestOnCanceled;
         _inputs.Player.ChoppingHapticChallenge1.performed += ChoppingHapticChallenge1OnPerformed;
         _inputs.Player.ChoppingHapticChallenge2.performed += ChoppingHapticChallenge2OnPerformed;
         _inputs.Player.ChoppingHapticChallenge3.performed += ChoppingHapticChallenge3OnPerformed;
@@ -89,10 +95,7 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.PinLeft.performed += PinLeftOnPerformed;
         _inputs.Player.PinRight.performed += PinRightOnPerformed;
         _inputs.Player.PassLetters.performed += PassLettersOnPerformed;
-    }
-
-    public void DestroyInputs()
-    {
+        _inputs.Player.ToggleRun.performed += ToggleRunOnPerformed;
     }
 
     #endregion
@@ -112,6 +115,7 @@ public class CharacterInputManager : MonoBehaviour
     public void EnableMoveInputs()
     {
         _inputs.Player.Move.Enable();
+        _inputs.Player.ToggleRun.Enable();
     }
     
     public void EnableInteractInputs()
@@ -126,6 +130,10 @@ public class CharacterInputManager : MonoBehaviour
     {
         _inputs.Player.HapticChallenge.Enable();
         _inputs.Player.HapticChallengeSecond.Enable();
+        _inputs.Player.Scythe.Enable();
+        _inputs.Player.Unearth1.Enable();
+        _inputs.Player.Unearth2.Enable();
+        _inputs.Player.Harvest.Enable();
         EnableChoppingHapticChallengeInputs();
         EnableHapticChallengeJoystickInputs();
     }
@@ -178,6 +186,7 @@ public class CharacterInputManager : MonoBehaviour
     public void DisableMoveInputs()
     {
         _inputs.Player.Move.Disable();
+        _inputs.Player.ToggleRun.Disable();
     }
     
     public void DisableInteractInputs()
@@ -192,6 +201,10 @@ public class CharacterInputManager : MonoBehaviour
     {
         _inputs.Player.HapticChallenge.Disable();
         _inputs.Player.HapticChallengeSecond.Disable();
+        _inputs.Player.Scythe.Disable();
+        _inputs.Player.Unearth1.Disable();
+        _inputs.Player.Unearth2.Disable();
+        _inputs.Player.Harvest.Disable();
         DisableChoppingHapticChallengeInputs();
         DisableHapticChallengeJoystickInputs();
     }
@@ -235,6 +248,10 @@ public class CharacterInputManager : MonoBehaviour
     {
         // Debug.Log(obj.ReadValue<Vector2>());
     }
+    private void ToggleRunOnPerformed(InputAction.CallbackContext obj)
+    {
+        movementController.isRunning = true;
+    }
 
     private void InteractOnPerformed(InputAction.CallbackContext obj)
     {
@@ -267,18 +284,47 @@ public class CharacterInputManager : MonoBehaviour
     private void HapticChallengeOnPerformed(InputAction.CallbackContext obj)
     {
         TemperatureHapticChallengeManager.Instance.StartTemperatureChallenge();
-        CollectHapticChallengeManager.Instance.ActivateHarvestHapticChallenge();
         characterInteractController.DropIngredientsInChoppingCountertop();
-    }
-    
-    private void HapticChallengeOnCanceled(InputAction.CallbackContext obj)
-    {
-        CollectHapticChallengeManager.Instance.StopTurnHarvestChallenge();
     }
 
     private void HapticChallengeSecondOnPerformed(InputAction.CallbackContext obj)
     {
         StirHapticChallengeManager.Instance.StartStirChallenge();
+    }
+    
+    private void ScytheOnPerformed(InputAction.CallbackContext obj)
+    {
+        CollectHapticChallengeManager.Instance.CheckScythingInput();
+    }
+    
+    private void Unearth1OnPerformed(InputAction.CallbackContext obj)
+    {
+        CollectHapticChallengeManager.Instance.CheckUnearthingInputPressed(1);
+    }
+    
+    private void Unearth2OnPerformed(InputAction.CallbackContext obj)
+    {
+        CollectHapticChallengeManager.Instance.CheckUnearthingInputPressed(2);
+    }
+    
+    private void Unearth1OnCanceled(InputAction.CallbackContext obj)
+    {
+        CollectHapticChallengeManager.Instance.CheckUnearthingInputReleased(1);
+    }
+    
+    private void Unearth2OnCanceled(InputAction.CallbackContext obj)
+    {
+        CollectHapticChallengeManager.Instance.CheckUnearthingInputReleased(2);
+    }
+    
+    private void HarvestOnPerformed(InputAction.CallbackContext obj)
+    {
+        CollectHapticChallengeManager.Instance.CheckHarvestInputPressed();
+    }
+    
+    private void HarvestOnCanceled(InputAction.CallbackContext obj)
+    {
+        CollectHapticChallengeManager.Instance.CheckHarvestInputReleased();
     }
     
     private void ChoppingHapticChallenge1OnPerformed(InputAction.CallbackContext obj)

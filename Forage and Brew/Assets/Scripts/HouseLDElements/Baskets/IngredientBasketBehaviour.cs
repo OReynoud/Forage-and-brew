@@ -15,6 +15,14 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
         SetBasketContent(ingredient);
     }
     
+    private void OnDisable()
+    {
+        if (CharacterInteractController.Instance.CurrentNearIngredientBaskets.Contains(this))
+        {
+            CharacterInteractController.Instance.CurrentNearIngredientBaskets.Remove(this);
+        }
+    }
+    
 
     public void SetBasketContent(IngredientValuesSo newIngredient)
     {

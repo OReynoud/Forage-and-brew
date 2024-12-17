@@ -7,7 +7,8 @@ public class CharacterMovementController : MonoBehaviour
     [SerializeField] private Animator animator;
     
     [Header("Movement Settings")]
-    [SerializeField] private float speed;
+    [SerializeField] private float walkSpeed = 5;
+    [SerializeField] private float runSpeed = 12;
     [SerializeField] [Range(0,1)] private float rotationSpeed = 0.1f;
     [SerializeField] private float maxAngle;
     [SerializeField] private AnimationCurve accelerationCurve;
@@ -16,6 +17,7 @@ public class CharacterMovementController : MonoBehaviour
     [Foldout("Debug")] [SerializeField] [ReadOnly] private float accelerationCurveIndex;
     [Foldout("Debug")] [SerializeField] [ReadOnly] private bool isGrounded;
     [Foldout("Debug")] [SerializeField] [ReadOnly] private bool isMoving;
+    [Foldout("Debug")] public bool isRunning;
     
     private Rigidbody rb;
     private LayerMask groundMask;
@@ -25,6 +27,7 @@ public class CharacterMovementController : MonoBehaviour
     
     // Animator Hashes
     private static readonly int IsWalking = Animator.StringToHash("isWalking");
+    private static readonly int WalkSpeed = Animator.StringToHash("WalkSpeedFactor");
 
 
     #region Unity Callbacks
@@ -78,12 +81,12 @@ public class CharacterMovementController : MonoBehaviour
             if (Mathf.Abs(angle) < maxAngle)
             {
                 angledVelocity = Quaternion.AngleAxis(-angle,transform.right) * angledVelocity;
-                angledVelocity *= speed * accelerationCurve.Evaluate(accelerationCurveIndex) * playerDir.magnitude;
+                angledVelocity *= (isRunning ? runSpeed : walkSpeed) * accelerationCurve.Evaluate(accelerationCurveIndex) * playerDir.magnitude;
                 rb.linearVelocity = angledVelocity + Vector3.down * (9.81f * Time.deltaTime);
             }
             else
             {
-                angledVelocity = playerDir * (speed * accelerationCurve.Evaluate(accelerationCurveIndex) * playerDir.magnitude);
+                angledVelocity = playerDir * ((isRunning ? runSpeed : walkSpeed) * accelerationCurve.Evaluate(accelerationCurveIndex) * playerDir.magnitude);
 
                 rb.linearVelocity = new Vector3(angledVelocity.x, rb.linearVelocity.y, angledVelocity.z);
             }
@@ -92,7 +95,7 @@ public class CharacterMovementController : MonoBehaviour
         }
         else
         {
-            angledVelocity = playerDir * (speed * accelerationCurve.Evaluate(accelerationCurveIndex) * playerDir.magnitude);
+            angledVelocity = playerDir * ((isRunning ? runSpeed : walkSpeed) * accelerationCurve.Evaluate(accelerationCurveIndex) * playerDir.magnitude);
 
             rb.linearVelocity = new Vector3(angledVelocity.x, rb.linearVelocity.y - 9.81f * Time.deltaTime, angledVelocity.z);
         }
@@ -101,12 +104,14 @@ public class CharacterMovementController : MonoBehaviour
         {
             accelerationCurveIndex += Time.deltaTime;
             isMoving = true;
+            animator.SetFloat(WalkSpeed,isRunning? runSpeed / walkSpeed : 1);
             animator.SetBool(IsWalking, true);
         }
         else 
         {
             accelerationCurveIndex = 0;
             isMoving = false;
+            isRunning = false;
             animator.SetBool(IsWalking, false);
         }
     }

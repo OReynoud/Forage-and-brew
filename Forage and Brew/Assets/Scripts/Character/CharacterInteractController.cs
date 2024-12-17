@@ -22,8 +22,6 @@ public class CharacterInteractController : MonoBehaviour
         }
     }
     
-    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public IngredientToCollectBehaviour CurrentIngredientToCollectBehaviour { get; private set; }
-
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<IStackable> CurrentStackableBehaviours { get; private set; } = new();
 
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public BedBehaviour CurrentNearBed { get; set; }
@@ -68,16 +66,6 @@ public class CharacterInteractController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    public void SetNewIngredientToCollect(IngredientToCollectBehaviour newIngredientToCollectBehaviour)
-    {
-        if (CurrentIngredientToCollectBehaviour)
-        {
-            CurrentIngredientToCollectBehaviour.DisableCollect();
-        }
-
-        CurrentIngredientToCollectBehaviour = newIngredientToCollectBehaviour;
-    }
-
     public void AddNewCollectedStackable(IStackable newStackable)
     {
         if (CurrentStackableBehaviours.Count > 0)
@@ -118,13 +106,6 @@ public class CharacterInteractController : MonoBehaviour
                     ((CollectedIngredientBehaviour)collectedStack[i].stackable).IngredientValuesSo);
             }
             ShoveStackInTarget(CurrentNearCauldron.transform, CurrentNearCauldron);
-        }
-        else if (CurrentIngredientToCollectBehaviour)
-        {
-            CharacterInputManager.Instance.DisableMoveInputs();
-            CurrentIngredientToCollectBehaviour.DisableCollect();
-            CollectHapticChallengeManager.Instance.StartCollectHapticChallenge(CurrentIngredientToCollectBehaviour);
-            CurrentIngredientToCollectBehaviour = null;
         }
         else if (CurrentStackableBehaviours.Count > 0)
         {

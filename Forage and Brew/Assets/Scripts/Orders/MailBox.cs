@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
@@ -11,7 +11,7 @@ public class MailBox : Singleton<MailBox>
     public WeatherStateSo[] allPossibleWeatherStates; // 0 = Cloudy, 1 = Rainy, 2 = Sunny
 
 
-    public List<LetterContentSO> PossibleLettersPool;
+    public List<LetterContentSo> PossibleLettersPool;
     
     [SerializeField] private GameObject interactInputCanvasGameObject;
 
@@ -22,10 +22,10 @@ public class MailBox : Singleton<MailBox>
     public float letterPileLerp;
 
     public Vector2 targetPos;
+    public Collider letterTrigger;
 
 
     [BoxGroup("LetterAnimation")] public AnimationCurve animCurve;
-    [BoxGroup("LetterAnimation")] public Vector2 aimedPos;
     [BoxGroup("LetterAnimation")] public float animSpeed;
 
 
@@ -33,6 +33,12 @@ public class MailBox : Singleton<MailBox>
     {
         interactInputCanvasGameObject.SetActive(false);
         CharacterInputManager.Instance.DisableMailInputs();
+        
+        if (GameDontDestroyOnLoadManager.Instance.GenerateLetters)
+        {
+            GenerateLetters();
+            GameDontDestroyOnLoadManager.Instance.GenerateLetters = false;
+        }
     }
 
     private void Update()
@@ -69,18 +75,19 @@ public class MailBox : Singleton<MailBox>
     }
     public void GenerateLetters()
     {
-        switch (GameDontDestroyOnLoadManager.Instance.dayPassed)
+        switch (GameDontDestroyOnLoadManager.Instance.DayPassed)
         {
             case 0:
-                GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new GameDontDestroyOnLoadManager.Letter(PossibleLettersPool[0],PossibleLettersPool[0].TimeToFulfill));
+                GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new Letter(PossibleLettersPool[0],PossibleLettersPool[0].TimeToFulfill));
+                GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new Letter(PossibleLettersPool[1],PossibleLettersPool[1].TimeToFulfill));
                 break;            
             case 1:
-                GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new GameDontDestroyOnLoadManager.Letter(PossibleLettersPool[1],PossibleLettersPool[1].TimeToFulfill));
-                GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new GameDontDestroyOnLoadManager.Letter(PossibleLettersPool[2],PossibleLettersPool[2].TimeToFulfill));
+                GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new Letter(PossibleLettersPool[1],PossibleLettersPool[1].TimeToFulfill));
+                GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new Letter(PossibleLettersPool[2],PossibleLettersPool[2].TimeToFulfill));
                 break;
             case 2:
-                GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new GameDontDestroyOnLoadManager.Letter(PossibleLettersPool[3],PossibleLettersPool[3].TimeToFulfill));
-                GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new GameDontDestroyOnLoadManager.Letter(PossibleLettersPool[4],PossibleLettersPool[4].TimeToFulfill));
+                GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new Letter(PossibleLettersPool[3],PossibleLettersPool[3].TimeToFulfill));
+                GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Add(new Letter(PossibleLettersPool[4],PossibleLettersPool[4].TimeToFulfill));
                 break;
         }
 
@@ -104,7 +111,7 @@ public class MailBox : Singleton<MailBox>
     {
         if (GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Count == 0)
             return;
-        
+        StartCoroutine(HandleMultipleExecutions());
         CharacterInputManager.Instance.DisableMoveInputs();
         CharacterInputManager.Instance.DisableInteractInputs();
         CharacterInputManager.Instance.EnableMailInputs();
@@ -113,6 +120,8 @@ public class MailBox : Singleton<MailBox>
 
     public void PassToNextLetter()
     {
+        if (openedMailOnFrame)return;
+        
         for (int i = 0; i < GameDontDestroyOnLoadManager.Instance.GeneratedLetters.Count; i++)
         {
             if (GameDontDestroyOnLoadManager.Instance.GeneratedLetters[i].associatedLetter.isMoved)
@@ -125,6 +134,7 @@ public class MailBox : Singleton<MailBox>
         CharacterInputManager.Instance.EnableMoveInputs();
         CharacterInputManager.Instance.EnableInteractInputs();
         CharacterInputManager.Instance.DisableMailInputs();
+        letterTrigger.enabled = false;
         targetPos = new Vector2(0,-1500);
 
 
@@ -147,5 +157,14 @@ public class MailBox : Singleton<MailBox>
             }
         }
         
+    }
+
+    private bool openedMailOnFrame;
+    
+    IEnumerator HandleMultipleExecutions()
+    {
+        openedMailOnFrame = true;
+        yield return new WaitForEndOfFrame();
+        openedMailOnFrame = false;
     }
 }

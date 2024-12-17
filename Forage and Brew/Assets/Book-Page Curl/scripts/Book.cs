@@ -25,6 +25,12 @@ public class Book : MonoBehaviour {
     {
         public Sprite pageSprite;
         public RectTransform UIComponent;
+
+        public BookPage(Sprite PageSprite, RectTransform uiComponent)
+        {
+            pageSprite = PageSprite;
+            UIComponent = uiComponent;
+        }
     }
     public List<BookPage> bookPages = new List<BookPage>();
     
@@ -480,7 +486,7 @@ public class Book : MonoBehaviour {
         }
     }
     Coroutine currentCoroutine;
-    void UpdateSprites()
+    public void UpdateSprites()
     {
         if (currentPage > 0 && currentPage <= bookPages.Count)
         {
@@ -512,8 +518,9 @@ public class Book : MonoBehaviour {
 
         if (currentPage + 2 < bookPages.Count)
         {
-            bookPages[currentPage + 2].UIComponent.gameObject.SetActive(false);
             
+            bookPages[currentPage + 1].UIComponent.gameObject.SetActive(false);   
+            bookPages[currentPage + 2].UIComponent.gameObject.SetActive(false);
         }
     }
     public void TweenForward()
