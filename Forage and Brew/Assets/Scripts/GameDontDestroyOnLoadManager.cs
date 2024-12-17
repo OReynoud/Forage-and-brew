@@ -8,7 +8,7 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     public static GameDontDestroyOnLoadManager Instance { get; private set; }
     
     // Debug
-    public bool DebugMode { get; set; }
+    [SerializeField] private bool debugMode;
     
     // Scene
     [field: SerializeField] public Scene PreviousScene { get; set; }
