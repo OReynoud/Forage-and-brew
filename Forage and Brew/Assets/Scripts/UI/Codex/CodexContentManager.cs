@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -128,7 +127,6 @@ public class CodexContentManager : Singleton<CodexContentManager>
             order.InitializeOrder(clientName,orderDescription,potionsRequested,moneyReward,timeToComplete,AutoFlip.instance.ControledBook.bookMarks[1].index - 1);
             emptyOrderPage = null;
             //Debug.Log(AutoFlip.instance.ControledBook.bookPages[AutoFlip.instance.ControledBook.bookMarks[1].index - 1].UIComponent);
-            
         }
         
         AutoFlip.instance.ControledBook.UpdateSprites();
@@ -170,13 +168,12 @@ public class CodexContentManager : Singleton<CodexContentManager>
         if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[0].index &&
             AutoFlip.instance.ControledBook.currentPage < AutoFlip.instance.ControledBook.bookMarks[1].index )
         {
-            //Select Order
-            var orderIndex = AutoFlip.instance.ControledBook.currentPage -
-                              AutoFlip.instance.ControledBook.bookMarks[0].index;
+            // Select Order
+            int orderIndex = AutoFlip.instance.ControledBook.currentPage -
+                             AutoFlip.instance.ControledBook.bookMarks[0].index;
             orderIndex = side ? orderIndex + 1 : orderIndex;
             
-            
-            TerminateOrder(orderIndex); // Remove order from book
+            GameDontDestroyOnLoadManager.Instance.OrderToValidateIndices.Add(tickets[orderIndex].pageNumber);
         }
         else if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[1].index &&
             AutoFlip.instance.ControledBook.currentPage < AutoFlip.instance.ControledBook.bookMarks[2].index )

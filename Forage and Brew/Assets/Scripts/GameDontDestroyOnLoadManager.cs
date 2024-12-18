@@ -17,9 +17,10 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     public TimeOfDay CurrentTimeOfDay { get; set; } = TimeOfDay.Daytime;
     public int DayPassed { get; set; }
     
-    // Ingredients and Potions
+    // Ingredients, Potions and Orders
     public List<IngredientValuesSo> CollectedIngredients { get; private set; } = new();
     public List<List<PotionValuesSo>> OrderPotions { get; private set; } = new();
+    public List<int> OrderToValidateIndices { get; private set; } = new();
     
     // Letters
     [field: SerializeField] public bool GenerateLetters { get; set; }
