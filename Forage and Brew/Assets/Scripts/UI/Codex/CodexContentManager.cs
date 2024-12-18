@@ -1,18 +1,16 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CodexContentManager : Singleton<CodexContentManager>
 {
     public RectTransform emptyPage;
-    public OrderTicket orderPrefab;
+    public OrderCodexDisplayBehaviour orderPrefab;
     public Sprite leftEmptyPage;
     public Sprite rightEmptyPage;
-    public List<OrderTicket> tickets = new();
+    private readonly List<OrderCodexDisplayBehaviour> _orderCodexDisplayBehaviours = new();
     private RectTransform emptyOrderPage;
     private int emptyOrderPageIndex;
 
-    public Sprite potionIcon;
     public PotionTag testTag;
 
     public PotionValuesSo testPotion;
@@ -30,7 +28,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
     private void Start()
     {
         CharacterInputManager.Instance.OnSelectRecipe.AddListener(SelectCodexPage);
-        foreach (var ticket in tickets)
+        foreach (var ticket in _orderCodexDisplayBehaviours)
         {
             ticket.gameObject.SetActive(false);
         }
@@ -61,7 +59,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
             tempIngredientsList.Clear();
         }
         
-        DebugTickets();
+        // DebugTickets();
     }
 
     private void Update()
@@ -95,7 +93,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
     //     }
     // }
     
-    public void ReceiveNewOrder(string clientName,string orderDescription, PotionDemand[] potionsRequested, float moneyReward, int timeToComplete)
+    public void ReceiveNewOrder(string clientName,string orderDescription, PotionDemand[] potionsRequested, int moneyReward, int timeToComplete)
     {
         if (!emptyOrderPage)
         {
@@ -113,7 +111,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
             pageContainer.name = "Page " + AutoFlip.instance.ControledBook.bookMarks[1].index;
 
             emptyOrderPageIndex = AutoFlip.instance.ControledBook.bookMarks[1].index + 1;
-            tickets.Add(order);
+            _orderCodexDisplayBehaviours.Add(order);
             order.InitializeOrder(clientName,orderDescription,potionsRequested,moneyReward,timeToComplete,AutoFlip.instance.ControledBook.bookMarks[1].index);
             
             for (int i = 1; i < AutoFlip.instance.ControledBook.bookMarks.Length; i++)
@@ -124,11 +122,10 @@ public class CodexContentManager : Singleton<CodexContentManager>
         else
         {
             var order = Instantiate(orderPrefab,emptyOrderPage);
-            tickets.Add(order);
+            _orderCodexDisplayBehaviours.Add(order);
             order.InitializeOrder(clientName,orderDescription,potionsRequested,moneyReward,timeToComplete,AutoFlip.instance.ControledBook.bookMarks[1].index - 1);
             emptyOrderPage = null;
             //Debug.Log(AutoFlip.instance.ControledBook.bookPages[AutoFlip.instance.ControledBook.bookMarks[1].index - 1].UIComponent);
-            
         }
         
         AutoFlip.instance.ControledBook.UpdateSprites();
@@ -170,13 +167,12 @@ public class CodexContentManager : Singleton<CodexContentManager>
         if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[0].index &&
             AutoFlip.instance.ControledBook.currentPage < AutoFlip.instance.ControledBook.bookMarks[1].index )
         {
-            //Select Order
-            var orderIndex = AutoFlip.instance.ControledBook.currentPage -
-                              AutoFlip.instance.ControledBook.bookMarks[0].index;
+            // Select Order
+            int orderIndex = AutoFlip.instance.ControledBook.currentPage -
+                             AutoFlip.instance.ControledBook.bookMarks[0].index;
             orderIndex = side ? orderIndex + 1 : orderIndex;
             
-            
-            TerminateOrder(orderIndex); // Remove order from book
+            OrderManager.Instance.OrderToValidateIndices.Add(orderIndex);
         }
         else if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[1].index &&
             AutoFlip.instance.ControledBook.currentPage < AutoFlip.instance.ControledBook.bookMarks[2].index )
@@ -207,17 +203,17 @@ public class CodexContentManager : Singleton<CodexContentManager>
     public void DebugTickets()
     {
         var temp = new List<PotionDemand>();
-        temp.Add(new PotionDemand(true,testPotion,potionIcon));
+        temp.Add(new PotionDemand(true,testPotion));
         
         ReceiveNewOrder("Jean-Eude","Je me suis coupé le doigt, tu peux me passer de la pommade s'il te plait?",temp.ToArray(), 10, 3);
         temp.Clear();
         
-        temp.Add(new PotionDemand(false,testTag,potionIcon,"Something against a fever"));
+        temp.Add(new PotionDemand(false,testTag,"Something against a fever"));
         ReceiveNewOrder("Paul","J'ai de la fièvre, t'as quelque chose pour m'aider?",temp.ToArray(), 15, 3);
         temp.Clear();
         
-        temp.Add(new PotionDemand(true,testPotion,potionIcon));
-        temp.Add(new PotionDemand(true,testPotion,potionIcon));
+        temp.Add(new PotionDemand(true,testPotion));
+        temp.Add(new PotionDemand(true,testPotion));
         ReceiveNewOrder("Marie","J'ai besoin de comparer la saveur de ces deux jus, peux-tu me les préparer?",temp.ToArray(),25, 3);
     }
 }

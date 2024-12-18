@@ -32,7 +32,6 @@ public class CharacterSpawnBehaviour : MonoBehaviour
                 CameraController.instance.ApplyScriptableCamSettings();
                 CameraController.instance.ApplyScriptableCamSettings(camSettings, 0);
                 CameraController.instance.InstantCamUpdate();
-                CameraController.instance.InstantCamUpdate();
             }
         }
     }

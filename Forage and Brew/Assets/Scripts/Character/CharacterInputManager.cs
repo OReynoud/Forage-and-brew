@@ -423,9 +423,9 @@ public class CharacterInputManager : MonoBehaviour
     
     private void PassLettersOnPerformed(InputAction.CallbackContext obj)
     {
-        if (!MailBox.instance) 
+        if (!MailBoxBehaviour.instance) 
             return;
-        MailBox.instance.PassToNextLetter();
+        MailBoxBehaviour.instance.PassToNextLetter();
     }
 
     #endregion

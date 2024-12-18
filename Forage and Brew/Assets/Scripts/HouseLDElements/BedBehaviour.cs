@@ -8,7 +8,6 @@ public class BedBehaviour : MonoBehaviour
     private void Start()
     {
         interactInputCanvasGameObject.SetActive(false);
-        GameDontDestroyOnLoadManager.Instance.GenerateLetters = true;
     }
 
 
@@ -26,7 +25,7 @@ public class BedBehaviour : MonoBehaviour
     public void Sleep()
     {
         GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay = TimeOfDay.Daytime;
-        GameDontDestroyOnLoadManager.Instance.GenerateLetters = true;
+        GameDontDestroyOnLoadManager.Instance.HasChosenLettersToday = false;
         GameDontDestroyOnLoadManager.Instance.DayPassed++;
         WeatherManager.Instance.PassToNextWeatherState();
         LunarCycleManager.Instance.PassToNextLunarCycleState();
