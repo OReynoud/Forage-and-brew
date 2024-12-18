@@ -11,7 +11,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     [SerializeField] private List<LetterContentSo> day3Letters;
     private readonly List<LetterContentSo> _chosenLetters = new();
     public List<LetterMailBoxDisplayBehaviour> GeneratedLetters { get; set; } = new();
-    
+
     [SerializeField] private GameObject interactInputCanvasGameObject;
 
     public LetterMailBoxDisplayBehaviour letterPrefab;
@@ -33,12 +33,13 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     {
         interactInputCanvasGameObject.SetActive(false);
         CharacterInputManager.Instance.DisableMailInputs();
-        
-        if (GameDontDestroyOnLoadManager.Instance.GenerateLetters)
+
+        if (!GameDontDestroyOnLoadManager.Instance.HasChosenLettersToday)
         {
             ChooseLetters();
-            GameDontDestroyOnLoadManager.Instance.GenerateLetters = false;
         }
+        GenerateLetters();
+        
     }
 
     private void Update()
@@ -50,12 +51,12 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     {
         interactInputCanvasGameObject.SetActive(true);
     }
-    
+
     private void DisableInteract()
     {
         interactInputCanvasGameObject.SetActive(false);
     }
-    
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
@@ -64,7 +65,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
             EnableInteract();
         }
     }
-    
+
     private void OnTriggerExit(Collider other)
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
@@ -73,16 +74,16 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
             DisableInteract();
         }
     }
-    
+
     public void ChooseLetters()
     {
         _chosenLetters.Clear();
-        
+
         switch (GameDontDestroyOnLoadManager.Instance.DayPassed)
         {
             case 0:
                 _chosenLetters.AddRange(day1Letters);
-                break;            
+                break;
             case 1:
                 _chosenLetters.AddRange(day2Letters);
                 break;
@@ -91,47 +92,50 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                 break;
         }
 
-        GenerateLetters();
+        GameDontDestroyOnLoadManager.Instance.MailBoxLetters.AddRange(_chosenLetters);
+        GameDontDestroyOnLoadManager.Instance.AllLetters.AddRange(_chosenLetters);
+        GameDontDestroyOnLoadManager.Instance.HasChosenLettersToday = true;
+
     }
-    
+
     public void GenerateLetters()
     {
         GeneratedLetters.Clear();
-        
-        for (int i = _chosenLetters.Count - 1; i >= 0; i--)
+
+        for (int i = GameDontDestroyOnLoadManager.Instance.MailBoxLetters.Count - 1; i >= 0; i--)
         {
             var current = Instantiate(letterPrefab, letterPile);
             GeneratedLetters.Insert(0, current);
-            current.InitLetter(_chosenLetters[i]);
+            current.InitLetter(GameDontDestroyOnLoadManager.Instance.MailBoxLetters[i]);
         }
     }
 
     public void ShowLetters()
     {
         if (GeneratedLetters.Count == 0) return;
-        
+
         StartCoroutine(HandleMultipleExecutions()); // Wait to be able to pass to next letter
         CharacterInputManager.Instance.DisableMoveInputs();
         CharacterInputManager.Instance.DisableInteractInputs();
         CharacterInputManager.Instance.EnableMailInputs();
         targetPos = Vector2.zero;
     }
-
+    
     public void PassToNextLetter()
     {
         if (_openedMailOnFrame) return;
-        
+
         for (int i = 0; i < GeneratedLetters.Count; i++)
         {
             if (GeneratedLetters[i].IsMoving) return;
-            
+
             if (GeneratedLetters[i].IsPassed) continue;
-            
+
             GeneratedLetters[i].AnimateLetter(true);
-            
+
             if (i != GeneratedLetters.Count - 1) return;
         }
-        
+
         Debug.Log("Finished Reading all letters");
         CharacterInputManager.Instance.EnableMoveInputs();
         CharacterInputManager.Instance.EnableInteractInputs();
@@ -139,13 +143,13 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         letterTrigger.enabled = false;
         targetPos = new Vector2(0f, -1500f);
 
-        foreach (LetterContentSo letter in _chosenLetters)
+        foreach (LetterContentSo letter in GameDontDestroyOnLoadManager.Instance.MailBoxLetters)
         {
             if (letter.LetterType != LetterType.Orders) continue;
-            
+
             OrderManager.Instance.CreateNewOrder(letter);
         }
-        
+        GameDontDestroyOnLoadManager.Instance.MailBoxLetters.Clear();
     }
 
     private IEnumerator HandleMultipleExecutions()
