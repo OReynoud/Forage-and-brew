@@ -43,6 +43,5 @@ public enum LetterType
 {
     Orders,
     Thanks,
-    ShippingError,
-    Narrative
+    ShippingError
 }
