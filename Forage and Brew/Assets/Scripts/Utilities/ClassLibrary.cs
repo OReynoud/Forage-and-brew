@@ -1,41 +1,38 @@
 using System;
+using NaughtyAttributes;
 using UnityEngine;
 
 [Serializable]
-public class Letter
+public class Order
 {
-    public LetterContainer associatedLetter;
-    public LetterContentSo LetterContent;
-    public int days;
+    [field: SerializeField] public OrderContentSo OrderContent { get; set; }
+    [field: SerializeField] public int Days { get; set; }
 
-    public Letter(LetterContentSo letter, int delay )
+    public Order(OrderContentSo newOrder)
     {
-        LetterContent = letter;
-        days = delay;
+        OrderContent = newOrder;
+        Days = OrderContent.TimeToFulfill;
     }
 }
 
 [Serializable]
 public class PotionDemand
 {
-    public bool isSpecific;
-    public PotionValuesSo potion;
-    public string keywords;
-    public PotionTag validTag;
-    public Sprite relatedIcon;
-    public bool isSubmitted = false;
+    [field: SerializeField] public bool IsSpecific { get; private set; }
+    [field: AllowNesting] [field: ShowIf("IsSpecific")] [field: SerializeField] public PotionValuesSo Potion { get; private set; }
+    [field: AllowNesting] [field: HideIf("IsSpecific")] [field: SerializeField] public string Keywords { get; private set; }
+    [field: AllowNesting] [field: HideIf("IsSpecific")] [field: SerializeField] public PotionTag ValidTag { get; private set; }
 
-    public PotionDemand(bool newIsSpecific, PotionValuesSo newPotion, Sprite newIcon)
+    public PotionDemand(bool newIsSpecific, PotionValuesSo newPotion)
     {
-        potion = newPotion;
-        isSpecific = newIsSpecific;
-        relatedIcon = newIcon;
+        Potion = newPotion;
+        IsSpecific = newIsSpecific;
     }
-    public PotionDemand(bool newIsSpecific, PotionTag newTag, Sprite newIcon, string newKeywords)
+    
+    public PotionDemand(bool newIsSpecific, PotionTag newTag, string newKeywords)
     {
-        validTag = newTag;
-        isSpecific = newIsSpecific;
-        keywords = newKeywords;
-        relatedIcon = newIcon;
+        ValidTag = newTag;
+        IsSpecific = newIsSpecific;
+        Keywords = newKeywords;
     }
 }

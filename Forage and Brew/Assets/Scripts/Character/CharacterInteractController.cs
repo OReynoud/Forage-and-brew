@@ -26,7 +26,7 @@ public class CharacterInteractController : MonoBehaviour
 
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public BedBehaviour CurrentNearBed { get; set; }
     
-    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public MailBox CurrentNearMailBox { get; set; }
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public MailBoxBehaviour CurrentNearMailBoxBehaviour { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public CauldronBehaviour CurrentNearCauldron { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public ChoppingCountertopBehaviour CurrentNearChoppingCountertop { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<IngredientBasketBehaviour> CurrentNearIngredientBaskets { get; set; } = new();
@@ -115,9 +115,9 @@ public class CharacterInteractController : MonoBehaviour
         {
             CurrentNearBed.Sleep();
         }
-        else if (CurrentNearMailBox)
+        else if (CurrentNearMailBoxBehaviour)
         {
-            CurrentNearMailBox.ShowLetters();
+            CurrentNearMailBoxBehaviour.ShowLetters();
             Debug.Log("Check letters");
         }
     }
