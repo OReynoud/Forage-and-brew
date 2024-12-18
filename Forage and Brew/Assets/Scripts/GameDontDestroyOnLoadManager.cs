@@ -21,8 +21,10 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     public List<List<PotionValuesSo>> OrderPotions { get; private set; } = new();
     
     // Letters
-    [field: SerializeField] public bool GenerateLetters { get; set; }
-    [field: SerializeField] public List<LetterContentSo> AllLetters { get; set; } = new();
+    public bool HasChosenLettersToday { get; set; }
+    public List<LetterContentSo> AllLetters { get; set; } = new();
+    public List<LetterContentSo> MailBoxLetters { get; set; } = new();
+    
     
     
     private void Awake()
