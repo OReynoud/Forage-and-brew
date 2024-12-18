@@ -42,6 +42,39 @@ public class OrderManager : MonoBehaviour
     
     public void CheckOrdersToValidate()
     {
+        OrderToValidateIndices.Sort((a, b) => b.CompareTo(a));
         
+        foreach (int orderToValidateIndex in OrderToValidateIndices)
+        {
+            bool isOrderCorrect = true;
+            
+            for (int i = 0; i < CurrentOrders[orderToValidateIndex].OrderContent.RequestedPotions.Length; i++)
+            {
+                if (CurrentOrders[orderToValidateIndex].OrderContent.RequestedPotions[i].IsSpecific)
+                {
+                    if (GameDontDestroyOnLoadManager.Instance.OrderPotions[orderToValidateIndex][i] != CurrentOrders[orderToValidateIndex].OrderContent.RequestedPotions[i].Potion)
+                    {
+                        isOrderCorrect = false;
+                        break;
+                    }
+                }
+                else
+                {
+                    if ((GameDontDestroyOnLoadManager.Instance.OrderPotions[orderToValidateIndex][i].tags &
+                         CurrentOrders[orderToValidateIndex].OrderContent.RequestedPotions[i].ValidTag) != 0)
+                    {
+                        isOrderCorrect = false;
+                        break;
+                    }
+                }
+            }
+            
+            if (isOrderCorrect)
+            {
+                GameDontDestroyOnLoadManager.Instance.MoneyAmount += CurrentOrders[orderToValidateIndex].OrderContent.MoneyReward;
+                CurrentOrders.RemoveAt(orderToValidateIndex);
+                OrderToValidateIndices.Remove(orderToValidateIndex);
+            }
+        }
     }
 }

@@ -25,6 +25,8 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     public List<LetterContentSo> AllLetters { get; set; } = new();
     public List<LetterContentSo> MailBoxLetters { get; set; } = new();
     
+    // Money
+    public int MoneyAmount { get; set; }
     
     
     private void Awake()
