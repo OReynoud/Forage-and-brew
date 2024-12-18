@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using NaughtyAttributes;
 using UnityEngine;
 
 public class GameDontDestroyOnLoadManager : MonoBehaviour
@@ -17,16 +16,13 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     public TimeOfDay CurrentTimeOfDay { get; set; } = TimeOfDay.Daytime;
     public int DayPassed { get; set; }
     
-    // Ingredients, Potions and Orders
+    // Ingredients and Potions
     public List<IngredientValuesSo> CollectedIngredients { get; private set; } = new();
     public List<List<PotionValuesSo>> OrderPotions { get; private set; } = new();
-    public List<int> OrderToValidateIndices { get; private set; } = new();
     
     // Letters
     [field: SerializeField] public bool GenerateLetters { get; set; }
     [field: SerializeField] public List<LetterContentSo> AllLetters { get; set; } = new();
-    public List<Letter> GeneratedLetters { get; set; } = new();
-    [field: ShowIf("DebugMode")] [field: SerializeField] [field: ReadOnly] public List<Letter> ActiveLetters { get; set; } = new();
     
     
     private void Awake()

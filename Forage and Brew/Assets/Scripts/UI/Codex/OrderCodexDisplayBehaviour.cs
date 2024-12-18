@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OrderTicket : MonoBehaviour
+public class OrderCodexDisplayBehaviour : MonoBehaviour
 {
     public TextMeshProUGUI clientNameText;
     
@@ -14,11 +14,11 @@ public class OrderTicket : MonoBehaviour
     public Image[] potionImages;
     public TextMeshProUGUI[] potionKeywords;
     public int pageNumber;
-    public float moneyReward;
+    public int moneyReward;
     public int daysLeftToComplete;
 
     
-    public void InitializeOrder(string client,string description, PotionDemand[] Potions, float Reward, int TTC, int index)
+    public void InitializeOrder(string client,string description, PotionDemand[] Potions, int Reward, int TTC, int index)
     {
         clientNameText.text = client;
         descriptionText.text = description;
@@ -40,15 +40,15 @@ public class OrderTicket : MonoBehaviour
         
         for (int i = 0; i < potionsDemanded.Count; i++)
         {
-            if (potionsDemanded[i].isSpecific)
+            if (potionsDemanded[i].IsSpecific)
             {
                 potionImages[i].gameObject.SetActive(true);
-                potionImages[i].sprite = potionsDemanded[i].relatedIcon;
+                potionImages[i].sprite = potionsDemanded[i].Potion.icon;
             }
             else
             {
                 potionKeywords[i].transform.parent.gameObject.SetActive(true);
-                potionKeywords[i].text = potionsDemanded[i].keywords;
+                potionKeywords[i].text = potionsDemanded[i].Keywords;
             }
         }
     }
