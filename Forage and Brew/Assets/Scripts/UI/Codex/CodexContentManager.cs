@@ -174,7 +174,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
                              AutoFlip.instance.ControledBook.bookMarks[0].index;
             orderIndex = side ? orderIndex + 1 : orderIndex;
             
-            OrderManager.Instance.OrderToValidateIndices.Add(orderIndex);
+            OrderManager.Instance.TryAddOrderToValidate(orderIndex);
         }
         else if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[1].index &&
             AutoFlip.instance.ControledBook.currentPage < AutoFlip.instance.ControledBook.bookMarks[2].index )
