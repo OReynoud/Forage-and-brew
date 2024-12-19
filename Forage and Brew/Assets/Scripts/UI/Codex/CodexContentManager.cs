@@ -16,7 +16,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
     public PotionValuesSo testPotion;
 
     public PotionValuesSo[] allPotions;
-    public RecipeContainer[] recipes;
+    public RecipeCodexDisplay[] recipes;
 
     public Sprite[] allDifficultySprites;
     public Sprite[] allIngredientTypeSprites;
