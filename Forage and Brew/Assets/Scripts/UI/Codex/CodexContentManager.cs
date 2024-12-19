@@ -1,10 +1,12 @@
+
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CodexContentManager : Singleton<CodexContentManager>
 {
     public RectTransform emptyPage;
-    public OrderCodexDisplayBehaviour orderPrefab;
+    public OrderCodexDisplayBehaviour[] orderPrefabs;
     public Sprite leftEmptyPage;
     public Sprite rightEmptyPage;
     private readonly List<OrderCodexDisplayBehaviour> _orderCodexDisplayBehaviours = new();
@@ -100,7 +102,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
             var pageContainer= Instantiate(emptyPage,transform);
             
             emptyOrderPage = Instantiate(emptyPage,transform);
-            var order = Instantiate(orderPrefab,pageContainer);
+            var order = Instantiate(orderPrefabs[Random.Range(0,orderPrefabs.Length)],pageContainer);
             pageContainer.anchoredPosition = new Vector2(1500,0);
             emptyOrderPage.anchoredPosition = new Vector2(1500,0);
             
@@ -121,7 +123,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
         }
         else
         {
-            var order = Instantiate(orderPrefab,emptyOrderPage);
+            var order = Instantiate(orderPrefabs[Random.Range(0,orderPrefabs.Length)],emptyOrderPage);
             _orderCodexDisplayBehaviours.Add(order);
             order.InitializeOrder(clientName,orderDescription,potionsRequested,moneyReward,timeToComplete,AutoFlip.instance.ControledBook.bookMarks[1].index - 1);
             emptyOrderPage = null;
