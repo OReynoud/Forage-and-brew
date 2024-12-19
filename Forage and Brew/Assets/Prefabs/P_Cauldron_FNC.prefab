@@ -397,6 +397,7 @@ GameObject:
   - component: {fileID: 7489184877373171329}
   - component: {fileID: 2573857516092474358}
   - component: {fileID: 6832303663102354930}
+  - component: {fileID: 537163932442638971}
   m_Layer: 0
   m_Name: P_Cauldron_FNC
   m_TagString: Untagged
@@ -480,6 +481,21 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1.5
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &537163932442638971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8359391253887370408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66d16ed06c40a8542b5ca51ccbc15b44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flameVfx: {fileID: 4215525884255282431}
+  flameVfxRenderer: {fileID: 5388879010433501816}
+  lowHeatFlameColor: {r: 10.432951, g: 0.8739645, b: 0, a: 1}
 --- !u!1001 &4868907593331511701
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -556,5 +572,15 @@ PrefabInstance:
 --- !u!4 &1106913993183546184 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5534178204050741981, guid: 8ca4afb483b4a1f40901c019069596b5, type: 3}
+  m_PrefabInstance: {fileID: 4868907593331511701}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &4215525884255282431 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8723854954184979818, guid: 8ca4afb483b4a1f40901c019069596b5, type: 3}
+  m_PrefabInstance: {fileID: 4868907593331511701}
+  m_PrefabAsset: {fileID: 0}
+--- !u!199 &5388879010433501816 stripped
+ParticleSystemRenderer:
+  m_CorrespondingSourceObject: {fileID: 673553402726751213, guid: 8ca4afb483b4a1f40901c019069596b5, type: 3}
   m_PrefabInstance: {fileID: 4868907593331511701}
   m_PrefabAsset: {fileID: 0}

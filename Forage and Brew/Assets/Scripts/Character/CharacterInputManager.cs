@@ -81,6 +81,7 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.ChoppingHapticChallenge1.performed += ChoppingHapticChallenge1OnPerformed;
         _inputs.Player.ChoppingHapticChallenge2.performed += ChoppingHapticChallenge2OnPerformed;
         _inputs.Player.ChoppingHapticChallenge3.performed += ChoppingHapticChallenge3OnPerformed;
+        _inputs.Player.PushBellows.performed += PushBellowsOnPerformed;
         _inputs.Player.HapticChallengeJoystick.performed += HapticChallengeJoystickOnPerformed;
         _inputs.Player.HapticChallengeJoystick.canceled += HapticChallengeJoystickOnPerformed;
         _inputs.Player.HapticChallengeJoystickHorizontalAxis.performed += HapticChallengeJoystickHorizontalAxisOnPerformed;
@@ -135,6 +136,7 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.Unearth2.Enable();
         _inputs.Player.Harvest.Enable();
         EnableChoppingHapticChallengeInputs();
+        EnableTemperatureHapticChallengeInputs();
         EnableHapticChallengeJoystickInputs();
     }
     
@@ -143,6 +145,11 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.ChoppingHapticChallenge1.Enable();
         _inputs.Player.ChoppingHapticChallenge2.Enable();
         _inputs.Player.ChoppingHapticChallenge3.Enable();
+    }
+    
+    public void EnableTemperatureHapticChallengeInputs()
+    {
+        _inputs.Player.PushBellows.Enable();
     }
     
     public void EnableHapticChallengeJoystickInputs()
@@ -206,6 +213,7 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.Unearth2.Disable();
         _inputs.Player.Harvest.Disable();
         DisableChoppingHapticChallengeInputs();
+        DisableTemperatureHapticChallengeInputs();
         DisableHapticChallengeJoystickInputs();
     }
     
@@ -214,6 +222,11 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.ChoppingHapticChallenge1.Disable();
         _inputs.Player.ChoppingHapticChallenge2.Disable();
         _inputs.Player.ChoppingHapticChallenge3.Disable();
+    }
+    
+    public void DisableTemperatureHapticChallengeInputs()
+    {
+        _inputs.Player.PushBellows.Disable();
     }
     
     public void DisableHapticChallengeJoystickInputs()
@@ -342,24 +355,26 @@ public class CharacterInputManager : MonoBehaviour
         ChoppingHapticChallengeManager.Instance.NextChoppingTurn(3);
     }
     
+    private void PushBellowsOnPerformed(InputAction.CallbackContext obj)
+    {
+        TemperatureHapticChallengeManager.Instance.IncreaseTemperature();
+    }
+    
     private void HapticChallengeJoystickOnPerformed(InputAction.CallbackContext obj)
     {
         StirHapticChallengeManager.Instance.JoystickInputValue = obj.ReadValue<Vector2>();
-        TemperatureHapticChallengeManager.Instance.JoystickInputValue = obj.ReadValue<Vector2>();
         CollectHapticChallengeManager.Instance.JoystickInputValue = obj.ReadValue<Vector2>();
     }
     
     private void HapticChallengeJoystickHorizontalAxisOnPerformed(InputAction.CallbackContext obj)
     {
         StirHapticChallengeManager.Instance.JoystickInputValue = new Vector2(obj.ReadValue<float>(), StirHapticChallengeManager.Instance.JoystickInputValue.y);
-        TemperatureHapticChallengeManager.Instance.JoystickInputValue = new Vector2(obj.ReadValue<float>(), TemperatureHapticChallengeManager.Instance.JoystickInputValue.y);
         CollectHapticChallengeManager.Instance.JoystickInputValue = new Vector2(obj.ReadValue<float>(), CollectHapticChallengeManager.Instance.JoystickInputValue.y);
     }
     
     private void HapticChallengeJoystickVerticalAxisOnPerformed(InputAction.CallbackContext obj)
     {
         StirHapticChallengeManager.Instance.JoystickInputValue = new Vector2(StirHapticChallengeManager.Instance.JoystickInputValue.x, obj.ReadValue<float>());
-        TemperatureHapticChallengeManager.Instance.JoystickInputValue = new Vector2(TemperatureHapticChallengeManager.Instance.JoystickInputValue.x, obj.ReadValue<float>());
         CollectHapticChallengeManager.Instance.JoystickInputValue = new Vector2(CollectHapticChallengeManager.Instance.JoystickInputValue.x, obj.ReadValue<float>());
     }
 
