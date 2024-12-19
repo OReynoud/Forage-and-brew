@@ -12,49 +12,41 @@ public class RecipeCodexDisplay : MonoBehaviour
     [BoxGroup("Potion Description")] public TextMeshProUGUI potionName;
     [BoxGroup("Potion Description")] public TextMeshProUGUI potionFlavorText;
     [BoxGroup("Potion Description")] public TextMeshProUGUI potionPrice;
-    [BoxGroup("Potion Description")] public Image potionDifficulty;
+    [BoxGroup("Potion Description")] public GameObject[] potionDifficulty;
     [BoxGroup("Potion Description")] public Image potionIcon;
-    [BoxGroup("Potion Description")] public Image[] potionIngredientsImage;
+    
+    
+    //Ingredients List
+    [BoxGroup("Potion Description")] public Image[] potionIngredientImage;
+    [BoxGroup("Potion Description")] public TextMeshProUGUI[] potionIngredientNumber;
     
     //BrewingSteps
     private int writingIndex;
     [BoxGroup("Brewing Steps")] public TextMeshProUGUI[] stepText;
     [BoxGroup("Brewing Steps")] public Image[] ingredientStepImage;
     [BoxGroup("Brewing Steps")] public Image[] mainActionImage;
-    [BoxGroup("Brewing Steps")] public Image[] secondaryActionImage;
-    [BoxGroup("Brewing Steps")] public Image[] mainArrow;
-    [BoxGroup("Brewing Steps")] public Image[] secondaryArrow;
+    [BoxGroup("Brewing Steps")] public Image[] singleActionImage;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        for (int i = 0; i < mainActionImage.Length; i++)
+        for (int i = 0; i < potionIngredientImage.Length; i++)
         {
-            stepText[i].text = " ";
-            ingredientStepImage[i].sprite = null;
-            mainActionImage[i].sprite = null;
-            secondaryActionImage[i].sprite = null;
-            
-            
-            
-            stepText[i].enabled = false;
-            ingredientStepImage[i].enabled = false;
-            mainActionImage[i].enabled = false;
-            secondaryActionImage[i].enabled = false;
-            
-            mainArrow[i].enabled = false;
-            secondaryArrow[i].enabled = false;
+            potionIngredientImage[i].transform.parent.gameObject.SetActive(false);
+        }
+        for (int i = 0; i < stepText.Length; i++)
+        {
+            stepText[i].transform.parent.gameObject.SetActive(false);
+        }
+
+        foreach (var VARIABLE in potionDifficulty)
+        {
+            VARIABLE.SetActive(false);
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private string writingText;
-    public Sprite[] potionIngredients;
+    public Sprite[] potionIngredients { get; set; }
 
     public void InitPage(Sprite[] PotionIngredients, PotionValuesSo PotionSteps)
     {
@@ -62,24 +54,26 @@ public class RecipeCodexDisplay : MonoBehaviour
         potionName.text = PotionSteps.Name;
         potionFlavorText.text = PotionSteps.Description;
         potionPrice.text = PotionSteps.SalePrice.ToString(CultureInfo.InvariantCulture);
-        potionDifficulty.sprite = CodexContentManager.instance.allDifficultySprites[PotionSteps.Difficulty - 1];
+        for (int i = 0; i < PotionSteps.Difficulty; i++)
+        {
+            potionDifficulty[i].SetActive(true);
+        }
         potionIcon.sprite = PotionSteps.icon;
         potionIngredients = PotionIngredients;
-        
-        foreach (var ingredient in potionIngredientsImage)
-        {
-            ingredient.transform.parent.gameObject.SetActive(false);
-        }
 
-        for (int i = 0; i < PotionIngredients.Length; i++)
+        for (int i = 0; i < potionIngredients.Length; i++)
         {
-            potionIngredientsImage[i].transform.parent.gameObject.SetActive(true);
-            potionIngredientsImage[i].sprite = PotionIngredients[i];
-        }
+            potionIngredientImage[i].transform.parent.gameObject.SetActive(true);
+            potionIngredientImage[i].sprite = potionIngredients[i];
 
-        foreach (var t in stepText)
-        {
-            t.transform.parent.gameObject.SetActive(false);
+            if (i + 1 < potionIngredients.Length)
+            {
+                int numberOfIngredients = CheckForSameElementsSprite(i, 0);
+
+                potionIngredientNumber[i].text = (1 + numberOfIngredients).ToString();
+
+                i += numberOfIngredients;
+            }
         }
         
         foreach (var t in PotionSteps.TemperatureChallengeIngredients)
@@ -96,7 +90,6 @@ public class RecipeCodexDisplay : MonoBehaviour
 
 
                 ingredientStepImage[writingIndex].enabled = true;
-                mainArrow[writingIndex].enabled = true;
 
                 switch (cookedIngredient.CookedForm)
                 {
@@ -116,25 +109,17 @@ public class RecipeCodexDisplay : MonoBehaviour
 
                         mainActionImage[writingIndex].enabled = true;
                         mainActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[1];
-
-                        secondaryArrow[writingIndex].enabled = true;
-
-                        secondaryActionImage[writingIndex].enabled = true;
-                        secondaryActionImage[writingIndex].sprite =
-                            CodexContentManager.instance.allBrewingActionSprites[^1];
-
                         break;
                 }
 
 
                 i += numberOfIngredients;
                 writingIndex++;
-                //writingIndex += numberOfIngredients;
             }
 
             stepText[writingIndex].transform.parent.gameObject.SetActive(true);
 
-            ingredientStepImage[writingIndex].enabled = true;
+            singleActionImage[writingIndex].enabled = true;
 
 
             switch (t.Temperature)
@@ -142,16 +127,13 @@ public class RecipeCodexDisplay : MonoBehaviour
                 case Temperature.None:
                     break;
                 case Temperature.LowHeat:
-                    ingredientStepImage[writingIndex].sprite = null;
-                    ingredientStepImage[writingIndex].color = Color.cyan;
+                    singleActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[3];
                     break;
                 case Temperature.MediumHeat:
-                    ingredientStepImage[writingIndex].sprite = null;
-                    ingredientStepImage[writingIndex].color = Color.yellow;
+                    singleActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[4];
                     break;
                 case Temperature.HighHeat:
-                    ingredientStepImage[writingIndex].sprite = null;
-                    ingredientStepImage[writingIndex].color = Color.red;
+                    singleActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[5];
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -161,8 +143,8 @@ public class RecipeCodexDisplay : MonoBehaviour
         }
         stepText[writingIndex].transform.parent.gameObject.SetActive(true);
 
-        ingredientStepImage[writingIndex].enabled = true;
-        ingredientStepImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[0];
+        singleActionImage[writingIndex].enabled = true;
+        singleActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[0];
     }
 
     private void HandleWritingIngredientType(CookedIngredientForm cookedIngredient)
@@ -177,6 +159,20 @@ public class RecipeCodexDisplay : MonoBehaviour
         {
             ingredientStepImage[writingIndex].sprite = cookedIngredient.Ingredient.icon;
         }
+    }
+    int CheckForSameElementsSprite(int index, int similes)
+    {
+        if (index + similes + 1 >= potionIngredients.Length)
+            return similes;
+
+
+        if (potionIngredients[index] !=
+            potionIngredients[index + similes + 1])
+            return similes;
+
+        //Debug.Log("Similar element detected");
+        similes++;
+        return CheckForSameElementsSprite(index, similes);
     }
 
     int CheckForSameElementsIngredientSo(int index, int similes, List<CookedIngredientForm> list)
