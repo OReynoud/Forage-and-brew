@@ -13,9 +13,13 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
     [Header("UI")]
     [SerializeField] private GameObject temperatureChallengeGameObject;
     [SerializeField] private RectTransform gaugeRectTransform;
-    [SerializeField] private RectTransform lowHeatGaugeRectTransform;
-    [SerializeField] private RectTransform mediumHeatGaugeRectTransform;
-    [SerializeField] private RectTransform highHeatGaugeRectTransform;
+    [SerializeField] private RectTransform minLowHeatCutLineRectTransform;
+    [SerializeField] private RectTransform cutLineBetweenLowAndMediumHeatRectTransform;
+    [SerializeField] private RectTransform cutLineBetweenMediumAndHighHeatRectTransform;
+    [SerializeField] private RectTransform maxHighHeatCutLineRectTransform;
+    [SerializeField] private RectTransform lowHeatFlameRectTransform;
+    [SerializeField] private RectTransform mediumHeatFlameRectTransform;
+    [SerializeField] private RectTransform highHeatFlameRectTransform;
     [SerializeField] private RectTransform gaugeArrowRectTransform;
     [SerializeField] private Image gaugeImage;
     [SerializeField] private Image temperatureMaintenanceTimeImage;
@@ -34,16 +38,11 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
     [SerializeField] private Temperature startTemperature;
     
     private bool _isChallengeActive;
-    private bool _hasInput;
     private float _currentBlowTime;
     private float _temperatureMaintenanceTime;
-    private float _previousTemperatureMaintenanceTime;
     private Temperature _currentTemperature;
     
     public BellowsBehaviour CurrentBellows { get; set; }
-    
-    // Input
-    public Vector2 JoystickInputValue { get; set; }
     
     
     private void Awake()
@@ -74,7 +73,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
         transform.position = CurrentBellows.transform.position + CurrentBellows.transform.rotation * characterBlowPosition;
         transform.rotation = CurrentBellows.transform.rotation * Quaternion.Euler(characterBlowRotation);
         CharacterInputManager.Instance.DisableInputs();
-        CharacterInputManager.Instance.EnableHapticChallengeJoystickInputs();
+        CharacterInputManager.Instance.EnableTemperatureHapticChallengeInputs();
         
         CurrentBellows.DisableInteract();
         
@@ -124,18 +123,6 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
             return;
         }
         
-        if (CheckInputReset())
-        {
-            _hasInput = false;
-        }
-        
-        if (!_hasInput && CheckInput())
-        {
-            _hasInput = true;
-            _currentBlowTime = temperatureHapticChallengeGlobalValuesSo.HeatIncreaseDuration;
-            return;
-        }
-        
         gaugeImage.fillAmount = Mathf.Max(0f, gaugeImage.fillAmount - Time.deltaTime *
             temperatureHapticChallengeGlobalValuesSo.HeatDecreaseSpeed);
         gaugeArrowRectTransform.anchoredPosition = new Vector2(gaugeArrowRectTransform.anchoredPosition.x,
@@ -151,8 +138,6 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
 
     private void UpdateCurrentTemperatureAndMaintenanceTime()
     {
-        _previousTemperatureMaintenanceTime = _temperatureMaintenanceTime;
-        
         switch (_currentTemperature)
         {
             case Temperature.LowHeat:
@@ -161,8 +146,13 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
                     _temperatureMaintenanceTime = 0f;
                     _currentTemperature = Temperature.MediumHeat;
                 }
-                else if (gaugeImage.fillAmount >= temperatureHapticChallengeGlobalValuesSo.LowHeatMinValue &&
-                         gaugeImage.fillAmount <= temperatureHapticChallengeGlobalValuesSo.LowHeatMaxValue)
+                else if (gaugeImage.fillAmount < temperatureHapticChallengeGlobalValuesSo.LowHeatMinValue ||
+                         gaugeImage.fillAmount > temperatureHapticChallengeGlobalValuesSo.LowHeatMaxValue)
+                {
+                    _temperatureMaintenanceTime = 0f;
+                    _currentTemperature = Temperature.None;
+                }
+                else
                 {
                     _temperatureMaintenanceTime += Time.deltaTime;
                 }
@@ -178,8 +168,13 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
                     _temperatureMaintenanceTime = 0f;
                     _currentTemperature = Temperature.HighHeat;
                 }
-                else if (gaugeImage.fillAmount >= temperatureHapticChallengeGlobalValuesSo.MediumHeatMinValue &&
-                         gaugeImage.fillAmount <= temperatureHapticChallengeGlobalValuesSo.MediumHeatMaxValue)
+                else if (gaugeImage.fillAmount < temperatureHapticChallengeGlobalValuesSo.MediumHeatMinValue ||
+                         gaugeImage.fillAmount > temperatureHapticChallengeGlobalValuesSo.MediumHeatMaxValue)
+                {
+                    _temperatureMaintenanceTime = 0f;
+                    _currentTemperature = Temperature.None;
+                }
+                else
                 {
                     _temperatureMaintenanceTime += Time.deltaTime;
                 }
@@ -190,9 +185,34 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
                     _temperatureMaintenanceTime = 0f;
                     _currentTemperature = Temperature.MediumHeat;
                 }
+                else if (gaugeImage.fillAmount < temperatureHapticChallengeGlobalValuesSo.HighHeatMinValue ||
+                         gaugeImage.fillAmount > temperatureHapticChallengeGlobalValuesSo.HighHeatMaxValue)
+                {
+                    _temperatureMaintenanceTime = 0f;
+                    _currentTemperature = Temperature.None;
+                }
+                else
+                {
+                    _temperatureMaintenanceTime += Time.deltaTime;
+                }
+                break;
+            case Temperature.None:
+                if (gaugeImage.fillAmount >= temperatureHapticChallengeGlobalValuesSo.LowHeatMinValue &&
+                    gaugeImage.fillAmount <= temperatureHapticChallengeGlobalValuesSo.LowHeatMaxValue)
+                {
+                    _currentTemperature = Temperature.LowHeat;
+                    _temperatureMaintenanceTime += Time.deltaTime;
+                }
+                else if (gaugeImage.fillAmount >= temperatureHapticChallengeGlobalValuesSo.MediumHeatMinValue &&
+                         gaugeImage.fillAmount <= temperatureHapticChallengeGlobalValuesSo.MediumHeatMaxValue)
+                {
+                    _currentTemperature = Temperature.MediumHeat;
+                    _temperatureMaintenanceTime += Time.deltaTime;
+                }
                 else if (gaugeImage.fillAmount >= temperatureHapticChallengeGlobalValuesSo.HighHeatMinValue &&
                          gaugeImage.fillAmount <= temperatureHapticChallengeGlobalValuesSo.HighHeatMaxValue)
                 {
+                    _currentTemperature = Temperature.HighHeat;
                     _temperatureMaintenanceTime += Time.deltaTime;
                 }
                 break;
@@ -201,7 +221,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
         temperatureMaintenanceTimeText.text = Mathf.CeilToInt(temperatureHapticChallengeGlobalValuesSo.
             TemperatureMaintenanceDuration - _temperatureMaintenanceTime).ToString();
 
-        if (Mathf.Approximately(_temperatureMaintenanceTime, _previousTemperatureMaintenanceTime))
+        if (_currentTemperature == Temperature.None)
         {
             temperatureMaintenanceTimeImage.color = new Color(temperatureMaintenanceTimeImage.color.r,
                 temperatureMaintenanceTimeImage.color.g, temperatureMaintenanceTimeImage.color.b, 0.5f);
@@ -228,42 +248,33 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
         _isChallengeActive = false;
         temperatureChallengeGameObject.SetActive(false);
     }
-
-    private bool CheckInput()
-    {
-        return JoystickInputValue.y < -1f + temperatureHapticChallengeGlobalValuesSo.InputDetectionTolerance &&
-               JoystickInputValue.x < temperatureHapticChallengeGlobalValuesSo.InputDetectionTolerance &&
-               JoystickInputValue.x > -temperatureHapticChallengeGlobalValuesSo.InputDetectionTolerance;
-    }
     
-    private bool CheckInputReset()
+    public void IncreaseTemperature()
     {
-        return JoystickInputValue == Vector2.zero;
+        if (!_isChallengeActive) return;
+        
+        _currentBlowTime = temperatureHapticChallengeGlobalValuesSo.HeatIncreaseDuration;
     }
 
 
     private void OnDrawGizmos()
     {
-        lowHeatGaugeRectTransform.sizeDelta = new Vector2(lowHeatGaugeRectTransform.sizeDelta.x,
-            gaugeRectTransform.sizeDelta.y * (temperatureHapticChallengeGlobalValuesSo.LowHeatMaxValue -
-                                              temperatureHapticChallengeGlobalValuesSo.LowHeatMinValue));
-        lowHeatGaugeRectTransform.anchoredPosition = new Vector2(lowHeatGaugeRectTransform.anchoredPosition.x,
-            gaugeRectTransform.sizeDelta.y * (temperatureHapticChallengeGlobalValuesSo.LowHeatMinValue +
-                                              (temperatureHapticChallengeGlobalValuesSo.LowHeatMaxValue -
-                                               temperatureHapticChallengeGlobalValuesSo.LowHeatMinValue) * 0.5f));
-        mediumHeatGaugeRectTransform.sizeDelta = new Vector2(mediumHeatGaugeRectTransform.sizeDelta.x,
-            gaugeRectTransform.sizeDelta.y * (temperatureHapticChallengeGlobalValuesSo.MediumHeatMaxValue -
-                                              temperatureHapticChallengeGlobalValuesSo.MediumHeatMinValue));
-        mediumHeatGaugeRectTransform.anchoredPosition = new Vector2(mediumHeatGaugeRectTransform.anchoredPosition.x,
-            gaugeRectTransform.sizeDelta.y * (temperatureHapticChallengeGlobalValuesSo.MediumHeatMinValue +
-                                              (temperatureHapticChallengeGlobalValuesSo.MediumHeatMaxValue -
-                                               temperatureHapticChallengeGlobalValuesSo.MediumHeatMinValue) * 0.5f));
-        highHeatGaugeRectTransform.sizeDelta = new Vector2(highHeatGaugeRectTransform.sizeDelta.x,
-            gaugeRectTransform.sizeDelta.y * (temperatureHapticChallengeGlobalValuesSo.HighHeatMaxValue -
-                                              temperatureHapticChallengeGlobalValuesSo.HighHeatMinValue));
-        highHeatGaugeRectTransform.anchoredPosition = new Vector2(highHeatGaugeRectTransform.anchoredPosition.x,
-            gaugeRectTransform.sizeDelta.y * (temperatureHapticChallengeGlobalValuesSo.HighHeatMinValue +
-                                              (temperatureHapticChallengeGlobalValuesSo.HighHeatMaxValue -
-                                               temperatureHapticChallengeGlobalValuesSo.HighHeatMinValue) * 0.5f));
+        minLowHeatCutLineRectTransform.anchoredPosition = new Vector2(minLowHeatCutLineRectTransform.anchoredPosition.x,
+            temperatureHapticChallengeGlobalValuesSo.LowHeatMinValue * gaugeRectTransform.rect.height);
+        cutLineBetweenLowAndMediumHeatRectTransform.anchoredPosition = new Vector2(cutLineBetweenLowAndMediumHeatRectTransform.anchoredPosition.x,
+            temperatureHapticChallengeGlobalValuesSo.MediumHeatMinValue * gaugeRectTransform.rect.height);
+        cutLineBetweenMediumAndHighHeatRectTransform.anchoredPosition = new Vector2(cutLineBetweenMediumAndHighHeatRectTransform.anchoredPosition.x,
+            temperatureHapticChallengeGlobalValuesSo.HighHeatMinValue * gaugeRectTransform.rect.height);
+        maxHighHeatCutLineRectTransform.anchoredPosition = new Vector2(maxHighHeatCutLineRectTransform.anchoredPosition.x,
+            temperatureHapticChallengeGlobalValuesSo.HighHeatMaxValue * gaugeRectTransform.rect.height);
+        lowHeatFlameRectTransform.anchoredPosition = new Vector2(lowHeatFlameRectTransform.anchoredPosition.x,
+            ((temperatureHapticChallengeGlobalValuesSo.LowHeatMaxValue - temperatureHapticChallengeGlobalValuesSo.LowHeatMinValue) * 0.5f 
+             + temperatureHapticChallengeGlobalValuesSo.LowHeatMinValue) * gaugeRectTransform.rect.height);
+        mediumHeatFlameRectTransform.anchoredPosition = new Vector2(mediumHeatFlameRectTransform.anchoredPosition.x,
+            ((temperatureHapticChallengeGlobalValuesSo.MediumHeatMaxValue - temperatureHapticChallengeGlobalValuesSo.MediumHeatMinValue) * 0.5f
+             + temperatureHapticChallengeGlobalValuesSo.MediumHeatMinValue) * gaugeRectTransform.rect.height);
+        highHeatFlameRectTransform.anchoredPosition = new Vector2(highHeatFlameRectTransform.anchoredPosition.x,
+            ((temperatureHapticChallengeGlobalValuesSo.HighHeatMaxValue - temperatureHapticChallengeGlobalValuesSo.HighHeatMinValue) * 0.5f
+             + temperatureHapticChallengeGlobalValuesSo.HighHeatMinValue) * gaugeRectTransform.rect.height);
     }
 }

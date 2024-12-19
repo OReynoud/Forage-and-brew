@@ -256,6 +256,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "PushBellows",
+                    "type": "Button",
+                    "id": "4c6ea8b3-1ad6-4ed4-a35d-2f87f1510db3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1004,6 +1013,17 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "Harvest",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6bf68a35-2618-4d2c-a2e7-b74e602061f0",
+                    "path": "<Gamepad>/rightStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "PushBellows",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
