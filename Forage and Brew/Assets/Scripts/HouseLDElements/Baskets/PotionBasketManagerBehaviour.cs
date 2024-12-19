@@ -39,7 +39,6 @@ public class PotionBasketManagerBehaviour : BasketManagerBehaviour
     public override void IncreaseCurrentSetIndex()
     {
         _currentOrderIndex++;
-        _currentOrderIndex %= GameDontDestroyOnLoadManager.Instance.OrderPotions.Count;
         
         ReactivateRightPotionBaskets();
     }
@@ -55,8 +54,10 @@ public class PotionBasketManagerBehaviour : BasketManagerBehaviour
         ReactivateRightPotionBaskets();
     }
     
-    private void ReactivateRightPotionBaskets()
+    public void ReactivateRightPotionBaskets()
     {
+        _currentOrderIndex %= GameDontDestroyOnLoadManager.Instance.OrderPotions.Count;
+        
         foreach (PotionBasketBehaviour potionBasket in potionBaskets)
         {
             potionBasket.gameObject.SetActive(false);

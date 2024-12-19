@@ -1,12 +1,13 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class OrderManager : MonoBehaviour
 {
     public static OrderManager Instance { get; private set; }
 
-    public List<Order> CurrentOrders { get; private set; } = new();
-    public List<int> OrderToValidateIndices { get; private set; } = new();
+    public List<Order> CurrentOrders { get; } = new();
+    public List<int> OrderToValidateIndices { get; } = new();
     
 
     private void Awake()
@@ -40,41 +41,61 @@ public class OrderManager : MonoBehaviour
         }
     }
     
+    public bool TryAddOrderToValidate(int orderIndex)
+    {
+        if (OrderToValidateIndices.Contains(orderIndex)) return false;
+
+        if (GameDontDestroyOnLoadManager.Instance.OrderPotions[orderIndex].Any(x => x == null)) return false;
+        
+        OrderToValidateIndices.Add(orderIndex);
+        
+        return true;
+    }
+    
     public void CheckOrdersToValidate()
     {
-        OrderToValidateIndices.Sort((a, b) => b.CompareTo(a));
-        
-        foreach (int orderToValidateIndex in OrderToValidateIndices)
+        foreach (int orderToValidateIndex in OrderToValidateIndices.ToList())
         {
             bool isOrderCorrect = true;
+            List<PotionValuesSo> currentOrderPotions = GameDontDestroyOnLoadManager.Instance.OrderPotions[orderToValidateIndex].ToList();
             
-            for (int i = 0; i < CurrentOrders[orderToValidateIndex].OrderContent.RequestedPotions.Length; i++)
+            foreach (PotionDemand potionDemand in CurrentOrders[orderToValidateIndex].OrderContent.RequestedPotions.Where(x => x.IsSpecific))
             {
-                if (CurrentOrders[orderToValidateIndex].OrderContent.RequestedPotions[i].IsSpecific)
+                if (!currentOrderPotions.Contains(potionDemand.Potion))
                 {
-                    if (GameDontDestroyOnLoadManager.Instance.OrderPotions[orderToValidateIndex][i] != CurrentOrders[orderToValidateIndex].OrderContent.RequestedPotions[i].Potion)
-                    {
-                        isOrderCorrect = false;
-                        break;
-                    }
+                    isOrderCorrect = false;
+                    break;
                 }
-                else
+                    
+                currentOrderPotions.Remove(potionDemand.Potion);
+            }
+            
+            List<PotionDemand> notSpecificRequestedPotions = CurrentOrders[orderToValidateIndex].OrderContent.RequestedPotions.Where(x => !x.IsSpecific).ToList();
+            // Sort by ascending order of currentOrderPotions valid tag count
+            notSpecificRequestedPotions.Sort((x, y) => 
+                currentOrderPotions.Count(potion => (potion.tags & x.ValidTag) != 0).CompareTo(
+                    currentOrderPotions.Count(potion => (potion.tags & y.ValidTag) != 0)));
+
+            if (currentOrderPotions.All(potion => (potion.tags & notSpecificRequestedPotions[0].ValidTag) == 0))
+            {
+                isOrderCorrect = false;
+            }
+            else
+            {
+                foreach (PotionDemand potionDemand in notSpecificRequestedPotions)
                 {
-                    if ((GameDontDestroyOnLoadManager.Instance.OrderPotions[orderToValidateIndex][i].tags &
-                         CurrentOrders[orderToValidateIndex].OrderContent.RequestedPotions[i].ValidTag) != 0)
-                    {
-                        isOrderCorrect = false;
-                        break;
-                    }
+                    currentOrderPotions.Remove(currentOrderPotions.First(x => (x.tags & potionDemand.ValidTag) != 0));
                 }
             }
             
-            if (isOrderCorrect)
-            {
-                GameDontDestroyOnLoadManager.Instance.MoneyAmount += CurrentOrders[orderToValidateIndex].OrderContent.MoneyReward;
-                CurrentOrders.RemoveAt(orderToValidateIndex);
-                OrderToValidateIndices.Remove(orderToValidateIndex);
-            }
+            if (!isOrderCorrect) continue;
+            
+            GameDontDestroyOnLoadManager.Instance.MoneyAmount += CurrentOrders[orderToValidateIndex].OrderContent.MoneyReward;
+            CurrentOrders.RemoveAt(orderToValidateIndex);
+            CodexContentManager.instance.TerminateOrder(orderToValidateIndex);
+            GameDontDestroyOnLoadManager.Instance.OrderPotions.RemoveAt(orderToValidateIndex);
         }
+        
+        OrderToValidateIndices.Clear();
     }
 }
