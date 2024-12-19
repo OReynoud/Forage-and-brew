@@ -25,6 +25,7 @@ public class CharacterSpawnBehaviour : MonoBehaviour
                     break;
                 }
             }
+            PinnedRecipe.instance.Start();
             
             if (camSettings != null)
             {

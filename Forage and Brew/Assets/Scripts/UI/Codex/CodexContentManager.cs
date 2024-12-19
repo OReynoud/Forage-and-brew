@@ -1,10 +1,12 @@
+
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CodexContentManager : Singleton<CodexContentManager>
 {
     public RectTransform emptyPage;
-    public OrderCodexDisplayBehaviour orderPrefab;
+    public OrderCodexDisplayBehaviour[] orderPrefabs;
     public Sprite leftEmptyPage;
     public Sprite rightEmptyPage;
     private readonly List<OrderCodexDisplayBehaviour> _orderCodexDisplayBehaviours = new();
@@ -16,7 +18,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
     public PotionValuesSo testPotion;
 
     public PotionValuesSo[] allPotions;
-    public RecipeContainer[] recipes;
+    public RecipeCodexDisplay[] recipes;
 
     public Sprite[] allDifficultySprites;
     public Sprite[] allIngredientTypeSprites;
@@ -100,7 +102,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
             var pageContainer= Instantiate(emptyPage,transform);
             
             emptyOrderPage = Instantiate(emptyPage,transform);
-            var order = Instantiate(orderPrefab,pageContainer);
+            var order = Instantiate(orderPrefabs[Random.Range(0,orderPrefabs.Length)],pageContainer);
             pageContainer.anchoredPosition = new Vector2(1500,0);
             emptyOrderPage.anchoredPosition = new Vector2(1500,0);
             
@@ -121,7 +123,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
         }
         else
         {
-            var order = Instantiate(orderPrefab,emptyOrderPage);
+            var order = Instantiate(orderPrefabs[Random.Range(0,orderPrefabs.Length)],emptyOrderPage);
             _orderCodexDisplayBehaviours.Add(order);
             order.InitializeOrder(clientName,orderDescription,potionsRequested,moneyReward,timeToComplete,AutoFlip.instance.ControledBook.bookMarks[1].index - 1);
             emptyOrderPage = null;
@@ -172,7 +174,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
                              AutoFlip.instance.ControledBook.bookMarks[0].index;
             orderIndex = side ? orderIndex + 1 : orderIndex;
             
-            OrderManager.Instance.OrderToValidateIndices.Add(orderIndex);
+            OrderManager.Instance.TryAddOrderToValidate(orderIndex);
         }
         else if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[1].index &&
             AutoFlip.instance.ControledBook.currentPage < AutoFlip.instance.ControledBook.bookMarks[2].index )

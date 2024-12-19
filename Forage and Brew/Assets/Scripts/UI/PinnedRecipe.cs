@@ -28,11 +28,12 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
     public TextMeshProUGUI[] stepText;
     public Image[] ingredientStepImage;
     public Image[] mainActionImage;
+    public Image[] singleActionImage;
 
     public CanvasGroup ingredientsList;
     public CanvasGroup recipeStepsList;
 
-    private void Start()
+    public void Start()
     {
         ownTransform = GetComponent<RectTransform>();
         for (int i = 0; i < potionIngredientsImage.Length; i++)
@@ -72,9 +73,12 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
             stepText[i].text = " ";
             ingredientStepImage[i].sprite = null;
             mainActionImage[i].sprite = null;
+            singleActionImage[i].sprite = null;
+            
             stepText[i].enabled = false;
             ingredientStepImage[i].enabled = false;
             mainActionImage[i].enabled = false;
+            singleActionImage[i].enabled = false;
         }
 
 
@@ -144,7 +148,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
             stepText[writingIndex].transform.parent.gameObject.SetActive(true);
 
-            ingredientStepImage[writingIndex].enabled = true;
+            singleActionImage[writingIndex].enabled = true;
 
 
             switch (t.Temperature)
@@ -152,16 +156,13 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
                 case Temperature.None:
                     break;
                 case Temperature.LowHeat:
-                    ingredientStepImage[writingIndex].sprite = null;
-                    ingredientStepImage[writingIndex].color = Color.cyan;
+                    singleActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[3];
                     break;
                 case Temperature.MediumHeat:
-                    ingredientStepImage[writingIndex].sprite = null;
-                    ingredientStepImage[writingIndex].color = Color.yellow;
+                    singleActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[4];
                     break;
                 case Temperature.HighHeat:
-                    ingredientStepImage[writingIndex].sprite = null;
-                    ingredientStepImage[writingIndex].color = Color.red;
+                    singleActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[5];
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -171,28 +172,22 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         }
         stepText[writingIndex].transform.parent.gameObject.SetActive(true);
 
-        ingredientStepImage[writingIndex].enabled = true;
-        ingredientStepImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[0];
+        singleActionImage[writingIndex].enabled = true;
+        singleActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[0];
     }
 
     void ShowRecipeIngredients()
     {
         foreach (var ingredient in potionIngredientsImage)
         {
-            ingredient.transform.gameObject.SetActive(false);
-        }
-
-        foreach (var text in potionIngredientQuantity)
-        {
-            text.transform.gameObject.SetActive(false);
+            ingredient.transform.parent.gameObject.SetActive(false);
         }
 
         for (int i = 0; i < potionIngredients.Length; i++)
         {
-            potionIngredientsImage[i].transform.gameObject.SetActive(true);
+            potionIngredientsImage[i].transform.parent.gameObject.SetActive(true);
             potionIngredientsImage[i].sprite = potionIngredients[i];
 
-            potionIngredientQuantity[i].transform.gameObject.SetActive(true);
             if (i + 1 < potionIngredients.Length)
             {
                 int numberOfIngredients = CheckForSameElementsSprite(i, 0);
