@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class RecipeCodexDisplay : MonoBehaviour
 {
+    [BoxGroup("Refs")] public RectTransform leftPage;
+    [BoxGroup("Refs")] public RectTransform rightPage;
     [BoxGroup("Potion Description")] public PotionValuesSo storedPotion;
     [BoxGroup("Potion Description")] public TextMeshProUGUI potionName;
     [BoxGroup("Potion Description")] public TextMeshProUGUI potionFlavorText;
@@ -51,9 +53,11 @@ public class RecipeCodexDisplay : MonoBehaviour
         }
     }
 
+
     private string writingText;
     public Sprite[] potionIngredients { get; set; }
 
+    private int ingredientsIndex = 0;
     public void InitPage(Sprite[] PotionIngredients, PotionValuesSo PotionSteps)
     {
         storedPotion = PotionSteps;
@@ -69,27 +73,33 @@ public class RecipeCodexDisplay : MonoBehaviour
 
         
         //Ingredients List
-        for (int i = 0; i < potionIngredients.Length; i++)
+        for (int i = 0; i < potionIngredientImage.Length; i++)
         {
             potionIngredientImage[i].transform.parent.gameObject.SetActive(true);
             potionIngredientImage[i].enabled = true;
             potionIngredientNumber[i].enabled = true;
+
             
-            potionIngredientImage[i].sprite = potionIngredients[i];
+            potionIngredientImage[i].sprite = potionIngredients[ingredientsIndex];
 
             if (i + 1 < potionIngredients.Length)
             {
-                int numberOfIngredients = CheckForSameElementsSprite(i, 0);
+                int numberOfIngredients = CheckForSameElementsSprite(ingredientsIndex, 0);
 
                 potionIngredientNumber[i].text = (1 + numberOfIngredients).ToString();
 
-                i += numberOfIngredients;
+                ingredientsIndex += numberOfIngredients;
             }
             else
             {
                 
                 potionIngredientNumber[i].text = "1";
             }
+
+            ingredientsIndex++;
+            if (ingredientsIndex >= potionIngredients.Length - 1)
+                break;
+            
         }
         
         
@@ -143,6 +153,7 @@ public class RecipeCodexDisplay : MonoBehaviour
             switch (t.Temperature)
             {
                 case Temperature.None:
+                    writingIndex--;
                     break;
                 case Temperature.LowHeat:
                     singleActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[3];
@@ -163,6 +174,8 @@ public class RecipeCodexDisplay : MonoBehaviour
 
         singleActionImage[writingIndex].gameObject.SetActive(true);
         singleActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[0];
+        
+        
     }
 
     private void HandleWritingIngredientType(CookedIngredientForm cookedIngredient)
