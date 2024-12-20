@@ -68,9 +68,11 @@ public class StirHapticChallengeManager : MonoBehaviour
     
     private void PickRightPotion()
     {
+        List<TemperatureChallengeIngredients> temperatureAndIngredients = CurrentCauldron.ClearIngredients();
+        
         foreach (PotionValuesSo potion in potionListSo.Potions) // For each potion
         {
-            if (potion.TemperatureChallengeIngredients.Length != CurrentCauldron.TemperatureAndIngredients.Count) continue;
+            if (potion.TemperatureChallengeIngredients.Length != temperatureAndIngredients.Count) continue;
             
             bool isRightPotion = true;
 
@@ -80,7 +82,7 @@ public class StirHapticChallengeManager : MonoBehaviour
                 List<CookedIngredientForm> cauldronIngredients = new();
 
                 // Store all ingredients in the cauldron
-                foreach (CookedIngredientForm cookedIngredientForm in CurrentCauldron.TemperatureAndIngredients[i].CookedIngredients)
+                foreach (CookedIngredientForm cookedIngredientForm in temperatureAndIngredients[i].CookedIngredients)
                 {
                     cauldronIngredients.Add(cookedIngredientForm);
                 }
@@ -126,7 +128,7 @@ public class StirHapticChallengeManager : MonoBehaviour
                 if (!isRightPotion) break;
                 
                 // Check if the cauldron has the right temperature
-                if (potion.TemperatureChallengeIngredients[i].Temperature != CurrentCauldron.TemperatureAndIngredients[i].Temperature)
+                if (potion.TemperatureChallengeIngredients[i].Temperature != temperatureAndIngredients[i].Temperature)
                 {
                     isRightPotion = false;
                     break;

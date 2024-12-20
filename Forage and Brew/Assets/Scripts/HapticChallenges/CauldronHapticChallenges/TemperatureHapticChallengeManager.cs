@@ -34,9 +34,6 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
     [SerializeField] private Vector3 characterBlowPosition;
     [SerializeField] private Vector3 characterBlowRotation;
     
-    [Header("Start Values")]
-    [SerializeField] private Temperature startTemperature;
-    
     private bool _isChallengeActive;
     private float _currentBlowTime;
     private float _temperatureMaintenanceTime;
@@ -53,6 +50,12 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
     private void Start()
     {
         temperatureChallengeGameObject.SetActive(false);
+        
+        if (CauldronVfxManager.Instance)
+        {
+            _currentTemperature = GameDontDestroyOnLoadManager.Instance.CauldronTemperature;
+            CauldronVfxManager.Instance.ChangeTemperatureVfx(_currentTemperature);
+        }
     }
 
     private void Update()
@@ -80,12 +83,11 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
         _isChallengeActive = true;
         _currentBlowTime = 0f;
         _temperatureMaintenanceTime = 0f;
-        _currentTemperature = startTemperature;
         
         temperatureChallengeGameObject.SetActive(true);
         
         float startTemperatureValue = 0f;
-        switch (startTemperature)
+        switch (_currentTemperature)
         {
             case Temperature.LowHeat:
                 startTemperatureValue = (temperatureHapticChallengeGlobalValuesSo.LowHeatMaxValue -
@@ -145,12 +147,14 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
                 {
                     _temperatureMaintenanceTime = 0f;
                     _currentTemperature = Temperature.MediumHeat;
+                    CauldronVfxManager.Instance.ChangeTemperatureVfx(_currentTemperature);
                 }
                 else if (gaugeImage.fillAmount < temperatureHapticChallengeGlobalValuesSo.LowHeatMinValue ||
                          gaugeImage.fillAmount > temperatureHapticChallengeGlobalValuesSo.LowHeatMaxValue)
                 {
                     _temperatureMaintenanceTime = 0f;
                     _currentTemperature = Temperature.None;
+                    CauldronVfxManager.Instance.ChangeTemperatureVfx(_currentTemperature);
                 }
                 else
                 {
@@ -162,17 +166,20 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
                 {
                     _temperatureMaintenanceTime = 0f;
                     _currentTemperature = Temperature.LowHeat;
+                    CauldronVfxManager.Instance.ChangeTemperatureVfx(_currentTemperature);
                 }
                 else if (gaugeImage.fillAmount >= temperatureHapticChallengeGlobalValuesSo.HighHeatMinValue)
                 {
                     _temperatureMaintenanceTime = 0f;
                     _currentTemperature = Temperature.HighHeat;
+                    CauldronVfxManager.Instance.ChangeTemperatureVfx(_currentTemperature);
                 }
                 else if (gaugeImage.fillAmount < temperatureHapticChallengeGlobalValuesSo.MediumHeatMinValue ||
                          gaugeImage.fillAmount > temperatureHapticChallengeGlobalValuesSo.MediumHeatMaxValue)
                 {
                     _temperatureMaintenanceTime = 0f;
                     _currentTemperature = Temperature.None;
+                    CauldronVfxManager.Instance.ChangeTemperatureVfx(_currentTemperature);
                 }
                 else
                 {
@@ -184,12 +191,14 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
                 {
                     _temperatureMaintenanceTime = 0f;
                     _currentTemperature = Temperature.MediumHeat;
+                    CauldronVfxManager.Instance.ChangeTemperatureVfx(_currentTemperature);
                 }
                 else if (gaugeImage.fillAmount < temperatureHapticChallengeGlobalValuesSo.HighHeatMinValue ||
                          gaugeImage.fillAmount > temperatureHapticChallengeGlobalValuesSo.HighHeatMaxValue)
                 {
                     _temperatureMaintenanceTime = 0f;
                     _currentTemperature = Temperature.None;
+                    CauldronVfxManager.Instance.ChangeTemperatureVfx(_currentTemperature);
                 }
                 else
                 {
@@ -201,18 +210,21 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
                     gaugeImage.fillAmount <= temperatureHapticChallengeGlobalValuesSo.LowHeatMaxValue)
                 {
                     _currentTemperature = Temperature.LowHeat;
+                    CauldronVfxManager.Instance.ChangeTemperatureVfx(_currentTemperature);
                     _temperatureMaintenanceTime += Time.deltaTime;
                 }
                 else if (gaugeImage.fillAmount >= temperatureHapticChallengeGlobalValuesSo.MediumHeatMinValue &&
                          gaugeImage.fillAmount <= temperatureHapticChallengeGlobalValuesSo.MediumHeatMaxValue)
                 {
                     _currentTemperature = Temperature.MediumHeat;
+                    CauldronVfxManager.Instance.ChangeTemperatureVfx(_currentTemperature);
                     _temperatureMaintenanceTime += Time.deltaTime;
                 }
                 else if (gaugeImage.fillAmount >= temperatureHapticChallengeGlobalValuesSo.HighHeatMinValue &&
                          gaugeImage.fillAmount <= temperatureHapticChallengeGlobalValuesSo.HighHeatMaxValue)
                 {
                     _currentTemperature = Temperature.HighHeat;
+                    CauldronVfxManager.Instance.ChangeTemperatureVfx(_currentTemperature);
                     _temperatureMaintenanceTime += Time.deltaTime;
                 }
                 break;
@@ -244,7 +256,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
         CurrentBellows.EnableInteract();
         
         CauldronBehaviour.instance.AddTemperature(_currentTemperature);
-        startTemperature = _currentTemperature;
+        GameDontDestroyOnLoadManager.Instance.CauldronTemperature = _currentTemperature;
         _isChallengeActive = false;
         temperatureChallengeGameObject.SetActive(false);
     }

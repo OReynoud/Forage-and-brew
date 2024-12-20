@@ -28,6 +28,9 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     // Money
     public int MoneyAmount { get; set; }
     
+    // Cauldron
+    [field: SerializeField] public Temperature CauldronTemperature { get; set; } = Temperature.LowHeat;
+    
     
     private void Awake()
     {

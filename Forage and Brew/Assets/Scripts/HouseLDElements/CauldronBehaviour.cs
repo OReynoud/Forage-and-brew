@@ -8,7 +8,7 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
     [SerializeField] private GameObject buttonYGameObject;
     [field: SerializeField] public Transform SpoonTransform { get; private set; }
 
-    public List<TemperatureChallengeIngredients> TemperatureAndIngredients { get; } = new();
+    private readonly List<TemperatureChallengeIngredients> _temperatureAndIngredients = new();
 
     
     private void Start()
@@ -41,31 +41,45 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
     
     public void AddIngredient(CollectedIngredientBehaviour collectedIngredientBehaviour)
     {
-        if (TemperatureAndIngredients.Count == 0 || TemperatureAndIngredients[^1].Temperature != Temperature.None)
+        if (_temperatureAndIngredients.Count == 0)
         {
-            TemperatureAndIngredients.Add(new TemperatureChallengeIngredients(
+            CauldronVfxManager.Instance.ChangeSmokeVfx(true);
+        }
+        
+        if (_temperatureAndIngredients.Count == 0 || _temperatureAndIngredients[^1].Temperature != Temperature.None)
+        {
+            _temperatureAndIngredients.Add(new TemperatureChallengeIngredients(
                 new List<CookedIngredientForm>(),
                 Temperature.None));
         }
         
-        TemperatureAndIngredients[^1].CookedIngredients.Add(new CookedIngredientForm(
+        _temperatureAndIngredients[^1].CookedIngredients.Add(new CookedIngredientForm(
             collectedIngredientBehaviour.IngredientValuesSo, collectedIngredientBehaviour.CookedForm));
     }
     
     public void AddTemperature(Temperature temperature)
     {
-        if (TemperatureAndIngredients.Count == 0)
+        if (_temperatureAndIngredients.Count == 0)
         {
-            TemperatureAndIngredients.Add(new TemperatureChallengeIngredients(
+            _temperatureAndIngredients.Add(new TemperatureChallengeIngredients(
                 new List<CookedIngredientForm>(),
                 temperature));
         }
         else
         {
-            TemperatureAndIngredients[^1] = new TemperatureChallengeIngredients(
-                TemperatureAndIngredients[^1].CookedIngredients,
+            _temperatureAndIngredients[^1] = new TemperatureChallengeIngredients(
+                _temperatureAndIngredients[^1].CookedIngredients,
                 temperature);
         }
+    }
+    
+    public List<TemperatureChallengeIngredients> ClearIngredients()
+    {
+        List<TemperatureChallengeIngredients> temperatureAndIngredientsList = new(_temperatureAndIngredients);
+        _temperatureAndIngredients.Clear();
+        CauldronVfxManager.Instance.ChangeSmokeVfx(false);
+        
+        return temperatureAndIngredientsList;
     }
     
     

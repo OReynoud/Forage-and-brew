@@ -493,9 +493,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66d16ed06c40a8542b5ca51ccbc15b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  smokeVfxParent: {fileID: 2756350519091156131}
+  flameVfxParent: {fileID: 1294668332913438830}
   flameVfx: {fileID: 4215525884255282431}
-  flameVfxRenderer: {fileID: 5388879010433501816}
+  flameVfxRenderer: {fileID: 7460057440746405197}
   lowHeatFlameColor: {r: 10.432951, g: 0.8739645, b: 0, a: 1}
+  lowHeatFlameRadius: 0.4
+  lowHeatFlameDonutRadius: 0.06
+  mediumHeatFlameColor: {r: 5.2164764, g: 2.5945826, b: 0, a: 1}
+  mediumHeatFlameRadius: 0.6
+  mediumHeatFlameDonutRadius: 0.1
+  highHeatFlameColor: {r: 0, g: 4.237095, b: 3.6603174, a: 1}
+  highHeatFlameRadius: 0.8
+  highHeatFlameDonutRadius: 0.1
 --- !u!1001 &4868907593331511701
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -504,6 +514,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 574021977399648358}
     m_Modifications:
+    - target: {fileID: 733030113722219657, guid: 8ca4afb483b4a1f40901c019069596b5, type: 3}
+      propertyPath: prewarm
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 745293926128498383, guid: 8ca4afb483b4a1f40901c019069596b5, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5153957928081227879, guid: 8ca4afb483b4a1f40901c019069596b5, type: 3}
       propertyPath: m_Name
       value: SM_CauldronFIX_01
@@ -564,6 +582,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7336737187349546294, guid: 8ca4afb483b4a1f40901c019069596b5, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -574,13 +596,23 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5534178204050741981, guid: 8ca4afb483b4a1f40901c019069596b5, type: 3}
   m_PrefabInstance: {fileID: 4868907593331511701}
   m_PrefabAsset: {fileID: 0}
+--- !u!198 &1294668332913438830 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5937503895201423867, guid: 8ca4afb483b4a1f40901c019069596b5, type: 3}
+  m_PrefabInstance: {fileID: 4868907593331511701}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &2756350519091156131 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7336737187349546294, guid: 8ca4afb483b4a1f40901c019069596b5, type: 3}
+  m_PrefabInstance: {fileID: 4868907593331511701}
+  m_PrefabAsset: {fileID: 0}
 --- !u!198 &4215525884255282431 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 8723854954184979818, guid: 8ca4afb483b4a1f40901c019069596b5, type: 3}
   m_PrefabInstance: {fileID: 4868907593331511701}
   m_PrefabAsset: {fileID: 0}
---- !u!199 &5388879010433501816 stripped
+--- !u!199 &7460057440746405197 stripped
 ParticleSystemRenderer:
-  m_CorrespondingSourceObject: {fileID: 673553402726751213, guid: 8ca4afb483b4a1f40901c019069596b5, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2600449587630632152, guid: 8ca4afb483b4a1f40901c019069596b5, type: 3}
   m_PrefabInstance: {fileID: 4868907593331511701}
   m_PrefabAsset: {fileID: 0}
