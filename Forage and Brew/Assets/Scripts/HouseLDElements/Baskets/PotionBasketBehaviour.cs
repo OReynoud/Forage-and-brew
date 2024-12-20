@@ -16,6 +16,8 @@ public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
 
     private void OnDisable()
     {
+        PotionBasketManagerBehaviour.ManageTriggerExit(this);
+        
         if (CharacterInteractController.Instance.CurrentNearPotionBaskets.Contains(this))
         {
             CharacterInteractController.Instance.CurrentNearPotionBaskets.Remove(this);
@@ -62,7 +64,7 @@ public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
-            PotionBasketManagerBehaviour.ManageTriggerEnter();
+            PotionBasketManagerBehaviour.ManageTriggerEnter(this);
             
             characterInteractController.CurrentNearPotionBaskets.Add(this);
             
@@ -111,7 +113,7 @@ public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
-            PotionBasketManagerBehaviour.ManageTriggerExit();
+            PotionBasketManagerBehaviour.ManageTriggerExit(this);
             
             if (characterInteractController.CurrentNearPotionBaskets.Contains(this))
             {

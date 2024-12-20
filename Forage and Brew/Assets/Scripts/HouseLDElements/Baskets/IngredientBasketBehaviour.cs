@@ -17,6 +17,8 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
     
     private void OnDisable()
     {
+        IngredientBasketManagerBehaviour.ManageTriggerExit(this);
+        
         if (CharacterInteractController.Instance.CurrentNearIngredientBaskets.Contains(this))
         {
             CharacterInteractController.Instance.CurrentNearIngredientBaskets.Remove(this);
@@ -75,7 +77,7 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
-            IngredientBasketManagerBehaviour.ManageTriggerEnter();
+            IngredientBasketManagerBehaviour.ManageTriggerEnter(this);
             
             characterInteractController.CurrentNearIngredientBaskets.Add(this);
             
@@ -137,7 +139,7 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
-            IngredientBasketManagerBehaviour.ManageTriggerExit();
+            IngredientBasketManagerBehaviour.ManageTriggerExit(this);
             
             if (characterInteractController.CurrentNearIngredientBaskets.Contains(this))
             {

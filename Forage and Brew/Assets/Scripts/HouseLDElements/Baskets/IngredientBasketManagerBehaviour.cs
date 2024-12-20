@@ -7,7 +7,7 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
     [SerializeField] private List<IngredientBasketBehaviour> ingredientBaskets;
     [SerializeField] private IngredientListSo ingredientListSo;
     
-    private int _currentTriggeredBasketCount;
+    private List<IngredientBasketBehaviour> _currentTriggeredIngredientBaskets = new();
     private readonly List<List<IngredientValuesSo>> _ingredientSets = new();
     private int _currentIngredientSetIndex;
 
@@ -87,21 +87,21 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
     }
     
     
-    public void ManageTriggerEnter()
+    public void ManageTriggerEnter(IngredientBasketBehaviour ingredientBasket)
     {
-        if (_currentTriggeredBasketCount == 0)
+        if (_currentTriggeredIngredientBaskets.Count == 0)
         {
             BasketInputManager.Instance.CurrentBasketManagers.Add(this);
         }
         
-        _currentTriggeredBasketCount++;
+        _currentTriggeredIngredientBaskets.Add(ingredientBasket);
     }
     
-    public void ManageTriggerExit()
+    public void ManageTriggerExit(IngredientBasketBehaviour ingredientBasket)
     {
-        _currentTriggeredBasketCount--;
+        _currentTriggeredIngredientBaskets.Remove(ingredientBasket);
         
-        if (_currentTriggeredBasketCount == 0)
+        if (_currentTriggeredIngredientBaskets.Count == 0)
         {
             BasketInputManager.Instance.CurrentBasketManagers.Remove(this);
         }

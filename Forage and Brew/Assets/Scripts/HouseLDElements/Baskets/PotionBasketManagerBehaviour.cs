@@ -5,7 +5,7 @@ public class PotionBasketManagerBehaviour : BasketManagerBehaviour
 {
     [SerializeField] private List<PotionBasketBehaviour> potionBaskets;
     
-    private int _currentTriggeredBasketCount;
+    private readonly List<PotionBasketBehaviour> _currentTriggeredPotionBaskets = new();
     private int _currentOrderIndex = -1;
 
     private void Awake()
@@ -71,21 +71,21 @@ public class PotionBasketManagerBehaviour : BasketManagerBehaviour
         }
     }
     
-    public void ManageTriggerEnter()
+    public void ManageTriggerEnter(PotionBasketBehaviour potionBasket)
     {
-        if (_currentTriggeredBasketCount == 0)
+        if (_currentTriggeredPotionBaskets.Count == 0)
         {
             BasketInputManager.Instance.CurrentBasketManagers.Add(this);
         }
         
-        _currentTriggeredBasketCount++;
+        _currentTriggeredPotionBaskets.Add(potionBasket);
     }
     
-    public void ManageTriggerExit()
+    public void ManageTriggerExit(PotionBasketBehaviour potionBasket)
     {
-        _currentTriggeredBasketCount--;
+        _currentTriggeredPotionBaskets.Remove(potionBasket);
         
-        if (_currentTriggeredBasketCount == 0)
+        if (_currentTriggeredPotionBaskets.Count == 0)
         {
             BasketInputManager.Instance.CurrentBasketManagers.Remove(this);
         }
