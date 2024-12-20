@@ -73,36 +73,37 @@ public class RecipeCodexDisplay : MonoBehaviour
 
         
         //Ingredients List
-        for (int i = 0; i < potionIngredientImage.Length; i++)
+        if (potionIngredients.Length > 0)
         {
-            potionIngredientImage[i].transform.parent.gameObject.SetActive(true);
-            potionIngredientImage[i].enabled = true;
-            potionIngredientNumber[i].enabled = true;
+            for (int i = 0; i < potionIngredientImage.Length; i++)
+            {
+                potionIngredientImage[i].transform.parent.gameObject.SetActive(true);
+                potionIngredientImage[i].enabled = true;
+                potionIngredientNumber[i].enabled = true;
 
             
-            potionIngredientImage[i].sprite = potionIngredients[ingredientsIndex];
+                potionIngredientImage[i].sprite = potionIngredients[ingredientsIndex];
 
-            if (i + 1 < potionIngredients.Length)
-            {
-                int numberOfIngredients = CheckForSameElementsSprite(ingredientsIndex, 0);
+                if (i + 1 < potionIngredients.Length)
+                {
+                    int numberOfIngredients = CheckForSameElementsSprite(ingredientsIndex, 0);
 
-                potionIngredientNumber[i].text = (1 + numberOfIngredients).ToString();
+                    potionIngredientNumber[i].text = (1 + numberOfIngredients).ToString();
 
-                ingredientsIndex += numberOfIngredients;
-            }
-            else
-            {
+                    ingredientsIndex += numberOfIngredients;
+                }
+                else
+                {
                 
-                potionIngredientNumber[i].text = "1";
-            }
+                    potionIngredientNumber[i].text = "1";
+                }
 
-            ingredientsIndex++;
-            if (ingredientsIndex >= potionIngredients.Length - 1)
-                break;
+                ingredientsIndex++;
+                if (ingredientsIndex >= potionIngredients.Length - 1)
+                    break;
             
+            }
         }
-        
-        
         //Recipe Steps
         foreach (var t in PotionSteps.TemperatureChallengeIngredients)
         {
