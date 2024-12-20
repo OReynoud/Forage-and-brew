@@ -113,15 +113,15 @@ public class CodexContentManager : Singleton<CodexContentManager>
             pageContainer.anchoredPosition = new Vector2(1500, 0);
             emptyOrderPage.anchoredPosition = new Vector2(1500, 0);
 
-            AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[0].index,
+            AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[1].index,
                 new Book.BookPage(rightEmptyPage, emptyOrderPage));
             emptyOrderPage.name = "Page " + (AutoFlip.instance.ControledBook.bookMarks[0].index + 1);
 
-            AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[0].index,
+            AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[1].index,
                 new Book.BookPage(leftEmptyPage, pageContainer));
             pageContainer.name = "Page " + AutoFlip.instance.ControledBook.bookMarks[0].index;
 
-            emptyOrderPageIndex = AutoFlip.instance.ControledBook.bookMarks[0].index + 1;
+            emptyOrderPageIndex = AutoFlip.instance.ControledBook.bookMarks[1].index + 1;
             _orderCodexDisplayBehaviours.Add(order);
             order.InitializeOrder(clientName, orderDescription, potionsRequested, moneyReward, timeToComplete,
                 AutoFlip.instance.ControledBook.bookMarks[1].index);
@@ -184,10 +184,12 @@ public class CodexContentManager : Singleton<CodexContentManager>
         if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[0].index &&
             AutoFlip.instance.ControledBook.currentPage < AutoFlip.instance.ControledBook.bookMarks[1].index)
         {
+            if (emptyOrderPage && side && AutoFlip.instance.ControledBook.currentPage == emptyOrderPageIndex) return;
+            
             // Select Order
             int orderIndex = AutoFlip.instance.ControledBook.currentPage -
                              AutoFlip.instance.ControledBook.bookMarks[0].index;
-            orderIndex = side ? orderIndex + 1 : orderIndex;
+            orderIndex = side ? orderIndex : orderIndex - 1;
 
             OrderManager.Instance.TryAddOrderToValidate(orderIndex);
         }
