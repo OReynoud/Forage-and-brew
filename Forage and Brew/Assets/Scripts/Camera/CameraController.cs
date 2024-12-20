@@ -130,10 +130,10 @@ public class CameraController : Singleton<CameraController>
         //Debug.Log("Cam Settings: " + TargetCamSettings.name);
     }
 
-    void Start()
+    private void Start()
     {
         cam = Camera.main;
-        movement = CharacterInputManager.Instance.movementController;
+        movement = CharacterMovementController.Instance;
         targetFocalLength = cam.focalLength;
         cameraRotation = transform.localRotation.eulerAngles;
         previousCamSettings = scriptableCamSettings;

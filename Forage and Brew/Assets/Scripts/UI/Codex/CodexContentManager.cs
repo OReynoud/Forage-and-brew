@@ -19,21 +19,16 @@ public class CodexContentManager : Singleton<CodexContentManager>
     private RectTransform emptyOrderPage;
     private int emptyOrderPageIndex;
     
-    
     [BoxGroup("Recipe display")] public PotionValuesSo[] allPotions;
     [BoxGroup("Recipe display")] public RecipeCodexDisplay[] recipes;
-
-    
-
     
     [Foldout("Debug")] public PotionTag testTag;
 
     [Foldout("Debug")] public PotionValuesSo testPotion;
-
-
-
-
+    
     [Foldout("Debug")] private List<Sprite> tempIngredientsList = new();
+    
+    
     private void Start()
     {
         CharacterInputManager.Instance.OnSelectRecipe.AddListener(SelectCodexPage);

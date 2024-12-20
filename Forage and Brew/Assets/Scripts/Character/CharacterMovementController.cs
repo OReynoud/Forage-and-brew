@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class CharacterMovementController : MonoBehaviour
 {
+    // Singleton
+    public static CharacterMovementController Instance { get; private set; }
+    
     [Header("Dependencies")]
     [SerializeField] private Animator animator;
     
@@ -31,7 +34,19 @@ public class CharacterMovementController : MonoBehaviour
 
 
     #region Unity Callbacks
-
+    
+    private void Awake()
+    {
+        if (!Instance)
+        {
+            Instance = this;
+        }
+        else
+        {
+            DestroyImmediate(this);
+        }
+    }
+    
     private void Start()
     {
         rb = GetComponent<Rigidbody>();

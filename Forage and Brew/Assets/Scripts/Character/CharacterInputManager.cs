@@ -10,10 +10,6 @@ public class CharacterInputManager : MonoBehaviour
 
     private InputSystem_Actions _inputs;
 
-    public CharacterMovementController movementController { get; set; }
-    private CharacterInteractController characterInteractController;
-    private AutoFlip codexController;
-
     public UnityEvent OnCodexShow { get; set; } = new();
     public UnityEvent<bool> OnNavigationChange { get; set; } = new();
     public UnityEvent<bool> OnSelectRecipe { get; set; } = new();
@@ -27,14 +23,10 @@ public class CharacterInputManager : MonoBehaviour
     {
         Instance = this;
         _inputs = new InputSystem_Actions();
-        movementController = GetComponent<CharacterMovementController>();
     }
     
     private void Start()
     {
-        characterInteractController = GetComponent<CharacterInteractController>();
-        codexController = AutoFlip.instance;
-        
         SetupInputs();
         EnableInputs();
     }
@@ -43,11 +35,11 @@ public class CharacterInputManager : MonoBehaviour
     {
         if (showCodex)
         {
-            codexController.PlayerInputFlipPages(_inputs.Player.Move.ReadValue<Vector2>());
+            AutoFlip.instance.PlayerInputFlipPages(_inputs.Player.Move.ReadValue<Vector2>());
         }
         else
         {
-            movementController.Move(_inputs.Player.Move.ReadValue<Vector2>());
+            CharacterMovementController.Instance.Move(_inputs.Player.Move.ReadValue<Vector2>());
         }
         
     }
@@ -263,16 +255,16 @@ public class CharacterInputManager : MonoBehaviour
     }
     private void ToggleRunOnPerformed(InputAction.CallbackContext obj)
     {
-        movementController.isRunning = true;
+        CharacterMovementController.Instance.isRunning = true;
     }
 
     private void InteractOnPerformed(InputAction.CallbackContext obj)
     {
-        characterInteractController.Interact();
+        CharacterInteractController.Instance.Interact();
     }
     private void CancelOnPerformed(InputAction.CallbackContext obj)
     {
-        characterInteractController.Cancel();
+        CharacterInteractController.Instance.Cancel();
     }
     
     private void PreviousBasketSetOnPerformed(InputAction.CallbackContext obj)
@@ -297,7 +289,7 @@ public class CharacterInputManager : MonoBehaviour
     private void HapticChallengeOnPerformed(InputAction.CallbackContext obj)
     {
         TemperatureHapticChallengeManager.Instance.StartTemperatureChallenge();
-        characterInteractController.DropIngredientsInChoppingCountertop();
+        CharacterInteractController.Instance.DropIngredientsInChoppingCountertop();
     }
 
     private void HapticChallengeSecondOnPerformed(InputAction.CallbackContext obj)
@@ -385,7 +377,7 @@ public class CharacterInputManager : MonoBehaviour
 
     private void CodexOnPerformed(InputAction.CallbackContext obj)
     {
-        movementController.Move(Vector2.zero);
+        CharacterMovementController.Instance.Move(Vector2.zero);
         showCodex = !showCodex;
 
         if (!showCodex)
@@ -401,26 +393,24 @@ public class CharacterInputManager : MonoBehaviour
     {
         if (!showCodex)return;
         
-        codexController.PlayerInputNavigateBookmarks(true);
+        AutoFlip.instance.PlayerInputNavigateBookmarks(true);
     }
     
     private void BookMarkRightOnPerformed(InputAction.CallbackContext obj)
     {
         if (!showCodex)return;
         
-        codexController.PlayerInputNavigateBookmarks(false);
+        AutoFlip.instance.PlayerInputNavigateBookmarks(false);
     }
 
     private void PinRightOnPerformed(InputAction.CallbackContext obj)
     {
-        if (OnSelectRecipe != null)
-            OnSelectRecipe.Invoke(true);
+        OnSelectRecipe?.Invoke(true);
     }
 
     private void PinLeftOnPerformed(InputAction.CallbackContext obj)
     {
-        if (OnSelectRecipe != null)
-            OnSelectRecipe.Invoke(false);
+        OnSelectRecipe?.Invoke(false);
     }
     private void StartPageNavigationOnPerformed(InputAction.CallbackContext obj)
     {
