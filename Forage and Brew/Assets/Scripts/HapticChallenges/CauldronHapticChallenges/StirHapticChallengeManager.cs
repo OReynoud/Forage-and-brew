@@ -94,18 +94,24 @@ public class StirHapticChallengeManager : MonoBehaviour
                 }
 
                 // Check if the cauldron has the right ingredient count
-                if (cauldronIngredients.Count != potionIngredients.Count) break;
+                if (cauldronIngredients.Count != potionIngredients.Count)
+                {
+                    isRightPotion = false;
+                    break;
+                }
 
                 // Check if the cauldron has the right ingredients
                 foreach (CookedIngredientForm cookedIngredientForm in potionIngredients)
                 {
                     if (cookedIngredientForm.IsAType) continue;
                     
-                    if (!cauldronIngredients.Remove(cookedIngredientForm))
+                    if (!cauldronIngredients.Exists(ingredientForm => ingredientForm.Ingredient == cookedIngredientForm.Ingredient))
                     {
                         isRightPotion = false;
                         break;
                     }
+                    
+                    cauldronIngredients.Remove(cauldronIngredients.Find(ingredientForm => ingredientForm.Ingredient == cookedIngredientForm.Ingredient));
                 }
 
                 if (!isRightPotion) break;
@@ -116,7 +122,7 @@ public class StirHapticChallengeManager : MonoBehaviour
                     
                     IngredientType ingredientType = cookedIngredientForm.IngredientType;
                     
-                    if (!cauldronIngredients.Exists(ingredient => ingredient.Ingredient.Type == cookedIngredientForm.IngredientType))
+                    if (!cauldronIngredients.Exists(ingredient => ingredient.Ingredient.Type == ingredientType))
                     {
                         isRightPotion = false;
                         break;
@@ -160,6 +166,7 @@ public class StirHapticChallengeManager : MonoBehaviour
         CurrentCauldron.DisableInteract();
         
         PickRightPotion();
+        Debug.Log(_currentPotion.Name + " Stir Challenge");
         _currentChallenge = _currentPotion.StirHapticChallenge;
         _currentStirTime = 0;
         _currentStirIndex = 0;
