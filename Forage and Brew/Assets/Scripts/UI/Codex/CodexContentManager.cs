@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -21,7 +20,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
     public PotionValuesSo[] allPotions;
     public RecipeCodexDisplay[] recipes;
-    
+
     public Sprite[] allIngredientTypeSprites;
     public Sprite[] allBrewingActionSprites;
 
@@ -40,9 +39,9 @@ public class CodexContentManager : Singleton<CodexContentManager>
         {
             Debug.LogError("Number of Recipes does not match number of Potions SO, some recipe pages may be broken");
         }
-        for (int i = 0; i < recipes.Length; i++)
+
+        for (int i = recipes.Length - 1; i >= 0; i--)
         {
-            
             //Debug.Log("Check 1");
             foreach (TemperatureChallengeIngredients t in allPotions[i].TemperatureChallengeIngredients)
             {
@@ -61,9 +60,9 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
             recipes[i].InitPage(tempIngredientsList.ToArray(), allPotions[i]);
             tempIngredientsList.Clear();
-            InsertRecipePages(recipes[i].leftPage,recipes[i].rightPage);
+            InsertRecipePages(recipes[i].leftPage, recipes[i].rightPage);
         }
-        
+
         // DebugTickets();
     }
 
@@ -73,12 +72,12 @@ public class CodexContentManager : Singleton<CodexContentManager>
         {
             TerminateOrder(1);
         }
-        
+
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             TerminateOrder(2);
         }
-        
+
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             TerminateOrder(3);
@@ -100,36 +99,42 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
     public void InsertRecipePages(RectTransform LeftPage, RectTransform RightPage)
     {
-        AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[1].index,new Book.BookPage(rightRecipePage,RightPage));
-        AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[1].index,new Book.BookPage(leftRecipePage,LeftPage));
-        
+        AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[1].index,
+            new Book.BookPage(rightRecipePage, RightPage));
+        AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[1].index,
+            new Book.BookPage(leftRecipePage, LeftPage));
+
         for (int i = 2; i < AutoFlip.instance.ControledBook.bookMarks.Length; i++)
         {
             AutoFlip.instance.ControledBook.bookMarks[i].index += 2;
         }
     }
-    
-    public void ReceiveNewOrder(string clientName,string orderDescription, PotionDemand[] potionsRequested, int moneyReward, int timeToComplete)
+
+    public void ReceiveNewOrder(string clientName, string orderDescription, PotionDemand[] potionsRequested,
+        int moneyReward, int timeToComplete)
     {
         if (!emptyOrderPage)
         {
-            var pageContainer= Instantiate(emptyPage,transform);
-            
-            emptyOrderPage = Instantiate(emptyPage,transform);
-            var order = Instantiate(orderPrefabs[Random.Range(0,orderPrefabs.Length)],pageContainer);
-            pageContainer.anchoredPosition = new Vector2(1500,0);
-            emptyOrderPage.anchoredPosition = new Vector2(1500,0);
-            
-            AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[0].index,new Book.BookPage(rightEmptyPage,emptyOrderPage));
+            var pageContainer = Instantiate(emptyPage, transform);
+
+            emptyOrderPage = Instantiate(emptyPage, transform);
+            var order = Instantiate(orderPrefabs[Random.Range(0, orderPrefabs.Length)], pageContainer);
+            pageContainer.anchoredPosition = new Vector2(1500, 0);
+            emptyOrderPage.anchoredPosition = new Vector2(1500, 0);
+
+            AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[0].index,
+                new Book.BookPage(rightEmptyPage, emptyOrderPage));
             emptyOrderPage.name = "Page " + (AutoFlip.instance.ControledBook.bookMarks[0].index + 1);
-            
-            AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[0].index,new Book.BookPage(leftEmptyPage,pageContainer));
+
+            AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[0].index,
+                new Book.BookPage(leftEmptyPage, pageContainer));
             pageContainer.name = "Page " + AutoFlip.instance.ControledBook.bookMarks[0].index;
 
             emptyOrderPageIndex = AutoFlip.instance.ControledBook.bookMarks[0].index + 1;
             _orderCodexDisplayBehaviours.Add(order);
-            order.InitializeOrder(clientName,orderDescription,potionsRequested,moneyReward,timeToComplete,AutoFlip.instance.ControledBook.bookMarks[1].index);
-            
+            order.InitializeOrder(clientName, orderDescription, potionsRequested, moneyReward, timeToComplete,
+                AutoFlip.instance.ControledBook.bookMarks[1].index);
+
             for (int i = 1; i < AutoFlip.instance.ControledBook.bookMarks.Length; i++)
             {
                 AutoFlip.instance.ControledBook.bookMarks[i].index += 2;
@@ -137,13 +142,14 @@ public class CodexContentManager : Singleton<CodexContentManager>
         }
         else
         {
-            var order = Instantiate(orderPrefabs[Random.Range(0,orderPrefabs.Length)],emptyOrderPage);
+            var order = Instantiate(orderPrefabs[Random.Range(0, orderPrefabs.Length)], emptyOrderPage);
             _orderCodexDisplayBehaviours.Add(order);
-            order.InitializeOrder(clientName,orderDescription,potionsRequested,moneyReward,timeToComplete,AutoFlip.instance.ControledBook.bookMarks[1].index - 1);
+            order.InitializeOrder(clientName, orderDescription, potionsRequested, moneyReward, timeToComplete,
+                AutoFlip.instance.ControledBook.bookMarks[1].index - 1);
             emptyOrderPage = null;
             //Debug.Log(AutoFlip.instance.ControledBook.bookPages[AutoFlip.instance.ControledBook.bookMarks[1].index - 1].UIComponent);
         }
-        
+
         AutoFlip.instance.ControledBook.UpdateSprites();
     }
 
@@ -158,18 +164,20 @@ public class CodexContentManager : Singleton<CodexContentManager>
         else
         {
             emptyOrderPage = null;
-            
+
             Debug.Log("Removed page " + AutoFlip.instance.ControledBook.bookPages[index].UIComponent.name);
             Destroy(AutoFlip.instance.ControledBook.bookPages[index].UIComponent.gameObject);
             AutoFlip.instance.ControledBook.bookPages.RemoveAt(index);
-            
+
             if (emptyOrderPageIndex > index)
                 emptyOrderPageIndex--;
-            
-            Debug.Log("Removed page " + AutoFlip.instance.ControledBook.bookPages[emptyOrderPageIndex].UIComponent.name);
+
+            Debug.Log("Removed page " +
+                      AutoFlip.instance.ControledBook.bookPages[emptyOrderPageIndex].UIComponent.name);
             Destroy(AutoFlip.instance.ControledBook.bookPages[emptyOrderPageIndex].UIComponent.gameObject);
             AutoFlip.instance.ControledBook.bookPages.RemoveAt(emptyOrderPageIndex);
         }
+
         AutoFlip.instance.ControledBook.UpdateSprites();
     }
 
@@ -180,56 +188,61 @@ public class CodexContentManager : Singleton<CodexContentManager>
     /// <param name="side"> true = right, false = left</param>
     public void SelectCodexPage(bool side)
     {
+        if (!CharacterInputManager.Instance.showCodex) return;
+        
         if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[0].index &&
-            AutoFlip.instance.ControledBook.currentPage < AutoFlip.instance.ControledBook.bookMarks[1].index )
+            AutoFlip.instance.ControledBook.currentPage < AutoFlip.instance.ControledBook.bookMarks[1].index)
         {
             // Select Order
             int orderIndex = AutoFlip.instance.ControledBook.currentPage -
                              AutoFlip.instance.ControledBook.bookMarks[0].index;
             orderIndex = side ? orderIndex + 1 : orderIndex;
-            
+
             OrderManager.Instance.TryAddOrderToValidate(orderIndex);
         }
         else if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[1].index &&
-            AutoFlip.instance.ControledBook.currentPage < AutoFlip.instance.ControledBook.bookMarks[2].index )
+                 AutoFlip.instance.ControledBook.currentPage < AutoFlip.instance.ControledBook.bookMarks[2].index)
         {
-            var recipeIndex = AutoFlip.instance.ControledBook.currentPage -
-                              AutoFlip.instance.ControledBook.bookMarks[1].index;
-            recipeIndex = side ? recipeIndex + 1 : recipeIndex;
+            int recipeIndex = Mathf.FloorToInt((AutoFlip.instance.ControledBook.currentPage -
+                                                AutoFlip.instance.ControledBook.bookMarks[1].index) * 0.5f);
             Debug.Log(recipeIndex);
-            if (PinnedRecipe.instance.pinnedRecipe.Name == recipes[recipeIndex].storedPotion.Name)
+            if (PinnedRecipe.instance.pinnedRecipe)
             {
-                
-                //Debug.Log("Selected same recipe, unpinning");
-                PinnedRecipe.instance.UnpinRecipe();
-                return;
+                if (PinnedRecipe.instance.pinnedRecipe.Name == recipes[recipeIndex].storedPotion.Name)
+                {
+                    Debug.Log("Selected same recipe, unpinning");
+                    PinnedRecipe.instance.UnpinRecipe();
+                    return;
+                }
             }
-            PinnedRecipe.instance.PinRecipe(recipes[recipeIndex].storedPotion,recipes[recipeIndex].potionIngredients);
-            //Debug.Log("Pinned recipe: " + recipes[recipeIndex].storedPotion.Name);
+
+            PinnedRecipe.instance.PinRecipe(recipes[recipeIndex].storedPotion, recipes[recipeIndex].potionIngredients);
+            Debug.Log("Pinned recipe: " + recipes[recipeIndex].storedPotion.Name);
         }
         else
         {
             PinnedRecipe.instance.UnpinRecipe();
             //Debug.Log("Not in recipe pages");
         }
-        
     }
-    
-    
+
+
     public void DebugTickets()
     {
         var temp = new List<PotionDemand>();
-        temp.Add(new PotionDemand(true,testPotion));
-        
-        ReceiveNewOrder("Jean-Eude","Je me suis coupé le doigt, tu peux me passer de la pommade s'il te plait?",temp.ToArray(), 10, 3);
+        temp.Add(new PotionDemand(true, testPotion));
+
+        ReceiveNewOrder("Jean-Eude", "Je me suis coupé le doigt, tu peux me passer de la pommade s'il te plait?",
+            temp.ToArray(), 10, 3);
         temp.Clear();
-        
-        temp.Add(new PotionDemand(false,testTag,"Something against a fever"));
-        ReceiveNewOrder("Paul","J'ai de la fièvre, t'as quelque chose pour m'aider?",temp.ToArray(), 15, 3);
+
+        temp.Add(new PotionDemand(false, testTag, "Something against a fever"));
+        ReceiveNewOrder("Paul", "J'ai de la fièvre, t'as quelque chose pour m'aider?", temp.ToArray(), 15, 3);
         temp.Clear();
-        
-        temp.Add(new PotionDemand(true,testPotion));
-        temp.Add(new PotionDemand(true,testPotion));
-        ReceiveNewOrder("Marie","J'ai besoin de comparer la saveur de ces deux jus, peux-tu me les préparer?",temp.ToArray(),25, 3);
+
+        temp.Add(new PotionDemand(true, testPotion));
+        temp.Add(new PotionDemand(true, testPotion));
+        ReceiveNewOrder("Marie", "J'ai besoin de comparer la saveur de ces deux jus, peux-tu me les préparer?",
+            temp.ToArray(), 25, 3);
     }
 }
