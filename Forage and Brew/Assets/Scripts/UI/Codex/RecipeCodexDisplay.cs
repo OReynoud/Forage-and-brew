@@ -86,7 +86,7 @@ public class RecipeCodexDisplay : MonoBehaviour
 
                 if (i + 1 < potionIngredients.Length)
                 {
-                    int numberOfIngredients = CheckForSameElementsSprite(ingredientsIndex, 0);
+                    int numberOfIngredients = Ex.CheckForSameElementsSprite(ingredientsIndex, 0, potionIngredients);
 
                     potionIngredientNumber[i].text = (1 + numberOfIngredients).ToString();
 
@@ -112,7 +112,7 @@ public class RecipeCodexDisplay : MonoBehaviour
                 stepText[writingIndex].transform.parent.gameObject.SetActive(true);
                 stepText[writingIndex].gameObject.SetActive(true);
 
-                int numberOfIngredients = CheckForSameElementsIngredientSo(i, 0, t.CookedIngredients);
+                int numberOfIngredients = Ex.CheckForSameElementsIngredientSo(i, 0, t.CookedIngredients);
                 stepText[writingIndex].text = (1 + numberOfIngredients).ToString();
 
                 var cookedIngredient = t.CookedIngredients[i];
@@ -120,11 +120,11 @@ public class RecipeCodexDisplay : MonoBehaviour
 
                 ingredientStepImage[writingIndex].gameObject.SetActive(true);
 
+                ingredientStepImage[writingIndex].sprite = Ex.HandleWritingIngredientType(cookedIngredient);
                 switch (cookedIngredient.CookedForm)
                 {
                     case null:
 
-                        HandleWritingIngredientType(cookedIngredient);
 
 
                         mainActionImage[writingIndex].gameObject.SetActive(true);
@@ -133,7 +133,6 @@ public class RecipeCodexDisplay : MonoBehaviour
                         break;
                     case ChoppingHapticChallengeListSo:
 
-                        HandleWritingIngredientType(cookedIngredient);
 
 
                         mainActionImage[writingIndex].gameObject.SetActive(true);
@@ -178,49 +177,4 @@ public class RecipeCodexDisplay : MonoBehaviour
         
         
     }
-
-    private void HandleWritingIngredientType(CookedIngredientForm cookedIngredient)
-    {
-        if (cookedIngredient.IsAType)
-        {
-            ingredientStepImage[writingIndex].sprite =
-                CodexContentManager.instance.allIngredientTypeSprites[
-                    (int)cookedIngredient.IngredientType];
-        }
-        else
-        {
-            ingredientStepImage[writingIndex].sprite = cookedIngredient.Ingredient.icon;
-        }
-    }
-    int CheckForSameElementsSprite(int index, int similes)
-    {
-        if (index + similes + 1 >= potionIngredients.Length)
-            return similes;
-
-
-        if (potionIngredients[index] !=
-            potionIngredients[index + similes + 1])
-            return similes;
-
-        //Debug.Log("Similar element detected");
-        similes++;
-        return CheckForSameElementsSprite(index, similes);
-    }
-
-    int CheckForSameElementsIngredientSo(int index, int similes, List<CookedIngredientForm> list)
-    {
-        if (index + similes + 1 < list.Count)
-        {
-            if (list[index].Ingredient ==
-                list[index + similes + 1].Ingredient)
-            {
-                similes++;
-                return CheckForSameElementsIngredientSo(index, similes, list);
-            }
-
-            return similes;
-        }
-        return similes;
-    }
-    
 }

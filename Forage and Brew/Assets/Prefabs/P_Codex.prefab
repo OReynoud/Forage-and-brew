@@ -207,7 +207,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ad78ddc3e3c17d46bb9501e694549c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emptyPage: {fileID: 83518594005723639}
   orderPrefabs:
   - {fileID: 2165830182853006915, guid: db59cc6983dac044aa617b71da59ddbd, type: 3}
   - {fileID: 4791075897837337077, guid: edc2081506fce1349a198c24e079891b, type: 3}
@@ -216,8 +215,21 @@ MonoBehaviour:
   rightEmptyPage: {fileID: 21300000, guid: 3dbebad9dc600cc42b556b338539cf46, type: 3}
   leftRecipePage: {fileID: 21300000, guid: 5bcbef2a5057f0f40aaf4fcd7b20e7a7, type: 3}
   rightRecipePage: {fileID: 21300000, guid: 3f375bce63143c04dacfe10a34017a6c, type: 3}
-  testTag: 0
-  testPotion: {fileID: 11400000, guid: 166031aab85407b42a2884efb0f875e0, type: 2}
+  emptyPage: {fileID: 83518594005723639}
+  allIngredientTypeSprites:
+  - {fileID: 21300000, guid: 2d04cfc8f034d44429c2af0782647d06, type: 3}
+  - {fileID: 21300000, guid: b6db6df79a6cde34d9ca715f1f14890b, type: 3}
+  - {fileID: 21300000, guid: 0bddd018d119cf74dbe0890c1e915332, type: 3}
+  - {fileID: 21300000, guid: 3249b68e4107150479ee89411c1f27db, type: 3}
+  - {fileID: 21300000, guid: 4188143e2bb1dd24888451b730e114e0, type: 3}
+  allBrewingActionSprites:
+  - {fileID: 21300000, guid: 938f59e085c008a4a99517c66d7dd6b9, type: 3}
+  - {fileID: 21300000, guid: 03f4adf9f083a114dbfcf0dbe91983b6, type: 3}
+  - {fileID: 21300000, guid: 3f4b8b6528e2193468a45e45dda1f4b2, type: 3}
+  - {fileID: 21300000, guid: 3099070b1eb429549823ef07ea70a164, type: 3}
+  - {fileID: 21300000, guid: 92448548b521f714f91becefb548713d, type: 3}
+  - {fileID: 21300000, guid: d5371e1cae162594680299a1b4f152c4, type: 3}
+  - {fileID: 21300000, guid: 489f3fd897483cb45a6f0e4150aacc9a, type: 3}
   allPotions:
   - {fileID: 11400000, guid: 9100d14f4eed64a47b8e1651a5d5fcff, type: 2}
   - {fileID: 11400000, guid: 166031aab85407b42a2884efb0f875e0, type: 2}
@@ -252,26 +264,8 @@ MonoBehaviour:
   - {fileID: 6959491450645576051}
   - {fileID: 6646926590353172628}
   - {fileID: 577195707524318374}
-  allDifficultySprites:
-  - {fileID: 21300000, guid: 47d85a394caa891408e8889ca5f096ab, type: 3}
-  - {fileID: 21300000, guid: 9d0b5a05c79f2114896bccc49fc50ff7, type: 3}
-  - {fileID: 21300000, guid: 18f6042ea264dda4594dd15927f9dc65, type: 3}
-  - {fileID: 21300000, guid: 4b401030357c5e74182aa2385bacd7aa, type: 3}
-  - {fileID: 21300000, guid: e8ed94ffb83768846bce3da7a9351520, type: 3}
-  allIngredientTypeSprites:
-  - {fileID: 21300000, guid: 2d04cfc8f034d44429c2af0782647d06, type: 3}
-  - {fileID: 21300000, guid: b6db6df79a6cde34d9ca715f1f14890b, type: 3}
-  - {fileID: 21300000, guid: 0bddd018d119cf74dbe0890c1e915332, type: 3}
-  - {fileID: 21300000, guid: 3249b68e4107150479ee89411c1f27db, type: 3}
-  - {fileID: 21300000, guid: 4188143e2bb1dd24888451b730e114e0, type: 3}
-  allBrewingActionSprites:
-  - {fileID: 21300000, guid: 938f59e085c008a4a99517c66d7dd6b9, type: 3}
-  - {fileID: 21300000, guid: 03f4adf9f083a114dbfcf0dbe91983b6, type: 3}
-  - {fileID: 21300000, guid: 3f4b8b6528e2193468a45e45dda1f4b2, type: 3}
-  - {fileID: 21300000, guid: 3099070b1eb429549823ef07ea70a164, type: 3}
-  - {fileID: 21300000, guid: 92448548b521f714f91becefb548713d, type: 3}
-  - {fileID: 21300000, guid: d5371e1cae162594680299a1b4f152c4, type: 3}
-  - {fileID: 21300000, guid: 489f3fd897483cb45a6f0e4150aacc9a, type: 3}
+  testTag: 0
+  testPotion: {fileID: 11400000, guid: 166031aab85407b42a2884efb0f875e0, type: 2}
 --- !u!1 &1368136892975420690
 GameObject:
   m_ObjectHideFlags: 0
@@ -8674,15 +8668,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11430880, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
       propertyPath: m_Color.b
-      value: 0.8207547
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11430880, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
       propertyPath: m_Color.g
-      value: 0.6338304
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11430880, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
       propertyPath: m_Color.r
-      value: 0.5226504
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22433904, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
       propertyPath: m_Pivot.y

@@ -1,37 +1,39 @@
 using System;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PinnedRecipe : Singleton<PinnedRecipe>
 {
-    public PotionValuesSo pinnedRecipe;
+    private RectTransform ownTransform; //Behavior logic
+    private bool isPinned; //Behavior logic
+    private int writingIndex; // Display logic
+    private Sprite[] potionIngredients; // Display logic
 
-    private RectTransform ownTransform;
-    public TextMeshProUGUI title;
-    private bool isPinned;
-    public Vector3 restingPos;
-    public Vector3 pinnedPos;
-    public float lerp;
-    
-    public Sprite arrowSprite;
-    public Sprite[] potionIngredients;
-    private int writingIndex;
+
+    [field: ReadOnly] public PotionValuesSo pinnedRecipe;
+    [BoxGroup("References")] public TextMeshProUGUI title;
+    [BoxGroup("References")] public CanvasGroup ingredientsCanvas;
+    [BoxGroup("References")] public CanvasGroup recipeStepsCanvas;
+
+    [BoxGroup("Behavior")] public Vector3 restingPos;
+    [BoxGroup("Behavior")] public Vector3 pinnedPos;
+    [BoxGroup("Behavior")] public float lerp;
+
 
     //Recipe ingredients
-    public Image[] potionIngredientsImage;
-    public TextMeshProUGUI[] potionIngredientQuantity;
+    [BoxGroup("Recipe Ingredients")] public Image[] potionIngredientsImage;
+    [BoxGroup("Recipe Ingredients")] public TextMeshProUGUI[] potionIngredientQuantity;
 
 
     //Recipe steps
-    public TextMeshProUGUI[] stepText;
-    public Image[] ingredientStepImage;
-    public Image[] mainActionImage;
-    public Image[] singleActionImage;
+    [BoxGroup("Recipe Steps")] public TextMeshProUGUI[] stepText;
+    [BoxGroup("Recipe Steps")] public Image[] ingredientStepImage;
+    [BoxGroup("Recipe Steps")] public Image[] mainActionImage;
+    [BoxGroup("Recipe Steps")] public Image[] singleActionImage;
 
-    public CanvasGroup ingredientsList;
-    public CanvasGroup recipeStepsList;
 
     public void Start()
     {
@@ -40,18 +42,19 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         {
             potionIngredientsImage[i].preserveAspect = true;
         }
+
         if (pinnedRecipe)
             PinRecipe(pinnedRecipe, potionIngredients);
     }
 
     private void Update()
     {
-        if (CharacterInputManager.Instance.showCodex) 
+        if (CharacterInputManager.Instance.showCodex)
             return;
-        
+
         ownTransform.anchoredPosition = Vector2.Lerp(
-            ownTransform.anchoredPosition, 
-            isPinned ? pinnedPos : restingPos, 
+            ownTransform.anchoredPosition,
+            isPinned ? pinnedPos : restingPos,
             lerp);
     }
 
@@ -60,10 +63,11 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         isPinned = false;
         pinnedRecipe = null;
     }
+
     public void PinRecipe(PotionValuesSo PotionToPin, Sprite[] PotionIngredients)
     {
-        ingredientsList.alpha = 0;
-        recipeStepsList.alpha = 0;
+        ingredientsCanvas.alpha = 0;
+        recipeStepsCanvas.alpha = 0;
 
         writingIndex = 0;
         pinnedRecipe = PotionToPin;
@@ -74,7 +78,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
             ingredientStepImage[i].sprite = null;
             mainActionImage[i].sprite = null;
             singleActionImage[i].sprite = null;
-            
+
             stepText[i].enabled = false;
             ingredientStepImage[i].enabled = false;
             mainActionImage[i].enabled = false;
@@ -85,13 +89,13 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         if (GameDontDestroyOnLoadManager.Instance.PreviousScene == Scene.House)
         {
             title.text = pinnedRecipe.Name;
-            recipeStepsList.alpha = 1;
+            recipeStepsCanvas.alpha = 1;
             ShowRecipeSteps();
         }
         else
         {
             title.text = pinnedRecipe.Name;
-            ingredientsList.alpha = 1;
+            ingredientsCanvas.alpha = 1;
             ShowRecipeIngredients();
         }
 
@@ -112,30 +116,23 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
                 stepText[writingIndex].transform.parent.gameObject.SetActive(true);
                 stepText[writingIndex].enabled = true;
 
-                int numberOfIngredients = CheckForSameElementsIngredientSo(i, 0, t.CookedIngredients);
+                int numberOfIngredients = Ex.CheckForSameElementsIngredientSo(i, 0, t.CookedIngredients);
                 stepText[writingIndex].text = (1 + numberOfIngredients).ToString();
 
                 var cookedIngredient = t.CookedIngredients[i];
 
 
                 ingredientStepImage[writingIndex].enabled = true;
+                ingredientStepImage[writingIndex].sprite = Ex.HandleWritingIngredientType(cookedIngredient);
 
                 switch (cookedIngredient.CookedForm)
                 {
                     case null:
-
-                        HandleWritingIngredientType(cookedIngredient);
-
-
                         mainActionImage[writingIndex].enabled = true;
                         mainActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[^1];
 
                         break;
                     case ChoppingHapticChallengeListSo:
-
-                        HandleWritingIngredientType(cookedIngredient);
-
-
                         mainActionImage[writingIndex].enabled = true;
                         mainActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[1];
                         break;
@@ -170,6 +167,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
             writingIndex++;
         }
+
         stepText[writingIndex].transform.parent.gameObject.SetActive(true);
 
         singleActionImage[writingIndex].enabled = true;
@@ -190,58 +188,12 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
             if (i + 1 < potionIngredients.Length)
             {
-                int numberOfIngredients = CheckForSameElementsSprite(i, 0);
+                int numberOfIngredients = Ex.CheckForSameElementsSprite(i, 0, potionIngredients);
 
                 potionIngredientQuantity[i].text = (1 + numberOfIngredients).ToString();
 
                 i += numberOfIngredients;
             }
-        }
-    }
-
-    int CheckForSameElementsSprite(int index, int similes)
-    {
-        if (index + similes + 1 >= potionIngredients.Length)
-            return similes;
-
-
-        if (potionIngredients[index] !=
-            potionIngredients[index + similes + 1])
-            return similes;
-
-        //Debug.Log("Similar element detected");
-        similes++;
-        return CheckForSameElementsSprite(index, similes);
-    }
-
-    int CheckForSameElementsIngredientSo(int index, int similes, List<CookedIngredientForm> list)
-    {
-        if (index + similes + 1 < list.Count)
-        {
-            if (list[index].Ingredient ==
-                list[index + similes + 1].Ingredient)
-            {
-                similes++;
-                return CheckForSameElementsIngredientSo(index, similes, list);
-            }
-
-            return similes;
-        }
-        return similes;
-    }
-
-
-    private void HandleWritingIngredientType(CookedIngredientForm cookedIngredient)
-    {
-        if (cookedIngredient.IsAType)
-        {
-            ingredientStepImage[writingIndex].sprite =
-                CodexContentManager.instance.allIngredientTypeSprites[
-                    (int)cookedIngredient.IngredientType];
-        }
-        else
-        {
-            ingredientStepImage[writingIndex].sprite = cookedIngredient.Ingredient.icon;
         }
     }
 }

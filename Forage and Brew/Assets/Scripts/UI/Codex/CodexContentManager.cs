@@ -1,32 +1,39 @@
 using System.Collections.Generic;
+using NaughtyAttributes;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class CodexContentManager : Singleton<CodexContentManager>
 {
-    public RectTransform emptyPage;
-    public OrderCodexDisplayBehaviour[] orderPrefabs;
-    public Sprite leftEmptyPage;
-    public Sprite rightEmptyPage;
-    public Sprite leftRecipePage;
-    public Sprite rightRecipePage;
+    [Foldout("References")] public OrderCodexDisplayBehaviour[] orderPrefabs;
+    [Foldout("References")] public Sprite leftEmptyPage;
+    [Foldout("References")] public Sprite rightEmptyPage;
+    [Foldout("References")] public Sprite leftRecipePage;
+    [Foldout("References")] public Sprite rightRecipePage;
+    [Foldout("References")] public RectTransform emptyPage;
+    [Foldout("References")] public Sprite[] allIngredientTypeSprites;
+    [Foldout("References")] public Sprite[] allBrewingActionSprites;
+    
+    //Orders Management
     private readonly List<OrderCodexDisplayBehaviour> _orderCodexDisplayBehaviours = new();
     private RectTransform emptyOrderPage;
     private int emptyOrderPageIndex;
+    
+    
+    [BoxGroup("Recipe display")] public PotionValuesSo[] allPotions;
+    [BoxGroup("Recipe display")] public RecipeCodexDisplay[] recipes;
 
-    public PotionTag testTag;
+    
 
-    public PotionValuesSo testPotion;
+    
+    [Foldout("Debug")] public PotionTag testTag;
 
-    public PotionValuesSo[] allPotions;
-    public RecipeCodexDisplay[] recipes;
-
-    public Sprite[] allIngredientTypeSprites;
-    public Sprite[] allBrewingActionSprites;
-
-    private List<Sprite> tempIngredientsList = new();
+    [Foldout("Debug")] public PotionValuesSo testPotion;
 
 
+
+
+    [Foldout("Debug")] private List<Sprite> tempIngredientsList = new();
     private void Start()
     {
         CharacterInputManager.Instance.OnSelectRecipe.AddListener(SelectCodexPage);
@@ -85,17 +92,6 @@ public class CodexContentManager : Singleton<CodexContentManager>
     }
 
 
-    // public void ReceiveNewOrder(string clientName,string orderDescription, PotionDemand[] potionsRequested, float moneyReward, int timeToComplete)
-    // {
-    //     for (int i = 0; i < tickets.Count; i++)
-    //     {
-    //         if (tickets[i].hasAnOrder)
-    //             continue;
-    //         tickets[i].gameObject.SetActive(true);
-    //         tickets[i].InitializeOrder(clientName, orderDescription, potionsRequested, moneyReward, timeToComplete);
-    //         break;
-    //     }
-    // }
 
     public void InsertRecipePages(RectTransform LeftPage, RectTransform RightPage)
     {
