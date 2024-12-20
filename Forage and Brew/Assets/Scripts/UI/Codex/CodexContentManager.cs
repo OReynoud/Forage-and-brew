@@ -21,8 +21,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
     public PotionValuesSo[] allPotions;
     public RecipeCodexDisplay[] recipes;
-
-    public Sprite[] allDifficultySprites;
+    
     public Sprite[] allIngredientTypeSprites;
     public Sprite[] allBrewingActionSprites;
 
@@ -44,7 +43,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
         for (int i = 0; i < recipes.Length; i++)
         {
             
-            Debug.Log("Check 1");
+            //Debug.Log("Check 1");
             foreach (TemperatureChallengeIngredients t in allPotions[i].TemperatureChallengeIngredients)
             {
                 foreach (CookedIngredientForm cookedIngredient in t.CookedIngredients)
@@ -60,12 +59,9 @@ public class CodexContentManager : Singleton<CodexContentManager>
                 }
             }
 
-            Debug.Log("Check 2");
             recipes[i].InitPage(tempIngredientsList.ToArray(), allPotions[i]);
             tempIngredientsList.Clear();
             InsertRecipePages(recipes[i].leftPage,recipes[i].rightPage);
-            
-            Debug.Log("Check 3");
         }
         
         // DebugTickets();
