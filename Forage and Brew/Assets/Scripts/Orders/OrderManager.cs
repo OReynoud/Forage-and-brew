@@ -70,25 +70,31 @@ public class OrderManager : MonoBehaviour
                 currentOrderPotions.Remove(potionDemand.Potion);
             }
             
-            List<PotionDemand> notSpecificRequestedPotions = CurrentOrders[orderToValidateIndex].OrderContent.RequestedPotions.Where(x => !x.IsSpecific).ToList();
-            // Sort by ascending order of currentOrderPotions valid tag count
-            notSpecificRequestedPotions.Sort((x, y) => 
-                currentOrderPotions.Count(potion => (potion.tags & x.ValidTag) != 0).CompareTo(
-                    currentOrderPotions.Count(potion => (potion.tags & y.ValidTag) != 0)));
-
-            if (currentOrderPotions.All(potion => (potion.tags & notSpecificRequestedPotions[0].ValidTag) == 0))
-            {
-                isOrderCorrect = false;
-            }
-            else
-            {
-                foreach (PotionDemand potionDemand in notSpecificRequestedPotions)
-                {
-                    currentOrderPotions.Remove(currentOrderPotions.First(x => (x.tags & potionDemand.ValidTag) != 0));
-                }
-            }
-            
             if (!isOrderCorrect) continue;
+            
+            List<PotionDemand> notSpecificRequestedPotions = CurrentOrders[orderToValidateIndex].OrderContent.RequestedPotions.Where(x => !x.IsSpecific).ToList();
+
+            if (notSpecificRequestedPotions.Count > 0)
+            {
+                // Sort by ascending order of currentOrderPotions valid tag count
+                notSpecificRequestedPotions.Sort((x, y) => 
+                    currentOrderPotions.Count(potion => (potion.tags & x.ValidTag) != 0).CompareTo(
+                        currentOrderPotions.Count(potion => (potion.tags & y.ValidTag) != 0)));
+
+                if (currentOrderPotions.All(potion => (potion.tags & notSpecificRequestedPotions[0].ValidTag) == 0))
+                {
+                    isOrderCorrect = false;
+                }
+                else
+                {
+                    foreach (PotionDemand potionDemand in notSpecificRequestedPotions)
+                    {
+                        currentOrderPotions.Remove(currentOrderPotions.First(x => (x.tags & potionDemand.ValidTag) != 0));
+                    }
+                }
+            
+                if (!isOrderCorrect) continue;
+            }
             
             GameDontDestroyOnLoadManager.Instance.MoneyAmount += CurrentOrders[orderToValidateIndex].OrderContent.MoneyReward;
             CurrentOrders.RemoveAt(orderToValidateIndex);
