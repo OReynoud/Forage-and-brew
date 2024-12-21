@@ -8,12 +8,15 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
     [SerializeField] private GameObject buttonYGameObject;
     [field: SerializeField] public Transform SpoonTransform { get; private set; }
 
-    private readonly List<TemperatureChallengeIngredients> _temperatureAndIngredients = new();
-
     
     private void Start()
     {
         interactInputCanvasGameObject.SetActive(false);
+        
+        if (GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients.Count > 0)
+        {
+            CauldronVfxManager.Instance.ChangeSmokeVfx(true);
+        }
     }
 
 
@@ -41,42 +44,44 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
     
     public void AddIngredient(CollectedIngredientBehaviour collectedIngredientBehaviour)
     {
-        if (_temperatureAndIngredients.Count == 0)
+        if (GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients.Count == 0)
         {
             CauldronVfxManager.Instance.ChangeSmokeVfx(true);
         }
         
-        if (_temperatureAndIngredients.Count == 0 || _temperatureAndIngredients[^1].Temperature != Temperature.None)
+        if (GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients.Count == 0 ||
+            GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients[^1].Temperature != Temperature.None)
         {
-            _temperatureAndIngredients.Add(new TemperatureChallengeIngredients(
-                new List<CookedIngredientForm>(),
-                Temperature.None));
+            GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients.Add(
+                new TemperatureChallengeIngredients(new List<CookedIngredientForm>(), Temperature.None));
         }
         
-        _temperatureAndIngredients[^1].CookedIngredients.Add(new CookedIngredientForm(
+        GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients.Remove(collectedIngredientBehaviour);
+        GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients[^1].CookedIngredients.Add(new CookedIngredientForm(
             collectedIngredientBehaviour.IngredientValuesSo, collectedIngredientBehaviour.CookedForm));
     }
     
     public void AddTemperature(Temperature temperature)
     {
-        if (_temperatureAndIngredients.Count == 0)
+        if (GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients.Count == 0)
         {
-            _temperatureAndIngredients.Add(new TemperatureChallengeIngredients(
+            GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients.Add(new TemperatureChallengeIngredients(
                 new List<CookedIngredientForm>(),
                 temperature));
         }
         else
         {
-            _temperatureAndIngredients[^1] = new TemperatureChallengeIngredients(
-                _temperatureAndIngredients[^1].CookedIngredients,
+            GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients[^1] = new TemperatureChallengeIngredients(
+                GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients[^1].CookedIngredients,
                 temperature);
         }
     }
     
     public List<TemperatureChallengeIngredients> ClearIngredients()
     {
-        List<TemperatureChallengeIngredients> temperatureAndIngredientsList = new(_temperatureAndIngredients);
-        _temperatureAndIngredients.Clear();
+        List<TemperatureChallengeIngredients> temperatureAndIngredientsList =
+            new(GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients);
+        GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients.Clear();
         CauldronVfxManager.Instance.ChangeSmokeVfx(false);
         
         return temperatureAndIngredientsList;

@@ -58,6 +58,8 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
             Instantiate(collectedIngredientBehaviourPrefab, transform);
         collectedIngredientBehaviour.IngredientValuesSo = ingredient;
         IngredientCount--;
+        GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients.Add(collectedIngredientBehaviour);
+        GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Remove(ingredient);
 
         if (IngredientCount == 0)
         {
@@ -70,6 +72,8 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
     public void AddIngredient(CollectedIngredientBehaviour collectedIngredientBehaviour)
     {
         IngredientCount++;
+        GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients.Remove(collectedIngredientBehaviour);
+        GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Add(ingredient);
         Destroy(collectedIngredientBehaviour.gameObject);
         meshParentTransform.gameObject.SetActive(true);
     }

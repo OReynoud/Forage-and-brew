@@ -299,6 +299,7 @@ public class StirHapticChallengeManager : MonoBehaviour
             CurrentCauldron.transform.position, Quaternion.identity);
         collectedPotionBehaviour.PotionValuesSo = _currentPotion;
         CharacterInteractController.Instance.AddToPile(collectedPotionBehaviour);
+        GameDontDestroyOnLoadManager.Instance.OutCookedPotions.Add(collectedPotionBehaviour);
         
         stirChallengeGameObject.SetActive(false);
         _currentPotion = null;

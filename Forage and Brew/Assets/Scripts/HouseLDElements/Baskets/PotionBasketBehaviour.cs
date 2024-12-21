@@ -47,6 +47,7 @@ public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
     public void AddPotion(CollectedPotionBehaviour collectedPotionBehaviour)
     {
         GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][PotionBasketIndex] = collectedPotionBehaviour.PotionValuesSo;
+        GameDontDestroyOnLoadManager.Instance.OutCookedPotions.Remove(collectedPotionBehaviour);
         Instantiate(collectedPotionBehaviour.PotionValuesSo.MeshGameObject, meshParentTransform);
         Destroy(collectedPotionBehaviour.gameObject);
     }
@@ -55,6 +56,7 @@ public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
     {
         CollectedPotionBehaviour collectedPotionBehaviour = Instantiate(collectedPotionBehaviourPrefab, transform);
         collectedPotionBehaviour.PotionValuesSo = GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][PotionBasketIndex];
+        GameDontDestroyOnLoadManager.Instance.OutCookedPotions.Add(collectedPotionBehaviour);
         GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][PotionBasketIndex] = null;
 
         Destroy(meshParentTransform.GetChild(0).gameObject);

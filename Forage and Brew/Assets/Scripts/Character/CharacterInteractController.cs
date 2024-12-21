@@ -89,7 +89,7 @@ public class CharacterInteractController : MonoBehaviour
 
     public void Interact()
     {
-        if (CurrentNearPotionBaskets.Count > 0 && collectedStack.Count > 0)
+        if (CurrentNearPotionBaskets.Count > 0 && collectedStack.Count > 0 && (CollectedPotionBehaviour)collectedStack[0].stackable)
         {
             ChoosePotionBasket();
         }
@@ -97,14 +97,9 @@ public class CharacterInteractController : MonoBehaviour
         {
             ChooseIngredientBasket();
         }
-        else if (CurrentNearCauldron && collectedStack.Count > 0 && (CollectedIngredientBehaviour) collectedStack[0].stackable)
+        else if (CurrentNearCauldron && collectedStack.Count > 0 && (CollectedIngredientBehaviour)collectedStack[0].stackable)
         {
             CurrentNearCauldron.DisableInteract(true);
-            for (int i = 0; i < collectedStack.Count; i++)
-            {
-                GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Remove(
-                    ((CollectedIngredientBehaviour)collectedStack[i].stackable).IngredientValuesSo);
-            }
             ShoveStackInTarget(CurrentNearCauldron.transform, CurrentNearCauldron);
         }
         else if (CurrentStackableBehaviours.Count > 0)
@@ -131,7 +126,7 @@ public class CharacterInteractController : MonoBehaviour
                 foreach (IngredientBasketBehaviour ingredientBasket in CurrentNearIngredientBaskets)
                 {
                     if (ingredientBasket.ingredient != ((CollectedIngredientBehaviour)collectedStack[0].stackable).IngredientValuesSo) continue;
-                
+                    
                     ShoveStackInTarget(ingredientBasket.transform, ingredientBasket);
                     break;
                 }
@@ -254,7 +249,7 @@ public class CharacterInteractController : MonoBehaviour
     
     public void DropIngredientsInChoppingCountertop()
     {
-        if (!CurrentNearChoppingCountertop || collectedStack.Count == 0) return;
+        if (!CurrentNearChoppingCountertop || collectedStack.Count == 0 || !(CollectedIngredientBehaviour)collectedStack[0].stackable) return;
         
         CurrentNearChoppingCountertop.DisableInteract();
         ShoveStackInTarget(CurrentNearChoppingCountertop.transform, CurrentNearChoppingCountertop, choppingOffset);
@@ -285,10 +280,7 @@ public class CharacterInteractController : MonoBehaviour
         {
             collectedStack[i].stackable.GetTransform().SetParent(targetTransform);
             collectedStack[i].stackable.DropInTarget(targetTransform, offset);
-            if ((CollectedIngredientBehaviour)collectedStack[i].stackable)
-            {
-                targetBehaviour.AddIngredient((CollectedIngredientBehaviour)collectedStack[i].stackable);
-            }
+            targetBehaviour.AddIngredient((CollectedIngredientBehaviour)collectedStack[i].stackable);
         }
         
         collectedStack.Clear();
@@ -301,10 +293,7 @@ public class CharacterInteractController : MonoBehaviour
         {
             collectedStack[i].stackable.GetTransform().SetParent(targetTransform);
             collectedStack[i].stackable.DropInTarget(targetTransform, offset);
-            if ((CollectedPotionBehaviour)collectedStack[i].stackable)
-            {
-                targetBehaviour.AddPotion((CollectedPotionBehaviour)collectedStack[i].stackable);
-            }
+            targetBehaviour.AddPotion((CollectedPotionBehaviour)collectedStack[i].stackable);
         }
         
         collectedStack.Clear();

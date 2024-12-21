@@ -18,6 +18,10 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     
     // Ingredients and Potions
     public List<IngredientValuesSo> CollectedIngredients { get; private set; } = new();
+    public List<CollectedIngredientBehaviour> OutCollectedIngredients { get; private set; } = new();
+    public List<(IngredientValuesSo ingredient, Vector3 position, Quaternion rotation)> FloorCollectedIngredients { get; private set; } = new();
+    public List<CollectedPotionBehaviour> OutCookedPotions { get; private set; } = new();
+    public List<(PotionValuesSo potion, Vector3 position, Quaternion rotation)> FloorCookedPotions { get; private set; } = new();
     public List<List<PotionValuesSo>> OrderPotions { get; private set; } = new();
     
     // Letters
@@ -26,6 +30,7 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     public List<LetterContentSo> MailBoxLetters { get; set; } = new();
     
     // Cauldron
+    public List<TemperatureChallengeIngredients> CauldronTemperatureAndIngredients { get; private set; } = new();
     [field: SerializeField] public Temperature CauldronTemperature { get; set; } = Temperature.LowHeat;
     
     
