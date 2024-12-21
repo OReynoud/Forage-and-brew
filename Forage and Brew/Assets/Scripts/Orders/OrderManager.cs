@@ -96,7 +96,7 @@ public class OrderManager : MonoBehaviour
                 if (!isOrderCorrect) continue;
             }
             
-            GameDontDestroyOnLoadManager.Instance.MoneyAmount += CurrentOrders[orderToValidateIndex].OrderContent.MoneyReward;
+            MoneyManager.Instance.AddMoney(CurrentOrders[orderToValidateIndex].OrderContent.MoneyReward);
             CurrentOrders.RemoveAt(orderToValidateIndex);
             CodexContentManager.instance.TerminateOrder(orderToValidateIndex);
             GameDontDestroyOnLoadManager.Instance.OrderPotions.RemoveAt(orderToValidateIndex);

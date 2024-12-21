@@ -56,18 +56,24 @@ public class PotionBasketManagerBehaviour : BasketManagerBehaviour
     
     public void ReactivateRightPotionBaskets()
     {
-        _currentOrderIndex %= GameDontDestroyOnLoadManager.Instance.OrderPotions.Count;
+        if (GameDontDestroyOnLoadManager.Instance.OrderPotions.Count > 0)
+        {
+            _currentOrderIndex %= GameDontDestroyOnLoadManager.Instance.OrderPotions.Count;
+        }
         
         foreach (PotionBasketBehaviour potionBasket in potionBaskets)
         {
             potionBasket.gameObject.SetActive(false);
         }
-        
-        for (int i = 0; i < GameDontDestroyOnLoadManager.Instance.OrderPotions[_currentOrderIndex].Count; i++)
+
+        if (GameDontDestroyOnLoadManager.Instance.OrderPotions.Count > 0)
         {
-            potionBaskets[i].gameObject.SetActive(true);
-            potionBaskets[i].SetBasketContent(_currentOrderIndex);
-            potionBaskets[i].DoesNeedToCheckAvailability = true;
+            for (int i = 0; i < GameDontDestroyOnLoadManager.Instance.OrderPotions[_currentOrderIndex].Count; i++)
+            {
+                potionBaskets[i].gameObject.SetActive(true);
+                potionBaskets[i].SetBasketContent(_currentOrderIndex);
+                potionBaskets[i].DoesNeedToCheckAvailability = true;
+            }
         }
     }
     

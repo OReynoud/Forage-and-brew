@@ -25,8 +25,13 @@ public class CharacterSpawnBehaviour : MonoBehaviour
                     break;
                 }
             }
+            
             PinnedRecipe.instance.Start();
-            InfoDisplayManager.instance.DisplayAll();
+
+            if (WeatherManager.Instance.CurrentWeatherStates.Count != 0)
+            {
+                InfoDisplayManager.instance.DisplayWeather();
+            }
             
             if (camSettings != null)
             {

@@ -1,9 +1,6 @@
 using System.Collections.Generic;
-using NaughtyAttributes;
-using TMPro;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 public class WeatherManager : MonoBehaviour
 {
@@ -34,13 +31,13 @@ public class WeatherManager : MonoBehaviour
         CurrentWeatherStates.Add(Biome.Forest, (forestStartingWeatherState, 1));
         CurrentWeatherStates.Add(Biome.Swamp, (swampStartingWeatherState, 1));
         Debug.Log("The weather state for the first day is " + CurrentWeatherStates[Biome.Forest].weatherState.Name);
-        InfoDisplayManager.instance.DisplayAll();
+        InfoDisplayManager.instance.DisplayWeather();
     }
     
     
     public void PassToNextWeatherState()
     {
-        foreach (KeyValuePair<Biome, (WeatherStateSo weatherState, int successiveCount)> currentWeatherState in CurrentWeatherStates)
+        foreach (KeyValuePair<Biome, (WeatherStateSo weatherState, int successiveCount)> currentWeatherState in CurrentWeatherStates.ToList())
         {
             foreach (WeatherStateEndProbabilityBySuccessiveDayNumber weatherStateEndProbability in currentWeatherState.Value.weatherState.EndProbabilities)
             {
@@ -61,18 +58,19 @@ public class WeatherManager : MonoBehaviour
                             {
                                 CurrentWeatherStates[currentWeatherState.Key] = (endProbability.WeatherStateSo,
                                     CurrentWeatherStates[currentWeatherState.Key].successiveCount + 1);
-                                return;
+                                break;
                             }
                         
                             CurrentWeatherStates[currentWeatherState.Key] = (endProbability.WeatherStateSo, 1);
                         
-                            return;
+                            break;
                         }
                     }
                 }
             }
         }
-
+        
+        InfoDisplayManager.instance.DisplayWeather();
     }
 
 

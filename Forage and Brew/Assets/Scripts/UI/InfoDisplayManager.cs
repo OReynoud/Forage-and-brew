@@ -1,7 +1,5 @@
-using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class InfoDisplayManager : Singleton<InfoDisplayManager>
@@ -17,29 +15,26 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
     [SerializeField] private Sprite[] weatherSprites;
     [SerializeField] private Sprite[] moonCycleSprites;
 
-    private Biome currentBiome;
-
+    
     public void DisplayAll()
     {
-        Debug.Log("DisplayAll");
         DisplayWeather();
         DisplayDays();
         DisplayMoney();
         DisplayMoonCycles();
     }
+    
 
-
-
-    private void DisplayWeather()
+    public void DisplayWeather()
     {
         forestDisplay.SetActive(false);
         swampDisplay.SetActive(false);
 
-        currentBiome = Biome.None;
+        Biome currentBiome = Biome.None;
+        
         switch (GameDontDestroyOnLoadManager.Instance.PreviousScene)
         {
             case Scene.House:
-                break;
             case Scene.Outdoor:
                 break;
             case Scene.Biome1:
@@ -72,35 +67,24 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
         }
     }
 
-    void DisplayBiomeWeather(Biome biome, Image weatherDisplay)
+    private void DisplayBiomeWeather(Biome biome, Image weatherDisplay)
     {
-        switch (WeatherManager.Instance.CurrentWeatherStates[biome].weatherState.Name)
-        {
-            case "Sunny":
-                weatherDisplay.sprite = weatherSprites[0];
-                break;
-            case "Cloudy":
-                weatherDisplay.sprite = weatherSprites[1];
-                break;
-            case "Rainy":
-                weatherDisplay.sprite = weatherSprites[2];
-                break;
-        }
+        weatherDisplay.sprite = WeatherManager.Instance.CurrentWeatherStates[biome].weatherState.Icon;
     }
-    private void DisplayDays()
+    
+    public void DisplayDays()
     {
         daysPassedText.text = "Day " + GameDontDestroyOnLoadManager.Instance.DayPassed;
     }
-    private void DisplayMoney()
+    
+    public void DisplayMoney()
     {
-        moneyText.text = GameDontDestroyOnLoadManager.Instance.MoneyAmount.ToString();
+        moneyText.text = MoneyManager.Instance.MoneyAmount.ToString();
     }
-
-    private int index;
-    private Biome biome;
-    private void DisplayMoonCycles()
+    
+    public void DisplayMoonCycles()
     {
-        moonCyclesDisplay.sprite = moonCycleSprites[LunarCycleManager.Instance.CurrentLunarCycleState.Index];
+        moonCyclesDisplay.sprite = LunarCycleManager.Instance.CurrentLunarCycleState.Icon;
     }
 
 }

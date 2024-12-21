@@ -25,9 +25,6 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     public List<LetterContentSo> AllLetters { get; set; } = new();
     public List<LetterContentSo> MailBoxLetters { get; set; } = new();
     
-    // Money
-    public int MoneyAmount { get; set; }
-    
     // Cauldron
     [field: SerializeField] public Temperature CauldronTemperature { get; set; } = Temperature.LowHeat;
     
@@ -43,5 +40,10 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
         {
             DestroyImmediate(gameObject);
         }
+    }
+    
+    private void Start()
+    {
+        InfoDisplayManager.instance.DisplayDays();
     }
 }

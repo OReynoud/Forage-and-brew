@@ -28,6 +28,7 @@ public class BedBehaviour : MonoBehaviour
         // Time
         GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay = TimeOfDay.Daytime;
         GameDontDestroyOnLoadManager.Instance.DayPassed++;
+        InfoDisplayManager.instance.DisplayDays();
         
         // Letters
         GameDontDestroyOnLoadManager.Instance.HasChosenLettersToday = false;
