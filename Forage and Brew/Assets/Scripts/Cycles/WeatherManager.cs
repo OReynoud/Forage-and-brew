@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class WeatherManager : MonoBehaviour
@@ -10,12 +11,10 @@ public class WeatherManager : MonoBehaviour
     public static WeatherManager Instance { get; private set; }
     
     [SerializeField] private WeatherStateSo forestStartingWeatherState;
+    [SerializeField] private WeatherStateSo swampStartingWeatherState;
     
     public Dictionary<Biome, (WeatherStateSo weatherState, int successiveCount)> CurrentWeatherStates { get; } = new();
 
-    [BoxGroup("UI")] [SerializeField] private Image weatherImage;
-    [BoxGroup("UI")] [SerializeField] private TextMeshProUGUI daysPassedText;
-    [BoxGroup("UI")] [SerializeField] private Sprite[] weatherSprites;
     
 
     private void Awake()
@@ -33,8 +32,9 @@ public class WeatherManager : MonoBehaviour
     private void Start()
     {
         CurrentWeatherStates.Add(Biome.Forest, (forestStartingWeatherState, 1));
+        CurrentWeatherStates.Add(Biome.Swamp, (swampStartingWeatherState, 1));
         Debug.Log("The weather state for the first day is " + CurrentWeatherStates[Biome.Forest].weatherState.Name);
-        DisplayWeather();
+        InfoDisplayManager.instance.DisplayAll();
     }
     
     
@@ -73,24 +73,7 @@ public class WeatherManager : MonoBehaviour
             }
         }
 
-        DisplayWeather();
     }
 
-    private void DisplayWeather()
-    {
-        switch (CurrentWeatherStates[Biome.Forest].weatherState.Name)
-        {
-            case "Sunny":
-                weatherImage.sprite = weatherSprites[0];
-                break;
-            case "Cloudy":
-                weatherImage.sprite = weatherSprites[1];
-                break;
-            case "Rainy":
-                weatherImage.sprite = weatherSprites[2];
-                break;
-        }
 
-        daysPassedText.text = "Day " + GameDontDestroyOnLoadManager.Instance.DayPassed;
-    }
 }
