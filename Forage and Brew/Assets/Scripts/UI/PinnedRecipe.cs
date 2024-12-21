@@ -143,9 +143,6 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
                 writingIndex++;
             }
 
-            stepText[writingIndex].transform.parent.gameObject.SetActive(true);
-
-            singleActionImage[writingIndex].enabled = true;
 
 
             switch (t.Temperature)
@@ -153,12 +150,21 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
                 case Temperature.None:
                     break;
                 case Temperature.LowHeat:
+                    stepText[writingIndex].transform.parent.gameObject.SetActive(true);
+                    singleActionImage[writingIndex].enabled = true;
+
                     singleActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[3];
                     break;
                 case Temperature.MediumHeat:
+                    stepText[writingIndex].transform.parent.gameObject.SetActive(true);
+                    singleActionImage[writingIndex].enabled = true;
+
                     singleActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[4];
                     break;
                 case Temperature.HighHeat:
+                    stepText[writingIndex].transform.parent.gameObject.SetActive(true);
+                    singleActionImage[writingIndex].enabled = true;
+
                     singleActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[5];
                     break;
                 default:
