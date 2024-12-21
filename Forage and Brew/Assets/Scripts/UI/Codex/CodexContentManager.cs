@@ -146,6 +146,8 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
     public void TerminateOrder(int index)
     {
+        index++;
+        
         if (!emptyOrderPage)
         {
             emptyOrderPage = AutoFlip.instance.ControledBook.bookPages[index].UIComponent;
