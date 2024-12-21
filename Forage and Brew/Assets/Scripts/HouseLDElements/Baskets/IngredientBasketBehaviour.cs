@@ -11,8 +11,6 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
     private void Start()
     {
         interactInputCanvasGameObject.SetActive(false);
-        
-        SetBasketContent(ingredient);
     }
     
     private void OnDisable()
@@ -23,6 +21,9 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
         {
             CharacterInteractController.Instance.CurrentNearIngredientBaskets.Remove(this);
         }
+        
+        DisableInteract();
+        DisableCancel();
     }
     
 
@@ -39,6 +40,7 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
         if (GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Contains(ingredient))
         {
             Instantiate(ingredient.MeshGameObject, meshParentTransform);
+            meshParentTransform.gameObject.SetActive(true);
 
             foreach (IngredientValuesSo collectedIngredient in GameDontDestroyOnLoadManager.Instance.CollectedIngredients)
             {
@@ -82,8 +84,8 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
             characterInteractController.CurrentNearIngredientBaskets.Add(this);
             
             if (characterInteractController.collectedStack.Count > 0 &&
-                (CollectedIngredientBehaviour)characterInteractController.collectedStack[0].stackable &&
-                ((CollectedIngredientBehaviour)characterInteractController.collectedStack[0].stackable).IngredientValuesSo == ingredient)
+                characterInteractController.collectedStack[0].stackable is CollectedIngredientBehaviour ingredientBehaviour &&
+                ingredientBehaviour.IngredientValuesSo == ingredient)
             {
                 EnableCancel();
 
@@ -106,8 +108,8 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
             if (characterInteractController.collectedStack.Count > 0 &&
-                (CollectedIngredientBehaviour)characterInteractController.collectedStack[0].stackable &&
-                ((CollectedIngredientBehaviour)characterInteractController.collectedStack[0].stackable).IngredientValuesSo == ingredient)
+                characterInteractController.collectedStack[0].stackable is CollectedIngredientBehaviour ingredientBehaviour &&
+                ingredientBehaviour.IngredientValuesSo == ingredient)
             {
                 EnableCancel();
 

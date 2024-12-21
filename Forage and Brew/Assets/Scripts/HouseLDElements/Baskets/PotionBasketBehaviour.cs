@@ -22,6 +22,9 @@ public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
         {
             CharacterInteractController.Instance.CurrentNearPotionBaskets.Remove(this);
         }
+        
+        DisableInteract();
+        DisableCancel();
     }
 
 
@@ -69,12 +72,13 @@ public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
             characterInteractController.CurrentNearPotionBaskets.Add(this);
             
             if (characterInteractController.collectedStack.Count > 0 &&
-                (CollectedPotionBehaviour)characterInteractController.collectedStack[0].stackable)
+                characterInteractController.collectedStack[0].stackable is CollectedPotionBehaviour &&
+                !GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][PotionBasketIndex])
             {
                 EnableInteract();
             }
             else if (characterInteractController.collectedStack.Count == 0 &&
-                     GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][PotionBasketIndex] != null)
+                     GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][PotionBasketIndex])
             {
                 EnableCancel();
             }
@@ -88,13 +92,14 @@ public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
             if (characterInteractController.collectedStack.Count > 0 &&
-                (CollectedPotionBehaviour)characterInteractController.collectedStack[0].stackable)
+                characterInteractController.collectedStack[0].stackable is CollectedPotionBehaviour &&
+                !GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][PotionBasketIndex])
             {
                 EnableInteract();
                 DisableCancel();
             }
             else if (characterInteractController.collectedStack.Count == 0 &&
-                     GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][PotionBasketIndex] != null)
+                     GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex][PotionBasketIndex])
             {
                 EnableCancel();
                 DisableInteract();
