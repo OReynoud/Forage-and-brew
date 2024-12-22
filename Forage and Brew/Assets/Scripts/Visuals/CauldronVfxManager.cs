@@ -21,6 +21,9 @@ public class CauldronVfxManager : MonoBehaviour
     [SerializeField] [ColorUsage(true, true)] private Color highHeatFlameColor;
     [SerializeField] private float highHeatFlameRadius;
     [SerializeField] private float highHeatFlameDonutRadius;
+
+    [Header("ObtainedPotion")]
+    [SerializeField] private ParticleSystem obtainedPotionVfx;
     
     // Shader properties
     private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
@@ -80,5 +83,11 @@ public class CauldronVfxManager : MonoBehaviour
         {
             smokeVfxParent.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }
+    }
+    
+    
+    public void PlayObtainedPotionVfx()
+    {
+        obtainedPotionVfx.Play();
     }
 }
