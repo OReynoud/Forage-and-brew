@@ -105,13 +105,17 @@ public class StirHapticChallengeManager : MonoBehaviour
                 {
                     if (cookedIngredientForm.IsAType) continue;
                     
-                    if (!cauldronIngredients.Exists(ingredientForm => ingredientForm.Ingredient == cookedIngredientForm.Ingredient))
+                    if (!cauldronIngredients.Exists(ingredientForm =>
+                            ingredientForm.Ingredient == cookedIngredientForm.Ingredient &&
+                            ingredientForm.CookedForm == cookedIngredientForm.CookedForm))
                     {
                         isRightPotion = false;
                         break;
                     }
                     
-                    cauldronIngredients.Remove(cauldronIngredients.Find(ingredientForm => ingredientForm.Ingredient == cookedIngredientForm.Ingredient));
+                    cauldronIngredients.Remove(cauldronIngredients.Find(ingredientForm =>
+                        ingredientForm.Ingredient == cookedIngredientForm.Ingredient &&
+                        ingredientForm.CookedForm == cookedIngredientForm.CookedForm));
                 }
 
                 if (!isRightPotion) break;
@@ -122,13 +126,16 @@ public class StirHapticChallengeManager : MonoBehaviour
                     
                     IngredientType ingredientType = cookedIngredientForm.IngredientType;
                     
-                    if (!cauldronIngredients.Exists(ingredient => ingredient.Ingredient.Type == ingredientType))
+                    if (!cauldronIngredients.Exists(ingredient => ingredient.Ingredient.Type == ingredientType &&
+                                                                  ingredient.CookedForm == cookedIngredientForm.CookedForm))
                     {
                         isRightPotion = false;
                         break;
                     }
 
-                    cauldronIngredients.Remove(cauldronIngredients.Find(ingredient => ingredient.Ingredient.Type == ingredientType));
+                    cauldronIngredients.Remove(cauldronIngredients.Find(ingredient =>
+                        ingredient.Ingredient.Type == ingredientType &&
+                        ingredient.CookedForm == cookedIngredientForm.CookedForm));
                 }
 
                 if (!isRightPotion) break;
