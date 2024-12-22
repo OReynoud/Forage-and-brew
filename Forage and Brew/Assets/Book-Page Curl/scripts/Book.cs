@@ -219,7 +219,7 @@ public class Book : MonoBehaviour {
     {
         mode = FlipMode.LeftToRight;
         f = followLocation;
-        ShadowLTR.transform.SetParent(ClippingPlane.transform, true);
+        ShadowLTR.transform.SetParent(ClippingPlane.transform, false);
         ShadowLTR.transform.localPosition = new Vector3(0, 0, 0);
         ShadowLTR.transform.localEulerAngles = new Vector3(0, 0, 0);
         Left.transform.SetParent(ClippingPlane.transform, true);
@@ -256,7 +256,7 @@ public class Book : MonoBehaviour {
     {
         mode = FlipMode.RightToLeft;
         f = followLocation;
-        Shadow.transform.SetParent(ClippingPlane.transform, true);
+        Shadow.transform.SetParent(ClippingPlane.transform, false);
         Shadow.transform.localPosition = Vector3.zero;
         Shadow.transform.localEulerAngles = Vector3.zero;
         Right.transform.SetParent(ClippingPlane.transform, true);
