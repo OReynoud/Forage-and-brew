@@ -86,3 +86,10 @@ public struct TemperatureChallengeIngredients
     [field: SerializeField] public List<CookedIngredientForm> CookedIngredients { get; private set; }
     [field: SerializeField] public Temperature Temperature { get; private set; }
 }
+
+[Serializable]
+public struct StirCameraAndDuration
+{
+    [field: SerializeField] public CameraPreset Camera { get; private set; }
+    [field: SerializeField] [field: Min(0f)] public float Duration { get; private set; }
+}
