@@ -4,6 +4,7 @@ public class IngredientToCollectBehaviour : MonoBehaviour
 {
     [Header("Dependencies")]
     [SerializeField] private IngredientToCollectGlobalValuesSo ingredientToCollectGlobalValuesSo;
+    [field: SerializeField] public IngredientToCollectVfxManagerBehaviour IngredientToCollectVfxManagerBehaviour { get; private set; }
     [SerializeField] private IngredientToCollectSpawnManager ingredientToCollectSpawnManager;
     [SerializeField] private SphereCollider collectTrigger;
     [SerializeField] private Transform meshParentTransform;
@@ -234,7 +235,10 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     public void Collect()
     {
         GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Add(IngredientValuesSo);
-        Destroy(gameObject);
+        meshParentTransform.gameObject.SetActive(false);
+        DisableCollect();
+        IngredientToCollectVfxManagerBehaviour.StopAllLunarCycleVfx();
+        Destroy(this);
     }
     
 

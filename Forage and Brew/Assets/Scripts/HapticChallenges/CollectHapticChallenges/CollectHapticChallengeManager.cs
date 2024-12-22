@@ -65,6 +65,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
             if (ingredientToCollectBehaviour.IngredientValuesSo.Type != scythingIngredientType) continue;
             
             ingredientToCollectBehaviour.Collect();
+            ingredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayScythingVfx();
             CurrentIngredientToCollectBehaviours.Remove(ingredientToCollectBehaviour);
             return;
         }
@@ -141,6 +142,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
                 if (inputIndex != _unearthingInputIndexAlreadyReleased)
                 {
                     ingredientToCollectBehaviour.Collect();
+                    ingredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayUnearthingVfx();
                     CurrentIngredientToCollectBehaviours.Remove(ingredientToCollectBehaviour);
                     _unearthingInputIndexAlreadyPressed = 0;
                     _unearthingInputIndexAlreadyReleased = 0;
@@ -192,6 +194,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
                 if (Vector2.Angle(_firstScrapingJoystickPosition, JoystickInputValue) >= scrapingHapticChallengeSo.AngleToTravel)
                 {
                     ingredientToCollectBehaviour.Collect();
+                    ingredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayScrapingVfx();
                     CurrentIngredientToCollectBehaviours.Remove(ingredientToCollectBehaviour);
                     return;
                 }
@@ -257,6 +260,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
             if (ingredientToCollectBehaviour.IngredientValuesSo.Type != harvestIngredientType) continue;
             
             ingredientToCollectBehaviour.Collect();
+            ingredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayHarvestVfx();
             CurrentIngredientToCollectBehaviours.Remove(ingredientToCollectBehaviour);
             return;
         }
