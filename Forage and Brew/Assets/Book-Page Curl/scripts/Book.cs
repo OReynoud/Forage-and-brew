@@ -37,7 +37,6 @@ public class Book : MonoBehaviour {
     public BookMark[] bookMarks;
     public float bookmarkLerp;
     
-    [HideInInspector] public bool interactable=true;
     public bool enableShadowEffect=true;
     //represent the index of the sprite shown in the right page
     public int currentPage = 0;
@@ -162,15 +161,7 @@ public class Book : MonoBehaviour {
             return localPos;
         }
     }
-    void Update()
-    {
-        if (pageDragging && interactable)
-        {
-            UpdateBook();
-        }
 
-
-    }
 
     private void FixedUpdate()
     {
@@ -215,8 +206,10 @@ public class Book : MonoBehaviour {
         else
             UpdateBookLTRToPoint(f);
     }
+
+
     public void UpdateBookLTRToPoint(Vector3 followLocation)
-    {
+    { 
         mode = FlipMode.LeftToRight;
         f = followLocation;
         ShadowLTR.transform.SetParent(ClippingPlane.transform, false);
@@ -250,7 +243,7 @@ public class Book : MonoBehaviour {
         Right.transform.SetParent(ClippingPlane.transform, true);
         Right.transform.SetAsFirstSibling();
 
-        ShadowLTR.rectTransform.SetParent(Left.rectTransform, true);
+        ShadowLTR.rectTransform.SetParent(Left.rectTransform, true);    
     }
     public void UpdateBookRTLToPoint(Vector3 followLocation)
     {
@@ -398,12 +391,7 @@ public class Book : MonoBehaviour {
         if (enableShadowEffect) Shadow.gameObject.SetActive(true);
         UpdateBookRTLToPoint(f);
     }
-    public void OnMouseDragRightPage()
-    {
-        if (interactable)
-        DragRightPageToPoint(transformPoint(Input.mousePosition));
-        
-    }
+
     public void DragLeftPageToPoint(Vector3 point)
     {
         if (currentPage <= 0) return;
@@ -459,17 +447,7 @@ public class Book : MonoBehaviour {
         if (enableShadowEffect) ShadowLTR.gameObject.SetActive(true);
         UpdateBookLTRToPoint(f);
     }
-    public void OnMouseDragLeftPage()
-    {
-        if (interactable)
-        DragLeftPageToPoint(transformPoint(Input.mousePosition));
-        
-    }
-    public void OnMouseRelease()
-    {
-        if (interactable)
-            ReleasePage();
-    }
+
     public void ReleasePage()
     {
         if (pageDragging)
