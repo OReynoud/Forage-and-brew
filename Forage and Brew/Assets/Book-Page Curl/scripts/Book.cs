@@ -105,14 +105,14 @@ public class Book : MonoBehaviour {
         ClippingPlane.rectTransform.sizeDelta = new Vector2(pageWidth * 2 + pageHeight, pageHeight + pageHeight * 2);
 
         //hypotenous (diagonal) page length
-        float hyp = Mathf.Sqrt(pageWidth * pageWidth + pageHeight * pageHeight);
-        float shadowPageHeight = pageWidth / 2 + hyp;
-
-        Shadow.rectTransform.sizeDelta = new Vector2(pageWidth, shadowPageHeight);
-        Shadow.rectTransform.pivot = new Vector2(1, (pageWidth / 2) / shadowPageHeight);
-
-        ShadowLTR.rectTransform.sizeDelta = new Vector2(pageWidth, shadowPageHeight);
-        ShadowLTR.rectTransform.pivot = new Vector2(0, (pageWidth / 2) / shadowPageHeight);
+        // float hyp = Mathf.Sqrt(pageWidth * pageWidth + pageHeight * pageHeight);
+        // float shadowPageHeight = pageWidth / 2 + hyp;
+        //
+        // Shadow.rectTransform.sizeDelta = new Vector2(pageWidth, shadowPageHeight);
+        // Shadow.rectTransform.pivot = new Vector2(1, (pageWidth / 2) / shadowPageHeight);
+        //
+        // ShadowLTR.rectTransform.sizeDelta = new Vector2(pageWidth, shadowPageHeight);
+        // ShadowLTR.rectTransform.pivot = new Vector2(0, (pageWidth / 2) / shadowPageHeight);
 
         foreach (var bookMark in bookMarks)
         {
@@ -198,21 +198,13 @@ public class Book : MonoBehaviour {
         }
     }
 
-    public void UpdateBook()
-    {
-        f = Vector3.Lerp(f, transformPoint(Input.mousePosition), Time.deltaTime * 10);
-        if (mode == FlipMode.RightToLeft)
-            UpdateBookRTLToPoint(f);
-        else
-            UpdateBookLTRToPoint(f);
-    }
 
 
     public void UpdateBookLTRToPoint(Vector3 followLocation)
     { 
         mode = FlipMode.LeftToRight;
         f = followLocation;
-        ShadowLTR.transform.SetParent(ClippingPlane.transform, false);
+        ShadowLTR.transform.SetParent(ClippingPlane.transform, true);
         ShadowLTR.transform.localPosition = new Vector3(0, 0, 0);
         ShadowLTR.transform.localEulerAngles = new Vector3(0, 0, 0);
         Left.transform.SetParent(ClippingPlane.transform, true);
@@ -245,13 +237,20 @@ public class Book : MonoBehaviour {
 
         ShadowLTR.rectTransform.SetParent(Left.rectTransform, true);    
     }
+
+    // public void SetupRTLFlip()
+    // {
+    //     
+    //     Shadow.transform.SetParent(ClippingPlane.transform, false);
+    // }
+    public float lerp;
     public void UpdateBookRTLToPoint(Vector3 followLocation)
     {
         mode = FlipMode.RightToLeft;
         f = followLocation;
-        Shadow.transform.SetParent(ClippingPlane.transform, false);
-        Shadow.transform.localPosition = Vector3.zero;
-        Shadow.transform.localEulerAngles = Vector3.zero;
+        // Shadow.transform.SetParent(ClippingPlane.transform, false);
+        // Shadow.transform.localPosition = Vector3.zero;
+        // Shadow.transform.localEulerAngles = Vector3.zero;
         Right.transform.SetParent(ClippingPlane.transform, true);
 
         Left.transform.SetParent(BookPanel.transform, true);
@@ -262,8 +261,15 @@ public class Book : MonoBehaviour {
         float clipAngle = CalcClipAngle(c, ebr, out t1);
         if (clipAngle > -90) clipAngle += 180;
 
+        
         ClippingPlane.rectTransform.pivot = new Vector2(1, 0.35f);
         ClippingPlane.transform.localEulerAngles = new Vector3(0, 0, clipAngle + 90);
+
+
+        //FOUND THE SOLUTION HOLY FCK
+        Shadow.rectTransform.pivot = ClippingPlane.rectTransform.pivot;
+        Shadow.rectTransform.position = Vector3.Lerp(NextPageClip.transform.position, ClippingPlane.transform.position, lerp);
+        Shadow.transform.localEulerAngles = -ClippingPlane.transform.localEulerAngles;
         ClippingPlane.transform.position = BookPanel.TransformPoint(t1);
 
         //page position and angle
@@ -453,14 +459,7 @@ public class Book : MonoBehaviour {
         if (pageDragging)
         {
             pageDragging = false;
-            float distanceToLeft = Vector2.Distance(c, ebl);
-            float distanceToRight = Vector2.Distance(c, ebr);
-            if (distanceToRight < distanceToLeft && mode == FlipMode.RightToLeft)
-                TweenBack();
-            else if (distanceToRight > distanceToLeft && mode == FlipMode.LeftToRight)
-                TweenBack();
-            else
-                TweenForward();
+            TweenForward();
         }
     }
     Coroutine currentCoroutine;
@@ -527,40 +526,6 @@ public class Book : MonoBehaviour {
         if (OnFlip != null)
             OnFlip.Invoke();
     }
-    public void TweenBack()
-    {
-        if (mode == FlipMode.RightToLeft)
-        {
-            currentCoroutine = StartCoroutine(TweenTo(ebr,0.15f,
-                () =>
-                {
-                    UpdateSprites();
-                    RightNext.transform.SetParent(BookPanel.transform);
-                    Right.transform.SetParent(BookPanel.transform);
-
-                    Left.gameObject.SetActive(false);
-                    Right.gameObject.SetActive(false);
-                    pageDragging = false;
-                }
-                ));
-        }
-        else
-        {
-            currentCoroutine = StartCoroutine(TweenTo(ebl, 0.15f,
-                () =>
-                {
-                    UpdateSprites();
-
-                    LeftNext.transform.SetParent(BookPanel.transform);
-                    Left.transform.SetParent(BookPanel.transform);
-
-                    Left.gameObject.SetActive(false);
-                    Right.gameObject.SetActive(false);
-                    pageDragging = false;
-                }
-                ));
-        }
-    }
     public IEnumerator TweenTo(Vector3 to, float duration, System.Action onFinish)
     {
         int steps = (int)(duration / 0.025f);
@@ -568,7 +533,7 @@ public class Book : MonoBehaviour {
         for (int i = 0; i < steps-1; i++)
         {
             if(mode== FlipMode.RightToLeft)
-            UpdateBookRTLToPoint( f + displacement);
+                UpdateBookRTLToPoint( f + displacement);
             else
                 UpdateBookLTRToPoint(f + displacement);
 
@@ -580,8 +545,4 @@ public class Book : MonoBehaviour {
 
 
 
-    public void OnMove()
-    {
-        Debug.Log("Jai appuyé sur un bouton");
-    }
 }

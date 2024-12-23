@@ -147,6 +147,7 @@ public class AutoFlip : Singleton<AutoFlip>
     }
     IEnumerator FlipRTL(float xc, float xl, float h, float frameTime, float dx)
     {
+        Debug.Log("Turn Right");
         float x = xc + xl;
         float y = (-h / (xl * xl)) * (x - xc) * (x - xc);
 
