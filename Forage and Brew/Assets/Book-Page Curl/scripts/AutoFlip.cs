@@ -152,7 +152,7 @@ public class AutoFlip : Singleton<AutoFlip>
         float y = (-h / (xl * xl)) * (x - xc) * (x - xc);
 
         ControledBook.DragRightPageToPoint(new Vector3(x, y, 0));
-        
+        ControledBook.SetupRTLFlip();
         for (int i = 0; i < AnimationFramesCount; i++)
         {
             y = (-h / (xl * xl)) * (x - xc) * (x - xc);
@@ -167,7 +167,7 @@ public class AutoFlip : Singleton<AutoFlip>
         float x = xc - xl;
         float y = (-h / (xl * xl)) * (x - xc) * (x - xc);
         ControledBook.DragLeftPageToPoint(new Vector3(x, y, 0));
-        
+        ControledBook.SetupLTRFlip();
         for (int i = 0; i < AnimationFramesCount; i++)
         {
             y = (-h / (xl * xl)) * (x - xc) * (x - xc);
