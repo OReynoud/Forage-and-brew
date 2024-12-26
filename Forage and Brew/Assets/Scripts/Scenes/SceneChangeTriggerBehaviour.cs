@@ -21,7 +21,7 @@ public class SceneChangeTriggerBehaviour : MonoBehaviour
             {
                 if (sceneName.Scene == scene)
                 {
-                    SceneManager.LoadScene(sceneName.Name);
+                    SceneTransitionManager.instance.HandleSceneChange(sceneName.Name);
                     break;
                 }
             }
