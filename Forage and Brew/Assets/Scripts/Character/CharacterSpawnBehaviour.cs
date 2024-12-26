@@ -15,6 +15,7 @@ public class CharacterSpawnBehaviour : MonoBehaviour
             characterTransform.position = transform.position;
             characterTransform.rotation = transform.rotation;
             
+            
             foreach (SceneName sceneName in sceneListSo.SceneNames)
             {
                 if (sceneName.Name == SceneManager.GetActiveScene().name)
@@ -40,6 +41,7 @@ public class CharacterSpawnBehaviour : MonoBehaviour
                 CameraController.instance.ApplyScriptableCamSettings(camSettings, 0);
                 CameraController.instance.InstantCamUpdate();
             }
+            SceneTransitionManager.instance.HandleLoadNewScene();
         }
     }
 }
