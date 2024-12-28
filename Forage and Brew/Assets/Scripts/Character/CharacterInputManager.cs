@@ -73,6 +73,8 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.ChoppingHapticChallenge1.performed += ChoppingHapticChallenge1OnPerformed;
         _inputs.Player.ChoppingHapticChallenge2.performed += ChoppingHapticChallenge2OnPerformed;
         _inputs.Player.ChoppingHapticChallenge3.performed += ChoppingHapticChallenge3OnPerformed;
+        _inputs.Player.ChoppingHapticChallenge4.performed += ChoppingHapticChallenge4OnPerformed;
+        _inputs.Player.ChoppingHapticChallenge5.performed += ChoppingHapticChallenge5OnPerformed;
         _inputs.Player.PushBellows.performed += PushBellowsOnPerformed;
         _inputs.Player.HapticChallengeJoystick.performed += HapticChallengeJoystickOnPerformed;
         _inputs.Player.HapticChallengeJoystick.canceled += HapticChallengeJoystickOnPerformed;
@@ -137,6 +139,8 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.ChoppingHapticChallenge1.Enable();
         _inputs.Player.ChoppingHapticChallenge2.Enable();
         _inputs.Player.ChoppingHapticChallenge3.Enable();
+        _inputs.Player.ChoppingHapticChallenge4.Enable();
+        _inputs.Player.ChoppingHapticChallenge5.Enable();
     }
     
     public void EnableTemperatureHapticChallengeInputs()
@@ -214,6 +218,8 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.ChoppingHapticChallenge1.Disable();
         _inputs.Player.ChoppingHapticChallenge2.Disable();
         _inputs.Player.ChoppingHapticChallenge3.Disable();
+        _inputs.Player.ChoppingHapticChallenge4.Disable();
+        _inputs.Player.ChoppingHapticChallenge5.Disable();
     }
     
     public void DisableTemperatureHapticChallengeInputs()
@@ -345,6 +351,16 @@ public class CharacterInputManager : MonoBehaviour
     private void ChoppingHapticChallenge3OnPerformed(InputAction.CallbackContext obj)
     {
         ChoppingHapticChallengeManager.Instance.NextChoppingTurn(3);
+    }
+    
+    private void ChoppingHapticChallenge4OnPerformed(InputAction.CallbackContext obj)
+    {
+        ChoppingHapticChallengeManager.Instance.NextChoppingTurn(4);
+    }
+    
+    private void ChoppingHapticChallenge5OnPerformed(InputAction.CallbackContext obj)
+    {
+        ChoppingHapticChallengeManager.Instance.NextChoppingTurn(5);
     }
     
     private void PushBellowsOnPerformed(InputAction.CallbackContext obj)

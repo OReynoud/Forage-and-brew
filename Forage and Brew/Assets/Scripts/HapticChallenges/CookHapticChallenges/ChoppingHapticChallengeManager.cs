@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ChoppingHapticChallengeManager : MonoBehaviour
 {
@@ -12,13 +11,9 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
     
     [Header("UI")]
     [SerializeField] private GameObject choppingChallengeGameObject;
-    [SerializeField] private RectTransform gaugeRectTransform;
-    [SerializeField] private Image gaugeImage;
-    [SerializeField] private RectTransform currentInputRectTransform;
-    [SerializeField] private Image currentInputImage;
-    [SerializeField] private RectTransform nextInputRectTransform;
-    [SerializeField] private Image nextInputImage;
-    [SerializeField] private List<Sprite> choppingInputSprites;
+    [SerializeField] private Transform choppingInputParentTransform;
+    [SerializeField] private ChoppingInputBehaviour choppingInputPrefab;
+    private readonly List<ChoppingInputBehaviour> _choppingInputBehaviours = new();
     
     [Header("Camera")]
     [SerializeField] private CameraPreset choppingChallengeCameraPreset;
@@ -69,7 +64,12 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         
         // UI
         choppingChallengeGameObject.SetActive(true);
-        gaugeImage.fillAmount = 0f;
+        for (int i = 0; i < _currentChoppingChallenge.ChoppingInputIndices.Count; i++)
+        {
+            ChoppingInputBehaviour choppingInputBehaviour = Instantiate(choppingInputPrefab, choppingInputParentTransform);
+            choppingInputBehaviour.SetInputSprite(_currentChoppingChallenge.ChoppingInputIndices[i]);
+            _choppingInputBehaviours.Add(choppingInputBehaviour);
+        }
         
         // Countertop
         CurrentChoppingCountertopBehaviour.DisableInteract();
@@ -92,6 +92,12 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
     private void StopChoppingChallenge()
     {
         _isChallengeActive = false;
+
+        foreach (ChoppingInputBehaviour choppingInputBehaviour in _choppingInputBehaviours)
+        {
+            Destroy(choppingInputBehaviour.gameObject);
+        }
+        _choppingInputBehaviours.Clear();
         choppingChallengeGameObject.SetActive(false);
         
         CameraController.instance.ApplyScriptableCamSettings(_previousCameraPreset, choppingCameraTransitionTime);
@@ -116,21 +122,7 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
     
     private void StartChoppingTurn()
     {
-        currentInputImage.enabled = true;
-        currentInputImage.sprite = choppingInputSprites[_currentChoppingChallenge.ChoppingInputIndices[_currentChoppingInputIndex] - 1];
-        currentInputRectTransform.anchoredPosition = new Vector2(_currentChoppingInputIndex *
-            gaugeRectTransform.sizeDelta.x / _currentChoppingChallenge.ChoppingInputIndices.Count +
-            gaugeRectTransform.sizeDelta.x / _currentChoppingChallenge.ChoppingInputIndices.Count * 0.5f,
-            currentInputRectTransform.anchoredPosition.y);
-
-        if (_currentChoppingInputIndex + 1 < _currentChoppingChallenge.ChoppingInputIndices.Count)
-        {
-            nextInputImage.sprite = choppingInputSprites[_currentChoppingChallenge.ChoppingInputIndices[_currentChoppingInputIndex + 1] - 1];
-            nextInputRectTransform.anchoredPosition = new Vector2((_currentChoppingInputIndex + 1) *
-                gaugeRectTransform.sizeDelta.x / _currentChoppingChallenge.ChoppingInputIndices.Count +
-                gaugeRectTransform.sizeDelta.x / _currentChoppingChallenge.ChoppingInputIndices.Count * 0.5f,
-                nextInputRectTransform.anchoredPosition.y);
-        }
+        _choppingInputBehaviours[_currentChoppingInputIndex].SetCurrentInput();
     }
     
     public void NextChoppingTurn(int inputIndex)
@@ -139,12 +131,16 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         
         if (_isWaitingForNextChopping) return;
         
-        if (inputIndex != _currentChoppingChallenge.ChoppingInputIndices[_currentChoppingInputIndex]) return;
+        if (inputIndex != _currentChoppingChallenge.ChoppingInputIndices[_currentChoppingInputIndex])
+        {
+            _choppingInputBehaviours[_currentChoppingInputIndex].SetWrongInput();
+        }
+        else
+        {
+            _choppingInputBehaviours[_currentChoppingInputIndex].SetRightInput();
+        }
         
         _currentChoppingInputIndex++;
-        
-        gaugeImage.fillAmount = (float) _currentChoppingInputIndex / _currentChoppingChallenge.ChoppingInputIndices.Count;
-        currentInputImage.enabled = false;
         
         if (_currentChoppingInputIndex == _currentChoppingChallenge.ChoppingInputIndices.Count)
         {

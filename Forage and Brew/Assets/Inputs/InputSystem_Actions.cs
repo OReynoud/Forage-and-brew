@@ -287,6 +287,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChoppingHapticChallenge4"",
+                    ""type"": ""Button"",
+                    ""id"": ""2c4caa15-482d-49b9-bc4b-6d441b37030e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChoppingHapticChallenge5"",
+                    ""type"": ""Button"",
+                    ""id"": ""b844e5ca-081f-4654-87ea-81da82796ee6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1048,6 +1066,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""PushBellows"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0ce93b2a-8977-4349-824d-5d94d2e1a73c"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ChoppingHapticChallenge4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bbd32882-83d1-41c5-84b2-b094446893ba"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ChoppingHapticChallenge5"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1662,6 +1702,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Unearth2 = m_Player.FindAction("Unearth2", throwIfNotFound: true);
         m_Player_Harvest = m_Player.FindAction("Harvest", throwIfNotFound: true);
         m_Player_PushBellows = m_Player.FindAction("PushBellows", throwIfNotFound: true);
+        m_Player_ChoppingHapticChallenge4 = m_Player.FindAction("ChoppingHapticChallenge4", throwIfNotFound: true);
+        m_Player_ChoppingHapticChallenge5 = m_Player.FindAction("ChoppingHapticChallenge5", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1770,6 +1812,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Unearth2;
     private readonly InputAction m_Player_Harvest;
     private readonly InputAction m_Player_PushBellows;
+    private readonly InputAction m_Player_ChoppingHapticChallenge4;
+    private readonly InputAction m_Player_ChoppingHapticChallenge5;
     public struct PlayerActions
     {
         private @InputSystem_Actions m_Wrapper;
@@ -1803,6 +1847,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @Unearth2 => m_Wrapper.m_Player_Unearth2;
         public InputAction @Harvest => m_Wrapper.m_Player_Harvest;
         public InputAction @PushBellows => m_Wrapper.m_Player_PushBellows;
+        public InputAction @ChoppingHapticChallenge4 => m_Wrapper.m_Player_ChoppingHapticChallenge4;
+        public InputAction @ChoppingHapticChallenge5 => m_Wrapper.m_Player_ChoppingHapticChallenge5;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1899,6 +1945,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @PushBellows.started += instance.OnPushBellows;
             @PushBellows.performed += instance.OnPushBellows;
             @PushBellows.canceled += instance.OnPushBellows;
+            @ChoppingHapticChallenge4.started += instance.OnChoppingHapticChallenge4;
+            @ChoppingHapticChallenge4.performed += instance.OnChoppingHapticChallenge4;
+            @ChoppingHapticChallenge4.canceled += instance.OnChoppingHapticChallenge4;
+            @ChoppingHapticChallenge5.started += instance.OnChoppingHapticChallenge5;
+            @ChoppingHapticChallenge5.performed += instance.OnChoppingHapticChallenge5;
+            @ChoppingHapticChallenge5.canceled += instance.OnChoppingHapticChallenge5;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1990,6 +2042,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @PushBellows.started -= instance.OnPushBellows;
             @PushBellows.performed -= instance.OnPushBellows;
             @PushBellows.canceled -= instance.OnPushBellows;
+            @ChoppingHapticChallenge4.started -= instance.OnChoppingHapticChallenge4;
+            @ChoppingHapticChallenge4.performed -= instance.OnChoppingHapticChallenge4;
+            @ChoppingHapticChallenge4.canceled -= instance.OnChoppingHapticChallenge4;
+            @ChoppingHapticChallenge5.started -= instance.OnChoppingHapticChallenge5;
+            @ChoppingHapticChallenge5.performed -= instance.OnChoppingHapticChallenge5;
+            @ChoppingHapticChallenge5.canceled -= instance.OnChoppingHapticChallenge5;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -2201,6 +2259,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnUnearth2(InputAction.CallbackContext context);
         void OnHarvest(InputAction.CallbackContext context);
         void OnPushBellows(InputAction.CallbackContext context);
+        void OnChoppingHapticChallenge4(InputAction.CallbackContext context);
+        void OnChoppingHapticChallenge5(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
