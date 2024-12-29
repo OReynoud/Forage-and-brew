@@ -8,6 +8,8 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
     
     [Header("Dependencies")]
     [SerializeField] private ChoppingHapticChallengeListSo choppingHapticChallengeListSo;
+    [SerializeField] private Animator characterAnimator;
+    [SerializeField] private GameObject knifeGameObject;
     
     [Header("UI")]
     [SerializeField] private GameObject choppingChallengeGameObject;
@@ -31,7 +33,11 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
     private bool _isWaitingForNextChopping;
     private float _currentChoppingWaitTime;
     
-    
+    // Animator Hashes
+    private static readonly int IsChopping = Animator.StringToHash("IsChopping");
+    private static readonly int DoChop = Animator.StringToHash("DoChop");
+
+
     private void Awake()
     {
         Instance = this;
@@ -86,6 +92,10 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         transform.position = CurrentChoppingCountertopBehaviour.transform.position + characterChoppingPosition;
         transform.rotation = CurrentChoppingCountertopBehaviour.transform.rotation * Quaternion.Euler(characterChoppingRotation);
         
+        // Animation
+        characterAnimator.SetBool(IsChopping, true);
+        knifeGameObject.SetActive(true);
+        
         StartChoppingTurn();
     }
     
@@ -102,7 +112,9 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         
         CameraController.instance.ApplyScriptableCamSettings(_previousCameraPreset, choppingCameraTransitionTime);
         CharacterInputManager.Instance.EnableInputs();
-        CurrentChoppingCountertopBehaviour.EnableInteract();
+        // CurrentChoppingCountertopBehaviour.EnableInteract();
+        characterAnimator.SetBool(IsChopping, false);
+        knifeGameObject.SetActive(false);
         CurrentChoppingCountertopBehaviour.ChopIngredient(choppingHapticChallengeListSo);
     }
     
@@ -139,6 +151,12 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         {
             _choppingInputBehaviours[_currentChoppingInputIndex].SetRightInput();
         }
+        
+        // Animation
+        characterAnimator.SetTrigger(DoChop);
+        
+        // VFX
+        CurrentChoppingCountertopBehaviour.CountertopVfxManager.PlayChopVfx();
         
         _currentChoppingInputIndex++;
         

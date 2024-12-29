@@ -19,34 +19,34 @@ public class ChoppingInputBehaviour : MonoBehaviour
 
     public void SetPreviewInput()
     {
-        previewInputImage.enabled = true;
-        currentInputImage.enabled = false;
-        correctInputImage.enabled = false;
-        wrongInputImage.enabled = false;
+        previewInputImage.gameObject.SetActive(true);
+        currentInputImage.gameObject.SetActive(false);
+        correctInputImage.gameObject.SetActive(false);
+        wrongInputImage.gameObject.SetActive(false);
     }
     
     public void SetCurrentInput()
     {
-        previewInputImage.enabled = false;
-        currentInputImage.enabled = true;
-        correctInputImage.enabled = false;
-        wrongInputImage.enabled = false;
+        previewInputImage.gameObject.SetActive(false);
+        currentInputImage.gameObject.SetActive(true);
+        correctInputImage.gameObject.SetActive(false);
+        wrongInputImage.gameObject.SetActive(false);
     }
     
     public void SetRightInput()
     {
-        previewInputImage.enabled = false;
-        currentInputImage.enabled = false;
-        correctInputImage.enabled = true;
-        wrongInputImage.enabled = false;
+        previewInputImage.gameObject.SetActive(false);
+        currentInputImage.gameObject.SetActive(false);
+        correctInputImage.gameObject.SetActive(true);
+        wrongInputImage.gameObject.SetActive(false);
     }
     
     public void SetWrongInput()
     {
-        previewInputImage.enabled = false;
-        currentInputImage.enabled = false;
-        correctInputImage.enabled = false;
-        wrongInputImage.enabled = true;
+        previewInputImage.gameObject.SetActive(false);
+        currentInputImage.gameObject.SetActive(false);
+        correctInputImage.gameObject.SetActive(false);
+        wrongInputImage.gameObject.SetActive(true);
     }
     
     
