@@ -249,7 +249,9 @@ public class CharacterInteractController : MonoBehaviour
     
     public void DropIngredientsInChoppingCountertop()
     {
-        if (!CurrentNearChoppingCountertop || collectedStack.Count == 0 || !(CollectedIngredientBehaviour)collectedStack[0].stackable) return;
+        if (!CurrentNearChoppingCountertop || collectedStack.Count == 0 ||
+            collectedStack[0].stackable is not CollectedIngredientBehaviour collectedIngredientBehaviour ||
+            collectedIngredientBehaviour.CookedForm is ChoppingHapticChallengeListSo) return;
         
         CurrentNearChoppingCountertop.DisableInteract();
         ShoveStackInTarget(CurrentNearChoppingCountertop.transform, CurrentNearChoppingCountertop, choppingOffset);

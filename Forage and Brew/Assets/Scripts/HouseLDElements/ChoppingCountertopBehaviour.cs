@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class ChoppingCountertopBehaviour : MonoBehaviour, IIngredientAddable
 {
+    [field: SerializeField] public CountertopVfxManager CountertopVfxManager { get; private set; }
     [SerializeField] private GameObject interactInputCanvasGameObject;
     
-    private List<CollectedIngredientBehaviour> _collectedIngredients = new();
+    private readonly List<CollectedIngredientBehaviour> _collectedIngredients = new();
 
     
     private void Start()
@@ -46,7 +47,10 @@ public class ChoppingCountertopBehaviour : MonoBehaviour, IIngredientAddable
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
-            other.TryGetComponent(out ChoppingHapticChallengeManager choppingHapticChallengeManager))
+            other.TryGetComponent(out ChoppingHapticChallengeManager choppingHapticChallengeManager) &&
+            characterInteractController.collectedStack.Count > 0 &&
+            characterInteractController.collectedStack[0].stackable is CollectedIngredientBehaviour
+                { CookedForm: not ChoppingHapticChallengeListSo })
         {
             characterInteractController.CurrentNearChoppingCountertop = this;
             choppingHapticChallengeManager.CurrentChoppingCountertopBehaviour = this;
@@ -61,6 +65,7 @@ public class ChoppingCountertopBehaviour : MonoBehaviour, IIngredientAddable
             characterInteractController.CurrentNearChoppingCountertop == this)
         {
             characterInteractController.CurrentNearChoppingCountertop = null;
+            choppingHapticChallengeManager.CurrentChoppingCountertopBehaviour = null;
             DisableInteract();
         }
     }
