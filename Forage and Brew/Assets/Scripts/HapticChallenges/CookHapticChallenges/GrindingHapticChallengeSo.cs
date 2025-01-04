@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "D_GrindingHapticChallenge", menuName = "Haptic Challenges/GrindingHapticChallengeSo")]
-public class GrindingHapticChallengeSo : ScriptableObject
+public class GrindingHapticChallengeSo : CookHapticChallengeSo
 {
     [field: SerializeField] [field: Tooltip("The list of routes.")]
     public List<GrindingHapticChallengeRouteSo> Routes { get; private set; } = new();
@@ -15,4 +15,7 @@ public class GrindingHapticChallengeSo : ScriptableObject
     
     [field: SerializeField] [field: Tooltip("The distance tolerance between the cursor and the end of the route to consider it as completed.")]
     public float EndPointDistanceTolerance { get; private set; } = 10f;
+    
+    [field: SerializeField] [field: Tooltip("The minimum speed of the grinding animation.")]
+    public float GrindingAnimationMinSpeed { get; private set; } = 0.1f;
 }

@@ -29,6 +29,7 @@ public class CharacterInteractController : MonoBehaviour
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public MailBoxBehaviour CurrentNearMailBoxBehaviour { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public CauldronBehaviour CurrentNearCauldron { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public ChoppingCountertopBehaviour CurrentNearChoppingCountertop { get; set; }
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public GrindingCountertopBehaviour CurrentNearGrindingCountertop { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<IngredientBasketBehaviour> CurrentNearIngredientBaskets { get; set; } = new();
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<PotionBasketBehaviour> CurrentNearPotionBaskets { get; set; } = new();
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public bool AreHandsFull { get; private set; }
@@ -53,7 +54,8 @@ public class CharacterInteractController : MonoBehaviour
     [BoxGroup("Collected ingredients stack variables")] [field: Min(0f)]
     public float stackDisplacementClamp;
     
-    [SerializeField] private Vector3 choppingOffset = new(0f, 1.15f, -0.05f);
+    [SerializeField] private Vector3 choppingOffset = new(0f, 1.3f, -0.05f);
+    [SerializeField] private Vector3 grindingOffset = new(0f, 1.3f, 0.1f);
 
 
     private void Awake()
@@ -257,6 +259,18 @@ public class CharacterInteractController : MonoBehaviour
         ShoveStackInTarget(CurrentNearChoppingCountertop.transform, CurrentNearChoppingCountertop, choppingOffset);
         
         ChoppingHapticChallengeManager.Instance.StartChoppingChallenge();
+    }
+    
+    public void DropIngredientsInGrindingCountertop()
+    {
+        if (!CurrentNearGrindingCountertop || collectedStack.Count == 0 ||
+            collectedStack[0].stackable is not CollectedIngredientBehaviour collectedIngredientBehaviour ||
+            collectedIngredientBehaviour.CookedForm is GrindingHapticChallengeSo) return;
+        
+        CurrentNearGrindingCountertop.DisableInteract();
+        ShoveStackInTarget(CurrentNearGrindingCountertop.transform, CurrentNearGrindingCountertop, grindingOffset);
+        
+        GrindingHapticChallengeManager.Instance.StartGrindingChallenge();
     }
 
 

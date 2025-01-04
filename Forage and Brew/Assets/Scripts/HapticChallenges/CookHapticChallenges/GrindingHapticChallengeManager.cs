@@ -9,6 +9,8 @@ public class GrindingHapticChallengeManager : MonoBehaviour
     
     [Header("Dependencies")]
     [SerializeField] private GrindingHapticChallengeSo grindingHapticChallengeSo;
+    [SerializeField] private Animator characterAnimator;
+    [SerializeField] private GameObject mortarGameObject;
     
     [Header("UI")]
     [SerializeField] private GameObject grindingHapticChallengeGameObject;
@@ -21,11 +23,26 @@ public class GrindingHapticChallengeManager : MonoBehaviour
     [SerializeField] private Image currentPositionImage;
     [SerializeField] private float canvasSplineScale = 108f;
     
+    [Header("Camera")]
+    [SerializeField] private CameraPreset grindingChallengeCameraPreset;
+    [SerializeField] private float grindingCameraTransitionTime = 0.5f;
+    private CameraPreset _previousCameraPreset;
+    
+    [Header("Character")]
+    [SerializeField] private Vector3 characterGrindingPosition;
+    [SerializeField] private Vector3 characterGrindingRotation;
+    
+    public GrindingCountertopBehaviour CurrentGrindingCountertopBehaviour { get; set; }
     public Vector2 JoystickInputValue { get; set; }
     private bool _isChallengeActive;
     private int _currentRouteIndex;
     private float _currentTime;
     
+    // Animator Hashes
+    private static readonly int IsGrinding = Animator.StringToHash("IsGrinding");
+    private static readonly int GrindSpeed = Animator.StringToHash("GrindSpeed");
+    private static readonly int DoCrush = Animator.StringToHash("DoCrush");
+
     
     private void Awake()
     {
@@ -45,12 +62,17 @@ public class GrindingHapticChallengeManager : MonoBehaviour
     }
     
     
-    private void StartGrindingChallenge()
+    public void StartGrindingChallenge()
     {
-        grindingHapticChallengeGameObject.SetActive(true);
+        if (!CurrentGrindingCountertopBehaviour) return;
+        
+        // Challenge variables
         _isChallengeActive = true;
         _currentRouteIndex = Random.Range(0, grindingHapticChallengeSo.Routes.Count);
         _currentTime = 0f;
+        
+        // UI
+        grindingHapticChallengeGameObject.SetActive(true);
         
         previewSplineContainer.Spline.Clear();
         foreach (Vector3 point in grindingHapticChallengeSo.Routes[_currentRouteIndex].Points)
@@ -72,15 +94,41 @@ public class GrindingHapticChallengeManager : MonoBehaviour
         currentPositionImage.rectTransform.anchoredPosition = new Vector2(
             grindingHapticChallengeSo.Routes[_currentRouteIndex].Points[0].x * canvasSplineScale,
             grindingHapticChallengeSo.Routes[_currentRouteIndex].Points[0].y * canvasSplineScale);
+        
+        // Countertop
+        CurrentGrindingCountertopBehaviour.DisableInteract();
+        
+        // Inputs
+        CharacterInputManager.Instance.DisableInputs();
+        CharacterInputManager.Instance.EnableGrindingHapticChallengeInputs();
+        
+        // Camera
+        _previousCameraPreset = CameraController.instance.TargetCamSettings;
+        CameraController.instance.ApplyScriptableCamSettings(grindingChallengeCameraPreset, grindingCameraTransitionTime);
+
+        // Character
+        transform.position = CurrentGrindingCountertopBehaviour.transform.position + characterGrindingPosition;
+        transform.rotation = CurrentGrindingCountertopBehaviour.transform.rotation * Quaternion.Euler(characterGrindingRotation);
+        
+        // Animation
+        characterAnimator.SetBool(IsGrinding, true);
+        mortarGameObject.SetActive(true);
     }
     
     public void StopGrindingChallenge()
     {
         if (!_isChallengeActive) return;
         
-        grindingHapticChallengeGameObject.SetActive(false);
         _isChallengeActive = false;
-        // StopCollectHapticChallenge(); TODO: Implement this method
+
+        grindingHapticChallengeGameObject.SetActive(false);
+        
+        CameraController.instance.ApplyScriptableCamSettings(_previousCameraPreset, grindingCameraTransitionTime);
+        CharacterInputManager.Instance.EnableInputs();
+        // CurrentGrindingCountertopBehaviour.EnableInteract();
+        characterAnimator.SetBool(IsGrinding, false);
+        mortarGameObject.SetActive(false);
+        CurrentGrindingCountertopBehaviour.GrindIngredient(grindingHapticChallengeSo);
     }
     
     private void UpdateGrindingChallenge()
@@ -103,7 +151,13 @@ public class GrindingHapticChallengeManager : MonoBehaviour
 
     private bool ProcessInputGrindingChallenge()
     {
-        if (JoystickInputValue == Vector2.zero) return false;
+        if (JoystickInputValue == Vector2.zero)
+        {
+            characterAnimator.SetFloat(GrindSpeed, grindingHapticChallengeSo.GrindingAnimationMinSpeed);
+            return false;
+        }
+        
+        characterAnimator.SetFloat(GrindSpeed, 1f);
         
         currentPositionImage.rectTransform.anchoredPosition += JoystickInputValue.normalized *
             (grindingHapticChallengeSo.CursorSpeed * Time.deltaTime);

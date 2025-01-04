@@ -93,3 +93,16 @@ public struct StirCameraAndDuration
     [field: SerializeField] public CameraPreset Camera { get; private set; }
     [field: SerializeField] [field: Min(0f)] public float Duration { get; private set; }
 }
+
+[Serializable]
+public struct GrindingHapticChallengeCrushInput
+{
+    [field: SerializeField] [field: Range(1, 2)] public int Input { get; private set; }
+    [field: SerializeField] public Vector3 Position { get; private set; }
+    
+    public GrindingHapticChallengeCrushInput(int input, Vector3 position)
+    {
+        Input = input;
+        Position = position;
+    }
+}

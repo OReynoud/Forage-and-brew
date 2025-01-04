@@ -6,7 +6,10 @@ public class GrindingHapticChallengeRouteSo : ScriptableObject
 {
     [field: SerializeField] [field: Tooltip("The points of the route.")]
     public List<Vector3> Points { get; private set; } = new();
-
+    
+    [field: SerializeField] [field: Tooltip("The rate at which the cursor position is saved (times per second).")]
+    public List<GrindingHapticChallengeCrushInput> CrushInputs { get; private set; } = new();
+    
 
     private void OnValidate()
     {

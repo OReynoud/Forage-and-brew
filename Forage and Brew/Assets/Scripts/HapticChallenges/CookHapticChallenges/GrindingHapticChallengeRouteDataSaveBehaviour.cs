@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using NaughtyAttributes;
 using UnityEditor;
@@ -9,6 +10,8 @@ public class GrindingHapticChallengeRouteDataSaveBehaviour : MonoBehaviour
     [SerializeField] private GrindingHapticChallengeSo grindingHapticChallengeSo;
     [SerializeField] private SplineContainer splineContainer;
     [SerializeField] private Object grindingHapticChallengeRouteDataFolder;
+    [SerializeField] private List<GameObject> crushInput1GameObjects;
+    [SerializeField] private List<GameObject> crushInput2GameObjects;
 
 #if UNITY_EDITOR
     [Button]
@@ -34,6 +37,16 @@ public class GrindingHapticChallengeRouteDataSaveBehaviour : MonoBehaviour
             grindingHapticChallengeRouteSo.Points.Add(knot.Position);
         }
 
+        foreach (GameObject crushInputGameObject in crushInput1GameObjects)
+        {
+            TryAddCrushInput(grindingHapticChallengeRouteSo, 1, crushInputGameObject);
+        }
+        
+        foreach (GameObject crushInputGameObject in crushInput2GameObjects)
+        {
+            TryAddCrushInput(grindingHapticChallengeRouteSo, 2, crushInputGameObject);
+        }
+
         grindingHapticChallengeSo.Routes.Add(grindingHapticChallengeRouteSo);
 
         string[] currentFiles = AssetDatabase.FindAssets("t:ScriptableObject", new[] {AssetDatabase.GetAssetPath(grindingHapticChallengeRouteDataFolder)})
@@ -52,7 +65,17 @@ public class GrindingHapticChallengeRouteDataSaveBehaviour : MonoBehaviour
         
         EditorUtility.SetDirty(grindingHapticChallengeSo);
     }
-    
+
+    private void TryAddCrushInput(GrindingHapticChallengeRouteSo grindingHapticChallengeRouteSo, int input,
+        GameObject crushInputGameObject)
+    {
+        if (crushInputGameObject.activeSelf)
+        {
+            grindingHapticChallengeRouteSo.CrushInputs.Add(new GrindingHapticChallengeCrushInput(input,
+                crushInputGameObject.transform.position));
+        }
+    }
+
     private void OnDrawGizmos()
     {
         for (int i = 0; i < splineContainer.Spline.Count; i++)

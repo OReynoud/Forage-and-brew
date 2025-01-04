@@ -130,8 +130,8 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.Unearth2.Enable();
         _inputs.Player.Harvest.Enable();
         EnableChoppingHapticChallengeInputs();
+        EnableGrindingHapticChallengeInputs();
         EnableTemperatureHapticChallengeInputs();
-        EnableHapticChallengeJoystickInputs();
     }
     
     public void EnableChoppingHapticChallengeInputs()
@@ -141,6 +141,11 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.ChoppingHapticChallenge3.Enable();
         _inputs.Player.ChoppingHapticChallenge4.Enable();
         _inputs.Player.ChoppingHapticChallenge5.Enable();
+    }
+    
+    public void EnableGrindingHapticChallengeInputs()
+    {
+        EnableHapticChallengeJoystickInputs();
     }
     
     public void EnableTemperatureHapticChallengeInputs()
@@ -209,8 +214,8 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.Unearth2.Disable();
         _inputs.Player.Harvest.Disable();
         DisableChoppingHapticChallengeInputs();
+        DisableGrindingHapticChallengeInputs();
         DisableTemperatureHapticChallengeInputs();
-        DisableHapticChallengeJoystickInputs();
     }
     
     public void DisableChoppingHapticChallengeInputs()
@@ -220,6 +225,11 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.ChoppingHapticChallenge3.Disable();
         _inputs.Player.ChoppingHapticChallenge4.Disable();
         _inputs.Player.ChoppingHapticChallenge5.Disable();
+    }
+    
+    public void DisableGrindingHapticChallengeInputs()
+    {
+        DisableHapticChallengeJoystickInputs();
     }
     
     public void DisableTemperatureHapticChallengeInputs()
@@ -301,6 +311,7 @@ public class CharacterInputManager : MonoBehaviour
     private void HapticChallengeSecondOnPerformed(InputAction.CallbackContext obj)
     {
         StirHapticChallengeManager.Instance.StartStirChallenge();
+        CharacterInteractController.Instance.DropIngredientsInGrindingCountertop();
     }
     
     private void ScytheOnPerformed(InputAction.CallbackContext obj)
@@ -371,18 +382,21 @@ public class CharacterInputManager : MonoBehaviour
     private void HapticChallengeJoystickOnPerformed(InputAction.CallbackContext obj)
     {
         StirHapticChallengeManager.Instance.JoystickInputValue = obj.ReadValue<Vector2>();
+        GrindingHapticChallengeManager.Instance.JoystickInputValue = obj.ReadValue<Vector2>();
         CollectHapticChallengeManager.Instance.JoystickInputValue = obj.ReadValue<Vector2>();
     }
     
     private void HapticChallengeJoystickHorizontalAxisOnPerformed(InputAction.CallbackContext obj)
     {
         StirHapticChallengeManager.Instance.JoystickInputValue = new Vector2(obj.ReadValue<float>(), StirHapticChallengeManager.Instance.JoystickInputValue.y);
+        GrindingHapticChallengeManager.Instance.JoystickInputValue = new Vector2(obj.ReadValue<float>(), GrindingHapticChallengeManager.Instance.JoystickInputValue.y);
         CollectHapticChallengeManager.Instance.JoystickInputValue = new Vector2(obj.ReadValue<float>(), CollectHapticChallengeManager.Instance.JoystickInputValue.y);
     }
     
     private void HapticChallengeJoystickVerticalAxisOnPerformed(InputAction.CallbackContext obj)
     {
         StirHapticChallengeManager.Instance.JoystickInputValue = new Vector2(StirHapticChallengeManager.Instance.JoystickInputValue.x, obj.ReadValue<float>());
+        GrindingHapticChallengeManager.Instance.JoystickInputValue = new Vector2(GrindingHapticChallengeManager.Instance.JoystickInputValue.x, obj.ReadValue<float>());
         CollectHapticChallengeManager.Instance.JoystickInputValue = new Vector2(CollectHapticChallengeManager.Instance.JoystickInputValue.x, obj.ReadValue<float>());
     }
 

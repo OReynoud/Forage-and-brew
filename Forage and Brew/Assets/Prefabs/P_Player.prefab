@@ -2038,7 +2038,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1346751936162382282
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2950,6 +2950,7 @@ GameObject:
   - component: {fileID: 2905206397168394180}
   - component: {fileID: 716087170929209681}
   - component: {fileID: 6708477290953532077}
+  - component: {fileID: 1940699014642029639}
   - component: {fileID: 7297164509645321647}
   - component: {fileID: 8878050061779580384}
   m_Layer: 6
@@ -3073,6 +3074,7 @@ MonoBehaviour:
   <CurrentNearMailBoxBehaviour>k__BackingField: {fileID: 0}
   <CurrentNearCauldron>k__BackingField: {fileID: 0}
   <CurrentNearChoppingCountertop>k__BackingField: {fileID: 0}
+  <CurrentNearGrindingCountertop>k__BackingField: {fileID: 0}
   <CurrentNearIngredientBaskets>k__BackingField: []
   <CurrentNearPotionBaskets>k__BackingField: []
   <AreHandsFull>k__BackingField: 0
@@ -3182,6 +3184,34 @@ MonoBehaviour:
   choppingCameraTransitionTime: 0.5
   characterChoppingPosition: {x: -1.4, y: 0, z: 0}
   characterChoppingRotation: {x: 0, y: 180, z: 0}
+--- !u!114 &1940699014642029639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8201888323390173134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc45bec24fc86d94ba4c67e204469b23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grindingHapticChallengeSo: {fileID: 11400000, guid: ffdae314beb7683439c45c3e550618a6, type: 2}
+  characterAnimator: {fileID: 4177848238698293520}
+  mortarGameObject: {fileID: 5126481644125720692}
+  grindingHapticChallengeGameObject: {fileID: 467150334593219781}
+  previewSplineContainer: {fileID: 7647532141367504078}
+  previewSplineExtrude: {fileID: 5840838908596631245}
+  drawnSplineContainer: {fileID: 9156968419915985412}
+  drawnSplineExtrude: {fileID: 5097549277471914303}
+  startPositionImage: {fileID: 117964188179535876}
+  endPositionImage: {fileID: 8820402853085835236}
+  currentPositionImage: {fileID: 655727794769921408}
+  canvasSplineScale: 108
+  grindingChallengeCameraPreset: {fileID: 11400000, guid: 716264f25ddaa5240afd6317cd92e2de, type: 2}
+  grindingCameraTransitionTime: 0.5
+  characterGrindingPosition: {x: -1.4, y: 0, z: 0}
+  characterGrindingRotation: {x: 0, y: 180, z: 0}
 --- !u!54 &7297164509645321647
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8275,6 +8305,11 @@ GameObject:
 --- !u!95 &4177848238698293520 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 6026970751972785050, guid: ab434f6348120374e9d192822da0286c, type: 3}
+  m_PrefabInstance: {fileID: 7664751778182451850}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5126481644125720692 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3277002894116078334, guid: ab434f6348120374e9d192822da0286c, type: 3}
   m_PrefabInstance: {fileID: 7664751778182451850}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &7364308908213625020 stripped
