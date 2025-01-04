@@ -10,8 +10,8 @@ public class GrindingHapticChallengeRouteDataSaveBehaviour : MonoBehaviour
     [SerializeField] private GrindingHapticChallengeSo grindingHapticChallengeSo;
     [SerializeField] private SplineContainer splineContainer;
     [SerializeField] private Object grindingHapticChallengeRouteDataFolder;
-    [SerializeField] private List<GameObject> crushInput1GameObjects;
-    [SerializeField] private List<GameObject> crushInput2GameObjects;
+    [SerializeField] private List<RectTransform> crushInput1RectTransforms;
+    [SerializeField] private List<RectTransform> crushInput2RectTransforms;
 
 #if UNITY_EDITOR
     [Button]
@@ -37,14 +37,14 @@ public class GrindingHapticChallengeRouteDataSaveBehaviour : MonoBehaviour
             grindingHapticChallengeRouteSo.Points.Add(knot.Position);
         }
 
-        foreach (GameObject crushInputGameObject in crushInput1GameObjects)
+        foreach (RectTransform crushInputRectTransform in crushInput1RectTransforms)
         {
-            TryAddCrushInput(grindingHapticChallengeRouteSo, 1, crushInputGameObject);
+            TryAddCrushInput(grindingHapticChallengeRouteSo, 1, crushInputRectTransform);
         }
         
-        foreach (GameObject crushInputGameObject in crushInput2GameObjects)
+        foreach (RectTransform crushInputRectTransform in crushInput2RectTransforms)
         {
-            TryAddCrushInput(grindingHapticChallengeRouteSo, 2, crushInputGameObject);
+            TryAddCrushInput(grindingHapticChallengeRouteSo, 2, crushInputRectTransform);
         }
 
         grindingHapticChallengeSo.Routes.Add(grindingHapticChallengeRouteSo);
@@ -67,12 +67,12 @@ public class GrindingHapticChallengeRouteDataSaveBehaviour : MonoBehaviour
     }
 
     private void TryAddCrushInput(GrindingHapticChallengeRouteSo grindingHapticChallengeRouteSo, int input,
-        GameObject crushInputGameObject)
+        RectTransform crushInputRectTransform)
     {
-        if (crushInputGameObject.activeSelf)
+        if (crushInputRectTransform.gameObject.activeSelf)
         {
             grindingHapticChallengeRouteSo.CrushInputs.Add(new GrindingHapticChallengeCrushInput(input,
-                crushInputGameObject.transform.position));
+                crushInputRectTransform.anchoredPosition));
         }
     }
 

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Splines;
 using UnityEngine.UI;
@@ -22,6 +23,12 @@ public class GrindingHapticChallengeManager : MonoBehaviour
     [SerializeField] private Image endPositionImage;
     [SerializeField] private Image currentPositionImage;
     [SerializeField] private float canvasSplineScale = 108f;
+    [SerializeField] private List<RectTransform> crushInput1RectTransforms;
+    [SerializeField] private List<RectTransform> crushInput2RectTransforms;
+    private readonly List<GrindingCrushInputBehaviour> _crushInput1Behaviours = new();
+    private readonly List<GrindingCrushInputBehaviour> _crushInput2Behaviours = new();
+    private int _currentCrushInput1Index;
+    private int _currentCrushInput2Index;
     
     [Header("Camera")]
     [SerializeField] private CameraPreset grindingChallengeCameraPreset;
@@ -51,6 +58,16 @@ public class GrindingHapticChallengeManager : MonoBehaviour
     
     private void Start()
     {
+        foreach (RectTransform crushInputRectTransform in crushInput1RectTransforms)
+        {
+            _crushInput1Behaviours.Add(crushInputRectTransform.GetComponent<GrindingCrushInputBehaviour>());
+        }
+
+        foreach (RectTransform crushInputRectTransform in crushInput2RectTransforms)
+        {
+            _crushInput2Behaviours.Add(crushInputRectTransform.GetComponent<GrindingCrushInputBehaviour>());
+        }
+        
         grindingHapticChallengeGameObject.SetActive(false);
     }
 
@@ -74,6 +91,7 @@ public class GrindingHapticChallengeManager : MonoBehaviour
         // UI
         grindingHapticChallengeGameObject.SetActive(true);
         
+        // Splines
         previewSplineContainer.Spline.Clear();
         foreach (Vector3 point in grindingHapticChallengeSo.Routes[_currentRouteIndex].Points)
         {
@@ -85,6 +103,7 @@ public class GrindingHapticChallengeManager : MonoBehaviour
         drawnSplineContainer.Spline.Add(new BezierKnot(grindingHapticChallengeSo.Routes[_currentRouteIndex].Points[0]), TangentMode.AutoSmooth);
         drawnSplineExtrude.Rebuild();
         
+        // Position Points
         startPositionImage.rectTransform.anchoredPosition = new Vector2(
             grindingHapticChallengeSo.Routes[_currentRouteIndex].Points[0].x * canvasSplineScale,
             grindingHapticChallengeSo.Routes[_currentRouteIndex].Points[0].y * canvasSplineScale);
@@ -94,6 +113,37 @@ public class GrindingHapticChallengeManager : MonoBehaviour
         currentPositionImage.rectTransform.anchoredPosition = new Vector2(
             grindingHapticChallengeSo.Routes[_currentRouteIndex].Points[0].x * canvasSplineScale,
             grindingHapticChallengeSo.Routes[_currentRouteIndex].Points[0].y * canvasSplineScale);
+        
+        // Crush Inputs
+        foreach (RectTransform crushInputRectTransform in crushInput1RectTransforms)
+        {
+            crushInputRectTransform.gameObject.SetActive(false);
+        }
+        
+        foreach (RectTransform crushInputRectTransform in crushInput2RectTransforms)
+        {
+            crushInputRectTransform.gameObject.SetActive(false);
+        }
+        
+        _currentCrushInput1Index = 0;
+        _currentCrushInput2Index = 0;
+        
+        foreach (GrindingHapticChallengeCrushInput crushInput in grindingHapticChallengeSo.Routes[_currentRouteIndex].CrushInputs)
+        {
+            switch (crushInput.Input)
+            {
+                case 1:
+                    crushInput1RectTransforms[_currentCrushInput1Index].anchoredPosition = crushInput.Position;
+                    crushInput1RectTransforms[_currentCrushInput1Index].gameObject.SetActive(true);
+                    _currentCrushInput1Index++;
+                    break;
+                case 2:
+                    crushInput2RectTransforms[_currentCrushInput2Index].anchoredPosition = crushInput.Position;
+                    crushInput2RectTransforms[_currentCrushInput2Index].gameObject.SetActive(true);
+                    _currentCrushInput2Index++;
+                    break;
+            }
+        }
         
         // Countertop
         CurrentGrindingCountertopBehaviour.DisableInteract();
@@ -163,6 +213,41 @@ public class GrindingHapticChallengeManager : MonoBehaviour
             (grindingHapticChallengeSo.CursorSpeed * Time.deltaTime);
         
         return true;
+    }
+
+    public void CheckInputGrindingChallenge(int inputIndex)
+    {
+        if (!_isChallengeActive) return;
+
+        switch (inputIndex)
+        {
+            case 1:
+                CheckCrushInput(crushInput1RectTransforms, _crushInput1Behaviours);
+                break;
+            case 2:
+                CheckCrushInput(crushInput2RectTransforms, _crushInput2Behaviours);
+                break;
+        }
+    }
+
+    private void CheckCrushInput(List<RectTransform> crushInputRectTransforms, List<GrindingCrushInputBehaviour> crushInputBehaviours)
+    {
+        for (int i = 0; i < crushInputRectTransforms.Count; i++)
+        {
+            RectTransform crushInputRectTransform = crushInputRectTransforms[i];
+            GrindingCrushInputBehaviour crushInputBehaviour = crushInputBehaviours[i];
+
+            if (!crushInputRectTransform.gameObject.activeSelf) continue;
+            
+            if (!(Vector2.Distance(currentPositionImage.rectTransform.anchoredPosition,
+                      crushInputRectTransform.anchoredPosition) <=
+                  grindingHapticChallengeSo.CrushInputDistanceTolerance)) continue;
+            
+            characterAnimator.SetTrigger(DoCrush);
+            CurrentGrindingCountertopBehaviour.CountertopVfxManager.PlayCrushVfx();
+            crushInputBehaviour.SetCorrectInput();
+            return;
+        }
     }
 
     private bool CheckEndGrindingChallenge()

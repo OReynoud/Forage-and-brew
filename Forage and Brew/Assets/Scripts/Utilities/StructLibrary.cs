@@ -98,9 +98,9 @@ public struct StirCameraAndDuration
 public struct GrindingHapticChallengeCrushInput
 {
     [field: SerializeField] [field: Range(1, 2)] public int Input { get; private set; }
-    [field: SerializeField] public Vector3 Position { get; private set; }
+    [field: SerializeField] public Vector2 Position { get; private set; }
     
-    public GrindingHapticChallengeCrushInput(int input, Vector3 position)
+    public GrindingHapticChallengeCrushInput(int input, Vector2 position)
     {
         Input = input;
         Position = position;

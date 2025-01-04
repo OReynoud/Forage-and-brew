@@ -75,6 +75,8 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.ChoppingHapticChallenge3.performed += ChoppingHapticChallenge3OnPerformed;
         _inputs.Player.ChoppingHapticChallenge4.performed += ChoppingHapticChallenge4OnPerformed;
         _inputs.Player.ChoppingHapticChallenge5.performed += ChoppingHapticChallenge5OnPerformed;
+        _inputs.Player.GrindingHapticChallenge1.performed += GrindingHapticChallenge1OnPerformed;
+        _inputs.Player.GrindingHapticChallenge2.performed += GrindingHapticChallenge2OnPerformed;
         _inputs.Player.PushBellows.performed += PushBellowsOnPerformed;
         _inputs.Player.HapticChallengeJoystick.performed += HapticChallengeJoystickOnPerformed;
         _inputs.Player.HapticChallengeJoystick.canceled += HapticChallengeJoystickOnPerformed;
@@ -145,6 +147,8 @@ public class CharacterInputManager : MonoBehaviour
     
     public void EnableGrindingHapticChallengeInputs()
     {
+        _inputs.Player.GrindingHapticChallenge1.Enable();
+        _inputs.Player.GrindingHapticChallenge2.Enable();
         EnableHapticChallengeJoystickInputs();
     }
     
@@ -229,6 +233,8 @@ public class CharacterInputManager : MonoBehaviour
     
     public void DisableGrindingHapticChallengeInputs()
     {
+        _inputs.Player.GrindingHapticChallenge1.Disable();
+        _inputs.Player.GrindingHapticChallenge2.Disable();
         DisableHapticChallengeJoystickInputs();
     }
     
@@ -372,6 +378,16 @@ public class CharacterInputManager : MonoBehaviour
     private void ChoppingHapticChallenge5OnPerformed(InputAction.CallbackContext obj)
     {
         ChoppingHapticChallengeManager.Instance.NextChoppingTurn(5);
+    }
+    
+    private void GrindingHapticChallenge1OnPerformed(InputAction.CallbackContext obj)
+    {
+        GrindingHapticChallengeManager.Instance.CheckInputGrindingChallenge(1);
+    }
+    
+    private void GrindingHapticChallenge2OnPerformed(InputAction.CallbackContext obj)
+    {
+        GrindingHapticChallengeManager.Instance.CheckInputGrindingChallenge(2);
     }
     
     private void PushBellowsOnPerformed(InputAction.CallbackContext obj)
