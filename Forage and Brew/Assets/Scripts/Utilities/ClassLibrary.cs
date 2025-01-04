@@ -1,17 +1,39 @@
 using System;
 using NaughtyAttributes;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
+
+public class Letter
+{
+    [field: SerializeField] public LetterContentSo LetterContent { get; set; }
+    [field: SerializeField] public NarrativeBlockOfLetters RelatedNarrativeBlock { get; private set; }
+
+    public Letter(LetterContentSo Content, NarrativeBlockOfLetters nBlock)
+    {
+        LetterContent = Content;
+        RelatedNarrativeBlock = nBlock;
+    }
+    
+}
 public class Order
 {
     [field: SerializeField] public OrderContentSo OrderContent { get; set; }
     [field: SerializeField] public int Days { get; set; }
+    [field: SerializeField] public NarrativeBlockOfLetters RelatedNarrativeBlock { get; private set; }
+    [field: SerializeField] public LetterContentSo RelatedLetter { get; private set; }
+    [field: SerializeField] public LetterContentSo RelatedSuccessLetter { get; private set; }
+    [field: SerializeField] public LetterContentSo RelatedFailureLetter { get; private set; }
 
-    public Order(OrderContentSo newOrder)
+    public Order(Letter LetterToOrder)
     {
-        OrderContent = newOrder;
+        OrderContent = LetterToOrder.LetterContent.OrderContent;
         Days = OrderContent.TimeToFulfill;
+        RelatedLetter = LetterToOrder.LetterContent;
+        RelatedSuccessLetter = LetterToOrder.LetterContent.RelatedSuccessLetter;
+        RelatedFailureLetter = LetterToOrder.LetterContent.RelatedFailureLetter;
+        RelatedNarrativeBlock = LetterToOrder.RelatedNarrativeBlock;
     }
 }
 
@@ -35,4 +57,23 @@ public class PotionDemand
         IsSpecific = newIsSpecific;
         Keywords = newKeywords;
     }
+}
+
+[Serializable]
+public class NarrativeBlockOfLetters
+{
+    [field: SerializeField] public NarrativeBlockOfLettersContentSo ContentSo { get; set; }
+    
+    [field: AllowNesting] [field: SerializeField] [field: ReadOnly] public int SelfProgressionIndex { get; set; }
+    public bool[] CompletedLetters { get; set; }
+    public bool[] InactiveLetters { get; set; }
+
+    public NarrativeBlockOfLetters(NarrativeBlockOfLettersContentSo Content)
+    {
+        ContentSo = Content;
+        
+        CompletedLetters = new bool [ContentSo.Content.Length];
+        InactiveLetters = new bool [ContentSo.Content.Length];
+    }
+    
 }

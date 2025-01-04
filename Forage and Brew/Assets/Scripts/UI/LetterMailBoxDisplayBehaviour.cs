@@ -32,14 +32,10 @@ public class LetterMailBoxDisplayBehaviour : MonoBehaviour
     public void InitLetter(LetterContentSo newLetterContent)
     {
         letterContent = newLetterContent;
+        letterType = letterContent.LetterType;
+        
         clientNameText.text = letterContent.ClientName;
         descriptionText.text = letterContent.TextContent;
-        moneyReward = letterContent.OrderContent.MoneyReward;
-        moneyText.text = moneyReward.ToString();
-        daysLeftToComplete = letterContent.OrderContent.TimeToFulfill;
-        timeText.text = daysLeftToComplete.ToString();
-        potionsDemanded.Clear();
-        potionsDemanded.AddRange(letterContent.OrderContent.RequestedPotions);
 
         foreach (var potionImage in potionImages)
         {
@@ -50,6 +46,20 @@ public class LetterMailBoxDisplayBehaviour : MonoBehaviour
         {
             keyword.transform.parent.gameObject.SetActive(false);
         }
+        
+        if (letterType != LetterType.Orders)
+        {
+            timeText.enabled = false;
+            moneyText.transform.parent.gameObject.SetActive(false);
+            return;
+        }
+        moneyReward = letterContent.OrderContent.MoneyReward;
+        moneyText.text = moneyReward.ToString();
+        daysLeftToComplete = letterContent.OrderContent.TimeToFulfill;
+        timeText.text = daysLeftToComplete.ToString();
+        potionsDemanded.Clear();
+        potionsDemanded.AddRange(letterContent.OrderContent.RequestedPotions);
+
         
         for (int i = 0; i < potionsDemanded.Count; i++)
         {
