@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NaughtyAttributes;
 using UnityEngine;
 
 public class GameDontDestroyOnLoadManager : MonoBehaviour
@@ -26,8 +27,13 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     
     // Letters
     public bool HasChosenLettersToday { get; set; }
-    public List<LetterContentSo> AllLetters { get; set; } = new();
-    public List<LetterContentSo> MailBoxLetters { get; set; } = new();
+    [field: SerializeField] public int QuestProgressionIndex { get; set; }
+    
+    [field: Expandable][field: SerializeField] public List<NarrativeBlockOfLettersContentSo> AllNarrativeBlocksContentSo { get; set; } = new();
+    public List<NarrativeBlockOfLetters> AllNarrativeBlocks { get; set; } = new();
+    
+    [field: SerializeField]public List<Letter> ThanksAndErrorLetters { get; set; } = new();
+    [field: SerializeField]public List<Letter> MailBoxLetters { get; set; } = new();
     
     // Cauldron
     public List<TemperatureChallengeIngredients> CauldronTemperatureAndIngredients { get; private set; } = new();
@@ -49,6 +55,10 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     
     private void Start()
     {
+        foreach (var ContentSo in AllNarrativeBlocksContentSo)
+        {
+            AllNarrativeBlocks.Add(new NarrativeBlockOfLetters(ContentSo));
+        }
         InfoDisplayManager.instance.DisplayDays();
     }
 }

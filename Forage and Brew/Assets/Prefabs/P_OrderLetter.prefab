@@ -29,7 +29,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1252178590095737929}
   m_Father: {fileID: 404496326023349232}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -599,16 +600,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3112955523595709020}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 404496326023349232}
+  m_Father: {fileID: 6533836588021010753}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 64, y: -376}
+  m_AnchoredPosition: {x: -163, y: 0}
   m_SizeDelta: {x: 185.6, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3028161158163414609
@@ -1528,9 +1529,8 @@ RectTransform:
   m_Children:
   - {fileID: 3088765295096072459}
   - {fileID: 4011952526509521348}
-  - {fileID: 1252178590095737929}
-  - {fileID: 5992169173725870877}
   - {fileID: 6533836588021010753}
+  - {fileID: 5992169173725870877}
   - {fileID: 3474240918978275891}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1590,7 +1590,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clientNameText: {fileID: 8607795240263241246}
-  clientPortraitImage: {fileID: 0}
   descriptionText: {fileID: 789334862661506531}
   moneyText: {fileID: 2201618367280333929}
   timeText: {fileID: 1138687728942730627}
@@ -1607,9 +1606,8 @@ MonoBehaviour:
   - {fileID: 5788053197213142166}
   moneyReward: 0
   daysLeftToComplete: 0
-  isMoved: 0
   letterType: 0
-  animIndex: 0
+  animTime: 0
   animClip: {fileID: 7400000, guid: 8ecb8900e991caf4eac9553008f1a026, type: 2}
 --- !u!1 &8777626881205266888
 GameObject:

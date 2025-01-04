@@ -181,13 +181,13 @@ public class CodexContentManager : Singleton<CodexContentManager>
     /// <param name="side"> true = right, false = left</param>
     public void SelectCodexPage(bool side)
     {
+        Debug.Log("Order Select Input");
         if (!CharacterInputManager.Instance.showCodex) return;
         
         if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[0].index &&
             AutoFlip.instance.ControledBook.currentPage < AutoFlip.instance.ControledBook.bookMarks[1].index)
         {
             if (emptyOrderPage && side && AutoFlip.instance.ControledBook.currentPage == emptyOrderPageIndex) return;
-            
             // Select Order
             int orderIndex = AutoFlip.instance.ControledBook.currentPage -
                              AutoFlip.instance.ControledBook.bookMarks[0].index;
