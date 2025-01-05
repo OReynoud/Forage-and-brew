@@ -32,8 +32,8 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     [field: Expandable][field: SerializeField] public List<NarrativeBlockOfLettersContentSo> AllNarrativeBlocksContentSo { get; set; } = new();
     public List<NarrativeBlockOfLetters> AllNarrativeBlocks { get; set; } = new();
     
-    [field: SerializeField]public List<Letter> ThanksAndErrorLetters { get; set; } = new();
-    [field: SerializeField]public List<Letter> MailBoxLetters { get; set; } = new();
+    public List<Letter> ThanksAndErrorLetters { get; set; } = new();
+    public List<Letter> MailBoxLetters { get; set; } = new();
     
     // Cauldron
     public List<TemperatureChallengeIngredients> CauldronTemperatureAndIngredients { get; private set; } = new();
