@@ -17,6 +17,7 @@ public class LetterMailBoxDisplayBehaviour : MonoBehaviour
     public List<PotionDemand> potionsDemanded = new();
 
     public Image[] potionImages;
+    public TextMeshProUGUI[] potionNames;
     public TextMeshProUGUI[] potionKeywords;
     public int moneyReward;
     public int daysLeftToComplete;
@@ -39,7 +40,7 @@ public class LetterMailBoxDisplayBehaviour : MonoBehaviour
 
         foreach (var potionImage in potionImages)
         {
-            potionImage.gameObject.SetActive(false);
+            potionImage.transform.parent.gameObject.SetActive(false);
         }
 
         foreach (var keyword in potionKeywords)
@@ -65,8 +66,9 @@ public class LetterMailBoxDisplayBehaviour : MonoBehaviour
         {
             if (potionsDemanded[i].IsSpecific)
             {
-                potionImages[i].gameObject.SetActive(true);
+                potionImages[i].transform.parent.gameObject.SetActive(true);
                 potionImages[i].sprite = potionsDemanded[i].Potion.icon;
+                potionNames[i].text = potionsDemanded[i].Potion.Name;
             }
             else
             {
