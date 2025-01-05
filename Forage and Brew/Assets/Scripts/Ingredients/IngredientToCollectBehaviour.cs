@@ -14,10 +14,10 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     [field: SerializeField] public SpawnLocation SpawnLocation { get; private set; }
 
     [Header("Ingredient Types")]
-    [SerializeField] private IngredientType scythingIngredientType = IngredientType.Herb;
-    [SerializeField] private IngredientType unearthingIngredientType = IngredientType.Mushroom;
-    [SerializeField] private IngredientType scrapingIngredientType = IngredientType.Moss;
-    [SerializeField] private IngredientType harvestIngredientType = IngredientType.Berry;
+    [SerializeField] private IngredientTypeSo scythingIngredientType;
+    [SerializeField] private IngredientTypeSo unearthingIngredientType;
+    [SerializeField] private IngredientTypeSo scrapingIngredientType;
+    [SerializeField] private IngredientTypeSo harvestIngredientType;
     
     [Header("UI")]
     [SerializeField] private bool isUiRight;

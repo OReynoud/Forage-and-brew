@@ -39,9 +39,9 @@ public static class Ex
     {
         if (cookedIngredient.IsAType)
         {
-            return CodexContentManager.instance.allIngredientTypeSprites[
-                    (int)cookedIngredient.IngredientType];
+            return cookedIngredient.IngredientType.Icon;
         }
+        
         return cookedIngredient.Ingredient.icon;
         
     }
