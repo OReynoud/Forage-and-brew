@@ -30,6 +30,7 @@ public class CharacterMovementController : MonoBehaviour
     
     // Animator Hashes
     private static readonly int IsWalking = Animator.StringToHash("isWalking");
+    private static readonly int IsRunning = Animator.StringToHash("isRunning");
     private static readonly int WalkSpeed = Animator.StringToHash("WalkSpeedFactor");
 
 
@@ -82,6 +83,11 @@ public class CharacterMovementController : MonoBehaviour
 
     private void PlayerMovement()
     {
+        
+        animator.SetBool(IsRunning, isRunning);
+        if (isRunning)
+            playerDir.Normalize();
+        
         angledVelocity = playerDir;
         if (Physics.Raycast(transform.position , transform.forward, out RaycastHit hitForward, 0.7f, groundMask))
         {
