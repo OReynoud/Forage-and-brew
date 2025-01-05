@@ -32,6 +32,11 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         StartCoroutine(ShowScreen());
     }
 
+    public void HandleGoingToSleepTransition(float waitTime)
+    {
+        StartCoroutine(HideScreen(waitTime));
+    }
+
     private IEnumerator ChangeScenes(string sceneName)
     {
         Time.timeScale = 0;
@@ -45,6 +50,31 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         }
         Time.timeScale = 1;
         SceneManager.LoadScene(sceneName);
+    }
+    
+    private IEnumerator HideScreen(float waitTime)
+    {
+        Time.timeScale = 0;
+        timer = 0;
+        transitionElement.gameObject.SetActive(true);
+        while (timer < transitionTime)
+        {
+            timer += Time.unscaledDeltaTime;
+            maskElement.sizeDelta = Vector2.Lerp(fullyExtendedDimensions, Vector2.zero, timer/transitionTime);
+            yield return new WaitForSecondsRealtime(Time.unscaledDeltaTime);
+        }
+        GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay = TimeOfDay.Daytime;
+        GameDontDestroyOnLoadManager.Instance.DayPassed++;
+        InfoDisplayManager.instance.DisplayDays();
+        
+                
+        // Cycles
+        WeatherManager.Instance.PassToNextWeatherState();
+        LunarCycleManager.Instance.PassToNextLunarCycleState();
+
+        yield return new WaitForSecondsRealtime(waitTime);
+        
+        StartCoroutine(ShowScreen());
     }
     private IEnumerator ShowScreen()
     {

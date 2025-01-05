@@ -25,11 +25,7 @@ public class BedBehaviour : MonoBehaviour
 
     public void Sleep()
     {
-        // Time
-        GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay = TimeOfDay.Daytime;
-        GameDontDestroyOnLoadManager.Instance.DayPassed++;
-        InfoDisplayManager.instance.DisplayDays();
-        
+        SceneTransitionManager.instance.HandleGoingToSleepTransition(1f);
         // Letters
         GameDontDestroyOnLoadManager.Instance.HasChosenLettersToday = false;
         
@@ -39,11 +35,7 @@ public class BedBehaviour : MonoBehaviour
         {
             potionBasketManagerBehaviour.ReactivateRightPotionBaskets();
         }
-        
-        // Cycles
-        WeatherManager.Instance.PassToNextWeatherState();
-        LunarCycleManager.Instance.PassToNextLunarCycleState();
-        
+
         Debug.Log("It's daytime now");
     }
     
