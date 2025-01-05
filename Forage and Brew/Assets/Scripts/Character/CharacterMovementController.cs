@@ -125,7 +125,7 @@ public class CharacterMovementController : MonoBehaviour
         {
             accelerationCurveIndex += Time.deltaTime;
             isMoving = true;
-            animator.SetFloat(WalkSpeed,isRunning? runSpeed / walkSpeed : 1);
+            animator.SetFloat(WalkSpeed,isRunning? runSpeed / walkSpeed : playerDir.magnitude);
             animator.SetBool(IsWalking, true);
         }
         else 
