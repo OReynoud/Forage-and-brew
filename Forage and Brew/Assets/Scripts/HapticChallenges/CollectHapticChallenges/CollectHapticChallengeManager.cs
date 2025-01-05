@@ -221,6 +221,9 @@ public class CollectHapticChallengeManager : MonoBehaviour
         {
             _canValidateHarvest = true;
             
+            RumbleManager.Instance.PlayRumble(harvestHapticChallengeSo.InputReleaseVibrationDuration,
+                harvestHapticChallengeSo.InputReleaseVibrationPower);
+            
             foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
             {
                 if (ingredientToCollectBehaviour.IngredientValuesSo.Type != harvestIngredientType) continue;

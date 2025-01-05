@@ -325,6 +325,9 @@ public class StirHapticChallengeManager : MonoBehaviour
     {
         _confirmationCircles[_currentStirIndex].SetRightCircle();
         
+        RumbleManager.Instance.PlayRumble(stirHapticChallengeGlobalValuesSo.StirTurnVibrationDuration,
+            stirHapticChallengeGlobalValuesSo.StirTurnVibrationPower);
+        
         _currentStirTime = 0;
         _currentStirIndex++;
         _currentCheckIndex = 0;

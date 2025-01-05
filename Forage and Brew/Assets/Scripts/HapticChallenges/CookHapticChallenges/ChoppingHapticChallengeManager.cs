@@ -146,17 +146,25 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         if (inputIndex != _currentChoppingChallenge.ChoppingInputIndices[_currentChoppingInputIndex])
         {
             _choppingInputBehaviours[_currentChoppingInputIndex].SetWrongInput();
+        
+            // Rumble
+            RumbleManager.Instance.PlayMultipleRumbles(choppingHapticChallengeListSo.WrongInputVibrationDurations,
+                choppingHapticChallengeListSo.WrongInputVibrationPower, choppingHapticChallengeListSo.WrongInputVibrationIntervals);
         }
         else
         {
             _choppingInputBehaviours[_currentChoppingInputIndex].SetRightInput();
+        
+            // Animation
+            characterAnimator.SetTrigger(DoChop);
+        
+            // VFX
+            CurrentChoppingCountertopBehaviour.CountertopVfxManager.PlayChopVfx();
+        
+            // Rumble
+            RumbleManager.Instance.PlayRumble(choppingHapticChallengeListSo.CorrectInputVibrationDuration,
+                choppingHapticChallengeListSo.CorrectInputVibrationPower);
         }
-        
-        // Animation
-        characterAnimator.SetTrigger(DoChop);
-        
-        // VFX
-        CurrentChoppingCountertopBehaviour.CountertopVfxManager.PlayChopVfx();
         
         _currentChoppingInputIndex++;
         
