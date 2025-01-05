@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,8 +5,9 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
 {
     [SerializeField] private List<IngredientBasketBehaviour> ingredientBaskets;
     [SerializeField] private IngredientListSo ingredientListSo;
+    [SerializeField] private IngredientTypeListSo ingredientTypeListSo;
     
-    private List<IngredientBasketBehaviour> _currentTriggeredIngredientBaskets = new();
+    private readonly List<IngredientBasketBehaviour> _currentTriggeredIngredientBaskets = new();
     private readonly List<List<IngredientValuesSo>> _ingredientSets = new();
     private int _currentIngredientSetIndex;
 
@@ -25,7 +25,7 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
         int setIndex = -1;
         int ingredientIndex = 0;
 
-        foreach (IngredientType ingredientType in Enum.GetValues(typeof(IngredientType)))
+        foreach (IngredientTypeSo ingredientType in ingredientTypeListSo.IngredientTypes)
         {
             foreach (IngredientValuesSo ingredient in ingredientListSo.IngredientValues)
             {
