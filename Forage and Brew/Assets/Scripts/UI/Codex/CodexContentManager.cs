@@ -12,6 +12,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
     [Foldout("References")] public Sprite rightRecipePage;
     [Foldout("References")] public RectTransform emptyPage;
     [Foldout("References")] public Sprite[] allBrewingActionSprites;
+    [Foldout("References")] public RecipeCodexDisplay recipeDisplayPrefab;
     
     //Orders Management
     private readonly List<OrderCodexDisplayBehaviour> _orderCodexDisplayBehaviours = new();
@@ -19,7 +20,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
     private int emptyOrderPageIndex;
     
     [BoxGroup("Recipe display")] [SerializeField] private PotionListSo potionList;
-    [BoxGroup("Recipe display")] public RecipeCodexDisplay[] recipes;
+    [BoxGroup("Recipe display")] [ReadOnly] public List<RecipeCodexDisplay> recipes = new ();
     
     [Foldout("Debug")] public PotionTag testTag;
 
@@ -35,15 +36,12 @@ public class CodexContentManager : Singleton<CodexContentManager>
         {
             ticket.gameObject.SetActive(false);
         }
+        
 
-        if (recipes.Length != potionList.Potions.Length)
+        for (int i = potionList.Potions.Length - 1; i >= 0; i--)
         {
-            Debug.LogError("Number of Recipes does not match number of Potions SO, some recipe pages may be broken");
-        }
-
-        for (int i = recipes.Length - 1; i >= 0; i--)
-        {
-            //Debug.Log("Check 1");
+            var newRecipe = Instantiate(recipeDisplayPrefab, Vector3.down * 10000, Quaternion.identity,transform);
+            recipes.Add(newRecipe);
             foreach (TemperatureChallengeIngredients t in potionList.Potions[i].TemperatureChallengeIngredients)
             {
                 foreach (CookedIngredientForm cookedIngredient in t.CookedIngredients)
@@ -59,9 +57,9 @@ public class CodexContentManager : Singleton<CodexContentManager>
                 }
             }
 
-            recipes[i].InitPage(tempIngredientsList.ToArray(), potionList.Potions[i]);
+            newRecipe.InitPage(tempIngredientsList.ToArray(), potionList.Potions[i]);
             tempIngredientsList.Clear();
-            InsertRecipePages(recipes[i].leftPage, recipes[i].rightPage);
+            InsertRecipePages(newRecipe.leftPage, newRecipe.rightPage);
         }
 
         // DebugTickets();

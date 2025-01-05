@@ -23,7 +23,10 @@ public static class Ex
         if (index + similes + 1 < list.Count)
         {
             if (list[index].Ingredient ==
-                list[index + similes + 1].Ingredient)
+                list[index + similes + 1].Ingredient
+                &&
+                list[index].IsAType == 
+                list[index + similes + 1].IsAType)
             {
                 similes++;
                 return CheckForSameElementsIngredientSo(index, similes, list);

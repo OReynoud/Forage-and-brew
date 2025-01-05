@@ -88,6 +88,7 @@ public class RecipeCodexDisplay : MonoBehaviour
                 {
                     int numberOfIngredients = Ex.CheckForSameElementsSprite(ingredientsIndex, 0, potionIngredients);
 
+                    
                     potionIngredientNumber[i].text = (1 + numberOfIngredients).ToString();
 
                     ingredientsIndex += numberOfIngredients;
@@ -99,7 +100,7 @@ public class RecipeCodexDisplay : MonoBehaviour
                 }
 
                 ingredientsIndex++;
-                if (ingredientsIndex >= potionIngredients.Length - 1)
+                if (ingredientsIndex > potionIngredients.Length - 1)
                     break;
             
             }
@@ -113,6 +114,7 @@ public class RecipeCodexDisplay : MonoBehaviour
                 stepText[writingIndex].gameObject.SetActive(true);
 
                 int numberOfIngredients = Ex.CheckForSameElementsIngredientSo(i, 0, t.CookedIngredients);
+                
                 stepText[writingIndex].text = (1 + numberOfIngredients).ToString();
 
                 var cookedIngredient = t.CookedIngredients[i];
