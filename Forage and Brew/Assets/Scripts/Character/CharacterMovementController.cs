@@ -76,7 +76,7 @@ public class CharacterMovementController : MonoBehaviour
 
     private bool GroundCheck()
     {
-        bool check = Physics.Raycast(transform.position + Vector3.up * 0.6f, Vector3.down, 0.7f, groundMask);
+        bool check = Physics.Raycast(transform.position + Vector3.up * 0.4f, Vector3.down, 0.5f, groundMask);
         
         return check;
     }
