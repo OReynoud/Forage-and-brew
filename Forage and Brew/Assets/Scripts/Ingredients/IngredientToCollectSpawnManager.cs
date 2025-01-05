@@ -49,6 +49,10 @@ public class IngredientToCollectSpawnManager : MonoBehaviour
                 ingredientToCollectBehaviour.IngredientValuesSo = localIngredientValuesList[Random.Range(0, localIngredientValuesList.Count)];
                 ingredientToCollectBehaviour.SpawnMesh();
             }
+            else
+            {
+                ingredientToCollectBehaviour.gameObject.SetActive(false);
+            }
         }
     }
 }
