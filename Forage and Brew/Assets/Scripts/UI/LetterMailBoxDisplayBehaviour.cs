@@ -34,7 +34,7 @@ public class LetterMailBoxDisplayBehaviour : MonoBehaviour
         letterContent = newLetterContent;
         letterType = letterContent.LetterType;
         
-        clientNameText.text = letterContent.ClientName;
+        clientNameText.text = letterContent.Client.Name;
         descriptionText.text = letterContent.TextContent;
 
         foreach (var potionImage in potionImages)

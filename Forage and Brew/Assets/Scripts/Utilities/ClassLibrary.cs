@@ -1,6 +1,6 @@
 using System;
+using System.Collections.Generic;
 using NaughtyAttributes;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
@@ -17,14 +17,15 @@ public class Letter
     }
     
 }
+
 public class Order
 {
-    [field: SerializeField] public OrderContentSo OrderContent { get; set; }
-    [field: SerializeField] public int Days { get; set; }
-    [field: SerializeField] public NarrativeBlockOfLetters RelatedNarrativeBlock { get; private set; }
-    [field: SerializeField] public LetterContentSo RelatedLetter { get; private set; }
-    [field: SerializeField] public LetterContentSo RelatedSuccessLetter { get; private set; }
-    [field: SerializeField] public LetterContentSo RelatedFailureLetter { get; private set; }
+    public OrderContentSo OrderContent { get; set; }
+    public int Days { get; set; }
+    public NarrativeBlockOfLetters RelatedNarrativeBlock { get; private set; }
+    public LetterContentSo RelatedLetter { get; private set; }
+    public LetterContentSo RelatedSuccessLetter { get; private set; }
+    public LetterContentSo RelatedFailureLetter { get; private set; }
 
     public Order(Letter LetterToOrder)
     {
@@ -75,5 +76,10 @@ public class NarrativeBlockOfLetters
         CompletedLetters = new bool [ContentSo.Content.Length];
         InactiveLetters = new bool [ContentSo.Content.Length];
     }
-    
+}
+
+public class ClientOrderPotions
+{
+    public ClientSo ClientSo { get; set; }
+    public List<PotionValuesSo> Potions { get; private set; } = new();
 }

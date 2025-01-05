@@ -1,13 +1,17 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PotionBasketManagerBehaviour : BasketManagerBehaviour
 {
     [SerializeField] private List<PotionBasketBehaviour> potionBaskets;
+    [SerializeField] private GameObject clientCanvasGameObject;
+    [SerializeField] private TMP_Text clientNameText;
     
     private readonly List<PotionBasketBehaviour> _currentTriggeredPotionBaskets = new();
     private int _currentOrderIndex = -1;
 
+    
     private void Awake()
     {
         foreach (PotionBasketBehaviour potionBasket in potionBaskets)
@@ -26,15 +30,9 @@ public class PotionBasketManagerBehaviour : BasketManagerBehaviour
             potionBaskets[i].PotionBasketIndex = i;
         }
 
-        if (_currentOrderIndex >= 0)
-        {
-            for (int i = 0; i < GameDontDestroyOnLoadManager.Instance.OrderPotions[_currentOrderIndex].Count; i++)
-            {
-                potionBaskets[i].gameObject.SetActive(true);
-                potionBaskets[i].SetBasketContent(_currentOrderIndex);
-            }
-        }
+        ReactivateRightPotionBaskets();
     }
+    
     
     public override void IncreaseCurrentSetIndex()
     {
@@ -54,6 +52,7 @@ public class PotionBasketManagerBehaviour : BasketManagerBehaviour
         ReactivateRightPotionBaskets();
     }
     
+    
     public void ReactivateRightPotionBaskets()
     {
         if (GameDontDestroyOnLoadManager.Instance.OrderPotions.Count > 0)
@@ -65,10 +64,14 @@ public class PotionBasketManagerBehaviour : BasketManagerBehaviour
         {
             potionBasket.gameObject.SetActive(false);
         }
+        
+        clientCanvasGameObject.SetActive(GameDontDestroyOnLoadManager.Instance.OrderPotions.Count > 0);
 
         if (GameDontDestroyOnLoadManager.Instance.OrderPotions.Count > 0)
         {
-            for (int i = 0; i < GameDontDestroyOnLoadManager.Instance.OrderPotions[_currentOrderIndex].Count; i++)
+            clientNameText.text = GameDontDestroyOnLoadManager.Instance.OrderPotions[_currentOrderIndex].ClientSo.Name;
+            
+            for (int i = 0; i < GameDontDestroyOnLoadManager.Instance.OrderPotions[_currentOrderIndex].Potions.Count; i++)
             {
                 potionBaskets[i].gameObject.SetActive(true);
                 potionBaskets[i].SetBasketContent(_currentOrderIndex);
@@ -76,6 +79,7 @@ public class PotionBasketManagerBehaviour : BasketManagerBehaviour
             }
         }
     }
+    
     
     public void ManageTriggerEnter(PotionBasketBehaviour potionBasket)
     {

@@ -23,7 +23,7 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     public List<(IngredientValuesSo ingredient, Vector3 position, Quaternion rotation)> FloorCollectedIngredients { get; private set; } = new();
     public List<CollectedPotionBehaviour> OutCookedPotions { get; private set; } = new();
     public List<(PotionValuesSo potion, Vector3 position, Quaternion rotation)> FloorCookedPotions { get; private set; } = new();
-    public List<List<PotionValuesSo>> OrderPotions { get; private set; } = new();
+    public List<ClientOrderPotions> OrderPotions { get; private set; } = new();
     
     // Letters
     public bool HasChosenLettersToday { get; set; }

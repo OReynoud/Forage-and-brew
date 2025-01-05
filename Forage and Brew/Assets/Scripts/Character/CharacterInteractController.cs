@@ -218,10 +218,10 @@ public class CharacterInteractController : MonoBehaviour
         for (int i = 0; i < CurrentNearPotionBaskets.Count; i++)
         {
             if (hasToGrab && !GameDontDestroyOnLoadManager.Instance.OrderPotions[CurrentNearPotionBaskets[i].OrderIndex]
-                    [CurrentNearPotionBaskets[i].PotionBasketIndex]) continue;
+                    .Potions[CurrentNearPotionBaskets[i].PotionBasketIndex]) continue;
 
             if (!hasToGrab && GameDontDestroyOnLoadManager.Instance.OrderPotions[CurrentNearPotionBaskets[i].OrderIndex]
-                    [CurrentNearPotionBaskets[i].PotionBasketIndex]) continue;
+                    .Potions[CurrentNearPotionBaskets[i].PotionBasketIndex]) continue;
             
             float distance = Vector3.Distance(transform.position, CurrentNearPotionBaskets[i].transform.position);
             

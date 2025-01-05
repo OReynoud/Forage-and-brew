@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "D_LetterContent", menuName = "Letters/LetterContentSo")]
 public class LetterContentSo : ScriptableObject
 {
-    [field: SerializeField] public string ClientName { get; private set; }
+    [field: SerializeField] public ClientSo Client { get; private set; }
     [field: SerializeField] [field: ResizableTextArea] public string TextContent { get; private set; }
     [field: SerializeField] public LetterType LetterType { get; private set; }
     // [field: SerializeField] public OrdersQuestLineTags QuestLine { get; private set; }

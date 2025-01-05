@@ -30,16 +30,17 @@ public class OrderManager : MonoBehaviour
         CurrentOrders.Add(new Order(letter));
 
         CodexContentManager.instance.ReceiveNewOrder(
-            letter.LetterContent.ClientName,
+            letter.LetterContent.Client.Name,
             letter.LetterContent.TextContent,
             letter.LetterContent.OrderContent.RequestedPotions,
             letter.LetterContent.OrderContent.MoneyReward,
             letter.LetterContent.OrderContent.TimeToFulfill);
 
-        GameDontDestroyOnLoadManager.Instance.OrderPotions.Add(new List<PotionValuesSo>());
+        GameDontDestroyOnLoadManager.Instance.OrderPotions.Add(new ClientOrderPotions());
+        GameDontDestroyOnLoadManager.Instance.OrderPotions[^1].ClientSo = letter.LetterContent.Client;
         for (int i = 0; i < letter.LetterContent.OrderContent.RequestedPotions.Length; i++)
         {
-            GameDontDestroyOnLoadManager.Instance.OrderPotions[^1].Add(null);
+            GameDontDestroyOnLoadManager.Instance.OrderPotions[^1].Potions.Add(null);
         }
     }
 
@@ -48,7 +49,7 @@ public class OrderManager : MonoBehaviour
         
         if (OrderToValidateIndices.Contains(orderIndex)) return false;
 
-        if (GameDontDestroyOnLoadManager.Instance.OrderPotions[orderIndex].Any(x => x == null)) return false;
+        if (GameDontDestroyOnLoadManager.Instance.OrderPotions[orderIndex].Potions.Any(x => x == null)) return false;
 
         OrderToValidateIndices.Add(orderIndex);
 
@@ -62,7 +63,7 @@ public class OrderManager : MonoBehaviour
         {
             bool isOrderCorrect = true;
             List<PotionValuesSo> currentOrderPotions =
-                GameDontDestroyOnLoadManager.Instance.OrderPotions[orderToValidateIndex].ToList();
+                GameDontDestroyOnLoadManager.Instance.OrderPotions[orderToValidateIndex].Potions.ToList();
 
             foreach (PotionDemand potionDemand in CurrentOrders[orderToValidateIndex].OrderContent.RequestedPotions
                          .Where(x => x.IsSpecific))
