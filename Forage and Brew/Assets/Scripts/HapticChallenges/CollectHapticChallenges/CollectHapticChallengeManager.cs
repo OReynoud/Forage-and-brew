@@ -12,10 +12,10 @@ public class CollectHapticChallengeManager : MonoBehaviour
     [SerializeField] private HarvestHapticChallengeSo harvestHapticChallengeSo;
 
     [Header("Ingredient Types")]
-    [SerializeField] private IngredientType scythingIngredientType = IngredientType.Herb;
-    [SerializeField] private IngredientType unearthingIngredientType = IngredientType.Mushroom;
-    [SerializeField] private IngredientType scrapingIngredientType = IngredientType.Moss;
-    [SerializeField] private IngredientType harvestIngredientType = IngredientType.Berry;
+    [SerializeField] private IngredientTypeSo scythingIngredientType;
+    [SerializeField] private IngredientTypeSo unearthingIngredientType;
+    [SerializeField] private IngredientTypeSo scrapingIngredientType;
+    [SerializeField] private IngredientTypeSo harvestIngredientType;
     
     // Global variables
     private bool _isCollectHapticChallengeActive;

@@ -11,7 +11,6 @@ public class CodexContentManager : Singleton<CodexContentManager>
     [Foldout("References")] public Sprite leftRecipePage;
     [Foldout("References")] public Sprite rightRecipePage;
     [Foldout("References")] public RectTransform emptyPage;
-    [Foldout("References")] public Sprite[] allIngredientTypeSprites;
     [Foldout("References")] public Sprite[] allBrewingActionSprites;
     
     //Orders Management
@@ -19,7 +18,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
     private RectTransform emptyOrderPage;
     private int emptyOrderPageIndex;
     
-    [BoxGroup("Recipe display")] public PotionValuesSo[] allPotions;
+    [BoxGroup("Recipe display")] [SerializeField] private PotionListSo potionList;
     [BoxGroup("Recipe display")] public RecipeCodexDisplay[] recipes;
     
     [Foldout("Debug")] public PotionTag testTag;
@@ -37,7 +36,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
             ticket.gameObject.SetActive(false);
         }
 
-        if (recipes.Length != allPotions.Length)
+        if (recipes.Length != potionList.Potions.Length)
         {
             Debug.LogError("Number of Recipes does not match number of Potions SO, some recipe pages may be broken");
         }
@@ -45,13 +44,13 @@ public class CodexContentManager : Singleton<CodexContentManager>
         for (int i = recipes.Length - 1; i >= 0; i--)
         {
             //Debug.Log("Check 1");
-            foreach (TemperatureChallengeIngredients t in allPotions[i].TemperatureChallengeIngredients)
+            foreach (TemperatureChallengeIngredients t in potionList.Potions[i].TemperatureChallengeIngredients)
             {
                 foreach (CookedIngredientForm cookedIngredient in t.CookedIngredients)
                 {
                     if (cookedIngredient.IsAType)
                     {
-                        tempIngredientsList.Add(allIngredientTypeSprites[(int)cookedIngredient.IngredientType]);
+                        tempIngredientsList.Add(cookedIngredient.IngredientType.Icon);
                     }
                     else
                     {
@@ -60,7 +59,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
                 }
             }
 
-            recipes[i].InitPage(tempIngredientsList.ToArray(), allPotions[i]);
+            recipes[i].InitPage(tempIngredientsList.ToArray(), potionList.Potions[i]);
             tempIngredientsList.Clear();
             InsertRecipePages(recipes[i].leftPage, recipes[i].rightPage);
         }

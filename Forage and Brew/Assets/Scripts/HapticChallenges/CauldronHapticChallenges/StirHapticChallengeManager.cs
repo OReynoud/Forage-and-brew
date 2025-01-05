@@ -135,7 +135,7 @@ public class StirHapticChallengeManager : MonoBehaviour
                 {
                     if (!cookedIngredientForm.IsAType) continue;
                     
-                    IngredientType ingredientType = cookedIngredientForm.IngredientType;
+                    IngredientTypeSo ingredientType = cookedIngredientForm.IngredientType;
                     
                     if (!cauldronIngredients.Exists(ingredient => ingredient.Ingredient.Type == ingredientType &&
                                                                   ingredient.CookedForm == cookedIngredientForm.CookedForm))

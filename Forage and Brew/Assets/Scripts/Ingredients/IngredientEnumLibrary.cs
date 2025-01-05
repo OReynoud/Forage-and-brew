@@ -1,11 +1,3 @@
-public enum IngredientType
-{
-    Mushroom = 0,
-    Herb = 1,
-    Moss = 2,
-    Berry = 3
-}
-
 public enum Biome
 {
     None = 0,
