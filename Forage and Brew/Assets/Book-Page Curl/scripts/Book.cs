@@ -101,6 +101,11 @@ public class Book : MonoBehaviour
     //current flip mode
     FlipMode mode;
 
+    private void Awake()
+    {
+        bookMarks[^1].index = bookPages.Count - 2;
+    }
+
     void Start()
     {
         Left.gameObject.SetActive(false);
