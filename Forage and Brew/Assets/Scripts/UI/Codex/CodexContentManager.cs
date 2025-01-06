@@ -67,20 +67,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            TerminateOrder(1);
-        }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            TerminateOrder(2);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            TerminateOrder(3);
-        }
     }
 
 

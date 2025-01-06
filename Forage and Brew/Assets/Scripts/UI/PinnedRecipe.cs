@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
@@ -26,6 +27,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
     //Recipe ingredients
     [BoxGroup("Recipe Ingredients")] public Image[] potionIngredientsImage;
     [BoxGroup("Recipe Ingredients")] public TextMeshProUGUI[] potionIngredientQuantity;
+    [BoxGroup("Recipe Ingredients")] public TextMeshProUGUI[] potionIngredientCounter;
 
 
     //Recipe steps
@@ -33,6 +35,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
     [BoxGroup("Recipe Steps")] public Image[] ingredientStepImage;
     [BoxGroup("Recipe Steps")] public Image[] mainActionImage;
     [BoxGroup("Recipe Steps")] public Image[] singleActionImage;
+    private List<Sprite> tempCollectedIngredientsList = new List<Sprite>();
 
 
     public void Start()
@@ -84,17 +87,30 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
             mainActionImage[i].enabled = false;
             singleActionImage[i].enabled = false;
         }
+        title.text = pinnedRecipe.Name;
 
+        tempCollectedIngredientsList.Clear();
+        foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.CollectedIngredients)
+        {
+            tempCollectedIngredientsList.Add(ingredient.icon);
+        }
+        foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients)
+        {
+            tempCollectedIngredientsList.Add(ingredient.IngredientValuesSo.icon);
+        }
+
+        foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.FloorCollectedIngredients)
+        {
+            tempCollectedIngredientsList.Add(ingredient.ingredient.icon);
+        }
 
         if (GameDontDestroyOnLoadManager.Instance.PreviousScene == Scene.House)
         {
-            title.text = pinnedRecipe.Name;
             recipeStepsCanvas.alpha = 1;
             ShowRecipeSteps();
         }
         else
         {
-            title.text = pinnedRecipe.Name;
             ingredientsCanvas.alpha = 1;
             ShowRecipeIngredients();
         }
@@ -196,8 +212,66 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
             {
                 int numberOfIngredients = Ex.CheckForSameElementsSprite(i, 0, potionIngredients);
 
+                var i1 = i;
+                var temp = tempCollectedIngredientsList.Where(x => x == potionIngredients[i1]);
+
+                var enumerable = temp.ToArray();
+                potionIngredientCounter[i].text = enumerable.Length + "";
+                
+                if (enumerable.Length >= 1 + numberOfIngredients)
+                {
+                    potionIngredientCounter[i].color = Color.green;
+                }
+                else
+                {
+                    potionIngredientCounter[i].color = Color.red;
+                }
+                
+                
                 potionIngredientQuantity[i].text = (1 + numberOfIngredients).ToString();
 
+                i += numberOfIngredients;
+            }
+        }
+    }
+
+    public void UpdateIngredientCounter()
+    {
+        tempCollectedIngredientsList.Clear();
+        foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.CollectedIngredients)
+        {
+            tempCollectedIngredientsList.Add(ingredient.icon);
+        }
+        foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients)
+        {
+            tempCollectedIngredientsList.Add(ingredient.IngredientValuesSo.icon);
+        }
+
+        foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.FloorCollectedIngredients)
+        {
+            tempCollectedIngredientsList.Add(ingredient.ingredient.icon);
+        }
+        
+        for (int i = 0; i < potionIngredients.Length; i++)
+        {
+            if (i + 1 < potionIngredients.Length)
+            {
+                int numberOfIngredients = Ex.CheckForSameElementsSprite(i, 0, potionIngredients);
+
+                var i1 = i;
+                var temp = tempCollectedIngredientsList.Where(x => x == potionIngredients[i1]);
+
+                var enumerable = temp.ToArray();
+                potionIngredientCounter[i].text = enumerable.Length + "";
+                
+                if (enumerable.Length >= 1 + numberOfIngredients)
+                {
+                    potionIngredientCounter[i].color = Color.green;
+                }
+                else
+                {
+                    potionIngredientCounter[i].color = Color.red;
+                }
                 i += numberOfIngredients;
             }
         }
