@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
@@ -5,11 +6,8 @@ using UnityEngine;
 
 public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 {
-    public List<LetterContentSo> PossibleLettersPool { get; set; } = new();
-    [SerializeField] private List<LetterContentSo> day1Letters;
-    [SerializeField] private List<LetterContentSo> day2Letters;
-    [SerializeField] private List<LetterContentSo> day3Letters;
-    private readonly List<LetterContentSo> _chosenLetters = new();
+
+    [SerializeField] [AllowNesting][ReadOnly]private List<Letter> chosenLetters = new();
     public List<LetterMailBoxDisplayBehaviour> GeneratedLetters { get; set; } = new();
 
     [SerializeField] private GameObject interactInputCanvasGameObject;
@@ -38,8 +36,8 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         {
             ChooseLetters();
         }
+
         GenerateLetters();
-        
     }
 
     private void Update()
@@ -77,25 +75,56 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 
     public void ChooseLetters()
     {
-        _chosenLetters.Clear();
+        Debug.Log("Choosen Letters to generate");
+        chosenLetters.Clear();
 
-        switch (GameDontDestroyOnLoadManager.Instance.DayPassed)
+        // switch (GameDontDestroyOnLoadManager.Instance.DayPassed)
+        // {
+        //     case 0:
+        //         _chosenLetters.AddRange(day1Letters);
+        //         break;
+        //     case 1:
+        //         _chosenLetters.AddRange(day2Letters);
+        //         break;
+        //     case 2:
+        //         _chosenLetters.AddRange(day3Letters);
+        //         break;
+        // }
+        foreach (var letter in GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters)
         {
-            case 0:
-                _chosenLetters.AddRange(day1Letters);
-                break;
-            case 1:
-                _chosenLetters.AddRange(day2Letters);
-                break;
-            case 2:
-                _chosenLetters.AddRange(day3Letters);
-                break;
+            int index = Array.IndexOf(
+                letter.RelatedNarrativeBlock.ContentSo.Content,
+                letter.LetterContent);
+            letter.RelatedNarrativeBlock.InactiveLetters[index] = false;
+            if (letter.RelatedNarrativeBlock.CompletedLetters[letter.RelatedNarrativeBlock.SelfProgressionIndex - 1])
+            {
+                chosenLetters.Add(new Letter(letter.LetterContent.RelatedSuccessLetter, letter.RelatedNarrativeBlock));
+            }
+            else
+            {
+                chosenLetters.Add(new Letter(letter.LetterContent.RelatedFailureLetter, letter.RelatedNarrativeBlock));
+            }
         }
+        
+        foreach (var t in GameDontDestroyOnLoadManager.Instance.AllNarrativeBlocks)
+        {
+            if (t.ContentSo.RequiredQuestProgressionIndex >
+                GameDontDestroyOnLoadManager.Instance.QuestProgressionIndex)
+                continue;
+            
+            if (t.SelfProgressionIndex >= t.CompletedLetters.Length)
+                continue;
+            
+            if (t.CompletedLetters[t.SelfProgressionIndex] || t.InactiveLetters[t.SelfProgressionIndex])
+                continue;
 
-        GameDontDestroyOnLoadManager.Instance.MailBoxLetters.AddRange(_chosenLetters);
-        GameDontDestroyOnLoadManager.Instance.AllLetters.AddRange(_chosenLetters);
+            chosenLetters.Add(new Letter(t.ContentSo.Content[t.SelfProgressionIndex], t));
+            t.InactiveLetters[t.SelfProgressionIndex] = true;
+        }
+        GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters.Clear();
+        GameDontDestroyOnLoadManager.Instance.MailBoxLetters.AddRange(chosenLetters);
+        //GameDontDestroyOnLoadManager.Instance.AllLetters.AddRange(_chosenLetters);
         GameDontDestroyOnLoadManager.Instance.HasChosenLettersToday = true;
-
     }
 
     public void GenerateLetters()
@@ -106,7 +135,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         {
             var current = Instantiate(letterPrefab, letterPile);
             GeneratedLetters.Insert(0, current);
-            current.InitLetter(GameDontDestroyOnLoadManager.Instance.MailBoxLetters[i]);
+            current.InitLetter(GameDontDestroyOnLoadManager.Instance.MailBoxLetters[i].LetterContent);
         }
     }
 
@@ -120,7 +149,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         CharacterInputManager.Instance.EnableMailInputs();
         targetPos = Vector2.zero;
     }
-    
+
     public void PassToNextLetter()
     {
         if (_openedMailOnFrame) return;
@@ -140,15 +169,19 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         CharacterInputManager.Instance.EnableMoveInputs();
         CharacterInputManager.Instance.EnableInteractInputs();
         CharacterInputManager.Instance.DisableMailInputs();
+        CharacterInteractController.Instance.CurrentNearMailBoxBehaviour = null;
+        DisableInteract();
+        
         letterTrigger.enabled = false;
         targetPos = new Vector2(0f, -1500f);
 
-        foreach (LetterContentSo letter in GameDontDestroyOnLoadManager.Instance.MailBoxLetters)
+        foreach (Letter letter in GameDontDestroyOnLoadManager.Instance.MailBoxLetters)
         {
-            if (letter.LetterType != LetterType.Orders) continue;
+            if (letter.LetterContent.LetterType != LetterType.Orders) continue;
 
             OrderManager.Instance.CreateNewOrder(letter);
         }
+
         GameDontDestroyOnLoadManager.Instance.MailBoxLetters.Clear();
     }
 

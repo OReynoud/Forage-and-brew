@@ -11,15 +11,21 @@ public class IngredientToCollectVfxManagerBehaviour : MonoBehaviour
     [SerializeField] private GameObject halfMoonVfxGameObject;
     [SerializeField] private LunarCycleStateSo fullMoonLunarCycleState;
     [SerializeField] private GameObject fullMoonVfxGameObject;
+    
+    [Header("Haptic Challenge")]
+    [SerializeField] private ParticleSystem scythingVfx;
+    [SerializeField] private ParticleSystem unearthingVfx;
+    [SerializeField] private ParticleSystem scrapingVfx;
+    [SerializeField] private ParticleSystem harvestVfx;
 
 
     private void Start()
     {
-        SetRightVfx();
+        SetRightLunarCycleVfx();
     }
 
 
-    public void SetRightVfx()
+    public void SetRightLunarCycleVfx()
     {
         if (LunarCycleManager.Instance.CurrentLunarCycleState == shootingStarLunarCycleState)
         {
@@ -69,5 +75,34 @@ public class IngredientToCollectVfxManagerBehaviour : MonoBehaviour
         newMoonVfxGameObject.SetActive(false);
         halfMoonVfxGameObject.SetActive(false);
         fullMoonVfxGameObject.SetActive(true);
+    }
+    
+    public void StopAllLunarCycleVfx()
+    {
+        shootingStarVfxGameObject.SetActive(false);
+        newMoonVfxGameObject.SetActive(false);
+        halfMoonVfxGameObject.SetActive(false);
+        fullMoonVfxGameObject.SetActive(false);
+    }
+    
+    
+    public void PlayScythingVfx()
+    {
+        scythingVfx.Play();
+    }
+    
+    public void PlayUnearthingVfx()
+    {
+        unearthingVfx.Play();
+    }
+    
+    public void PlayScrapingVfx()
+    {
+        scrapingVfx.Play();
+    }
+    
+    public void PlayHarvestVfx()
+    {
+        harvestVfx.Play();
     }
 }

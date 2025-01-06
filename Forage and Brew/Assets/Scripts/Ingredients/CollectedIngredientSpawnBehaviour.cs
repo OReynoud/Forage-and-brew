@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CollectedIngredientSpawnBehaviour : MonoBehaviour
 {
-    [SerializeField] private IngredientType ingredientType;
+    [SerializeField] private IngredientTypeSo ingredientType;
     [SerializeField] private CollectedIngredientBehaviour collectedIngredientBehaviourPrefab;
     
     private void Start()

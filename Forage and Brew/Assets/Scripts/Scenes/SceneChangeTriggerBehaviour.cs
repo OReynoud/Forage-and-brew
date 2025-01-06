@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,6 +11,8 @@ public class SceneChangeTriggerBehaviour : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
+        if (CharacterInteractController.Instance.AreHandsFull) return;
+        
         if (doesNeedToBeDaytime && GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay != TimeOfDay.Daytime) return;
         
         if (other.CompareTag("Player") && GameDontDestroyOnLoadManager.Instance.PreviousScene != scene)
@@ -18,9 +21,23 @@ public class SceneChangeTriggerBehaviour : MonoBehaviour
             {
                 if (sceneName.Scene == scene)
                 {
-                    SceneManager.LoadScene(sceneName.Name);
+                    SceneTransitionManager.instance.HandleSceneChange(sceneName.Name);
                     break;
                 }
+            }
+
+            foreach (CollectedIngredientBehaviour collectedIngredientBehaviour in GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients.ToList())
+            {
+                GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients.Remove(collectedIngredientBehaviour);
+                GameDontDestroyOnLoadManager.Instance.FloorCollectedIngredients.Add((collectedIngredientBehaviour.IngredientValuesSo,
+                    collectedIngredientBehaviour.transform.position, collectedIngredientBehaviour.transform.rotation));
+            }
+
+            foreach (CollectedPotionBehaviour collectedPotionBehaviour in GameDontDestroyOnLoadManager.Instance.OutCookedPotions.ToList())
+            {
+                GameDontDestroyOnLoadManager.Instance.OutCookedPotions.Remove(collectedPotionBehaviour);
+                GameDontDestroyOnLoadManager.Instance.FloorCookedPotions.Add((collectedPotionBehaviour.PotionValuesSo,
+                    collectedPotionBehaviour.transform.position, collectedPotionBehaviour.transform.rotation));
             }
             
             if (doesMakeItNighttime)
