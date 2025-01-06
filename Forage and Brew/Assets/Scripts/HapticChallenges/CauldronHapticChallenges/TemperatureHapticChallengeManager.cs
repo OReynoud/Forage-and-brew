@@ -9,6 +9,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
     
     [Header("Dependencies")]
     [SerializeField] private TemperatureHapticChallengeGlobalValuesSo temperatureHapticChallengeGlobalValuesSo;
+    [SerializeField] private Animator characterAnimator;
     
     [Header("UI")]
     [SerializeField] private GameObject temperatureChallengeGameObject;
@@ -40,6 +41,9 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
     private Temperature _currentTemperature;
     
     public BellowsBehaviour CurrentBellows { get; set; }
+    
+    // Animator Hashes
+    private static readonly int DoPushBellows = Animator.StringToHash("DoPushBellows");
     
     
     private void Awake()
@@ -79,6 +83,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
         CharacterInputManager.Instance.EnableTemperatureHapticChallengeInputs();
         
         CurrentBellows.DisableInteract();
+        CurrentBellows.EnterTemperatureHapticChallenge();
         
         _isChallengeActive = true;
         _currentBlowTime = 0f;
@@ -254,6 +259,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
         CameraController.instance.ApplyScriptableCamSettings(_previousCameraPreset, cauldronCameraTransitionTime);
         CharacterInputManager.Instance.EnableInputs();
         CurrentBellows.EnableInteract();
+        CurrentBellows.ExitTemperatureHapticChallenge();
         
         CauldronBehaviour.instance.AddTemperature(_currentTemperature);
         GameDontDestroyOnLoadManager.Instance.CauldronTemperature = _currentTemperature;
@@ -264,6 +270,9 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
     public void IncreaseTemperature()
     {
         if (!_isChallengeActive) return;
+        
+        characterAnimator.SetTrigger(DoPushBellows);
+        CurrentBellows.PlayBellowsAnimation();
         
         _currentBlowTime = temperatureHapticChallengeGlobalValuesSo.HeatIncreaseDuration;
     }

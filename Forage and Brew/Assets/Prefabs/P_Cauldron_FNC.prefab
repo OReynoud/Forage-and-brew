@@ -498,14 +498,14 @@ MonoBehaviour:
   flameVfx: {fileID: 4215525884255282431}
   flameVfxRenderer: {fileID: 7460057440746405197}
   lowHeatFlameColor: {r: 10.432951, g: 0.8739645, b: 0, a: 1}
-  lowHeatFlameRadius: 0.4
+  lowHeatFlameRadius: 0.3
   lowHeatFlameDonutRadius: 0.06
   mediumHeatFlameColor: {r: 5.2164764, g: 2.5945826, b: 0, a: 1}
-  mediumHeatFlameRadius: 0.6
-  mediumHeatFlameDonutRadius: 0.1
+  mediumHeatFlameRadius: 0.4
+  mediumHeatFlameDonutRadius: 0.07
   highHeatFlameColor: {r: 0, g: 4.237095, b: 3.6603174, a: 1}
-  highHeatFlameRadius: 0.8
-  highHeatFlameDonutRadius: 0.1
+  highHeatFlameRadius: 0.5
+  highHeatFlameDonutRadius: 0.08
   obtainedPotionVfx: {fileID: 2260360718187681647}
 --- !u!1001 &1672756462586545853
 PrefabInstance:
@@ -610,6 +610,10 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2600449587630632152, guid: 8ca4afb483b4a1f40901c019069596b5, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5153957928081227879, guid: 8ca4afb483b4a1f40901c019069596b5, type: 3}
       propertyPath: m_Name
       value: SM_CauldronFIX_01
@@ -669,6 +673,26 @@ PrefabInstance:
     - target: {fileID: 5534178204050741981, guid: 8ca4afb483b4a1f40901c019069596b5, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5713655720997837230, guid: 8ca4afb483b4a1f40901c019069596b5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7119444057076304759, guid: 8ca4afb483b4a1f40901c019069596b5, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7119444057076304759, guid: 8ca4afb483b4a1f40901c019069596b5, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7119444057076304759, guid: 8ca4afb483b4a1f40901c019069596b5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7119444057076304759, guid: 8ca4afb483b4a1f40901c019069596b5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 7336737187349546294, guid: 8ca4afb483b4a1f40901c019069596b5, type: 3}
       propertyPath: playOnAwake
