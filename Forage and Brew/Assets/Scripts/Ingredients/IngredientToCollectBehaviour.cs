@@ -235,6 +235,8 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     public void Collect()
     {
         GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Add(IngredientValuesSo);
+        PinnedRecipe.instance.UpdateIngredientCounter();
+        
         meshParentTransform.gameObject.SetActive(false);
         DisableCollect();
         IngredientToCollectVfxManagerBehaviour.StopAllLunarCycleVfx();
