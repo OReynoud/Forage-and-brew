@@ -6,7 +6,9 @@ public class CameraTrigger : MonoBehaviour
 {
     [Expandable] public CameraPreset camSettings;
 
-    public float transitionTime;
+    [HideIf("instantTransition")] public float transitionTime;
+
+    public bool instantTransition;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -21,6 +23,16 @@ public class CameraTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        CameraController.instance.ApplyScriptableCamSettings(camSettings, transitionTime);
+        if (instantTransition)
+        {
+            CameraController.instance.scriptableCamSettings = camSettings;
+            CameraController.instance.ApplyScriptableCamSettings();
+            CameraController.instance.InstantCamUpdate();
+        }
+        else
+        {
+            CameraController.instance.ApplyScriptableCamSettings(camSettings, transitionTime);
+        }
+        
     }
 }
