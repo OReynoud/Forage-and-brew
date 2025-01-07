@@ -1021,6 +1021,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""ec8563b3-f111-4ccf-860e-12bbba361ff8"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleRun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""c2d83041-24ec-4ec9-96f2-0656f5c3a518"",
                     ""path"": ""<Gamepad>/rightStick/left"",
                     ""interactions"": """",
