@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class BedBehaviour : MonoBehaviour
 {
+    [SerializeField] private PotionBasketManagerBehaviour[] potionBasketManagerBehaviours;
     [SerializeField] private GameObject interactInputCanvasGameObject;
 
 
     private void Start()
     {
         interactInputCanvasGameObject.SetActive(false);
-        GameDontDestroyOnLoadManager.Instance.generateLetters = true;
     }
 
 
@@ -25,11 +25,17 @@ public class BedBehaviour : MonoBehaviour
 
     public void Sleep()
     {
-        GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay = TimeOfDay.Daytime;
-        GameDontDestroyOnLoadManager.Instance.generateLetters = true;
-        GameDontDestroyOnLoadManager.Instance.dayPassed++;
-        WeatherManager.Instance.PassToNextWeatherState();
-        LunarCycleManager.Instance.PassToNextLunarCycleState();
+        SceneTransitionManager.instance.HandleGoingToSleepTransition(1f);
+        // Letters
+        GameDontDestroyOnLoadManager.Instance.HasChosenLettersToday = false;
+        
+        // Orders
+        OrderManager.Instance.CheckOrdersToValidate();
+        foreach (PotionBasketManagerBehaviour potionBasketManagerBehaviour in potionBasketManagerBehaviours)
+        {
+            potionBasketManagerBehaviour.ReactivateRightPotionBaskets();
+        }
+
         Debug.Log("It's daytime now");
     }
     

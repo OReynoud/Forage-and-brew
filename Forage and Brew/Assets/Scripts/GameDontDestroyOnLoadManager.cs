@@ -1,40 +1,44 @@
-using System;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using UnityEngine;
 
 public class GameDontDestroyOnLoadManager : MonoBehaviour
 {
+    // Singleton
     public static GameDontDestroyOnLoadManager Instance { get; private set; }
     
-
+    // Debug
+    [SerializeField] private bool debugMode;
+    
+    // Scene
     [field: SerializeField] public Scene PreviousScene { get; set; }
+    
+    // Days
     public TimeOfDay CurrentTimeOfDay { get; set; } = TimeOfDay.Daytime;
+    public int DayPassed { get; set; }
     
-    public int dayPassed { get; set; }
-
-    
-    [field: SerializeField] public bool generateLetters { get; set; }
-    
+    // Ingredients and Potions
     public List<IngredientValuesSo> CollectedIngredients { get; private set; } = new();
-    public List<List<PotionValuesSo>> OrderPotions { get; private set; } = new();
+    public List<CollectedIngredientBehaviour> OutCollectedIngredients { get; private set; } = new();
+    public List<(IngredientValuesSo ingredient, Vector3 position, Quaternion rotation)> FloorCollectedIngredients { get; private set; } = new();
+    public List<CollectedPotionBehaviour> OutCookedPotions { get; private set; } = new();
+    public List<(PotionValuesSo potion, Vector3 position, Quaternion rotation)> FloorCookedPotions { get; private set; } = new();
+    public List<ClientOrderPotions> OrderPotions { get; private set; } = new();
     
-    [Serializable]
-    public class Letter
-    {
-        public LetterContainer associatedLetter;
-        public LetterContentSO LetterContent;
-        public int days;
-
-        public Letter(LetterContentSO Letter, int delay )
-        {
-            LetterContent = Letter;
-            days = delay;
-        }
-    }
-    public List<LetterContentSO> AllLetters = new List<LetterContentSO>();
-
-    public List<Letter> GeneratedLetters = new List<Letter>();
-    public List<Letter> ActiveLetters = new List<Letter>();
+    // Letters
+    public bool HasChosenLettersToday { get; set; }
+    [field: SerializeField] public int QuestProgressionIndex { get; set; }
+    
+    [field: Expandable][field: SerializeField] public List<NarrativeBlockOfLettersContentSo> AllNarrativeBlocksContentSo { get; set; } = new();
+    public List<NarrativeBlockOfLetters> AllNarrativeBlocks { get; set; } = new();
+    
+    public List<Letter> ThanksAndErrorLetters { get; set; } = new();
+    public List<Letter> MailBoxLetters { get; set; } = new();
+    
+    // Cauldron
+    public List<TemperatureChallengeIngredients> CauldronTemperatureAndIngredients { get; private set; } = new();
+    [field: SerializeField] public Temperature CauldronTemperature { get; set; } = Temperature.LowHeat;
+    
     
     private void Awake()
     {
@@ -48,22 +52,13 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
             DestroyImmediate(gameObject);
         }
     }
-
-
-    private void Update()
+    
+    private void Start()
     {
-        if (!generateLetters || MailBox.instance == null) return;
-        Debug.Log("GeneratedLetters");
-        switch (dayPassed)
+        foreach (var ContentSo in AllNarrativeBlocksContentSo)
         {
-            case 0:
-                break;            
-            case 1:
-                break;
-            case 2:
-                break;
+            AllNarrativeBlocks.Add(new NarrativeBlockOfLetters(ContentSo));
         }
-        generateLetters = false;
-        MailBox.instance.GenerateLetters();
+        InfoDisplayManager.instance.DisplayDays();
     }
 }

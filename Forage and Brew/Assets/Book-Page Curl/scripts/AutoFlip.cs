@@ -38,9 +38,20 @@ public class AutoFlip : Singleton<AutoFlip>
     
     private bool isFlipping;
     // Use this for initialization
-    void Start () {
+    public override void Awake()
+    {
         if (!ControledBook)
             ControledBook = GetComponent<Book>();
+        // var index = Array.IndexOf(ControledBook.bookPages.ToArray(), ControledBook.dummyOrderPage);
+        // ControledBook.bookMarks[0].index = index;
+        // ControledBook.bookMarks[1].index = index;
+        //
+        // Destroy(ControledBook.bookPages[index].UIComponent.gameObject);
+        // ControledBook.bookPages.RemoveAt(index);
+        // Destroy(ControledBook.bookPages[index].UIComponent.gameObject);
+        // ControledBook.bookPages.RemoveAt(index);
+    }
+    void Start () {
         if (AutoStartFlip)
             StartFlipping();
         ControledBook.OnFlip.AddListener(new UnityEngine.Events.UnityAction(PageFlipped));
@@ -147,10 +158,12 @@ public class AutoFlip : Singleton<AutoFlip>
     }
     IEnumerator FlipRTL(float xc, float xl, float h, float frameTime, float dx)
     {
+        Debug.Log("Turn Right");
         float x = xc + xl;
         float y = (-h / (xl * xl)) * (x - xc) * (x - xc);
 
         ControledBook.DragRightPageToPoint(new Vector3(x, y, 0));
+        ControledBook.SetupRTLFlip();
         for (int i = 0; i < AnimationFramesCount; i++)
         {
             y = (-h / (xl * xl)) * (x - xc) * (x - xc);
@@ -165,6 +178,7 @@ public class AutoFlip : Singleton<AutoFlip>
         float x = xc - xl;
         float y = (-h / (xl * xl)) * (x - xc) * (x - xc);
         ControledBook.DragLeftPageToPoint(new Vector3(x, y, 0));
+        ControledBook.SetupLTRFlip();
         for (int i = 0; i < AnimationFramesCount; i++)
         {
             y = (-h / (xl * xl)) * (x - xc) * (x - xc);

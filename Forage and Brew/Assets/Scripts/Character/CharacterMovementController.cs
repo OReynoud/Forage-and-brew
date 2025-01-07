@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class CharacterMovementController : MonoBehaviour
 {
+    // Singleton
+    public static CharacterMovementController Instance { get; private set; }
+    
     [Header("Dependencies")]
     [SerializeField] private Animator animator;
     
@@ -27,11 +30,24 @@ public class CharacterMovementController : MonoBehaviour
     
     // Animator Hashes
     private static readonly int IsWalking = Animator.StringToHash("isWalking");
+    private static readonly int IsRunning = Animator.StringToHash("isRunning");
     private static readonly int WalkSpeed = Animator.StringToHash("WalkSpeedFactor");
 
 
     #region Unity Callbacks
-
+    
+    private void Awake()
+    {
+        if (!Instance)
+        {
+            Instance = this;
+        }
+        else
+        {
+            DestroyImmediate(this);
+        }
+    }
+    
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -60,13 +76,18 @@ public class CharacterMovementController : MonoBehaviour
 
     private bool GroundCheck()
     {
-        bool check = Physics.Raycast(transform.position + Vector3.up * 0.6f, Vector3.down, 0.7f, groundMask);
+        bool check = Physics.Raycast(transform.position + Vector3.up * 0.4f, Vector3.down, 0.5f, groundMask);
         
         return check;
     }
 
     private void PlayerMovement()
     {
+        
+        animator.SetBool(IsRunning, isRunning);
+        if (isRunning)
+            playerDir.Normalize();
+        
         angledVelocity = playerDir;
         if (Physics.Raycast(transform.position , transform.forward, out RaycastHit hitForward, 0.7f, groundMask))
         {
@@ -104,7 +125,7 @@ public class CharacterMovementController : MonoBehaviour
         {
             accelerationCurveIndex += Time.deltaTime;
             isMoving = true;
-            animator.SetFloat(WalkSpeed,isRunning? runSpeed / walkSpeed : 1);
+            animator.SetFloat(WalkSpeed,isRunning? runSpeed / walkSpeed : playerDir.magnitude);
             animator.SetBool(IsWalking, true);
         }
         else 

@@ -11,16 +11,19 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
     private void Start()
     {
         interactInputCanvasGameObject.SetActive(false);
-        
-        SetBasketContent(ingredient);
     }
     
     private void OnDisable()
     {
+        IngredientBasketManagerBehaviour.ManageTriggerExit(this);
+        
         if (CharacterInteractController.Instance.CurrentNearIngredientBaskets.Contains(this))
         {
             CharacterInteractController.Instance.CurrentNearIngredientBaskets.Remove(this);
         }
+        
+        DisableInteract();
+        DisableCancel();
     }
     
 
@@ -37,6 +40,7 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
         if (GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Contains(ingredient))
         {
             Instantiate(ingredient.MeshGameObject, meshParentTransform);
+            meshParentTransform.gameObject.SetActive(true);
 
             foreach (IngredientValuesSo collectedIngredient in GameDontDestroyOnLoadManager.Instance.CollectedIngredients)
             {
@@ -54,6 +58,8 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
             Instantiate(collectedIngredientBehaviourPrefab, transform);
         collectedIngredientBehaviour.IngredientValuesSo = ingredient;
         IngredientCount--;
+        GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients.Add(collectedIngredientBehaviour);
+        GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Remove(ingredient);
 
         if (IngredientCount == 0)
         {
@@ -66,6 +72,8 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
     public void AddIngredient(CollectedIngredientBehaviour collectedIngredientBehaviour)
     {
         IngredientCount++;
+        GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients.Remove(collectedIngredientBehaviour);
+        GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Add(ingredient);
         Destroy(collectedIngredientBehaviour.gameObject);
         meshParentTransform.gameObject.SetActive(true);
     }
@@ -75,13 +83,13 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
-            IngredientBasketManagerBehaviour.ManageTriggerEnter();
+            IngredientBasketManagerBehaviour.ManageTriggerEnter(this);
             
             characterInteractController.CurrentNearIngredientBaskets.Add(this);
             
             if (characterInteractController.collectedStack.Count > 0 &&
-                (CollectedIngredientBehaviour)characterInteractController.collectedStack[0].stackable &&
-                ((CollectedIngredientBehaviour)characterInteractController.collectedStack[0].stackable).IngredientValuesSo == ingredient)
+                characterInteractController.collectedStack[0].stackable is CollectedIngredientBehaviour ingredientBehaviour &&
+                ingredientBehaviour.IngredientValuesSo == ingredient)
             {
                 EnableCancel();
 
@@ -104,8 +112,8 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
             if (characterInteractController.collectedStack.Count > 0 &&
-                (CollectedIngredientBehaviour)characterInteractController.collectedStack[0].stackable &&
-                ((CollectedIngredientBehaviour)characterInteractController.collectedStack[0].stackable).IngredientValuesSo == ingredient)
+                characterInteractController.collectedStack[0].stackable is CollectedIngredientBehaviour ingredientBehaviour &&
+                ingredientBehaviour.IngredientValuesSo == ingredient)
             {
                 EnableCancel();
 
@@ -137,7 +145,7 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
-            IngredientBasketManagerBehaviour.ManageTriggerExit();
+            IngredientBasketManagerBehaviour.ManageTriggerExit(this);
             
             if (characterInteractController.CurrentNearIngredientBaskets.Contains(this))
             {

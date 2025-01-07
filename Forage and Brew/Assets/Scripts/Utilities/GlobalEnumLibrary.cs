@@ -2,7 +2,8 @@ public enum Scene
 {
     House,
     Outdoor,
-    Biome1
+    Biome1,
+    Biome2
 }
 
 public enum TimeOfDay
@@ -43,6 +44,5 @@ public enum LetterType
 {
     Orders,
     Thanks,
-    ShippingError,
-    Narrative
+    ShippingError
 }

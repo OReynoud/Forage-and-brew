@@ -20,10 +20,13 @@ public class StirHapticChallengeManager : MonoBehaviour
     [SerializeField] private Image clockwiseArrowImage;
     [SerializeField] private GameObject rotationMarkerGameObject;
     [SerializeField] private Image rotationMarkerImage;
-    [SerializeField] private Image gaugeImage;
+    [SerializeField] private Transform confirmationCircleParentTransform;
+    [SerializeField] private ConfirmationCircleBehaviour confirmationCirclePrefab;
+    private readonly List<ConfirmationCircleBehaviour> _confirmationCircles = new();
+    [SerializeField] private RectTransform obtainedPotionRectTransform;
+    [SerializeField] private Image obtainedPotionImage;
     
     [Header("Camera")]
-    [SerializeField] private CameraPreset stirChallengeCameraPreset;
     [SerializeField] private float cauldronCameraTransitionTime = 0.5f;
     private CameraPreset _previousCameraPreset;
     
@@ -39,12 +42,13 @@ public class StirHapticChallengeManager : MonoBehaviour
     private bool _isCurrentStirClockwise;
     private bool _isInPreview;
     private bool _isInPreviewPause;
-    private bool _isWaitingForInputReset;
+    private bool _isObtainedPotionAnimationPlaying;
+    private float _currentObtainedPotionAnimationTime;
     public CauldronBehaviour CurrentCauldron { get; set; }
     
     // Input
     public Vector2 JoystickInputValue { get; set; }
-    private Vector2 _lastJoystickInputValue;
+    private readonly List<Vector2> _storedJoystickInputValues = new();
     private readonly List<float> _joystickInputDifferences = new();
     
     
@@ -62,15 +66,24 @@ public class StirHapticChallengeManager : MonoBehaviour
     {
         if (!_currentChallenge) return;
         
+        if (_isObtainedPotionAnimationPlaying)
+        {
+            UpdateObtainedPotionAnimation();
+
+            return;
+        }
+        
         UpdateStirChallenge();
     }
     
     
     private void PickRightPotion()
     {
+        List<TemperatureChallengeIngredients> temperatureAndIngredients = CurrentCauldron.ClearIngredients();
+        
         foreach (PotionValuesSo potion in potionListSo.Potions) // For each potion
         {
-            if (potion.TemperatureChallengeIngredients.Length != CurrentCauldron.TemperatureAndIngredients.Count) continue;
+            if (potion.TemperatureChallengeIngredients.Length != temperatureAndIngredients.Count) continue;
             
             bool isRightPotion = true;
 
@@ -80,7 +93,7 @@ public class StirHapticChallengeManager : MonoBehaviour
                 List<CookedIngredientForm> cauldronIngredients = new();
 
                 // Store all ingredients in the cauldron
-                foreach (CookedIngredientForm cookedIngredientForm in CurrentCauldron.TemperatureAndIngredients[i].CookedIngredients)
+                foreach (CookedIngredientForm cookedIngredientForm in temperatureAndIngredients[i].CookedIngredients)
                 {
                     cauldronIngredients.Add(cookedIngredientForm);
                 }
@@ -92,18 +105,28 @@ public class StirHapticChallengeManager : MonoBehaviour
                 }
 
                 // Check if the cauldron has the right ingredient count
-                if (cauldronIngredients.Count != potionIngredients.Count) break;
+                if (cauldronIngredients.Count != potionIngredients.Count)
+                {
+                    isRightPotion = false;
+                    break;
+                }
 
                 // Check if the cauldron has the right ingredients
                 foreach (CookedIngredientForm cookedIngredientForm in potionIngredients)
                 {
                     if (cookedIngredientForm.IsAType) continue;
                     
-                    if (!cauldronIngredients.Remove(cookedIngredientForm))
+                    if (!cauldronIngredients.Exists(ingredientForm =>
+                            ingredientForm.Ingredient == cookedIngredientForm.Ingredient &&
+                            ingredientForm.CookedForm == cookedIngredientForm.CookedForm))
                     {
                         isRightPotion = false;
                         break;
                     }
+                    
+                    cauldronIngredients.Remove(cauldronIngredients.Find(ingredientForm =>
+                        ingredientForm.Ingredient == cookedIngredientForm.Ingredient &&
+                        ingredientForm.CookedForm == cookedIngredientForm.CookedForm));
                 }
 
                 if (!isRightPotion) break;
@@ -112,21 +135,24 @@ public class StirHapticChallengeManager : MonoBehaviour
                 {
                     if (!cookedIngredientForm.IsAType) continue;
                     
-                    IngredientType ingredientType = cookedIngredientForm.IngredientType;
+                    IngredientTypeSo ingredientType = cookedIngredientForm.IngredientType;
                     
-                    if (!cauldronIngredients.Exists(ingredient => ingredient.Ingredient.Type == cookedIngredientForm.IngredientType))
+                    if (!cauldronIngredients.Exists(ingredient => ingredient.Ingredient.Type == ingredientType &&
+                                                                  ingredient.CookedForm == cookedIngredientForm.CookedForm))
                     {
                         isRightPotion = false;
                         break;
                     }
 
-                    cauldronIngredients.Remove(cauldronIngredients.Find(ingredient => ingredient.Ingredient.Type == ingredientType));
+                    cauldronIngredients.Remove(cauldronIngredients.Find(ingredient =>
+                        ingredient.Ingredient.Type == ingredientType &&
+                        ingredient.CookedForm == cookedIngredientForm.CookedForm));
                 }
 
                 if (!isRightPotion) break;
                 
                 // Check if the cauldron has the right temperature
-                if (potion.TemperatureChallengeIngredients[i].Temperature != CurrentCauldron.TemperatureAndIngredients[i].Temperature)
+                if (potion.TemperatureChallengeIngredients[i].Temperature != temperatureAndIngredients[i].Temperature)
                 {
                     isRightPotion = false;
                     break;
@@ -148,7 +174,6 @@ public class StirHapticChallengeManager : MonoBehaviour
         if (!CurrentCauldron) return;
         
         _previousCameraPreset = CameraController.instance.TargetCamSettings;
-        CameraController.instance.ApplyScriptableCamSettings(stirChallengeCameraPreset, cauldronCameraTransitionTime);
 
         transform.position = CurrentCauldron.transform.position + characterStirPosition;
         transform.rotation = Quaternion.Euler(characterStirRotation);
@@ -158,6 +183,7 @@ public class StirHapticChallengeManager : MonoBehaviour
         CurrentCauldron.DisableInteract();
         
         PickRightPotion();
+        Debug.Log(_currentPotion.Name + " Stir Challenge");
         _currentChallenge = _currentPotion.StirHapticChallenge;
         _currentStirTime = 0;
         _currentStirIndex = 0;
@@ -166,7 +192,12 @@ public class StirHapticChallengeManager : MonoBehaviour
         _joystickInputDifferences.Clear();
         
         stirChallengeGameObject.SetActive(true);
-        gaugeImage.fillAmount = 0;
+        obtainedPotionRectTransform.gameObject.SetActive(false);
+
+        foreach (StirCameraAndDuration _ in _currentChallenge.StirCamerasAndDurations)
+        {
+            _confirmationCircles.Add(Instantiate(confirmationCirclePrefab, confirmationCircleParentTransform));
+        }
         
         StartPreview();
     }
@@ -174,8 +205,12 @@ public class StirHapticChallengeManager : MonoBehaviour
     private void StartPreview()
     {
         _isInPreview = true;
+        _storedJoystickInputValues.Clear();
         clockwiseArrowImage.color = new Color(clockwiseArrowImage.color.r, clockwiseArrowImage.color.g, clockwiseArrowImage.color.b, 0.5f);
         rotationMarkerImage.color = new Color(rotationMarkerImage.color.r, rotationMarkerImage.color.g, rotationMarkerImage.color.b, 0.5f);
+        _confirmationCircles[_currentStirIndex].SetCurrentCircle();
+        CameraController.instance.ApplyScriptableCamSettings(_currentChallenge.StirCamerasAndDurations[_currentStirIndex].Camera,
+            cauldronCameraTransitionTime);
         StartStirTurn();
     }
 
@@ -199,16 +234,6 @@ public class StirHapticChallengeManager : MonoBehaviour
 
     private void UpdateStirChallenge()
     {
-        if (_isWaitingForInputReset)
-        {
-            if (CheckInputReset())
-            {
-                StopWaitingForInputReset();
-            }
-            
-            return;
-        }
-        
         if (_isInPreview)
         {
             if (CheckInputPreview())
@@ -230,7 +255,7 @@ public class StirHapticChallengeManager : MonoBehaviour
                 return;
             }
 
-            if (_currentStirTime >= _currentChallenge.StirDurations[_currentStirIndex])
+            if (_currentStirTime >= _currentChallenge.StirCamerasAndDurations[_currentStirIndex].Duration)
             {
                 _isInPreviewPause = true;
                 _currentStirTime = 0;
@@ -239,37 +264,95 @@ public class StirHapticChallengeManager : MonoBehaviour
         else
         {
             if (Mathf.FloorToInt(_currentStirTime / stirHapticChallengeGlobalValuesSo.CheckPositionInterval) > _currentCheckIndex ||
-                _currentStirTime >= _currentChallenge.StirDurations[_currentStirIndex])
+                _currentStirTime >= _currentChallenge.StirCamerasAndDurations[_currentStirIndex].Duration)
             {
                 _currentCheckIndex = Mathf.FloorToInt(_currentStirTime / stirHapticChallengeGlobalValuesSo.CheckPositionInterval);
                 if (!CheckInput()) return;
             }
         
-            if (_currentStirTime >= _currentChallenge.StirDurations[_currentStirIndex]) return;
+            if (_currentStirTime >= _currentChallenge.StirCamerasAndDurations[_currentStirIndex].Duration) return;
         }
         
         _currentStirTime += Time.deltaTime;
-        rotationMarkerGameObject.transform.Rotate(0, 0, (_isCurrentStirClockwise ? -1 : 1) * 360 * Time.deltaTime / _currentChallenge.StirDurations[_currentStirIndex]);
+        rotationMarkerGameObject.transform.Rotate(0, 0, (_isCurrentStirClockwise ? -1 : 1) * 360 * Time.deltaTime /
+                                                        _currentChallenge.StirCamerasAndDurations[_currentStirIndex].Duration);
+    }
+
+    private void UpdateObtainedPotionAnimation()
+    {
+        _currentObtainedPotionAnimationTime += Time.deltaTime;
+        
+        if (_currentObtainedPotionAnimationTime <= stirHapticChallengeGlobalValuesSo.ObtainedPotionAnimationDuration)
+        {
+            obtainedPotionRectTransform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one,
+                stirHapticChallengeGlobalValuesSo.ObtainedPotionScaleAnimationCurve.Evaluate(
+                    _currentObtainedPotionAnimationTime /
+                    stirHapticChallengeGlobalValuesSo.ObtainedPotionAnimationDuration));
+            
+            obtainedPotionRectTransform.anchoredPosition = Vector3.Lerp(
+                stirHapticChallengeGlobalValuesSo.ObtainedPotionAnimationStartPosition,
+                stirHapticChallengeGlobalValuesSo.ObtainedPotionAnimationEndPosition,
+                stirHapticChallengeGlobalValuesSo.ObtainedPotionPositionAnimationCurve.Evaluate(
+                    _currentObtainedPotionAnimationTime /
+                    stirHapticChallengeGlobalValuesSo.ObtainedPotionAnimationDuration));
+        }
+        else if (_currentObtainedPotionAnimationTime <= stirHapticChallengeGlobalValuesSo.ObtainedPotionAnimationDuration +
+                 stirHapticChallengeGlobalValuesSo.ObtainedPotionStayDuration)
+        {
+            obtainedPotionRectTransform.localScale = Vector3.one;
+            obtainedPotionRectTransform.anchoredPosition =
+                stirHapticChallengeGlobalValuesSo.ObtainedPotionAnimationEndPosition;
+        }
+        else
+        {
+            obtainedPotionRectTransform.localScale = Vector3.LerpUnclamped(Vector3.one, Vector3.zero,
+                stirHapticChallengeGlobalValuesSo.ObtainedPotionScaleEndAnimationCurve.Evaluate(
+                    (_currentObtainedPotionAnimationTime - stirHapticChallengeGlobalValuesSo.ObtainedPotionAnimationDuration
+                    - stirHapticChallengeGlobalValuesSo.ObtainedPotionStayDuration) /
+                    stirHapticChallengeGlobalValuesSo.ObtainedPotionAnimationEndDuration));
+        }
+            
+        if (_currentObtainedPotionAnimationTime >= stirHapticChallengeGlobalValuesSo.ObtainedPotionAnimationDuration +
+            stirHapticChallengeGlobalValuesSo.ObtainedPotionStayDuration +
+            stirHapticChallengeGlobalValuesSo.ObtainedPotionAnimationEndDuration)
+        {
+            _isObtainedPotionAnimationPlaying = false;
+            StopStirChallenge();
+        }
     }
 
     private void NextStirTurn()
     {
+        _confirmationCircles[_currentStirIndex].SetRightCircle();
+        
+        RumbleManager.Instance.PlayRumble(stirHapticChallengeGlobalValuesSo.StirTurnVibrationDuration,
+            stirHapticChallengeGlobalValuesSo.StirTurnVibrationPower);
+        
         _currentStirTime = 0;
         _currentStirIndex++;
         _currentCheckIndex = 0;
-        _lastJoystickInputValue = Vector2.zero;
-        
-        gaugeImage.fillAmount = (float)_currentStirIndex / _currentChallenge.StirDurations.Length;
             
-        if (_currentStirIndex >= _currentChallenge.StirDurations.Length)
+        if (_currentStirIndex >= _currentChallenge.StirCamerasAndDurations.Length)
         {
-            StopStirChallenge();
+            ObtainPotion();
             return;
         }
         
         _isCurrentStirClockwise = Random.Range(0, 2) == 0;
             
         StartPreview();
+    }
+
+    private void ObtainPotion()
+    {
+        CauldronVfxManager.Instance.PlayObtainedPotionVfx();
+        obtainedPotionImage.sprite = _currentPotion.icon;
+        obtainedPotionRectTransform.localScale = Vector3.zero;
+        obtainedPotionRectTransform.anchoredPosition =
+            stirHapticChallengeGlobalValuesSo.ObtainedPotionAnimationStartPosition;
+        obtainedPotionRectTransform.gameObject.SetActive(true);
+        _isObtainedPotionAnimationPlaying = true;
+        _currentObtainedPotionAnimationTime = 0f;
     }
 
     private void StopStirChallenge()
@@ -290,7 +373,13 @@ public class StirHapticChallengeManager : MonoBehaviour
             CurrentCauldron.transform.position, Quaternion.identity);
         collectedPotionBehaviour.PotionValuesSo = _currentPotion;
         CharacterInteractController.Instance.AddToPile(collectedPotionBehaviour);
-        
+        GameDontDestroyOnLoadManager.Instance.OutCookedPotions.Add(collectedPotionBehaviour);
+
+        foreach (ConfirmationCircleBehaviour confirmationCircle in _confirmationCircles)
+        {
+            Destroy(confirmationCircle.gameObject);
+        }
+        _confirmationCircles.Clear();
         stirChallengeGameObject.SetActive(false);
         _currentPotion = null;
         _currentChallenge = null;
@@ -300,25 +389,10 @@ public class StirHapticChallengeManager : MonoBehaviour
         CurrentCauldron.EnableInteract(false);
     }
     
-    private void StartWaitingForInputReset()
-    {
-        gaugeImage.fillAmount = (float)(_currentStirIndex + 1) / _currentChallenge.StirDurations.Length;
-        _isWaitingForInputReset = true;
-        visualIndicationGameObject.SetActive(false);
-    }
-    
-    private void StopWaitingForInputReset()
-    {
-        _isWaitingForInputReset = false;
-        visualIndicationGameObject.SetActive(true);
-        
-        NextStirTurn();
-    }
-    
     
     private bool CheckInput()
     {
-        if (_lastJoystickInputValue == Vector2.zero && JoystickInputValue == Vector2.zero) return true;
+        if (_storedJoystickInputValues.Count == 0 && JoystickInputValue == Vector2.zero) return true;
         
         if (JoystickInputValue == Vector2.zero)
         {
@@ -327,16 +401,36 @@ public class StirHapticChallengeManager : MonoBehaviour
             return false;
         }
         
-        if (_lastJoystickInputValue != Vector2.zero && _lastJoystickInputValue != Vector2.down &&
-            JoystickInputValue == Vector2.down)
+        if (_storedJoystickInputValues.Count == 3 &&
+            Vector2.Angle(JoystickInputValue.normalized, Vector2.down) <=
+            stirHapticChallengeGlobalValuesSo.AngleToleranceForTurnEnd)
         {
-            StartWaitingForInputReset();
+            NextStirTurn();
             return false;
         }
+
+        if (_storedJoystickInputValues.Count == 2 &&
+            Vector2.Angle(JoystickInputValue.normalized, _isCurrentStirClockwise ? Vector2.right : Vector2.left) <=
+            stirHapticChallengeGlobalValuesSo.AngleToleranceForTurnEnd)
+        {
+            _storedJoystickInputValues.Add(_isCurrentStirClockwise ? Vector2.right : Vector2.left);
+        }
+
+        if (_storedJoystickInputValues.Count == 1 &&
+            Vector2.Angle(JoystickInputValue.normalized, Vector2.up) <=
+            stirHapticChallengeGlobalValuesSo.AngleToleranceForTurnEnd)
+        {
+            _storedJoystickInputValues.Add(Vector2.up);
+        }
+
+        if (_storedJoystickInputValues.Count == 0 &&
+            Vector2.Angle(JoystickInputValue.normalized, _isCurrentStirClockwise ? Vector2.left : Vector2.right) <=
+            stirHapticChallengeGlobalValuesSo.AngleToleranceForTurnEnd)
+        {
+            _storedJoystickInputValues.Add(_isCurrentStirClockwise ? Vector2.left : Vector2.right);
+        }
         
-        _lastJoystickInputValue = JoystickInputValue;
-        
-        float joystickInputAngle = -Vector2.SignedAngle(Vector2.down, JoystickInputValue);
+        float joystickInputAngle = -Vector2.SignedAngle(Vector2.down, JoystickInputValue.normalized);
         
         CurrentCauldron.SpoonTransform.localRotation = Quaternion.Euler(0, joystickInputAngle, 0);
         
@@ -348,11 +442,7 @@ public class StirHapticChallengeManager : MonoBehaviour
     
     private bool CheckInputPreview()
     {
-        return JoystickInputValue != Vector2.zero;
-    }
-    
-    private bool CheckInputReset()
-    {
-        return JoystickInputValue == Vector2.zero;
+        return Vector2.Angle(JoystickInputValue.normalized, Vector2.down) >
+               stirHapticChallengeGlobalValuesSo.AngleToleranceForPreviewEnd;
     }
 }

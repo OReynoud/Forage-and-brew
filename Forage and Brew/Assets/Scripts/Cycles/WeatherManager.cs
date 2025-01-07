@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class WeatherManager : MonoBehaviour
@@ -7,8 +8,10 @@ public class WeatherManager : MonoBehaviour
     public static WeatherManager Instance { get; private set; }
     
     [SerializeField] private WeatherStateSo forestStartingWeatherState;
+    [SerializeField] private WeatherStateSo swampStartingWeatherState;
     
     public Dictionary<Biome, (WeatherStateSo weatherState, int successiveCount)> CurrentWeatherStates { get; } = new();
+
     
 
     private void Awake()
@@ -26,13 +29,15 @@ public class WeatherManager : MonoBehaviour
     private void Start()
     {
         CurrentWeatherStates.Add(Biome.Forest, (forestStartingWeatherState, 1));
+        CurrentWeatherStates.Add(Biome.Swamp, (swampStartingWeatherState, 1));
         Debug.Log("The weather state for the first day is " + CurrentWeatherStates[Biome.Forest].weatherState.Name);
+        InfoDisplayManager.instance.DisplayWeather();
     }
     
     
     public void PassToNextWeatherState()
     {
-        foreach (KeyValuePair<Biome, (WeatherStateSo weatherState, int successiveCount)> currentWeatherState in CurrentWeatherStates)
+        foreach (KeyValuePair<Biome, (WeatherStateSo weatherState, int successiveCount)> currentWeatherState in CurrentWeatherStates.ToList())
         {
             foreach (WeatherStateEndProbabilityBySuccessiveDayNumber weatherStateEndProbability in currentWeatherState.Value.weatherState.EndProbabilities)
             {
@@ -53,16 +58,20 @@ public class WeatherManager : MonoBehaviour
                             {
                                 CurrentWeatherStates[currentWeatherState.Key] = (endProbability.WeatherStateSo,
                                     CurrentWeatherStates[currentWeatherState.Key].successiveCount + 1);
-                                return;
+                                break;
                             }
                         
                             CurrentWeatherStates[currentWeatherState.Key] = (endProbability.WeatherStateSo, 1);
                         
-                            return;
+                            break;
                         }
                     }
                 }
             }
         }
+        
+        InfoDisplayManager.instance.DisplayWeather();
     }
+
+
 }

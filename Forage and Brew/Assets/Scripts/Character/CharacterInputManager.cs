@@ -9,14 +9,12 @@ public class CharacterInputManager : MonoBehaviour
     public static CharacterInputManager Instance { get; private set; }
 
     private InputSystem_Actions _inputs;
-
-    public CharacterMovementController movementController { get; set; }
-    private CharacterInteractController characterInteractController;
-    private AutoFlip codexController;
+    
 
     public UnityEvent OnCodexShow { get; set; } = new();
     public UnityEvent<bool> OnNavigationChange { get; set; } = new();
     public UnityEvent<bool> OnSelectRecipe { get; set; } = new();
+    public UnityEvent<bool> OnInputsEnabled { get; set; } = new();
     
     [BoxGroup("Debug")]public bool showCodex;
 
@@ -27,14 +25,10 @@ public class CharacterInputManager : MonoBehaviour
     {
         Instance = this;
         _inputs = new InputSystem_Actions();
-        movementController = GetComponent<CharacterMovementController>();
     }
     
     private void Start()
     {
-        characterInteractController = GetComponent<CharacterInteractController>();
-        codexController = AutoFlip.instance;
-        
         SetupInputs();
         EnableInputs();
     }
@@ -43,11 +37,11 @@ public class CharacterInputManager : MonoBehaviour
     {
         if (showCodex)
         {
-            codexController.PlayerInputFlipPages(_inputs.Player.Move.ReadValue<Vector2>());
+            AutoFlip.instance.PlayerInputFlipPages(_inputs.Player.Move.ReadValue<Vector2>());
         }
         else
         {
-            movementController.Move(_inputs.Player.Move.ReadValue<Vector2>());
+            CharacterMovementController.Instance.Move(_inputs.Player.Move.ReadValue<Vector2>());
         }
         
     }
@@ -81,6 +75,11 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.ChoppingHapticChallenge1.performed += ChoppingHapticChallenge1OnPerformed;
         _inputs.Player.ChoppingHapticChallenge2.performed += ChoppingHapticChallenge2OnPerformed;
         _inputs.Player.ChoppingHapticChallenge3.performed += ChoppingHapticChallenge3OnPerformed;
+        _inputs.Player.ChoppingHapticChallenge4.performed += ChoppingHapticChallenge4OnPerformed;
+        _inputs.Player.ChoppingHapticChallenge5.performed += ChoppingHapticChallenge5OnPerformed;
+        _inputs.Player.GrindingHapticChallenge1.performed += GrindingHapticChallenge1OnPerformed;
+        _inputs.Player.GrindingHapticChallenge2.performed += GrindingHapticChallenge2OnPerformed;
+        _inputs.Player.PushBellows.performed += PushBellowsOnPerformed;
         _inputs.Player.HapticChallengeJoystick.performed += HapticChallengeJoystickOnPerformed;
         _inputs.Player.HapticChallengeJoystick.canceled += HapticChallengeJoystickOnPerformed;
         _inputs.Player.HapticChallengeJoystickHorizontalAxis.performed += HapticChallengeJoystickHorizontalAxisOnPerformed;
@@ -110,6 +109,8 @@ public class CharacterInputManager : MonoBehaviour
         EnableInteractInputs();
         EnableHapticChallengeInputs();
         EnableCodexInputs();
+        if (OnInputsEnabled != null)
+            OnInputsEnabled.Invoke(true);
     }
 
     public void EnableMoveInputs()
@@ -135,7 +136,8 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.Unearth2.Enable();
         _inputs.Player.Harvest.Enable();
         EnableChoppingHapticChallengeInputs();
-        EnableHapticChallengeJoystickInputs();
+        EnableGrindingHapticChallengeInputs();
+        EnableTemperatureHapticChallengeInputs();
     }
     
     public void EnableChoppingHapticChallengeInputs()
@@ -143,6 +145,20 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.ChoppingHapticChallenge1.Enable();
         _inputs.Player.ChoppingHapticChallenge2.Enable();
         _inputs.Player.ChoppingHapticChallenge3.Enable();
+        _inputs.Player.ChoppingHapticChallenge4.Enable();
+        _inputs.Player.ChoppingHapticChallenge5.Enable();
+    }
+    
+    public void EnableGrindingHapticChallengeInputs()
+    {
+        _inputs.Player.GrindingHapticChallenge1.Enable();
+        _inputs.Player.GrindingHapticChallenge2.Enable();
+        EnableHapticChallengeJoystickInputs();
+    }
+    
+    public void EnableTemperatureHapticChallengeInputs()
+    {
+        _inputs.Player.PushBellows.Enable();
     }
     
     public void EnableHapticChallengeJoystickInputs()
@@ -181,6 +197,8 @@ public class CharacterInputManager : MonoBehaviour
         DisableCodexInputs();
         DisableMailInputs();
         _inputs.Player.Disable();
+        if (OnInputsEnabled != null)
+            OnInputsEnabled.Invoke(false);
     }
     
     public void DisableMoveInputs()
@@ -206,7 +224,8 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.Unearth2.Disable();
         _inputs.Player.Harvest.Disable();
         DisableChoppingHapticChallengeInputs();
-        DisableHapticChallengeJoystickInputs();
+        DisableGrindingHapticChallengeInputs();
+        DisableTemperatureHapticChallengeInputs();
     }
     
     public void DisableChoppingHapticChallengeInputs()
@@ -214,6 +233,20 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.ChoppingHapticChallenge1.Disable();
         _inputs.Player.ChoppingHapticChallenge2.Disable();
         _inputs.Player.ChoppingHapticChallenge3.Disable();
+        _inputs.Player.ChoppingHapticChallenge4.Disable();
+        _inputs.Player.ChoppingHapticChallenge5.Disable();
+    }
+    
+    public void DisableGrindingHapticChallengeInputs()
+    {
+        _inputs.Player.GrindingHapticChallenge1.Disable();
+        _inputs.Player.GrindingHapticChallenge2.Disable();
+        DisableHapticChallengeJoystickInputs();
+    }
+    
+    public void DisableTemperatureHapticChallengeInputs()
+    {
+        _inputs.Player.PushBellows.Disable();
     }
     
     public void DisableHapticChallengeJoystickInputs()
@@ -250,16 +283,16 @@ public class CharacterInputManager : MonoBehaviour
     }
     private void ToggleRunOnPerformed(InputAction.CallbackContext obj)
     {
-        movementController.isRunning = true;
+        CharacterMovementController.Instance.isRunning = true;
     }
 
     private void InteractOnPerformed(InputAction.CallbackContext obj)
     {
-        characterInteractController.Interact();
+        CharacterInteractController.Instance.Interact();
     }
     private void CancelOnPerformed(InputAction.CallbackContext obj)
     {
-        characterInteractController.Cancel();
+        CharacterInteractController.Instance.Cancel();
     }
     
     private void PreviousBasketSetOnPerformed(InputAction.CallbackContext obj)
@@ -284,12 +317,13 @@ public class CharacterInputManager : MonoBehaviour
     private void HapticChallengeOnPerformed(InputAction.CallbackContext obj)
     {
         TemperatureHapticChallengeManager.Instance.StartTemperatureChallenge();
-        characterInteractController.DropIngredientsInChoppingCountertop();
+        CharacterInteractController.Instance.DropIngredientsInChoppingCountertop();
     }
 
     private void HapticChallengeSecondOnPerformed(InputAction.CallbackContext obj)
     {
         StirHapticChallengeManager.Instance.StartStirChallenge();
+        CharacterInteractController.Instance.DropIngredientsInGrindingCountertop();
     }
     
     private void ScytheOnPerformed(InputAction.CallbackContext obj)
@@ -342,24 +376,49 @@ public class CharacterInputManager : MonoBehaviour
         ChoppingHapticChallengeManager.Instance.NextChoppingTurn(3);
     }
     
+    private void ChoppingHapticChallenge4OnPerformed(InputAction.CallbackContext obj)
+    {
+        ChoppingHapticChallengeManager.Instance.NextChoppingTurn(4);
+    }
+    
+    private void ChoppingHapticChallenge5OnPerformed(InputAction.CallbackContext obj)
+    {
+        ChoppingHapticChallengeManager.Instance.NextChoppingTurn(5);
+    }
+    
+    private void GrindingHapticChallenge1OnPerformed(InputAction.CallbackContext obj)
+    {
+        GrindingHapticChallengeManager.Instance.CheckInputGrindingChallenge(1);
+    }
+    
+    private void GrindingHapticChallenge2OnPerformed(InputAction.CallbackContext obj)
+    {
+        GrindingHapticChallengeManager.Instance.CheckInputGrindingChallenge(2);
+    }
+    
+    private void PushBellowsOnPerformed(InputAction.CallbackContext obj)
+    {
+        TemperatureHapticChallengeManager.Instance.IncreaseTemperature();
+    }
+    
     private void HapticChallengeJoystickOnPerformed(InputAction.CallbackContext obj)
     {
         StirHapticChallengeManager.Instance.JoystickInputValue = obj.ReadValue<Vector2>();
-        TemperatureHapticChallengeManager.Instance.JoystickInputValue = obj.ReadValue<Vector2>();
+        GrindingHapticChallengeManager.Instance.JoystickInputValue = obj.ReadValue<Vector2>();
         CollectHapticChallengeManager.Instance.JoystickInputValue = obj.ReadValue<Vector2>();
     }
     
     private void HapticChallengeJoystickHorizontalAxisOnPerformed(InputAction.CallbackContext obj)
     {
         StirHapticChallengeManager.Instance.JoystickInputValue = new Vector2(obj.ReadValue<float>(), StirHapticChallengeManager.Instance.JoystickInputValue.y);
-        TemperatureHapticChallengeManager.Instance.JoystickInputValue = new Vector2(obj.ReadValue<float>(), TemperatureHapticChallengeManager.Instance.JoystickInputValue.y);
+        GrindingHapticChallengeManager.Instance.JoystickInputValue = new Vector2(obj.ReadValue<float>(), GrindingHapticChallengeManager.Instance.JoystickInputValue.y);
         CollectHapticChallengeManager.Instance.JoystickInputValue = new Vector2(obj.ReadValue<float>(), CollectHapticChallengeManager.Instance.JoystickInputValue.y);
     }
     
     private void HapticChallengeJoystickVerticalAxisOnPerformed(InputAction.CallbackContext obj)
     {
         StirHapticChallengeManager.Instance.JoystickInputValue = new Vector2(StirHapticChallengeManager.Instance.JoystickInputValue.x, obj.ReadValue<float>());
-        TemperatureHapticChallengeManager.Instance.JoystickInputValue = new Vector2(TemperatureHapticChallengeManager.Instance.JoystickInputValue.x, obj.ReadValue<float>());
+        GrindingHapticChallengeManager.Instance.JoystickInputValue = new Vector2(GrindingHapticChallengeManager.Instance.JoystickInputValue.x, obj.ReadValue<float>());
         CollectHapticChallengeManager.Instance.JoystickInputValue = new Vector2(CollectHapticChallengeManager.Instance.JoystickInputValue.x, obj.ReadValue<float>());
     }
 
@@ -370,7 +429,7 @@ public class CharacterInputManager : MonoBehaviour
 
     private void CodexOnPerformed(InputAction.CallbackContext obj)
     {
-        movementController.Move(Vector2.zero);
+        CharacterMovementController.Instance.Move(Vector2.zero);
         showCodex = !showCodex;
 
         if (!showCodex)
@@ -386,26 +445,24 @@ public class CharacterInputManager : MonoBehaviour
     {
         if (!showCodex)return;
         
-        codexController.PlayerInputNavigateBookmarks(true);
+        AutoFlip.instance.PlayerInputNavigateBookmarks(true);
     }
     
     private void BookMarkRightOnPerformed(InputAction.CallbackContext obj)
     {
         if (!showCodex)return;
         
-        codexController.PlayerInputNavigateBookmarks(false);
+        AutoFlip.instance.PlayerInputNavigateBookmarks(false);
     }
 
     private void PinRightOnPerformed(InputAction.CallbackContext obj)
     {
-        if (OnSelectRecipe != null)
-            OnSelectRecipe.Invoke(true);
+        OnSelectRecipe?.Invoke(true);
     }
 
     private void PinLeftOnPerformed(InputAction.CallbackContext obj)
     {
-        if (OnSelectRecipe != null)
-            OnSelectRecipe.Invoke(false);
+        OnSelectRecipe?.Invoke(false);
     }
     private void StartPageNavigationOnPerformed(InputAction.CallbackContext obj)
     {
@@ -423,9 +480,9 @@ public class CharacterInputManager : MonoBehaviour
     
     private void PassLettersOnPerformed(InputAction.CallbackContext obj)
     {
-        if (!MailBox.instance) 
+        if (!MailBoxBehaviour.instance) 
             return;
-        MailBox.instance.PassToNextLetter();
+        MailBoxBehaviour.instance.PassToNextLetter();
     }
 
     #endregion

@@ -12,7 +12,7 @@ public class Singleton<T> : MonoBehaviour where T : Component
         }
         else
         {
-            Debug.LogError("Destroyed duplicate singleton object");
+            Debug.LogWarning("Destroyed duplicate singleton object: " + gameObject.name, instance);
             DestroyImmediate(gameObject);
         }
     }

@@ -12,10 +12,10 @@ public class CollectHapticChallengeManager : MonoBehaviour
     [SerializeField] private HarvestHapticChallengeSo harvestHapticChallengeSo;
 
     [Header("Ingredient Types")]
-    [SerializeField] private IngredientType scythingIngredientType = IngredientType.Herb;
-    [SerializeField] private IngredientType unearthingIngredientType = IngredientType.Mushroom;
-    [SerializeField] private IngredientType scrapingIngredientType = IngredientType.Moss;
-    [SerializeField] private IngredientType harvestIngredientType = IngredientType.Berry;
+    [SerializeField] private IngredientTypeSo scythingIngredientType;
+    [SerializeField] private IngredientTypeSo unearthingIngredientType;
+    [SerializeField] private IngredientTypeSo scrapingIngredientType;
+    [SerializeField] private IngredientTypeSo harvestIngredientType;
     
     // Global variables
     private bool _isCollectHapticChallengeActive;
@@ -65,6 +65,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
             if (ingredientToCollectBehaviour.IngredientValuesSo.Type != scythingIngredientType) continue;
             
             ingredientToCollectBehaviour.Collect();
+            ingredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayScythingVfx();
             CurrentIngredientToCollectBehaviours.Remove(ingredientToCollectBehaviour);
             return;
         }
@@ -141,6 +142,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
                 if (inputIndex != _unearthingInputIndexAlreadyReleased)
                 {
                     ingredientToCollectBehaviour.Collect();
+                    ingredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayUnearthingVfx();
                     CurrentIngredientToCollectBehaviours.Remove(ingredientToCollectBehaviour);
                     _unearthingInputIndexAlreadyPressed = 0;
                     _unearthingInputIndexAlreadyReleased = 0;
@@ -192,6 +194,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
                 if (Vector2.Angle(_firstScrapingJoystickPosition, JoystickInputValue) >= scrapingHapticChallengeSo.AngleToTravel)
                 {
                     ingredientToCollectBehaviour.Collect();
+                    ingredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayScrapingVfx();
                     CurrentIngredientToCollectBehaviours.Remove(ingredientToCollectBehaviour);
                     return;
                 }
@@ -217,6 +220,9 @@ public class CollectHapticChallengeManager : MonoBehaviour
         if (_currentHarvestTime <= 0f)
         {
             _canValidateHarvest = true;
+            
+            RumbleManager.Instance.PlayRumble(harvestHapticChallengeSo.InputReleaseVibrationDuration,
+                harvestHapticChallengeSo.InputReleaseVibrationPower);
             
             foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
             {
@@ -257,6 +263,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
             if (ingredientToCollectBehaviour.IngredientValuesSo.Type != harvestIngredientType) continue;
             
             ingredientToCollectBehaviour.Collect();
+            ingredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayHarvestVfx();
             CurrentIngredientToCollectBehaviours.Remove(ingredientToCollectBehaviour);
             return;
         }

@@ -15,6 +15,7 @@ public class CharacterSpawnBehaviour : MonoBehaviour
             characterTransform.position = transform.position;
             characterTransform.rotation = transform.rotation;
             
+            
             foreach (SceneName sceneName in sceneListSo.SceneNames)
             {
                 if (sceneName.Name == SceneManager.GetActiveScene().name)
@@ -26,14 +27,21 @@ public class CharacterSpawnBehaviour : MonoBehaviour
                 }
             }
             
+            PinnedRecipe.instance.Start();
+
+            if (WeatherManager.Instance.CurrentWeatherStates.Count != 0)
+            {
+                InfoDisplayManager.instance.DisplayWeather();
+            }
+            
             if (camSettings != null)
             {
                 CameraController.instance.scriptableCamSettings = camSettings;
                 CameraController.instance.ApplyScriptableCamSettings();
                 CameraController.instance.ApplyScriptableCamSettings(camSettings, 0);
                 CameraController.instance.InstantCamUpdate();
-                CameraController.instance.InstantCamUpdate();
             }
+            SceneTransitionManager.instance.HandleLoadNewScene();
         }
     }
 }

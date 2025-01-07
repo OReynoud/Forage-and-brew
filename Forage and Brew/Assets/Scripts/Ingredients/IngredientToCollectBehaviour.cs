@@ -4,6 +4,7 @@ public class IngredientToCollectBehaviour : MonoBehaviour
 {
     [Header("Dependencies")]
     [SerializeField] private IngredientToCollectGlobalValuesSo ingredientToCollectGlobalValuesSo;
+    [field: SerializeField] public IngredientToCollectVfxManagerBehaviour IngredientToCollectVfxManagerBehaviour { get; private set; }
     [SerializeField] private IngredientToCollectSpawnManager ingredientToCollectSpawnManager;
     [SerializeField] private SphereCollider collectTrigger;
     [SerializeField] private Transform meshParentTransform;
@@ -13,10 +14,10 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     [field: SerializeField] public SpawnLocation SpawnLocation { get; private set; }
 
     [Header("Ingredient Types")]
-    [SerializeField] private IngredientType scythingIngredientType = IngredientType.Herb;
-    [SerializeField] private IngredientType unearthingIngredientType = IngredientType.Mushroom;
-    [SerializeField] private IngredientType scrapingIngredientType = IngredientType.Moss;
-    [SerializeField] private IngredientType harvestIngredientType = IngredientType.Berry;
+    [SerializeField] private IngredientTypeSo scythingIngredientType;
+    [SerializeField] private IngredientTypeSo unearthingIngredientType;
+    [SerializeField] private IngredientTypeSo scrapingIngredientType;
+    [SerializeField] private IngredientTypeSo harvestIngredientType;
     
     [Header("UI")]
     [SerializeField] private bool isUiRight;
@@ -71,7 +72,7 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         // UI
         DisableCanvas();
 
-        if (GameDontDestroyOnLoadManager.Instance.dayPassed == 0)
+        if (GameDontDestroyOnLoadManager.Instance.DayPassed == 0)
         {
             DoesNeedToShowUi = true;
         }
@@ -234,7 +235,12 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     public void Collect()
     {
         GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Add(IngredientValuesSo);
-        Destroy(gameObject);
+        PinnedRecipe.instance.UpdateIngredientCounter();
+        
+        meshParentTransform.gameObject.SetActive(false);
+        DisableCollect();
+        IngredientToCollectVfxManagerBehaviour.StopAllLunarCycleVfx();
+        Destroy(this);
     }
     
 
