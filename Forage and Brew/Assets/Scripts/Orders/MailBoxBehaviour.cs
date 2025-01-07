@@ -32,6 +32,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         interactInputCanvasGameObject.SetActive(false);
         CharacterInputManager.Instance.DisableMailInputs();
 
+
         if (!GameDontDestroyOnLoadManager.Instance.HasChosenLettersToday)
         {
             ChooseLetters();
