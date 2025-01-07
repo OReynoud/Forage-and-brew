@@ -40,18 +40,18 @@ public class AutoFlip : Singleton<AutoFlip>
     // Use this for initialization
     public override void Awake()
     {
+        base.Awake();
         if (!ControledBook)
             ControledBook = GetComponent<Book>();
-        // var index = Array.IndexOf(ControledBook.bookPages.ToArray(), ControledBook.dummyOrderPage);
-        // ControledBook.bookMarks[0].index = index;
-        // ControledBook.bookMarks[1].index = index;
-        //
-        // Destroy(ControledBook.bookPages[index].UIComponent.gameObject);
-        // ControledBook.bookPages.RemoveAt(index);
-        // Destroy(ControledBook.bookPages[index].UIComponent.gameObject);
-        // ControledBook.bookPages.RemoveAt(index);
+        var index = Array.IndexOf(ControledBook.bookPages.ToArray(), ControledBook.dummyOrderPage);
+        ControledBook.bookMarks[0].index = index;
+        ControledBook.bookMarks[1].index = index;
+        
+        ControledBook.bookPages.RemoveAt(index);
+        ControledBook.bookPages.RemoveAt(index);
     }
-    void Start () {
+    void Start () 
+    {
         if (AutoStartFlip)
             StartFlipping();
         ControledBook.OnFlip.AddListener(new UnityEngine.Events.UnityAction(PageFlipped));

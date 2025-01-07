@@ -51,14 +51,15 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
         {
             DestroyImmediate(gameObject);
         }
-    }
-    
-    private void Start()
-    {
         foreach (var ContentSo in AllNarrativeBlocksContentSo)
         {
             AllNarrativeBlocks.Add(new NarrativeBlockOfLetters(ContentSo));
         }
+    }
+    
+    private void Start()
+    {
+
         InfoDisplayManager.instance.DisplayDays();
     }
 }

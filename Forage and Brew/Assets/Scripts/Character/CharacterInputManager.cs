@@ -181,6 +181,7 @@ public class CharacterInputManager : MonoBehaviour
 
     public void EnableMailInputs()
     {
+        Debug.Log("Enable Letters");
         _inputs.Player.PassLetters.Enable();
     }
 
@@ -269,6 +270,7 @@ public class CharacterInputManager : MonoBehaviour
 
     public void DisableMailInputs()
     {
+        Debug.Log("Disable Letters");
         _inputs.Player.PassLetters.Disable();
     }
 

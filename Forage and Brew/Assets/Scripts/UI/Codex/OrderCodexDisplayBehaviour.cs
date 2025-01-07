@@ -16,7 +16,7 @@ public class OrderCodexDisplayBehaviour : MonoBehaviour
     public int moneyReward;
     public int daysLeftToComplete;
 
-    public GameObject specificPotionPrefab;
+    public OrderSpecificPotionDemand specificPotionPrefab;
     public GameObject keywordPotionPrefab;
     public Transform potionList;
 
@@ -37,10 +37,9 @@ public class OrderCodexDisplayBehaviour : MonoBehaviour
         {
             if (potionsDemanded[i].IsSpecific)
             {
-                var specificImage = Instantiate(specificPotionPrefab,potionList).GetComponent<Image>();
-                var specificName = specificImage.gameObject.GetComponentInChildren<TextMeshProUGUI>();
-                specificImage.sprite = potionsDemanded[i].Potion.icon;
-                specificName.text = potionsDemanded[i].Potion.Name;
+                var specificPotion = Instantiate(specificPotionPrefab,potionList);
+                specificPotion.potionIcon.sprite = potionsDemanded[i].Potion.icon;
+                specificPotion.potionName.text = potionsDemanded[i].Potion.Name;
             }
             else
             {
