@@ -22,6 +22,8 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
     [BoxGroup("Behavior")] public Vector3 restingPos;
     [BoxGroup("Behavior")] public Vector3 pinnedPos;
     [BoxGroup("Behavior")] public float lerp;
+    [BoxGroup("Behavior")] public Color negativeColor;
+    [BoxGroup("Behavior")] public Color positiveColor;
 
 
     //Recipe ingredients
@@ -53,12 +55,19 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
     private void Update()
     {
         if (CharacterInputManager.Instance.showCodex)
-            return;
+        {
+            ownTransform.anchoredPosition = Vector2.Lerp(
+                ownTransform.anchoredPosition, restingPos, lerp);
+        }
+        else
+        {
+            ownTransform.anchoredPosition = Vector2.Lerp(
+                ownTransform.anchoredPosition,
+                isPinned ? pinnedPos : restingPos,
+                lerp);
 
-        ownTransform.anchoredPosition = Vector2.Lerp(
-            ownTransform.anchoredPosition,
-            isPinned ? pinnedPos : restingPos,
-            lerp);
+        }
+
     }
 
     public void UnpinRecipe()
@@ -220,11 +229,11 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
                 
                 if (enumerable.Length >= 1 + numberOfIngredients)
                 {
-                    potionIngredientCounter[i].color = Color.green;
+                    potionIngredientCounter[i].color = positiveColor;
                 }
                 else
                 {
-                    potionIngredientCounter[i].color = Color.red;
+                    potionIngredientCounter[i].color = negativeColor;
                 }
                 
                 
@@ -266,11 +275,11 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
                 
                 if (enumerable.Length >= 1 + numberOfIngredients)
                 {
-                    potionIngredientCounter[i].color = Color.green;
+                    potionIngredientCounter[i].color = positiveColor;
                 }
                 else
                 {
-                    potionIngredientCounter[i].color = Color.red;
+                    potionIngredientCounter[i].color = negativeColor;
                 }
                 i += numberOfIngredients;
             }
