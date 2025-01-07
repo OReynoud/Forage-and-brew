@@ -74,6 +74,8 @@ public class Book : MonoBehaviour
     [Foldout("Refs")] public Image LeftNext;
     [Foldout("Refs")] public Image Right;
     [Foldout("Refs")] public Image RightNext;
+    [Foldout("Refs")] public CanvasGroup pinRecipeUI;
+    [Foldout("Refs")] public CanvasGroup sellCommandUI;
     public UnityEvent OnFlip;
 
     float radius1, radius2;
@@ -151,6 +153,21 @@ public class Book : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (currentPage >= bookMarks[1].index && currentPage < bookMarks[2].index)
+        {
+            pinRecipeUI.alpha = 1;
+            sellCommandUI.alpha = 0;
+        }
+        else if (currentPage >= bookMarks[0].index && currentPage < bookMarks[1].index)
+        {
+            pinRecipeUI.alpha = 0;
+            sellCommandUI.alpha = 1;
+        }
+        else
+        {
+            pinRecipeUI.alpha = 0;
+            sellCommandUI.alpha = 0;
+        }
         for (int i = 0; i < bookMarks.Length; i++)
         {
             if (i == bookMarks.Length - 1)
@@ -184,6 +201,8 @@ public class Book : MonoBehaviour
                     bookMarks[i].basePos, bookmarkLerp);
             }
         }
+
+
     }
 
     public void SetupLTRFlip()
