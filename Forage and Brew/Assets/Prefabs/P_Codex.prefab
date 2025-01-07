@@ -224,6 +224,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3450167932401372801}
+  - component: {fileID: 6194810767298743506}
   m_Layer: 5
   m_Name: Commands Sell Command
   m_TagString: Untagged
@@ -252,6 +253,18 @@ RectTransform:
   m_AnchoredPosition: {x: -178.9, y: 509.3}
   m_SizeDelta: {x: 250, y: 100}
   m_Pivot: {x: 1, y: 0.5}
+--- !u!225 &6194810767298743506
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 845553646054925383}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &899100692865273474
 GameObject:
   m_ObjectHideFlags: 0
@@ -933,6 +946,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3634075927654774422}
+  - component: {fileID: 6267185254648827819}
   m_Layer: 5
   m_Name: Commands Recipes
   m_TagString: Untagged
@@ -961,6 +975,18 @@ RectTransform:
   m_AnchoredPosition: {x: -178.9, y: 509.3}
   m_SizeDelta: {x: 250, y: 100}
   m_Pivot: {x: 1, y: 0.5}
+--- !u!225 &6267185254648827819
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135300028306122905}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &2196204169272081118
 GameObject:
   m_ObjectHideFlags: 0
@@ -1767,7 +1793,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29a8587c1caf53244b179c63d6829b3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  index: 1
+  index: 3
   UIComponent: {fileID: 5280318203721362165}
   xDisplacement: 100
   basePos: {x: 442.99988, y: 312}
@@ -3636,7 +3662,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29a8587c1caf53244b179c63d6829b3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  index: 6
+  index: 8
   UIComponent: {fileID: 202837854717140103}
   xDisplacement: 110
   basePos: {x: 438.00006, y: -103}
@@ -4089,7 +4115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29a8587c1caf53244b179c63d6829b3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  index: 1
+  index: 3
   UIComponent: {fileID: 3658934427443796586}
   xDisplacement: 100
   basePos: {x: 439.99994, y: 90}
@@ -9857,6 +9883,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 5e589f54e41eddb43bb2bf5440ecf37e, type: 3}
     - target: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
+      propertyPath: pinRecipeUI
+      value: 
+      objectReference: {fileID: 6267185254648827819}
+    - target: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
       propertyPath: bookmarkLerp
       value: 0.15
       objectReference: {fileID: 0}
@@ -9864,6 +9894,10 @@ PrefabInstance:
       propertyPath: interactable
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
+      propertyPath: sellCommandUI
+      value: 
+      objectReference: {fileID: 6194810767298743506}
     - target: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
       propertyPath: bookMarks.Array.size
       value: 4

@@ -41,7 +41,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
         for (int i = potionList.Potions.Length - 1; i >= 0; i--)
         {
             var newRecipe = Instantiate(recipeDisplayPrefab, Vector3.down * 10000, Quaternion.identity,transform);
-            recipes.Add(newRecipe);
+            recipes.Insert(0,newRecipe);
             foreach (TemperatureChallengeIngredients t in potionList.Potions[i].TemperatureChallengeIngredients)
             {
                 foreach (CookedIngredientForm cookedIngredient in t.CookedIngredients)
