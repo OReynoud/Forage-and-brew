@@ -254,7 +254,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
     public void UpdateIngredientCounter()
     {
-        if (!isPinned) return;
+        if (!isPinned && GameDontDestroyOnLoadManager.Instance.PreviousScene != Scene.House) return;
         
         tempCollectedIngredientsList.Clear();
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.CollectedIngredients)

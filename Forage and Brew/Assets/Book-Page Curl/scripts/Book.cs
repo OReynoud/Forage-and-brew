@@ -76,6 +76,7 @@ public class Book : MonoBehaviour
     [Foldout("Refs")] public Image RightNext;
     [Foldout("Refs")] public CanvasGroup pinRecipeUI;
     [Foldout("Refs")] public CanvasGroup sellCommandUI;
+    [Foldout("Refs")] public BookPage dummyOrderPage;
     public UnityEvent OnFlip;
 
     float radius1, radius2;
@@ -102,7 +103,7 @@ public class Book : MonoBehaviour
 
     //current flip mode
     FlipMode mode;
-
+    
     private void Awake()
     {
         bookMarks[^1].index = bookPages.Count - 2;
@@ -115,22 +116,13 @@ public class Book : MonoBehaviour
         UpdateSprites();
         CalcCurlCriticalPoints();
 
+
         float pageWidth = BookPanel.rect.width / 2.0f;
         float pageHeight = BookPanel.rect.height;
         NextPageClip.rectTransform.sizeDelta = new Vector2(pageWidth, pageHeight + pageHeight * 2);
 
 
         ClippingPlane.rectTransform.sizeDelta = new Vector2(pageWidth * 2 + pageHeight, pageHeight + pageHeight * 2);
-
-        //hypotenous (diagonal) page length
-        // float hyp = Mathf.Sqrt(pageWidth * pageWidth + pageHeight * pageHeight);
-        // float shadowPageHeight = pageWidth / 2 + hyp;
-        //
-        // Shadow.rectTransform.sizeDelta = new Vector2(pageWidth, shadowPageHeight);
-        // Shadow.rectTransform.pivot = new Vector2(1, (pageWidth / 2) / shadowPageHeight);
-        //
-        // ShadowLTR.rectTransform.sizeDelta = new Vector2(pageWidth, shadowPageHeight);
-        // ShadowLTR.rectTransform.pivot = new Vector2(0, (pageWidth / 2) / shadowPageHeight);
 
         foreach (var bookMark in bookMarks)
         {
