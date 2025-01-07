@@ -9883,6 +9883,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 5e589f54e41eddb43bb2bf5440ecf37e, type: 3}
     - target: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
+      propertyPath: lerp
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
       propertyPath: pinRecipeUI
       value: 
       objectReference: {fileID: 6267185254648827819}
@@ -9904,7 +9908,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
       propertyPath: bookPages.Array.size
-      value: 28
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
       propertyPath: 'bookMarks.Array.data[0]'
@@ -9941,7 +9945,7 @@ PrefabInstance:
     - target: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
       propertyPath: bookPages.Array.data[4].pageSprite
       value: 
-      objectReference: {fileID: 21300000, guid: 3f375bce63143c04dacfe10a34017a6c, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
       propertyPath: bookPages.Array.data[5].pageSprite
       value: 
@@ -10033,13 +10037,21 @@ PrefabInstance:
     - target: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
       propertyPath: bookPages.Array.data[25].pageSprite
       value: 
-      objectReference: {fileID: 21300000, guid: b4b42f69b7d806c498f164391a8da1a4, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
       propertyPath: bookPages.Array.data[26].pageSprite
       value: 
-      objectReference: {fileID: 21300000, guid: b4b42f69b7d806c498f164391a8da1a4, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
       propertyPath: bookPages.Array.data[27].pageSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b4b42f69b7d806c498f164391a8da1a4, type: 3}
+    - target: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
+      propertyPath: bookPages.Array.data[28].pageSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b4b42f69b7d806c498f164391a8da1a4, type: 3}
+    - target: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
+      propertyPath: bookPages.Array.data[29].pageSprite
       value: 
       objectReference: {fileID: 21300000, guid: b4b42f69b7d806c498f164391a8da1a4, type: 3}
     - target: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
@@ -10137,13 +10149,21 @@ PrefabInstance:
     - target: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
       propertyPath: bookPages.Array.data[25].UIComponent
       value: 
-      objectReference: {fileID: 3614508299063100676}
+      objectReference: {fileID: 0}
     - target: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
       propertyPath: bookPages.Array.data[26].UIComponent
       value: 
-      objectReference: {fileID: 4221767127375561471}
+      objectReference: {fileID: 0}
     - target: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
       propertyPath: bookPages.Array.data[27].UIComponent
+      value: 
+      objectReference: {fileID: 3614508299063100676}
+    - target: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
+      propertyPath: bookPages.Array.data[28].UIComponent
+      value: 
+      objectReference: {fileID: 4221767127375561471}
+    - target: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
+      propertyPath: bookPages.Array.data[29].UIComponent
       value: 
       objectReference: {fileID: 7772869430840598301}
     - target: {fileID: 11430880, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
@@ -10523,9 +10543,9 @@ MonoBehaviour:
   codexTransform: {fileID: 1561651975351071565}
   codexProportions: {fileID: 2768177697017376908}
   ControledBook: {fileID: 0}
-  PageFlipTime: 0.1
+  PageFlipTime: 0.2
   acceleratedFlipTime: 0.1
-  AnimationFramesCount: 40
+  AnimationFramesCount: 10
   offset: {x: 0, y: -1500}
   codexLerp: 0.17
   isNavigatingPages: 0
