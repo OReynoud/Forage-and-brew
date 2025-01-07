@@ -74,9 +74,9 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
     public void InsertRecipePages(RectTransform LeftPage, RectTransform RightPage)
     {
-        AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[1].index,
+        AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[0].index,
             new Book.BookPage(rightRecipePage, RightPage));
-        AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[1].index,
+        AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[0].index,
             new Book.BookPage(leftRecipePage, LeftPage));
 
         for (int i = 2; i < AutoFlip.instance.ControledBook.bookMarks.Length; i++)
