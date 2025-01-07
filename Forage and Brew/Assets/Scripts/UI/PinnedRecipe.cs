@@ -10,6 +10,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 {
     private RectTransform ownTransform; //Behavior logic
     private bool isPinned; //Behavior logic
+    private bool canShow; //Behavior logic
     private int writingIndex; // Display logic
     private Sprite[] potionIngredients; // Display logic
 
@@ -42,7 +43,9 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
     public void Start()
     {
+        
         ownTransform = GetComponent<RectTransform>();
+        CharacterInputManager.Instance.OnInputsEnabled.AddListener(ChangePos);
         for (int i = 0; i < potionIngredientsImage.Length; i++)
         {
             potionIngredientsImage[i].preserveAspect = true;
@@ -52,9 +55,14 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
             PinRecipe(pinnedRecipe, potionIngredients);
     }
 
+    private void ChangePos(bool arg0)
+    {
+       canShow = arg0;
+    }
+
     private void Update()
     {
-        if (CharacterInputManager.Instance.showCodex)
+        if (CharacterInputManager.Instance.showCodex || !canShow)
         {
             ownTransform.anchoredPosition = Vector2.Lerp(
                 ownTransform.anchoredPosition, restingPos, lerp);

@@ -1,19 +1,37 @@
+using System;
+using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class InfoDisplayManager : Singleton<InfoDisplayManager>
 {
-    [SerializeField] private TextMeshProUGUI daysPassedText;
-    [SerializeField] private TextMeshProUGUI moneyText;
-    [SerializeField] private GameObject forestDisplay;
-    [SerializeField] private Image forestWeather;
-    [SerializeField] private GameObject swampDisplay;
-    [SerializeField] private Image swampWeather;
-    [SerializeField] private Image moonCyclesDisplay;
+    [BoxGroup("Top Right")][SerializeField] private RectTransform weatherUIContainer;
+    [BoxGroup("Top Right")][SerializeField] private TextMeshProUGUI daysPassedText;
+    [BoxGroup("Top Right")][SerializeField] private GameObject forestDisplay;
+    [BoxGroup("Top Right")][SerializeField] private Image forestWeather;
+    [BoxGroup("Top Right")][SerializeField] private GameObject swampDisplay;
+    [BoxGroup("Top Right")][SerializeField] private Image swampWeather;
+    [BoxGroup("Top Right")][SerializeField] private Image moonCyclesDisplay;
     
-    [SerializeField] private Sprite[] weatherSprites;
-    [SerializeField] private Sprite[] moonCycleSprites;
+    [BoxGroup("Top Left")][SerializeField] private RectTransform letterIcon;
+    
+    [BoxGroup("Bottom Right")][SerializeField] private RectTransform moneyUIContainer;
+    [BoxGroup("Bottom Right")][SerializeField] private TextMeshProUGUI moneyText;
+    
+    [BoxGroup("Bottom Left")][SerializeField] private RectTransform codexIcon;
+
+    [BoxGroup("Behavior")] [SerializeField] private float lerp;
+    [BoxGroup("Behavior")] [SerializeField][ReadOnly] private bool canShow;
+    
+    [BoxGroup("Behavior")] [SerializeField] private Vector2 topRightShownPos;
+    [BoxGroup("Behavior")] [SerializeField] private Vector2 topRightHiddenPos;
+    [BoxGroup("Behavior")] [SerializeField] private Vector2 topLeftShownPos;
+    [BoxGroup("Behavior")] [SerializeField] private Vector2 topLeftHiddenPos;
+    [BoxGroup("Behavior")] [SerializeField] private Vector2 bottomRightShownPos;
+    [BoxGroup("Behavior")] [SerializeField] private Vector2 bottomRightHiddenPos;
+    [BoxGroup("Behavior")] [SerializeField] private Vector2 bottomLeftShownPos;
+    [BoxGroup("Behavior")] [SerializeField] private Vector2 bottomLeftHiddenPos;
 
     
     public void DisplayAll()
@@ -23,7 +41,43 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
         DisplayMoney();
         DisplayMoonCycles();
     }
-    
+
+    private void Start()
+    {
+        CharacterInputManager.Instance.OnInputsEnabled.AddListener(UpdateUIVisibility);
+    }
+
+    private void UpdateUIVisibility(bool arg0)
+    {
+        canShow = arg0;
+    }
+
+    private void Update()
+    {
+        if (canShow)
+        {
+            weatherUIContainer.anchoredPosition = Vector2.Lerp(weatherUIContainer.anchoredPosition, topRightShownPos, lerp);
+            moneyUIContainer.anchoredPosition = Vector2.Lerp(moneyUIContainer.anchoredPosition, bottomRightShownPos, lerp);
+            if (!CharacterInputManager.Instance.showCodex)
+            {
+                letterIcon.anchoredPosition = Vector2.Lerp(letterIcon.anchoredPosition, topLeftShownPos, lerp);
+                codexIcon.anchoredPosition = Vector2.Lerp(codexIcon.anchoredPosition, bottomLeftShownPos, lerp);
+            }
+            else
+            {
+                letterIcon.anchoredPosition = Vector2.Lerp(letterIcon.anchoredPosition,topLeftHiddenPos, lerp);
+                codexIcon.anchoredPosition = Vector2.Lerp( codexIcon.anchoredPosition,bottomLeftHiddenPos, lerp);
+            }
+        }
+        else
+        {
+            weatherUIContainer.anchoredPosition = Vector2.Lerp( weatherUIContainer.anchoredPosition, topRightHiddenPos, lerp);
+            moneyUIContainer.anchoredPosition = Vector2.Lerp( moneyUIContainer.anchoredPosition, bottomRightHiddenPos, lerp);
+            letterIcon.anchoredPosition = Vector2.Lerp(letterIcon.anchoredPosition,topLeftHiddenPos, lerp);
+            codexIcon.anchoredPosition = Vector2.Lerp( codexIcon.anchoredPosition,bottomLeftHiddenPos, lerp);
+        }
+    }
+
 
     public void DisplayWeather()
     {

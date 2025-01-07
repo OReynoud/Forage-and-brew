@@ -9,10 +9,12 @@ public class CharacterInputManager : MonoBehaviour
     public static CharacterInputManager Instance { get; private set; }
 
     private InputSystem_Actions _inputs;
+    
 
     public UnityEvent OnCodexShow { get; set; } = new();
     public UnityEvent<bool> OnNavigationChange { get; set; } = new();
     public UnityEvent<bool> OnSelectRecipe { get; set; } = new();
+    public UnityEvent<bool> OnInputsEnabled { get; set; } = new();
     
     [BoxGroup("Debug")]public bool showCodex;
 
@@ -107,6 +109,8 @@ public class CharacterInputManager : MonoBehaviour
         EnableInteractInputs();
         EnableHapticChallengeInputs();
         EnableCodexInputs();
+        if (OnInputsEnabled != null)
+            OnInputsEnabled.Invoke(true);
     }
 
     public void EnableMoveInputs()
@@ -193,6 +197,8 @@ public class CharacterInputManager : MonoBehaviour
         DisableCodexInputs();
         DisableMailInputs();
         _inputs.Player.Disable();
+        if (OnInputsEnabled != null)
+            OnInputsEnabled.Invoke(false);
     }
     
     public void DisableMoveInputs()

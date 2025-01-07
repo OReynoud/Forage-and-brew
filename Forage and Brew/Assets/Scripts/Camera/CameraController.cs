@@ -174,22 +174,25 @@ public class CameraController : Singleton<CameraController>
         }
         
         
-        cameraRotation = Vector3.Lerp(previousCamSettings.cameraRotation,TargetCamSettings.cameraRotation,counter / transitionTime);
-        cameraOffset = Vector3.Lerp(previousCamSettings.cameraOffset,TargetCamSettings.cameraOffset,counter / transitionTime);
 
-        if (!CharacterInputManager.Instance.showCodex)
+        if (CharacterInputManager.Instance.showCodex)
         {
-            targetFocalLength = Mathf.Lerp(previousCamSettings.targetFocalLength,TargetCamSettings.targetFocalLength, counter / transitionTime);
-            distanceFromPlayer = Mathf.Lerp(previousCamSettings.distanceFromPlayer,TargetCamSettings.distanceFromPlayer, counter / transitionTime);
+            targetFocalLength = Mathf.Lerp(TargetCamSettings.targetFocalLength,
+                TargetCamSettings.targetFocalLength - codexCamSettings.targetFocalLength, counter / transitionTime);
+
+
+            distanceFromPlayer = Mathf.Lerp(TargetCamSettings.distanceFromPlayer,
+                TargetCamSettings.distanceFromPlayer + codexCamSettings.distanceFromPlayer, counter / transitionTime);
         }
         else
         {
-            targetFocalLength = Mathf.Lerp(previousCamSettings.targetFocalLength,
-                TargetCamSettings.targetFocalLength - codexCamSettings.targetFocalLength, counter / transitionTime);
+            cameraRotation = Vector3.Lerp(previousCamSettings.cameraRotation,TargetCamSettings.cameraRotation,counter / transitionTime);
+            cameraOffset = Vector3.Lerp(previousCamSettings.cameraOffset,TargetCamSettings.cameraOffset,counter / transitionTime);
             
-            
+            targetFocalLength = Mathf.Lerp(previousCamSettings.targetFocalLength, TargetCamSettings.targetFocalLength,
+                counter / transitionTime);
             distanceFromPlayer = Mathf.Lerp(previousCamSettings.distanceFromPlayer,
-                TargetCamSettings.distanceFromPlayer + codexCamSettings.distanceFromPlayer, counter / transitionTime);
+                TargetCamSettings.distanceFromPlayer, counter / transitionTime);
         }
 
         positionLerp = Mathf.Lerp(previousCamSettings.positionLerp,TargetCamSettings.positionLerp, counter / transitionTime);
