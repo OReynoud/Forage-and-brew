@@ -1,4 +1,3 @@
-using System;
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
@@ -124,6 +123,7 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
     private void DisplayBiomeWeather(Biome biome, Image weatherDisplay)
     {
         weatherDisplay.sprite = WeatherManager.Instance.CurrentWeatherStates[biome].weatherState.Icon;
+        weatherDisplay.color = WeatherManager.Instance.CurrentWeatherStates[biome].weatherState.Color;
     }
     
     public void DisplayDays()
@@ -139,6 +139,7 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
     public void DisplayMoonCycles()
     {
         moonCyclesDisplay.sprite = LunarCycleManager.Instance.CurrentLunarCycleState.Icon;
+        moonCyclesDisplay.color = LunarCycleManager.Instance.CurrentLunarCycleState.Color;
     }
 
 }

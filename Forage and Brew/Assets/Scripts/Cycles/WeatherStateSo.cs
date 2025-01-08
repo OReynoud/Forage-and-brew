@@ -6,6 +6,7 @@ public class WeatherStateSo : ScriptableObject
 {
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField] public Sprite Icon { get; private set; }
+    [field: SerializeField] public Color Color { get; private set; }
     [field: SerializeField] public List<WeatherStateEndProbabilityBySuccessiveDayNumber> EndProbabilities { get; private set; }
     
     // Debugging
