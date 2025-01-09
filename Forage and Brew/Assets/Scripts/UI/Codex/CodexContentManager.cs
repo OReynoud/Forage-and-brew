@@ -31,6 +31,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
     
     private void Start()
     {
+        recipes.Clear();
         CharacterInputManager.Instance.OnSelectRecipe.AddListener(SelectCodexPage);
         foreach (var ticket in _orderCodexDisplayBehaviours)
         {

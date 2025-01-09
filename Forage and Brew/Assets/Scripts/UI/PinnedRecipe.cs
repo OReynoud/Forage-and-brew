@@ -43,7 +43,6 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
     public void Start()
     {
-        
         ownTransform = GetComponent<RectTransform>();
         CharacterInputManager.Instance.OnInputsEnabled.AddListener(ChangePos);
         for (int i = 0; i < potionIngredientsImage.Length; i++)
@@ -57,7 +56,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
     private void ChangePos(bool arg0)
     {
-       canShow = arg0;
+        canShow = arg0;
     }
 
     private void Update()
@@ -73,9 +72,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
                 ownTransform.anchoredPosition,
                 isPinned ? pinnedPos : restingPos,
                 lerp);
-
         }
-
     }
 
     public void UnpinRecipe()
@@ -104,6 +101,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
             mainActionImage[i].enabled = false;
             singleActionImage[i].enabled = false;
         }
+
         title.text = pinnedRecipe.Name;
 
         tempCollectedIngredientsList.Clear();
@@ -111,6 +109,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         {
             tempCollectedIngredientsList.Add(ingredient.icon);
         }
+
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients)
         {
             tempCollectedIngredientsList.Add(ingredient.IngredientValuesSo.icon);
@@ -177,7 +176,6 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
             }
 
 
-
             switch (t.Temperature)
             {
                 case Temperature.None:
@@ -225,16 +223,19 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
             potionIngredientsImage[i].transform.parent.gameObject.SetActive(true);
             potionIngredientsImage[i].sprite = potionIngredients[i];
 
+            var i1 = i;
+            var temp = tempCollectedIngredientsList.Where(x => x == potionIngredients[i1]);
+
+            var enumerable = temp.ToArray();
+            Debug.Log(enumerable.Length);
+            potionIngredientCounter[i].text = enumerable.Length + "";
             if (i + 1 < potionIngredients.Length)
             {
                 int numberOfIngredients = Ex.CheckForSameElementsSprite(i, 0, potionIngredients);
 
-                var i1 = i;
-                var temp = tempCollectedIngredientsList.Where(x => x == potionIngredients[i1]);
 
-                var enumerable = temp.ToArray();
                 potionIngredientCounter[i].text = enumerable.Length + "";
-                
+
                 if (enumerable.Length >= 1 + numberOfIngredients)
                 {
                     potionIngredientCounter[i].color = positiveColor;
@@ -243,11 +244,21 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
                 {
                     potionIngredientCounter[i].color = negativeColor;
                 }
-                
-                
+
+
                 potionIngredientQuantity[i].text = (1 + numberOfIngredients).ToString();
 
                 i += numberOfIngredients;
+            }
+
+
+            if (enumerable.Length >= 1)
+            {
+                potionIngredientCounter[i].color = positiveColor;
+            }
+            else
+            {
+                potionIngredientCounter[i].color = negativeColor;
             }
         }
     }
@@ -255,12 +266,13 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
     public void UpdateIngredientCounter()
     {
         if (!isPinned && GameDontDestroyOnLoadManager.Instance.PreviousScene != Scene.House) return;
-        
+
         tempCollectedIngredientsList.Clear();
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.CollectedIngredients)
         {
             tempCollectedIngredientsList.Add(ingredient.icon);
         }
+
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients)
         {
             tempCollectedIngredientsList.Add(ingredient.IngredientValuesSo.icon);
@@ -270,19 +282,20 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         {
             tempCollectedIngredientsList.Add(ingredient.ingredient.icon);
         }
-        
+
         for (int i = 0; i < potionIngredients.Length; i++)
         {
+            var i1 = i;
+            var temp = tempCollectedIngredientsList.Where(x => x == potionIngredients[i1]);
+
+            var enumerable = temp.ToArray();
+            potionIngredientCounter[i].text = enumerable.Length + "";
+            
             if (i + 1 < potionIngredients.Length)
             {
                 int numberOfIngredients = Ex.CheckForSameElementsSprite(i, 0, potionIngredients);
 
-                var i1 = i;
-                var temp = tempCollectedIngredientsList.Where(x => x == potionIngredients[i1]);
 
-                var enumerable = temp.ToArray();
-                potionIngredientCounter[i].text = enumerable.Length + "";
-                
                 if (enumerable.Length >= 1 + numberOfIngredients)
                 {
                     potionIngredientCounter[i].color = positiveColor;
@@ -291,7 +304,17 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
                 {
                     potionIngredientCounter[i].color = negativeColor;
                 }
+
                 i += numberOfIngredients;
+            }
+
+            if (enumerable.Length >= 1)
+            {
+                potionIngredientCounter[i].color = positiveColor;
+            }
+            else
+            {
+                potionIngredientCounter[i].color = negativeColor;
             }
         }
     }

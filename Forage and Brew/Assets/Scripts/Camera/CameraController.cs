@@ -16,6 +16,9 @@ public class CameraController : Singleton<CameraController>
     [BoxGroup("Adjustable Variables")] [Range(0,1)]public float positionLerp = 0.07f;
     [BoxGroup("Adjustable Variables")] [Range(0,1)]public float rotationLerp = 0.02f;
     [BoxGroup("Adjustable Variables")] [Range(0,1)]public float focalLerp = 0.07f;
+    
+    [BoxGroup("Adjustable Variables")] public Vector2 posMaxClamp;
+    [BoxGroup("Adjustable Variables")] public Vector2 posMinClamp;
 
     [BoxGroup] [Expandable] public CameraPreset scriptableCamSettings;
     private CameraPreset previousCamSettings;
@@ -27,6 +30,7 @@ public class CameraController : Singleton<CameraController>
 
     private float transitionTime = 0.001f;
     private float counter;
+    private bool applyClamping;
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -46,7 +50,7 @@ public class CameraController : Singleton<CameraController>
     public override void Awake()
     {
         base.Awake();
-        
+        applyClamping = posMaxClamp.sqrMagnitude + posMinClamp.sqrMagnitude >= 1;
     }
     
 
@@ -159,6 +163,30 @@ public class CameraController : Singleton<CameraController>
     void FixedUpdate()
     {
         transform.parent.position = Vector3.Lerp(transform.parent.position, player.position+cameraOffset,movement.isRunning ? positionLerp * 2.5f : positionLerp);
+        if (applyClamping)
+        {
+            if (transform.parent.position.x > posMaxClamp.x)
+            {
+                transform.parent.position =
+                    new Vector3(posMaxClamp.x, transform.parent.position.y, transform.parent.position.z);
+            }
+            if (transform.parent.position.x < posMinClamp.x)
+            {
+                transform.parent.position =
+                    new Vector3(posMinClamp.x, transform.parent.position.y, transform.parent.position.z);
+            }
+            if (transform.parent.position.z > posMaxClamp.y)
+            {
+                transform.parent.position =
+                    new Vector3(transform.parent.position.x, transform.parent.position.y, posMaxClamp.y);
+            }
+            if (transform.parent.position.z < posMinClamp.y)
+            {
+                transform.parent.position =
+                    new Vector3(transform.parent.position.x, transform.parent.position.y, posMinClamp.y);
+            }
+        }
+        
         transform.localPosition =
             Vector3.Lerp(transform.localPosition, -transform.forward * distanceFromPlayer, positionLerp);
         cam.focalLength = Mathf.Lerp(cam.focalLength,targetFocalLength,focalLerp);

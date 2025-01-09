@@ -552,7 +552,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 92448548b521f714f91becefb548713d, type: 3}
   - {fileID: 21300000, guid: d5371e1cae162594680299a1b4f152c4, type: 3}
   - {fileID: 21300000, guid: 489f3fd897483cb45a6f0e4150aacc9a, type: 3}
-  recipeDisplayPrefab: {fileID: 0}
+  recipeDisplayPrefab: {fileID: -8362459769213988368, guid: ce51540ba28080c48bb62b885a52719c, type: 3}
   potionList: {fileID: 11400000, guid: 5b6ff9fa4ef1be748ad6bfb96905aac2, type: 2}
   recipes:
   - {fileID: 0}
@@ -7243,11 +7243,11 @@ PrefabInstance:
     - target: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
       propertyPath: bookPages.Array.data[25].pageSprite
       value: 
-      objectReference: {fileID: 21300000, guid: d4657614456f7794dbe6d2e7cb9edd13, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
       propertyPath: bookPages.Array.data[26].pageSprite
       value: 
-      objectReference: {fileID: 21300000, guid: 3dbebad9dc600cc42b556b338539cf46, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
       propertyPath: bookPages.Array.data[27].pageSprite
       value: 
@@ -7729,6 +7729,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2884704075871593833}
   m_SourcePrefab: {fileID: 100100000, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
+--- !u!114 &2768177696987506908 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 11415212, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
+  m_PrefabInstance: {fileID: 2768177696997852784}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2768177696997767472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4446b7192d8bf914ebaf797b64fe8b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2768177696997767472 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 180032, guid: fe9bfb5044c0cc646baba1ad7d354100, type: 3}
@@ -7748,7 +7759,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   codexTransform: {fileID: 1561651975351071565}
   codexProportions: {fileID: 2768177697017376908}
-  ControledBook: {fileID: 0}
+  ControledBook: {fileID: 2768177696987506908}
   PageFlipTime: 0.2
   acceleratedFlipTime: 0.1
   AnimationFramesCount: 10

@@ -10,7 +10,7 @@ public class AutoFlip : Singleton<AutoFlip>
     
     [BoxGroup("References")] public RectTransform codexTransform;
     [BoxGroup("References")] public RectTransform codexProportions;
-    [BoxGroup("References")] [HideInInspector] public Book ControledBook;
+    [BoxGroup("References")] public Book ControledBook;
     
     [BoxGroup("Page Flipping")] public float PageFlipTime = 1;
     [BoxGroup("Page Flipping")] public float acceleratedFlipTime = 0.2f;
