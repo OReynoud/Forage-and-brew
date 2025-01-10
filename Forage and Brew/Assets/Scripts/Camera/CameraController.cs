@@ -73,6 +73,8 @@ public class CameraController : Singleton<CameraController>
         rotationLerp = scriptableCamSettings.rotationLerp;
         focalLerp = scriptableCamSettings.focalLerp;
         
+        
+
         transform.localPosition = -transform.forward * distanceFromPlayer;
     }
     
@@ -102,6 +104,11 @@ public class CameraController : Singleton<CameraController>
         transitionTime = TransitionTime == 0 ? 0.001f : TransitionTime;
         counter = 0;
         
+        
+        posMaxClamp = TargetCamSettings.posMaxClamp;
+        posMinClamp = TargetCamSettings.posMinClamp;
+        
+        applyClamping = posMaxClamp.sqrMagnitude + posMinClamp.sqrMagnitude >= 1;
         //Debug.Log("Cam Settings: " + preset.name);
     }
 
