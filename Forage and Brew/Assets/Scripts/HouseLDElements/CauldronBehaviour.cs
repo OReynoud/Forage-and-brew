@@ -7,6 +7,7 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
     [SerializeField] private GameObject buttonAGameObject;
     [SerializeField] private GameObject buttonYGameObject;
     [field: SerializeField] public Transform SpoonTransform { get; private set; }
+    
 
     
     private void Start()
@@ -59,6 +60,8 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
         GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients.Remove(collectedIngredientBehaviour);
         GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients[^1].CookedIngredients.Add(new CookedIngredientForm(
             collectedIngredientBehaviour.IngredientValuesSo, collectedIngredientBehaviour.CookedForm));
+
+        PinnedRecipe.instance.UpdateRecipeStepsCounter();
     }
     
     public void AddTemperature(Temperature temperature)
@@ -75,6 +78,8 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
                 GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients[^1].CookedIngredients,
                 temperature);
         }
+        
+        PinnedRecipe.instance.UpdateRecipeStepsCounter();
     }
     
     public List<TemperatureChallengeIngredients> ClearIngredients()
@@ -84,6 +89,7 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
         GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients.Clear();
         CauldronVfxManager.Instance.ChangeSmokeVfx(false);
         
+        PinnedRecipe.instance.UpdateRecipeStepsCounter();
         return temperatureAndIngredientsList;
     }
     
