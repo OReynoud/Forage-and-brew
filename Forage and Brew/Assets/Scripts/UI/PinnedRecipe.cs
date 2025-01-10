@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using NaughtyAttributes;
 using TMPro;
+using UnityEditor.Embree;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PinnedRecipe : Singleton<PinnedRecipe>
@@ -34,10 +36,12 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
 
     //Recipe steps
-    [BoxGroup("Recipe Steps")] public TextMeshProUGUI[] stepText;
+    [BoxGroup("Recipe Steps")] public TextMeshProUGUI[] stepIngredientCount;
+    [BoxGroup("Recipe Steps")] public TextMeshProUGUI[] stepIngredientCounter;
     [BoxGroup("Recipe Steps")] public Image[] ingredientStepImage;
     [BoxGroup("Recipe Steps")] public Image[] mainActionImage;
     [BoxGroup("Recipe Steps")] public Image[] singleActionImage;
+    [BoxGroup("Recipe Steps")] public Image[] checkMarkImage;
     private List<Sprite> tempCollectedIngredientsList = new List<Sprite>();
 
 
@@ -91,15 +95,17 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         potionIngredients = PotionIngredients;
         for (int i = 0; i < mainActionImage.Length; i++)
         {
-            stepText[i].text = " ";
+            stepIngredientCount[i].text = " ";
             ingredientStepImage[i].sprite = null;
             mainActionImage[i].sprite = null;
             singleActionImage[i].sprite = null;
 
-            stepText[i].enabled = false;
+            stepIngredientCount[i].enabled = false;
+            stepIngredientCounter[i].enabled = false;
             ingredientStepImage[i].enabled = false;
             mainActionImage[i].enabled = false;
             singleActionImage[i].enabled = false;
+            checkMarkImage[i].enabled = false;
         }
 
         title.text = pinnedRecipe.Name;
@@ -120,6 +126,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
             tempCollectedIngredientsList.Add(ingredient.ingredient.icon);
         }
 
+        CurrentTemperatureAndIngredients = GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients;
         if (GameDontDestroyOnLoadManager.Instance.PreviousScene == Scene.House)
         {
             recipeStepsCanvas.alpha = 1;
@@ -134,24 +141,34 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         isPinned = true;
     }
 
+    public List<TemperatureChallengeIngredients> CurrentTemperatureAndIngredients { get; private set; } = new();
+
     void ShowRecipeSteps()
     {
-        foreach (var t in stepText)
+        foreach (var t in stepIngredientCount)
         {
             t.transform.parent.gameObject.SetActive(false);
         }
 
-        foreach (var t in pinnedRecipe.TemperatureChallengeIngredients)
+        for (int j = 0; j < pinnedRecipe.TemperatureChallengeIngredients.Length; j++)
         {
-            for (var i = 0; i < t.CookedIngredients.Count; i++)
+            var target = pinnedRecipe.TemperatureChallengeIngredients[j];
+            TemperatureChallengeIngredients counter = new TemperatureChallengeIngredients();
+            if (j < CurrentTemperatureAndIngredients.Count)
             {
-                stepText[writingIndex].transform.parent.gameObject.SetActive(true);
-                stepText[writingIndex].enabled = true;
+                counter = CurrentTemperatureAndIngredients[j];
+            }
 
-                int numberOfIngredients = Ex.CheckForSameElementsIngredientSo(i, 0, t.CookedIngredients);
-                stepText[writingIndex].text = (1 + numberOfIngredients).ToString();
+            for (var i = 0; i < target.CookedIngredients.Count; i++)
+            {
+                Debug.Log("Aga");
+                stepIngredientCount[writingIndex].transform.parent.gameObject.SetActive(true);
+                stepIngredientCount[writingIndex].enabled = true;
 
-                var cookedIngredient = t.CookedIngredients[i];
+                int numberOfIngredients = Ex.CheckForSameElementsIngredientSo(i, 0, target.CookedIngredients);
+                stepIngredientCount[writingIndex].text = (1 + numberOfIngredients).ToString();
+
+                var cookedIngredient = target.CookedIngredients[i];
 
 
                 ingredientStepImage[writingIndex].enabled = true;
@@ -168,32 +185,96 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
                         mainActionImage[writingIndex].enabled = true;
                         mainActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[1];
                         break;
+                    case GrindingHapticChallengeSo:
+                        break;
                 }
 
+
+                stepIngredientCounter[i].enabled = true;
+                if (j < CurrentTemperatureAndIngredients.Count)
+                {
+                    if (counter.CookedIngredients.Count > 0 && i < counter.CookedIngredients.Count)
+                    {
+                        bool valid = true;
+
+                        //Check for same ingredient or type
+                        if (target.CookedIngredients[i].IsAType)
+                        {
+                            if (counter.CookedIngredients[i].Ingredient.Type !=
+                                target.CookedIngredients[i].IngredientType)
+                            {
+                                valid = false;
+                            }
+                        }
+                        else
+                        {
+                            if (counter.CookedIngredients[i].Ingredient !=
+                                target.CookedIngredients[i].Ingredient)
+                            {
+                                valid = false;
+                            }
+                        }
+
+                        //Check for same cooked form
+                        if (target.CookedIngredients[i].CookedForm != counter.CookedIngredients[i].CookedForm)
+                        {
+                            valid = false;
+                        }
+
+                        if (valid)
+                        {
+                            int ingredientCounter =
+                                Ex.CheckForSameElementsIngredientSo(i, 0, counter.CookedIngredients);
+                            stepIngredientCounter[writingIndex].text = ingredientCounter.ToString();
+                            if (ingredientCounter == numberOfIngredients)
+                            {
+                                stepIngredientCounter[writingIndex].color = positiveColor;
+                                checkMarkImage[writingIndex].enabled = true;
+                            }
+                            else
+                            {
+                                stepIngredientCounter[writingIndex].color = negativeColor;
+                                checkMarkImage[writingIndex].enabled = false;
+                            }
+                        }
+                        else
+                        {
+                            stepIngredientCounter[writingIndex].text = "0";
+                        }
+                    }
+                    else
+                    {
+                        stepIngredientCounter[writingIndex].text = "0";
+                    }
+                }
+                else
+                {
+                    stepIngredientCounter[writingIndex].text = "0";
+                }
 
                 i += numberOfIngredients;
                 writingIndex++;
             }
 
 
-            switch (t.Temperature)
+            switch (target.Temperature)
             {
                 case Temperature.None:
                     break;
                 case Temperature.LowHeat:
-                    stepText[writingIndex].transform.parent.gameObject.SetActive(true);
+                    stepIngredientCount[writingIndex].transform.parent.gameObject.SetActive(true);
                     singleActionImage[writingIndex].enabled = true;
 
                     singleActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[3];
                     break;
                 case Temperature.MediumHeat:
-                    stepText[writingIndex].transform.parent.gameObject.SetActive(true);
+                    stepIngredientCount[writingIndex].transform.parent.gameObject.SetActive(true);
                     singleActionImage[writingIndex].enabled = true;
 
                     singleActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[4];
                     break;
                 case Temperature.HighHeat:
-                    stepText[writingIndex].transform.parent.gameObject.SetActive(true);
+                    stepIngredientCount[writingIndex].transform.parent.gameObject.SetActive(true);
                     singleActionImage[writingIndex].enabled = true;
 
                     singleActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[5];
@@ -202,13 +283,125 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
                     throw new ArgumentOutOfRangeException();
             }
 
+            if (j < CurrentTemperatureAndIngredients.Count)
+            {
+                if (counter.Temperature == target.Temperature)
+                {
+                    checkMarkImage[writingIndex].enabled = true;
+                }
+                else
+                {
+                    checkMarkImage[writingIndex].enabled = false;
+                }
+            }
+
             writingIndex++;
         }
 
-        stepText[writingIndex].transform.parent.gameObject.SetActive(true);
+        stepIngredientCount[writingIndex].transform.parent.gameObject.SetActive(true);
 
         singleActionImage[writingIndex].enabled = true;
         singleActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[0];
+    }
+
+    public void UpdateRecipeStepsCounter()
+    {
+        if (!isPinned || GameDontDestroyOnLoadManager.Instance.PreviousScene != Scene.House) return;
+        writingIndex = 0;
+        CurrentTemperatureAndIngredients = GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients;
+
+        for (int j = 0; j < pinnedRecipe.TemperatureChallengeIngredients.Length; j++)
+        {
+            var target = pinnedRecipe.TemperatureChallengeIngredients[j];
+            TemperatureChallengeIngredients counter = new TemperatureChallengeIngredients();
+            if (j < CurrentTemperatureAndIngredients.Count)
+            {
+                counter = CurrentTemperatureAndIngredients[j];
+            }
+
+            for (var i = 0; i < target.CookedIngredients.Count; i++)
+            {
+                stepIngredientCount[writingIndex].transform.parent.gameObject.SetActive(true);
+                stepIngredientCount[writingIndex].enabled = true;
+
+                int numberOfIngredients = Ex.CheckForSameElementsIngredientSo(i, 0, target.CookedIngredients);
+
+                stepIngredientCounter[i].enabled = true;
+                if (j < CurrentTemperatureAndIngredients.Count)
+                {
+                    if (counter.CookedIngredients.Count > 0 && i < counter.CookedIngredients.Count)
+                    {
+                        bool valid = true;
+
+                        //Check for same ingredient or type
+                        if (target.CookedIngredients[i].IsAType)
+                        {
+                            if (counter.CookedIngredients[i].Ingredient.Type !=
+                                target.CookedIngredients[i].IngredientType)
+                            {
+                                valid = false;
+                            }
+                        }
+                        else
+                        {
+                            if (counter.CookedIngredients[i].Ingredient !=
+                                target.CookedIngredients[i].Ingredient)
+                            {
+                                valid = false;
+                            }
+                        }
+
+                        //Check for same cooked form
+                        if (target.CookedIngredients[i].CookedForm != counter.CookedIngredients[i].CookedForm)
+                        {
+                            valid = false;
+                        }
+
+                        if (valid)
+                        {
+                            int ingredientCounter =
+                                Ex.CheckForSameElementsIngredientSo(i, 0, counter.CookedIngredients);
+                            stepIngredientCounter[writingIndex].text = (ingredientCounter + 1).ToString();
+                            if (ingredientCounter == numberOfIngredients)
+                            {
+                                stepIngredientCounter[writingIndex].color = positiveColor;
+                                checkMarkImage[writingIndex].enabled = true;
+                            }
+                            else
+                            {
+                                stepIngredientCounter[writingIndex].color = negativeColor;
+                                checkMarkImage[writingIndex].enabled = false;
+                            }
+                        }
+                        else
+                        {
+                            stepIngredientCounter[writingIndex].text = "0";
+                        }
+                    }
+                    else
+                    {
+                        stepIngredientCounter[writingIndex].text = "0";
+                    }
+                }
+
+                i += numberOfIngredients;
+                writingIndex++;
+            }
+
+            if (j < CurrentTemperatureAndIngredients.Count)
+            {
+                if (counter.Temperature == target.Temperature)
+                {
+                    checkMarkImage[writingIndex].enabled = true;
+                }
+                else
+                {
+                    checkMarkImage[writingIndex].enabled = false;
+                }
+            }
+
+            writingIndex++;
+        }
     }
 
     void ShowRecipeIngredients()
@@ -227,7 +420,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
             var temp = tempCollectedIngredientsList.Where(x => x == potionIngredients[i1]);
 
             var enumerable = temp.ToArray();
-            Debug.Log(enumerable.Length);
+            //Debug.Log(enumerable.Length);
             potionIngredientCounter[i].text = enumerable.Length + "";
             if (i + 1 < potionIngredients.Length)
             {
@@ -263,9 +456,10 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         }
     }
 
+
     public void UpdateIngredientCounter()
     {
-        if (!isPinned && GameDontDestroyOnLoadManager.Instance.PreviousScene != Scene.House) return;
+        if (!isPinned || GameDontDestroyOnLoadManager.Instance.PreviousScene == Scene.House) return;
 
         tempCollectedIngredientsList.Clear();
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.CollectedIngredients)
@@ -290,7 +484,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
             var enumerable = temp.ToArray();
             potionIngredientCounter[i].text = enumerable.Length + "";
-            
+
             if (i + 1 < potionIngredients.Length)
             {
                 int numberOfIngredients = Ex.CheckForSameElementsSprite(i, 0, potionIngredients);
