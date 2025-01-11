@@ -288,7 +288,7 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         if (IsNewIngredient())
         {
             GameDontDestroyOnLoadManager.Instance.UnlockedIngredients.Add(IngredientValuesSo);
-            GameDontDestroyOnLoadManager.Instance.OnNewIngredientCollected.Invoke();
+            GameDontDestroyOnLoadManager.Instance.OnNewIngredientCollected.Invoke(IngredientValuesSo);
         }
         
         DisableCollect();
