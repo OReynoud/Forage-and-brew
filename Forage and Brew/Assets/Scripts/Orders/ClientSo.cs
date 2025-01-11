@@ -4,4 +4,5 @@ using UnityEngine;
 public class ClientSo : ScriptableObject
 {
     [field: SerializeField] public string Name { get; private set; }
+    [field: SerializeField] public Color AssociatedColor { get; private set; }
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using NaughtyAttributes;
 using TMPro;
@@ -10,6 +9,7 @@ public class RecipeCodexDisplay : MonoBehaviour
 {
     [BoxGroup("Refs")] public RectTransform leftPage;
     [BoxGroup("Refs")] public RectTransform rightPage;
+    [BoxGroup("Refs")] public Image pinIcon;
     [BoxGroup("Potion Description")] public PotionValuesSo storedPotion;
     [BoxGroup("Potion Description")] public TextMeshProUGUI potionName;
     [BoxGroup("Potion Description")] public TextMeshProUGUI potionFlavorText;
