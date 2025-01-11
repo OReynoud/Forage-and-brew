@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class IngredientToCollectBehaviour : MonoBehaviour
@@ -52,9 +53,11 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     [SerializeField] private GameObject harvestInputRightGameObject;
     [SerializeField] private GameObject harvestArrowRightGameObject;
     [SerializeField] private GameObject harvestReleaseRightGameObject;
-    
     public bool DoesNeedToShowUi { get; set; }
     private float _currentTriggerTime;
+    
+    // Unity Events
+    public UnityEvent OnNewIngredientCollected { get; private set; } = new();
     
 
     private void Awake()
@@ -285,12 +288,25 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     {
         GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Add(IngredientValuesSo);
         PinnedRecipe.instance.UpdateIngredientCounter();
+
+        if (IsNewIngredient())
+        {
+            GameDontDestroyOnLoadManager.Instance.UnlockedIngredients.Add(IngredientValuesSo);
+            OnNewIngredientCollected.Invoke();
+        }
+        
         DisableCollect();
         PlayObtainingFeedback();
         
         meshParentTransform.gameObject.SetActive(false);
         IngredientToCollectVfxManagerBehaviour.StopAllLunarCycleVfx();
         collectTrigger.enabled = false;
+    }
+    
+    
+    private bool IsNewIngredient()
+    {
+        return !GameDontDestroyOnLoadManager.Instance.UnlockedIngredients.Contains(IngredientValuesSo);
     }
     
 
