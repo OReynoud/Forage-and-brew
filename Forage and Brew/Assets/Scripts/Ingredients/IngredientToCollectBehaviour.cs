@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class IngredientToCollectBehaviour : MonoBehaviour
@@ -55,9 +54,6 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     [SerializeField] private GameObject harvestReleaseRightGameObject;
     public bool DoesNeedToShowUi { get; set; }
     private float _currentTriggerTime;
-    
-    // Unity Events
-    public UnityEvent OnNewIngredientCollected { get; private set; } = new();
     
 
     private void Awake()
@@ -292,7 +288,7 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         if (IsNewIngredient())
         {
             GameDontDestroyOnLoadManager.Instance.UnlockedIngredients.Add(IngredientValuesSo);
-            OnNewIngredientCollected.Invoke();
+            GameDontDestroyOnLoadManager.Instance.OnNewIngredientCollected.Invoke();
         }
         
         DisableCollect();
