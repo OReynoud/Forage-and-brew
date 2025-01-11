@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NaughtyAttributes;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 {
@@ -16,12 +18,22 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 
     public LetterMailBoxDisplayBehaviour letterPrefab;
 
-    public RectTransform letterPile;
+    [SerializeField] private GameObject moneyDisplayGameObject;
+    [SerializeField] private RectTransform letterPile;
+    [SerializeField] private Image backgroundImage;
+    [SerializeField] private TMP_Text moneyText;
 
-    public float letterPileLerp;
+    [SerializeField] private float letterPileLerp;
+    [SerializeField] private float backgroundFadeLerp;
 
-    public Vector2 targetPos;
-    public Collider letterTrigger;
+    private Vector2 _letterPileTargetPosition;
+    [SerializeField] private Vector2 letterPileShownPosition = Vector2.zero;
+    [SerializeField] private Vector2 letterPileHiddenPosition = new(0, -1500);
+    private float _backgroundTargetFadeValue;
+    [SerializeField] private float backgroundShownFadeValue = 0.8f;
+    [SerializeField] private float backgroundHiddenFadeValue;
+    
+    public Collider letterBoxTrigger;
 
     private bool _openedMailOnFrame;
 
@@ -33,7 +45,13 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     {
         interactInputCanvasGameObject.SetActive(false);
         CharacterInputManager.Instance.DisableMailInputs();
-
+        
+        moneyDisplayGameObject.SetActive(false);
+        _letterPileTargetPosition = letterPileHiddenPosition;
+        letterPile.anchoredPosition = letterPileHiddenPosition;
+        _backgroundTargetFadeValue = backgroundHiddenFadeValue;
+        backgroundImage.color = new Color(backgroundImage.color.r, backgroundImage.color.g, backgroundImage.color.b,
+            backgroundHiddenFadeValue);
 
         if (!GameDontDestroyOnLoadManager.Instance.HasChosenLettersToday)
         {
@@ -45,7 +63,9 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 
     private void Update()
     {
-        letterPile.anchoredPosition = Vector2.Lerp(letterPile.anchoredPosition, targetPos, letterPileLerp);
+        letterPile.anchoredPosition = Vector2.Lerp(letterPile.anchoredPosition, _letterPileTargetPosition, letterPileLerp);
+        backgroundImage.color = new Color(backgroundImage.color.r, backgroundImage.color.g, backgroundImage.color.b,
+            Mathf.Lerp(backgroundImage.color.a, _backgroundTargetFadeValue, backgroundFadeLerp));
     }
 
     private void EnableInteract()
@@ -152,7 +172,10 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         CharacterInputManager.Instance.DisableMoveInputs();
         CharacterInputManager.Instance.DisableInteractInputs();
         CharacterInputManager.Instance.EnableMailInputs();
-        targetPos = Vector2.zero;
+        moneyDisplayGameObject.SetActive(true);
+        _letterPileTargetPosition = letterPileShownPosition;
+        _backgroundTargetFadeValue = backgroundShownFadeValue;
+        moneyText.text = MoneyManager.Instance.MoneyAmount.ToString();
     }
 
     public void PassToNextLetter()
@@ -168,6 +191,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
             if (_moneyAmountsToEarn.Select(x => x.letterIndex).Contains(i))
             {
                 MoneyManager.Instance.AddMoney(_moneyAmountsToEarn.First(x => x.letterIndex == i).moneyAmount);
+                moneyText.text = MoneyManager.Instance.MoneyAmount.ToString();
             }
             GeneratedLetters[i].AnimateLetter(true);
 
@@ -181,8 +205,10 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         CharacterInteractController.Instance.CurrentNearMailBoxBehaviour = null;
         DisableInteract();
         
-        letterTrigger.enabled = false;
-        targetPos = new Vector2(0f, -1500f);
+        letterBoxTrigger.enabled = false;
+        moneyDisplayGameObject.SetActive(false);
+        _letterPileTargetPosition = letterPileHiddenPosition;
+        _backgroundTargetFadeValue = backgroundHiddenFadeValue;
 
         foreach (Letter letter in GameDontDestroyOnLoadManager.Instance.MailBoxLetters)
         {
