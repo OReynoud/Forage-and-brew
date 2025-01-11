@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class IngredientToCollectBehaviour : MonoBehaviour
 {
@@ -18,6 +19,13 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     [SerializeField] private IngredientTypeSo unearthingIngredientType;
     [SerializeField] private IngredientTypeSo scrapingIngredientType;
     [SerializeField] private IngredientTypeSo harvestIngredientType;
+    
+    [Header("Obtaining Feedback")]
+    [SerializeField] private RectTransform obtainingFeedbackRectTransform;
+    [SerializeField] private Image obtainingFeedbackImage;
+    private Vector2 _obtainingFeedbackStartPosition;
+    private bool _isPlayingObtainingFeedback;
+    private float _obtainingFeedbackCurrentTime;
     
     [Header("UI")]
     [SerializeField] private bool isUiRight;
@@ -71,6 +79,8 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         
         // UI
         DisableCanvas();
+        obtainingFeedbackRectTransform.gameObject.SetActive(false);
+        _obtainingFeedbackStartPosition = obtainingFeedbackRectTransform.anchoredPosition;
 
         if (GameDontDestroyOnLoadManager.Instance.DayPassed == 0)
         {
@@ -82,8 +92,13 @@ public class IngredientToCollectBehaviour : MonoBehaviour
             SpawnMesh();
         }
     }
-    
-    
+
+    private void Update()
+    {
+        UpdateObtainingFeedback();
+    }
+
+
     public void SpawnMesh()
     {
         Instantiate(IngredientValuesSo.MeshGameObject, meshParentTransform);
@@ -231,16 +246,51 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         }
     }
     
+    
+    public void PlayObtainingFeedback()
+    {
+        _isPlayingObtainingFeedback = true;
+        obtainingFeedbackRectTransform.gameObject.SetActive(true);
+        obtainingFeedbackRectTransform.anchoredPosition = _obtainingFeedbackStartPosition;
+        obtainingFeedbackImage.color = new Color(obtainingFeedbackImage.color.r, obtainingFeedbackImage.color.g,
+            obtainingFeedbackImage.color.b, ingredientToCollectGlobalValuesSo.ObtainingFeedbackFadeCurve.Evaluate(0f));
+        collectInputCanvasGameObject.SetActive(true);
+    }
+    
+    private void UpdateObtainingFeedback()
+    {
+        if (!_isPlayingObtainingFeedback) return;
+        
+        _obtainingFeedbackCurrentTime += Time.deltaTime;
+        
+        obtainingFeedbackRectTransform.anchoredPosition = Vector2.Lerp(_obtainingFeedbackStartPosition,
+            _obtainingFeedbackStartPosition + ingredientToCollectGlobalValuesSo.ObtainingFeedbackDistance * Vector2.up,
+            ingredientToCollectGlobalValuesSo.ObtainingFeedbackMoveCurve.Evaluate(_obtainingFeedbackCurrentTime /
+                ingredientToCollectGlobalValuesSo.ObtainingFeedbackDuration));
+        obtainingFeedbackImage.color = new Color(obtainingFeedbackImage.color.r, obtainingFeedbackImage.color.g,
+            obtainingFeedbackImage.color.b, ingredientToCollectGlobalValuesSo.ObtainingFeedbackFadeCurve
+                .Evaluate(_obtainingFeedbackCurrentTime / ingredientToCollectGlobalValuesSo.ObtainingFeedbackDuration));
+        
+        if (_obtainingFeedbackCurrentTime >= ingredientToCollectGlobalValuesSo.ObtainingFeedbackDuration)
+        {
+            obtainingFeedbackRectTransform.gameObject.SetActive(false);
+            _isPlayingObtainingFeedback = false;
+            _obtainingFeedbackCurrentTime = 0f;
+            collectInputCanvasGameObject.SetActive(false);
+        }
+    }
+    
 
     public void Collect()
     {
         GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Add(IngredientValuesSo);
         PinnedRecipe.instance.UpdateIngredientCounter();
+        DisableCollect();
+        PlayObtainingFeedback();
         
         meshParentTransform.gameObject.SetActive(false);
-        DisableCollect();
         IngredientToCollectVfxManagerBehaviour.StopAllLunarCycleVfx();
-        Destroy(this);
+        collectTrigger.enabled = false;
     }
     
 
