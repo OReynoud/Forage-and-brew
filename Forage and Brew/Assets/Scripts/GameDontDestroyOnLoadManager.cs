@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameDontDestroyOnLoadManager : MonoBehaviour
 {
@@ -24,6 +25,11 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     public List<CollectedPotionBehaviour> OutCookedPotions { get; private set; } = new();
     public List<(PotionValuesSo potion, Vector3 position, Quaternion rotation)> FloorCookedPotions { get; private set; } = new();
     public List<ClientOrderPotions> OrderPotions { get; private set; } = new();
+    
+    // Unlocked Ingredients and Recipes
+    public List<IngredientValuesSo> UnlockedIngredients { get; private set; } = new();
+    public List<PotionValuesSo> UnlockedRecipes { get; private set; } = new();
+    public UnityEvent<IngredientValuesSo> OnNewIngredientCollected { get; private set; } = new();
     
     // Letters
     public bool HasChosenLettersToday { get; set; }
