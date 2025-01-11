@@ -22,9 +22,14 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     [SerializeField] private RectTransform letterPile;
     [SerializeField] private Image backgroundImage;
     [SerializeField] private TMP_Text moneyText;
+    [SerializeField] private CanvasGroup addMoneyCanvasGroup;
+    [SerializeField] private TMP_Text addMoneyText;
+    [SerializeField] private RectTransform addMoneyRectTransform;
 
     [SerializeField] private float letterPileLerp;
     [SerializeField] private float backgroundFadeLerp;
+    [SerializeField] private float addMoneyMoveLerp = 0.05f;
+    [SerializeField] private float addMoneyFadeLerp = 0.05f;
 
     private Vector2 _letterPileTargetPosition;
     [SerializeField] private Vector2 letterPileShownPosition = Vector2.zero;
@@ -32,6 +37,11 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     private float _backgroundTargetFadeValue;
     [SerializeField] private float backgroundShownFadeValue = 0.8f;
     [SerializeField] private float backgroundHiddenFadeValue;
+    
+    private Vector2 _addMoneyStartPosition;
+    [SerializeField] private Vector2 addMoneyLocalOffsetEndPosition = new(0, 100);
+    [SerializeField] private float addMoneyStartFadeValue = 1f;
+    [SerializeField] private float addMoneyEndFadeValue;
     
     public Collider letterBoxTrigger;
 
@@ -52,6 +62,9 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         _backgroundTargetFadeValue = backgroundHiddenFadeValue;
         backgroundImage.color = new Color(backgroundImage.color.r, backgroundImage.color.g, backgroundImage.color.b,
             backgroundHiddenFadeValue);
+        _addMoneyStartPosition = addMoneyRectTransform.anchoredPosition;
+        addMoneyRectTransform.anchoredPosition = _addMoneyStartPosition + addMoneyLocalOffsetEndPosition;
+        addMoneyCanvasGroup.alpha = addMoneyEndFadeValue;
 
         if (!GameDontDestroyOnLoadManager.Instance.HasChosenLettersToday)
         {
@@ -66,6 +79,9 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         letterPile.anchoredPosition = Vector2.Lerp(letterPile.anchoredPosition, _letterPileTargetPosition, letterPileLerp);
         backgroundImage.color = new Color(backgroundImage.color.r, backgroundImage.color.g, backgroundImage.color.b,
             Mathf.Lerp(backgroundImage.color.a, _backgroundTargetFadeValue, backgroundFadeLerp));
+        addMoneyRectTransform.anchoredPosition = Vector2.Lerp(addMoneyRectTransform.anchoredPosition,
+            _addMoneyStartPosition + addMoneyLocalOffsetEndPosition, addMoneyMoveLerp);
+        addMoneyCanvasGroup.alpha = Mathf.Lerp(addMoneyCanvasGroup.alpha, addMoneyEndFadeValue, addMoneyFadeLerp);
     }
 
     private void EnableInteract()
@@ -193,8 +209,12 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 
             if (_moneyAmountsToEarn.Select(x => x.letterIndex).Contains(i))
             {
-                MoneyManager.Instance.AddMoney(_moneyAmountsToEarn.First(x => x.letterIndex == i).moneyAmount);
+                int moneyAmount = _moneyAmountsToEarn.First(x => x.letterIndex == i).moneyAmount;
+                MoneyManager.Instance.AddMoney(moneyAmount);
                 moneyText.text = MoneyManager.Instance.MoneyAmount.ToString();
+                addMoneyText.text = moneyAmount.ToString();
+                addMoneyRectTransform.anchoredPosition = _addMoneyStartPosition;
+                addMoneyCanvasGroup.alpha = addMoneyStartFadeValue;
             }
             GeneratedLetters[i].AnimateLetter(true);
 
