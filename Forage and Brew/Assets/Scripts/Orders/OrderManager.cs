@@ -43,17 +43,22 @@ public class OrderManager : MonoBehaviour
             GameDontDestroyOnLoadManager.Instance.OrderPotions[^1].Potions.Add(null);
         }
     }
-
-    public bool TryAddOrderToValidate(int orderIndex)
+    
+    public void AddOrdersToValidate()
     {
-        
-        if (OrderToValidateIndices.Contains(orderIndex)) return false;
+        for (int i = 0; i < CurrentOrders.Count; i++)
+        {
+            TryAddOrderToValidate(i);
+        }
+    }
 
-        if (GameDontDestroyOnLoadManager.Instance.OrderPotions[orderIndex].Potions.Any(x => x == null)) return false;
+    public void TryAddOrderToValidate(int orderIndex)
+    {
+        if (OrderToValidateIndices.Contains(orderIndex)) return;
+
+        if (GameDontDestroyOnLoadManager.Instance.OrderPotions[orderIndex].Potions.Any(x => x == null)) return;
 
         OrderToValidateIndices.Add(orderIndex);
-
-        return true;
     }
 
     public void CheckOrdersToValidate()
@@ -112,7 +117,6 @@ public class OrderManager : MonoBehaviour
 
             if (isOrderCorrect)
             {
-                MoneyManager.Instance.AddMoney(CurrentOrders[orderToValidateIndex].OrderContent.MoneyReward);
                 GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters.Add(new Letter(
                     CurrentOrders[orderToValidateIndex].RelatedLetter,
                     CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock));
@@ -129,7 +133,6 @@ public class OrderManager : MonoBehaviour
             }
             else
             {
-                MoneyManager.Instance.AddMoney(CurrentOrders[orderToValidateIndex].OrderContent.ErrorMoneyReward);
                 GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters.Add(new Letter(
                     CurrentOrders[orderToValidateIndex].RelatedLetter,
                     CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock));

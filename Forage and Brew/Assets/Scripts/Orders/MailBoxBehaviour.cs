@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using NaughtyAttributes;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 {
 
     [SerializeField] [AllowNesting][ReadOnly]private List<Letter> chosenLetters = new();
+    private readonly List<(int moneyAmount, int letterIndex)> _moneyAmountsToEarn = new();
     public List<LetterMailBoxDisplayBehaviour> GeneratedLetters { get; set; } = new();
 
     [SerializeField] private GameObject interactInputCanvasGameObject;
@@ -99,10 +101,12 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
             letter.RelatedNarrativeBlock.InactiveLetters[index] = false;
             if (letter.RelatedNarrativeBlock.CompletedLetters[letter.RelatedNarrativeBlock.SelfProgressionIndex - 1])
             {
+                _moneyAmountsToEarn.Add((letter.LetterContent.OrderContent.MoneyReward, chosenLetters.Count));
                 chosenLetters.Add(new Letter(letter.LetterContent.RelatedSuccessLetter, letter.RelatedNarrativeBlock));
             }
             else
             {
+                _moneyAmountsToEarn.Add((letter.LetterContent.OrderContent.ErrorMoneyReward, chosenLetters.Count));
                 chosenLetters.Add(new Letter(letter.LetterContent.RelatedFailureLetter, letter.RelatedNarrativeBlock));
             }
         }
@@ -161,6 +165,10 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 
             if (GeneratedLetters[i].IsPassed) continue;
 
+            if (_moneyAmountsToEarn.Select(x => x.letterIndex).Contains(i))
+            {
+                MoneyManager.Instance.AddMoney(_moneyAmountsToEarn.First(x => x.letterIndex == i).moneyAmount);
+            }
             GeneratedLetters[i].AnimateLetter(true);
 
             if (i != GeneratedLetters.Count - 1) return;

@@ -30,6 +30,7 @@ public class BedBehaviour : MonoBehaviour
         GameDontDestroyOnLoadManager.Instance.HasChosenLettersToday = false;
         
         // Orders
+        OrderManager.Instance.AddOrdersToValidate();
         OrderManager.Instance.CheckOrdersToValidate();
         foreach (PotionBasketManagerBehaviour potionBasketManagerBehaviour in potionBasketManagerBehaviours)
         {
