@@ -63,7 +63,6 @@ public class OrderManager : MonoBehaviour
 
     public void CheckOrdersToValidate()
     {
-        Debug.Log("Validating Orders");
         foreach (int orderToValidateIndex in OrderToValidateIndices.ToList())
         {
             bool isOrderCorrect = true;
