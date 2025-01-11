@@ -169,18 +169,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
         Debug.Log("Order Select Input");
         if (!CharacterInputManager.Instance.showCodex) return;
         
-        if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[0].index &&
-            AutoFlip.instance.ControledBook.currentPage < AutoFlip.instance.ControledBook.bookMarks[1].index)
-        {
-            if (emptyOrderPage && side && AutoFlip.instance.ControledBook.currentPage == emptyOrderPageIndex) return;
-            // Select Order
-            int orderIndex = AutoFlip.instance.ControledBook.currentPage -
-                             AutoFlip.instance.ControledBook.bookMarks[0].index;
-            orderIndex = side ? orderIndex : orderIndex - 1;
-
-            OrderManager.Instance.TryAddOrderToValidate(orderIndex);
-        }
-        else if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[1].index &&
+        if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[1].index &&
                  AutoFlip.instance.ControledBook.currentPage < AutoFlip.instance.ControledBook.bookMarks[2].index)
         {
             int recipeIndex = Mathf.FloorToInt((AutoFlip.instance.ControledBook.currentPage -
