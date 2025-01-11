@@ -214,9 +214,10 @@ public class CodexContentManager : Singleton<CodexContentManager>
     /// 
     /// </summary>
     /// <param name="side"> true = right, false = left</param>
+
+    private RecipeCodexDisplay pinnedRecipe;
     public void SelectCodexPage(bool side)
     {
-        Debug.Log("Order Select Input");
         if (!CharacterInputManager.Instance.showCodex) return;
 
         if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[1].index &&
@@ -231,17 +232,24 @@ public class CodexContentManager : Singleton<CodexContentManager>
                 {
                     Debug.Log("Selected same recipe, unpinning");
                     PinnedRecipe.instance.UnpinRecipe();
+                    pinnedRecipe.pinIcon.enabled = false;
                     return;
                 }
             }
 
+            if (pinnedRecipe)
+            {
+                pinnedRecipe.pinIcon.enabled = false;
+            }
             PinnedRecipe.instance.PinRecipe(recipes[recipeIndex].storedPotion, recipes[recipeIndex].potionIngredients);
             Debug.Log("Pinned recipe: " + recipes[recipeIndex].storedPotion.Name);
+            pinnedRecipe = recipes[recipeIndex];
+            pinnedRecipe.pinIcon.enabled = true;
         }
         else
         {
             PinnedRecipe.instance.UnpinRecipe();
-            //Debug.Log("Not in recipe pages");
+            pinnedRecipe.pinIcon.enabled = false;
         }
     }
 

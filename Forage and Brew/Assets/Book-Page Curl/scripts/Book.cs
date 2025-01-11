@@ -75,7 +75,6 @@ public class Book : MonoBehaviour
     [Foldout("Refs")] public Image Right;
     [Foldout("Refs")] public Image RightNext;
     [Foldout("Refs")] public CanvasGroup pinRecipeUI;
-    [Foldout("Refs")] public CanvasGroup sellCommandUI;
     [Foldout("Refs")] public BookPage dummyOrderPage;
     public UnityEvent OnFlip;
 
@@ -148,17 +147,10 @@ public class Book : MonoBehaviour
         if (currentPage >= bookMarks[1].index && currentPage < bookMarks[2].index)
         {
             pinRecipeUI.alpha = 1;
-            sellCommandUI.alpha = 0;
-        }
-        else if (currentPage >= bookMarks[0].index && currentPage < bookMarks[1].index)
-        {
-            pinRecipeUI.alpha = 0;
-            sellCommandUI.alpha = 1;
         }
         else
         {
             pinRecipeUI.alpha = 0;
-            sellCommandUI.alpha = 0;
         }
         for (int i = 0; i < bookMarks.Length; i++)
         {
