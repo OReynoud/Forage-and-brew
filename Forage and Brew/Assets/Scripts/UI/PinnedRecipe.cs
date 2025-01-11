@@ -161,7 +161,6 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
             for (var i = 0; i < target.CookedIngredients.Count; i++)
             {
-                Debug.Log("Aga");
                 stepIngredientCount[writingIndex].transform.parent.gameObject.SetActive(true);
                 stepIngredientCount[writingIndex].enabled = true;
 
@@ -225,7 +224,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
                         {
                             int ingredientCounter =
                                 Ex.CheckForSameElementsIngredientSo(i, 0, counter.CookedIngredients);
-                            stepIngredientCounter[writingIndex].text = ingredientCounter.ToString();
+                            stepIngredientCounter[writingIndex].text = (ingredientCounter + 1).ToString();
                             if (ingredientCounter == numberOfIngredients)
                             {
                                 stepIngredientCounter[writingIndex].color = positiveColor;
@@ -308,6 +307,13 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
     {
         if (!isPinned || GameDontDestroyOnLoadManager.Instance.PreviousScene != Scene.House) return;
         writingIndex = 0;
+
+        for (int i = 0; i < checkMarkImage.Length; i++)
+        {
+            checkMarkImage[i].enabled = false;
+            stepIngredientCounter[i].text = "0";
+        }
+        
         CurrentTemperatureAndIngredients = GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients;
 
         for (int j = 0; j < pinnedRecipe.TemperatureChallengeIngredients.Length; j++)

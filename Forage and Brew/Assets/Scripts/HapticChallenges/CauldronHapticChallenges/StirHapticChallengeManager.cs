@@ -80,6 +80,7 @@ public class StirHapticChallengeManager : MonoBehaviour
     private void PickRightPotion()
     {
         List<TemperatureChallengeIngredients> temperatureAndIngredients = CurrentCauldron.ClearIngredients();
+        PinnedRecipe.instance.UpdateRecipeStepsCounter();
         
         foreach (PotionValuesSo potion in potionListSo.Potions) // For each potion
         {

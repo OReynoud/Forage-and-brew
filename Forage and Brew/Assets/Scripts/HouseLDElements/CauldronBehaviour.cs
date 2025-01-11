@@ -89,7 +89,6 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
         GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients.Clear();
         CauldronVfxManager.Instance.ChangeSmokeVfx(false);
         
-        PinnedRecipe.instance.UpdateRecipeStepsCounter();
         return temperatureAndIngredientsList;
     }
     
