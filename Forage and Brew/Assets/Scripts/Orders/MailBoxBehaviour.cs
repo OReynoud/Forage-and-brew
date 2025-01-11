@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 {
 
-    [SerializeField] [AllowNesting][ReadOnly]private List<Letter> chosenLetters = new();
+    [SerializeField] [AllowNesting][ReadOnly] private List<(Letter, LetterContentSo)> chosenLetters = new();
     private readonly List<(int moneyAmount, int letterIndex)> _moneyAmountsToEarn = new();
     public List<LetterMailBoxDisplayBehaviour> GeneratedLetters { get; set; } = new();
 
@@ -98,7 +98,6 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 
     public void ChooseLetters()
     {
-        Debug.Log("Choosen Letters to generate");
         chosenLetters.Clear();
 
         // switch (GameDontDestroyOnLoadManager.Instance.DayPassed)
@@ -122,12 +121,12 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
             if (letter.RelatedNarrativeBlock.CompletedLetters[letter.RelatedNarrativeBlock.SelfProgressionIndex - 1])
             {
                 _moneyAmountsToEarn.Add((letter.LetterContent.OrderContent.MoneyReward, chosenLetters.Count));
-                chosenLetters.Add(new Letter(letter.LetterContent.RelatedSuccessLetter, letter.RelatedNarrativeBlock));
+                chosenLetters.Add((new Letter(letter.LetterContent.RelatedSuccessLetter, letter.RelatedNarrativeBlock), letter.LetterContent));
             }
             else
             {
                 _moneyAmountsToEarn.Add((letter.LetterContent.OrderContent.ErrorMoneyReward, chosenLetters.Count));
-                chosenLetters.Add(new Letter(letter.LetterContent.RelatedFailureLetter, letter.RelatedNarrativeBlock));
+                chosenLetters.Add((new Letter(letter.LetterContent.RelatedFailureLetter, letter.RelatedNarrativeBlock), letter.LetterContent));
             }
         }
         
@@ -143,11 +142,15 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
             if (t.CompletedLetters[t.SelfProgressionIndex] || t.InactiveLetters[t.SelfProgressionIndex])
                 continue;
 
-            chosenLetters.Add(new Letter(t.ContentSo.Content[t.SelfProgressionIndex], t));
+            chosenLetters.Add((new Letter(t.ContentSo.Content[t.SelfProgressionIndex], t),null));
             t.InactiveLetters[t.SelfProgressionIndex] = true;
         }
         GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters.Clear();
-        GameDontDestroyOnLoadManager.Instance.MailBoxLetters.AddRange(chosenLetters);
+        foreach (var letterTupple in chosenLetters)
+        {
+            GameDontDestroyOnLoadManager.Instance.MailBoxLetters.Add(letterTupple.Item1);
+            
+        }
         //GameDontDestroyOnLoadManager.Instance.AllLetters.AddRange(_chosenLetters);
         GameDontDestroyOnLoadManager.Instance.HasChosenLettersToday = true;
     }
@@ -198,7 +201,6 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
             if (i != GeneratedLetters.Count - 1) return;
         }
 
-        Debug.Log("Finished Reading all letters");
         CharacterInputManager.Instance.EnableMoveInputs();
         CharacterInputManager.Instance.EnableInteractInputs();
         CharacterInputManager.Instance.DisableMailInputs();
@@ -210,11 +212,22 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         _letterPileTargetPosition = letterPileHiddenPosition;
         _backgroundTargetFadeValue = backgroundHiddenFadeValue;
 
-        foreach (Letter letter in GameDontDestroyOnLoadManager.Instance.MailBoxLetters)
+        foreach (var letter in chosenLetters)
         {
-            if (letter.LetterContent.LetterType != LetterType.Orders) continue;
 
-            OrderManager.Instance.CreateNewOrder(letter);
+            switch (letter.Item1.LetterContent.LetterType)
+            {
+                case LetterType.Orders:
+                    OrderManager.Instance.CreateNewOrder(letter.Item1);
+                    break;
+                case LetterType.Thanks:
+                    CodexContentManager.instance.AddHistoricPage(letter.Item2,letter.Item1.LetterContent);
+                    break;
+                case LetterType.ShippingError:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         GameDontDestroyOnLoadManager.Instance.MailBoxLetters.Clear();
