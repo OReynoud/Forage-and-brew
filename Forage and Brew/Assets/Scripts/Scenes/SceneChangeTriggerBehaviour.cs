@@ -26,19 +26,8 @@ public class SceneChangeTriggerBehaviour : MonoBehaviour
                 }
             }
 
-            foreach (CollectedIngredientBehaviour collectedIngredientBehaviour in GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients.ToList())
-            {
-                GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients.Remove(collectedIngredientBehaviour);
-                GameDontDestroyOnLoadManager.Instance.FloorCollectedIngredients.Add((collectedIngredientBehaviour.IngredientValuesSo,
-                    collectedIngredientBehaviour.transform.position, collectedIngredientBehaviour.transform.rotation));
-            }
-
-            foreach (CollectedPotionBehaviour collectedPotionBehaviour in GameDontDestroyOnLoadManager.Instance.OutCookedPotions.ToList())
-            {
-                GameDontDestroyOnLoadManager.Instance.OutCookedPotions.Remove(collectedPotionBehaviour);
-                GameDontDestroyOnLoadManager.Instance.FloorCookedPotions.Add((collectedPotionBehaviour.PotionValuesSo,
-                    collectedPotionBehaviour.transform.position, collectedPotionBehaviour.transform.rotation));
-            }
+            OutStackableManager.Instance.StoreOutCollectedIngredients();
+            OutStackableManager.Instance.StoreOutCookedPotions();
             
             if (doesMakeItNighttime)
             {

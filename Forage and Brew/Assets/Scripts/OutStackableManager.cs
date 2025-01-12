@@ -50,4 +50,24 @@ public class OutStackableManager : MonoBehaviour
             GameDontDestroyOnLoadManager.Instance.FloorCookedPotions.Remove(floorCookedPotion);
         }
     }
+
+    public void StoreOutCollectedIngredients()
+    {
+        foreach (CollectedIngredientBehaviour collectedIngredientBehaviour in GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients.ToList())
+        {
+            GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients.Remove(collectedIngredientBehaviour);
+            GameDontDestroyOnLoadManager.Instance.FloorCollectedIngredients.Add((collectedIngredientBehaviour.IngredientValuesSo,
+                collectedIngredientBehaviour.transform.position, collectedIngredientBehaviour.transform.rotation));
+        }
+    }
+
+    public void StoreOutCookedPotions()
+    {
+        foreach (CollectedPotionBehaviour collectedPotionBehaviour in GameDontDestroyOnLoadManager.Instance.OutCookedPotions.ToList())
+        {
+            GameDontDestroyOnLoadManager.Instance.OutCookedPotions.Remove(collectedPotionBehaviour);
+            GameDontDestroyOnLoadManager.Instance.FloorCookedPotions.Add((collectedPotionBehaviour.PotionValuesSo,
+                collectedPotionBehaviour.transform.position, collectedPotionBehaviour.transform.rotation));
+        }
+    }
 }
