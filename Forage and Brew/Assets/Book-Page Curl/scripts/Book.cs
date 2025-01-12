@@ -205,7 +205,7 @@ public class Book : MonoBehaviour
         f = followLocation;
         
         c = Calc_C_Position(followLocation);
-        float clipAngle = CalcClipAngle(c, ebl, out t1);
+        clipAngle = CalcClipAngle(c, ebl, out t1);
 
         //0 < T0_T1_Angle < 180
         clipAngle = (clipAngle + 180) % 180;
@@ -238,6 +238,7 @@ public class Book : MonoBehaviour
 
     public void SetupRTLFlip()
     {
+        Left.transform.SetParent(ClippingPlane.transform, true);
         Right.transform.SetParent(ClippingPlane.transform, true);
 
         RightNext.transform.SetParent(NextPageClip.transform, true);
@@ -276,6 +277,10 @@ public class Book : MonoBehaviour
 
         NextPageClip.transform.localEulerAngles = new Vector3(0, 0, clipAngle + 90);
         NextPageClip.transform.position = BookPanel.TransformPoint(t1);
+        
+        Left.transform.localEulerAngles = new Vector3(0, 0, -(clipAngle + 90));
+        Left.transform.position = BookPanel.TransformPoint(new Vector3(0, t1.y, 0));
+        
         RightNext.transform.localEulerAngles = new Vector3(0, 0, -(clipAngle + 90));
         RightNext.transform.position = BookPanel.TransformPoint(new Vector3(0, t1.y, 0));
     }
