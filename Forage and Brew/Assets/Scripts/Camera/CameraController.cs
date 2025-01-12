@@ -51,6 +51,23 @@ public class CameraController : Singleton<CameraController>
     {
         base.Awake();
         applyClamping = posMaxClamp.sqrMagnitude + posMinClamp.sqrMagnitude >= 1;
+        
+        cam = Camera.main;
+        targetFocalLength = cam.focalLength;
+        cameraRotation = transform.localRotation.eulerAngles;
+        previousCamSettings = scriptableCamSettings;
+        TargetCamSettings = scriptableCamSettings;
+        
+
+        if (scriptableCamSettings == null)
+        {
+            Debug.LogError("No Scriptable Cam Settings found, camera might work unpredictably");
+        }
+        else
+        {
+            ApplyScriptableCamSettings();
+            //Debug.Log(transform.localRotation.eulerAngles);
+        }
     }
     
 
@@ -137,31 +154,15 @@ public class CameraController : Singleton<CameraController>
         transform.localRotation = Quaternion.Euler(TargetCamSettings.cameraRotation);
         transform.localPosition = -transform.forward * TargetCamSettings.distanceFromPlayer;
         cam.focalLength = TargetCamSettings.targetFocalLength;
-        
-        //Debug.Log("Cam Settings: " + TargetCamSettings.name);
+        ClampCamPos();
+        //Debug.Log("Instant Cam Settings: " + TargetCamSettings.name);
     }
 
     private void Start()
     {
-        cam = Camera.main;
-        movement = CharacterMovementController.Instance;
-        targetFocalLength = cam.focalLength;
-        cameraRotation = transform.localRotation.eulerAngles;
-        previousCamSettings = scriptableCamSettings;
-        TargetCamSettings = scriptableCamSettings;
-        
-        CharacterInputManager.Instance.OnCodexShow.AddListener(UpdateCamWithCodex);
 
-        if (scriptableCamSettings == null)
-        {
-            Debug.LogError("No Scriptable Cam Settings found, camera might work unpredictably");
-        }
-        else
-        {
-            ApplyScriptableCamSettings();
-            InstantCamUpdate();
-            //Debug.Log(transform.localRotation.eulerAngles);
-        }
+        movement = CharacterMovementController.Instance;
+        CharacterInputManager.Instance.OnCodexShow.AddListener(UpdateCamWithCodex);
     }
     
     
@@ -170,35 +171,40 @@ public class CameraController : Singleton<CameraController>
     void FixedUpdate()
     {
         transform.parent.position = Vector3.Lerp(transform.parent.position, player.position+cameraOffset,movement.isRunning ? positionLerp * 2.5f : positionLerp);
-        if (applyClamping)
-        {
-            if (transform.parent.position.x > posMaxClamp.x)
-            {
-                transform.parent.position =
-                    new Vector3(posMaxClamp.x, transform.parent.position.y, transform.parent.position.z);
-            }
-            if (transform.parent.position.x < posMinClamp.x)
-            {
-                transform.parent.position =
-                    new Vector3(posMinClamp.x, transform.parent.position.y, transform.parent.position.z);
-            }
-            if (transform.parent.position.z > posMaxClamp.y)
-            {
-                transform.parent.position =
-                    new Vector3(transform.parent.position.x, transform.parent.position.y, posMaxClamp.y);
-            }
-            if (transform.parent.position.z < posMinClamp.y)
-            {
-                transform.parent.position =
-                    new Vector3(transform.parent.position.x, transform.parent.position.y, posMinClamp.y);
-            }
-        }
+        ClampCamPos();
         
         transform.localPosition =
             Vector3.Lerp(transform.localPosition, -transform.forward * distanceFromPlayer, positionLerp);
         cam.focalLength = Mathf.Lerp(cam.focalLength,targetFocalLength,focalLerp);
         
         transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(cameraRotation),rotationLerp);
+    }
+
+    private void ClampCamPos()
+    {
+        if (!applyClamping || GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge) 
+            return;
+        
+        if (transform.parent.position.x > posMaxClamp.x)
+        {
+            transform.parent.position =
+                new Vector3(posMaxClamp.x, transform.parent.position.y, transform.parent.position.z);
+        }
+        if (transform.parent.position.x < posMinClamp.x)
+        {
+            transform.parent.position =
+                new Vector3(posMinClamp.x, transform.parent.position.y, transform.parent.position.z);
+        }
+        if (transform.parent.position.z > posMaxClamp.y)
+        {
+            transform.parent.position =
+                new Vector3(transform.parent.position.x, transform.parent.position.y, posMaxClamp.y);
+        }
+        if (transform.parent.position.z < posMinClamp.y)
+        {
+            transform.parent.position =
+                new Vector3(transform.parent.position.x, transform.parent.position.y, posMinClamp.y);
+        }
     }
 
     private void Update()

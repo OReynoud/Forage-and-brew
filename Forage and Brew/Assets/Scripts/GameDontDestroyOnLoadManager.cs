@@ -45,6 +45,9 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     public List<TemperatureChallengeIngredients> CauldronTemperatureAndIngredients { get; private set; } = new();
     [field: SerializeField] public Temperature CauldronTemperature { get; set; } = Temperature.LowHeat;
     
+    // Haptic Challenges
+    public bool IsInHapticChallenge { get; set; }
+    
     
     private void Awake()
     {
@@ -65,7 +68,7 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     
     private void Start()
     {
-
+        CameraController.instance.InstantCamUpdate();
         InfoDisplayManager.instance.DisplayDays();
     }
 }

@@ -96,6 +96,9 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         characterAnimator.SetBool(IsChopping, true);
         knifeGameObject.SetActive(true);
         
+        // Put in HapticChallenge
+        GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge = true;
+        
         StartChoppingTurn();
     }
     
@@ -116,6 +119,8 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         characterAnimator.SetBool(IsChopping, false);
         knifeGameObject.SetActive(false);
         CurrentChoppingCountertopBehaviour.ChopIngredient(choppingHapticChallengeListSo);
+        
+        GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge = false;
     }
     
     private void UpdateChoppingChallenge()

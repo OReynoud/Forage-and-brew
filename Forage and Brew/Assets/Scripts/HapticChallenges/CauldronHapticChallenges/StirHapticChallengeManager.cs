@@ -180,6 +180,8 @@ public class StirHapticChallengeManager : MonoBehaviour
         transform.rotation = Quaternion.Euler(characterStirRotation);
         CharacterInputManager.Instance.DisableInputs();
         CharacterInputManager.Instance.EnableHapticChallengeJoystickInputs();
+                
+        GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge = true;
         
         CurrentCauldron.DisableInteract();
         
@@ -387,7 +389,9 @@ public class StirHapticChallengeManager : MonoBehaviour
         
         CameraController.instance.ApplyScriptableCamSettings(_previousCameraPreset, cauldronCameraTransitionTime);
         CharacterInputManager.Instance.EnableInputs();
-        CurrentCauldron.EnableInteract(false);
+        CurrentCauldron.EnableInteract(false);        
+        
+        GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge = false;
     }
     
     

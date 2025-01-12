@@ -80,7 +80,9 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
         transform.position = CurrentBellows.transform.position + CurrentBellows.transform.rotation * characterBlowPosition;
         transform.rotation = CurrentBellows.transform.rotation * Quaternion.Euler(characterBlowRotation);
         CharacterInputManager.Instance.DisableInputs();
-        CharacterInputManager.Instance.EnableTemperatureHapticChallengeInputs();
+        CharacterInputManager.Instance.EnableTemperatureHapticChallengeInputs();        
+        
+        GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge = true;
         
         CurrentBellows.DisableInteract();
         CurrentBellows.EnterTemperatureHapticChallenge();
@@ -264,7 +266,9 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
         CauldronBehaviour.instance.AddTemperature(_currentTemperature);
         GameDontDestroyOnLoadManager.Instance.CauldronTemperature = _currentTemperature;
         _isChallengeActive = false;
-        temperatureChallengeGameObject.SetActive(false);
+        temperatureChallengeGameObject.SetActive(false);        
+        
+        GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge = false;
     }
     
     public void IncreaseTemperature()

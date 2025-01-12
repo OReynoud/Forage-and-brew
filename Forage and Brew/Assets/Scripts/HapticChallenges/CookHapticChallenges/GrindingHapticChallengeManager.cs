@@ -163,6 +163,9 @@ public class GrindingHapticChallengeManager : MonoBehaviour
         // Animation
         characterAnimator.SetBool(IsGrinding, true);
         mortarGameObject.SetActive(true);
+                
+        // Put in HapticChallenge
+        GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge = true;
     }
     
     public void StopGrindingChallenge()
@@ -178,7 +181,9 @@ public class GrindingHapticChallengeManager : MonoBehaviour
         // CurrentGrindingCountertopBehaviour.EnableInteract();
         characterAnimator.SetBool(IsGrinding, false);
         mortarGameObject.SetActive(false);
-        CurrentGrindingCountertopBehaviour.GrindIngredient(grindingHapticChallengeSo);
+        CurrentGrindingCountertopBehaviour.GrindIngredient(grindingHapticChallengeSo);    
+        
+        GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge = false;
     }
     
     private void UpdateGrindingChallenge()
