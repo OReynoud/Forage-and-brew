@@ -1,6 +1,4 @@
-using UnityEditor.U2D.Animation;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class BedBehaviour : MonoBehaviour
 {

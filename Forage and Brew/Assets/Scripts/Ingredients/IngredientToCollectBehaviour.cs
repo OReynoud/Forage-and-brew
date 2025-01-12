@@ -71,11 +71,6 @@ public class IngredientToCollectBehaviour : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < meshParentTransform.childCount; i++)
-        {
-            Destroy(meshParentTransform.GetChild(i).gameObject);
-        }
-        
         // UI
         DisableCanvas();
         obtainingFeedbackRectTransform.gameObject.SetActive(false);
@@ -86,7 +81,7 @@ public class IngredientToCollectBehaviour : MonoBehaviour
             DoesNeedToShowUi = true;
         }
 
-        if (!ingredientToCollectSpawnManager && ingredientToCollectGlobalValuesSo)
+        if (!ingredientToCollectSpawnManager && IngredientValuesSo)
         {
             SpawnMesh();
         }
@@ -100,6 +95,11 @@ public class IngredientToCollectBehaviour : MonoBehaviour
 
     public void SpawnMesh()
     {
+        for (int i = 0; i < meshParentTransform.childCount; i++)
+        {
+            Destroy(meshParentTransform.GetChild(i).gameObject);
+        }
+        
         Instantiate(IngredientValuesSo.MeshGameObject, meshParentTransform);
     }
 
