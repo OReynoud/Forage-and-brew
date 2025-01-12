@@ -20,6 +20,8 @@ public class AutoFlip : Singleton<AutoFlip>
     [BoxGroup("Codex Movement")] public float codexLerp = 0.17f;
     [BoxGroup("Codex Movement")] public bool isNavigatingPages;
     [BoxGroup("Codex Movement")] public Vector3 aimedCodexPos;
+    
+    [BoxGroup("Codex Movement")] public float zoomIntensity = 2;
     [BoxGroup("Codex Movement")] public float yCursorSpeed = 1;
     [BoxGroup("Codex Movement")] public float xCursorSpeed = 1;
     
@@ -30,9 +32,7 @@ public class AutoFlip : Singleton<AutoFlip>
 
     
     [Foldout("Deprecated")] public FlipMode Mode;
-    [Foldout("Deprecated")] public float TimeBetweenPages = 1;
-    [Foldout("Deprecated")] public float DelayBeforeStarting = 0;
-    [Foldout("Deprecated")] public bool AutoStartFlip=true;
+    [Foldout("Deprecated")] public bool AutoStartFlip = true;
 
     
     
@@ -84,7 +84,7 @@ public class AutoFlip : Singleton<AutoFlip>
 
         if (isNavigatingPages)
         {
-            codexTransform.localScale = Vector2.Lerp(codexTransform.localScale, Vector2.one * 2, codexLerp);
+            codexTransform.localScale = Vector2.Lerp(codexTransform.localScale, Vector2.one * zoomIntensity, codexLerp);
         }
         else
         {
@@ -165,7 +165,6 @@ public class AutoFlip : Singleton<AutoFlip>
     }
     IEnumerator FlipRTL(float xc, float xl, float h, float frameTime, float dx)
     {
-        Debug.Log("Turn Right");
         float x = xc + xl;
         float y = (-h / (xl * xl)) * (x - xc) * (x - xc);
 

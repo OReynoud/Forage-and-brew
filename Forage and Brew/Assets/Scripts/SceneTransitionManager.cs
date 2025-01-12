@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class SceneTransitionManager : Singleton<SceneTransitionManager>
@@ -11,6 +12,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
     public GameObject transitionElement;
 
     public RectTransform maskElement;
+    public UnityEvent OnSleep { get; set; } = new();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -34,6 +36,8 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
 
     public void HandleGoingToSleepTransition(float waitTime)
     {
+        if (OnSleep != null)
+            OnSleep.Invoke();
         StartCoroutine(HideScreen(waitTime));
     }
 

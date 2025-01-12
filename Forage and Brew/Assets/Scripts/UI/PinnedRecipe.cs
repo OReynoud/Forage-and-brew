@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NaughtyAttributes;
 using TMPro;
-using UnityEditor.Embree;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PinnedRecipe : Singleton<PinnedRecipe>
@@ -185,6 +183,8 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
                         mainActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[1];
                         break;
                     case GrindingHapticChallengeSo:
+                        mainActionImage[writingIndex].enabled = true;
+                        mainActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[2];
                         break;
                 }
 
