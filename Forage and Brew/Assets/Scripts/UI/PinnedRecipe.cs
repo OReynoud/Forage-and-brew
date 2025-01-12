@@ -99,7 +99,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
             singleActionImage[i].sprite = null;
 
             stepIngredientCount[i].enabled = false;
-            stepIngredientCounter[i].enabled = false;
+            stepIngredientCounter[i].gameObject.SetActive(false);
             ingredientStepImage[i].enabled = false;
             mainActionImage[i].enabled = false;
             singleActionImage[i].enabled = false;
@@ -176,7 +176,6 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
                     case null:
                         mainActionImage[writingIndex].enabled = true;
                         mainActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[^1];
-
                         break;
                     case ChoppingHapticChallengeListSo:
                         mainActionImage[writingIndex].enabled = true;
@@ -189,7 +188,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
                 }
 
 
-                stepIngredientCounter[i].enabled = true;
+                stepIngredientCounter[writingIndex].gameObject.SetActive(true);
                 if (j < CurrentTemperatureAndIngredients.Count)
                 {
                     if (counter.CookedIngredients.Count > 0 && i < counter.CookedIngredients.Count)
@@ -238,16 +237,22 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
                         }
                         else
                         {
+                            stepIngredientCounter[writingIndex].color = negativeColor;
+                            checkMarkImage[writingIndex].enabled = false;
                             stepIngredientCounter[writingIndex].text = "0";
                         }
                     }
                     else
                     {
+                        stepIngredientCounter[writingIndex].color = negativeColor;
+                        checkMarkImage[writingIndex].enabled = false;
                         stepIngredientCounter[writingIndex].text = "0";
                     }
                 }
                 else
                 {
+                    stepIngredientCounter[writingIndex].color = negativeColor;
+                    checkMarkImage[writingIndex].enabled = false;
                     stepIngredientCounter[writingIndex].text = "0";
                 }
 
