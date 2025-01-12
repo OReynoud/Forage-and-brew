@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class OrderCodexDisplayBehaviour : MonoBehaviour
 {
     public TextMeshProUGUI clientNameText;
+    public Image orderBackground;
     
     public TextMeshProUGUI descriptionText;
     public TextMeshProUGUI delayTimeText;
@@ -38,16 +40,18 @@ public class OrderCodexDisplayBehaviour : MonoBehaviour
         
     }
 
-    public void InitializeOrder(string client,string description, PotionDemand[] Potions, int Reward, int TTC, int index)
+    public void InitializeOrder(ClientSo client,string description, PotionDemand[] Potions, int Reward, int TTC, int index)
     {
-        clientNameText.text = client;
+        clientNameText.text = client.Name;
         descriptionText.text = description;
         moneyReward = Reward;
         potionsDemanded.Clear();
         potionsDemanded.AddRange(Potions);
         daysLeftToComplete = TTC;
         pageNumber = index;
+        orderBackground.color = client.AssociatedColor;
 
+        outdatedStamp.enabled = false;
         delayTimeText.text = TTC + " Days";
         
         for (int i = 0; i < potionsDemanded.Count; i++)

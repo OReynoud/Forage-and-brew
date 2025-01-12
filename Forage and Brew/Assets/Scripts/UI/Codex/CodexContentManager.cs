@@ -94,7 +94,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
         }
     }
 
-    public void ReceiveNewOrder(string clientName, string orderDescription, PotionDemand[] potionsRequested,
+    public void ReceiveNewOrder(ClientSo client, string orderDescription, PotionDemand[] potionsRequested,
         int moneyReward, int timeToComplete, out OrderCodexDisplayBehaviour order)
     {
         if (!emptyOrderPage)
@@ -116,7 +116,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
             emptyOrderPageIndex = AutoFlip.instance.ControledBook.bookMarks[1].index + 1;
             _orderCodexDisplayBehaviours.Add(order);
-            order.InitializeOrder(clientName, orderDescription, potionsRequested, moneyReward, timeToComplete,
+            order.InitializeOrder(client, orderDescription, potionsRequested, moneyReward, timeToComplete,
                 AutoFlip.instance.ControledBook.bookMarks[1].index);
 
             for (int i = 1; i < AutoFlip.instance.ControledBook.bookMarks.Length; i++)
@@ -128,7 +128,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
         {
             order = Instantiate(orderPrefabs[Random.Range(0, orderPrefabs.Length)], emptyOrderPage);
             _orderCodexDisplayBehaviours.Add(order);
-            order.InitializeOrder(clientName, orderDescription, potionsRequested, moneyReward, timeToComplete,
+            order.InitializeOrder(client, orderDescription, potionsRequested, moneyReward, timeToComplete,
                 AutoFlip.instance.ControledBook.bookMarks[1].index - 1);
             emptyOrderPage = null;
             //Debug.Log(AutoFlip.instance.ControledBook.bookPages[AutoFlip.instance.ControledBook.bookMarks[1].index - 1].UIComponent);
