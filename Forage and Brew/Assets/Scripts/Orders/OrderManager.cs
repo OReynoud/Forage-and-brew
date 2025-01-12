@@ -29,7 +29,7 @@ public class OrderManager : MonoBehaviour
     {
 
         CodexContentManager.instance.ReceiveNewOrder(
-            letter.LetterContent.Client.Name,
+            letter.LetterContent.Client,
             letter.LetterContent.TextContent,
             letter.LetterContent.OrderContent.RequestedPotions,
             letter.LetterContent.OrderContent.MoneyReward,
