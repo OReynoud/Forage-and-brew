@@ -178,7 +178,7 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.BookMarkLeft.Enable();
         _inputs.Player.BookMarkRight.Enable();
         _inputs.Player.StartPageNavigation.Enable();
-        _inputs.Player.ExitPageNavigation.Enable();
+        _inputs.Player.ExitPageNavigation.Disable();
         _inputs.Player.PinLeft.Enable();
         _inputs.Player.PinRight.Enable();
     }
@@ -484,6 +484,9 @@ public class CharacterInputManager : MonoBehaviour
         if (!showCodex)return;
         if (OnCodexShow != null)
             OnNavigationChange.Invoke(true);
+        
+        _inputs.Player.StartPageNavigation.Disable();
+        _inputs.Player.ExitPageNavigation.Enable();
     }
     
     private void ExitPageNavigationOnPerformed(InputAction.CallbackContext obj)
@@ -491,6 +494,9 @@ public class CharacterInputManager : MonoBehaviour
         if (!showCodex)return;
         if (OnNavigationChange != null)
             OnNavigationChange.Invoke(false);
+        
+        _inputs.Player.StartPageNavigation.Enable();
+        _inputs.Player.ExitPageNavigation.Disable();
     }
     
     private void PassLettersOnPerformed(InputAction.CallbackContext obj)

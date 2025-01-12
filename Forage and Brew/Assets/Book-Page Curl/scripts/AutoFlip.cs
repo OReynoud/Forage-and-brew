@@ -20,6 +20,8 @@ public class AutoFlip : Singleton<AutoFlip>
     [BoxGroup("Codex Movement")] public float codexLerp = 0.17f;
     [BoxGroup("Codex Movement")] public bool isNavigatingPages;
     [BoxGroup("Codex Movement")] public Vector3 aimedCodexPos;
+    
+    [BoxGroup("Codex Movement")] public float zoomIntensity = 2;
     [BoxGroup("Codex Movement")] public float yCursorSpeed = 1;
     [BoxGroup("Codex Movement")] public float xCursorSpeed = 1;
     
@@ -84,7 +86,7 @@ public class AutoFlip : Singleton<AutoFlip>
 
         if (isNavigatingPages)
         {
-            codexTransform.localScale = Vector2.Lerp(codexTransform.localScale, Vector2.one * 2, codexLerp);
+            codexTransform.localScale = Vector2.Lerp(codexTransform.localScale, Vector2.one * zoomIntensity, codexLerp);
         }
         else
         {
