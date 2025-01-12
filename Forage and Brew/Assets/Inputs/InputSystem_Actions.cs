@@ -846,7 +846,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""3a9828e3-f6d9-493a-b2a1-7b49edf9c947"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -867,8 +867,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""ca5e5577-c337-4b3d-8094-968ef1229eff"",
-                    ""path"": ""<HID::PowerA NSW wired controller>/button2"",
+                    ""id"": ""9c16695b-e105-469b-93f0-57f58c468b8c"",
+                    ""path"": ""<HID::PowerA NSW wired controller>/button3"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
