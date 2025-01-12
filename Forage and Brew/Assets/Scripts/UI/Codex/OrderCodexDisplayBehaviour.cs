@@ -9,6 +9,7 @@ public class OrderCodexDisplayBehaviour : MonoBehaviour
     
     public TextMeshProUGUI descriptionText;
     public TextMeshProUGUI delayTimeText;
+    public Image outdatedStamp;
 
     public List<PotionDemand> potionsDemanded = new();
 
@@ -20,7 +21,23 @@ public class OrderCodexDisplayBehaviour : MonoBehaviour
     public GameObject keywordPotionPrefab;
     public Transform potionList;
 
-    
+    private void Start()
+    {
+        SceneTransitionManager.instance.OnSleep.AddListener(UpdateDaysLeftToComplete);
+    }
+
+    private void UpdateDaysLeftToComplete()
+    {
+        daysLeftToComplete--;
+        delayTimeText.text = daysLeftToComplete + " Days";
+        
+        if (daysLeftToComplete <= 0)
+        {
+            outdatedStamp.enabled = true;
+        }
+        
+    }
+
     public void InitializeOrder(string client,string description, PotionDemand[] Potions, int Reward, int TTC, int index)
     {
         clientNameText.text = client;
