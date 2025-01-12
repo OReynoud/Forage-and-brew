@@ -118,9 +118,18 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Codex"",
+                    ""name"": ""CodexEnter"",
                     ""type"": ""Button"",
                     ""id"": ""e4131a32-90e2-49e1-b71a-e501f23e4192"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CodexLeave"",
+                    ""type"": ""Button"",
+                    ""id"": ""498de09e-635d-4fdc-88f0-3ddb0858fa73"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -674,7 +683,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Codex"",
+                    ""action"": ""CodexEnter"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -685,7 +694,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""Codex"",
+                    ""action"": ""CodexEnter"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -696,7 +705,62 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""Codex"",
+                    ""action"": ""CodexEnter"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a3ca67e3-da0e-48e4-8644-7b3269fbdd2f"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""CodexLeave"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""854cb812-919c-4fa8-905f-1587028b0d62"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""CodexLeave"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4b4da74b-f3e5-4959-a0e2-63712418b37a"",
+                    ""path"": ""<HID::PowerA NSW wired controller>/hat/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""CodexLeave"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dcc99d12-8ca8-4f8a-8c18-e6baaee0a83d"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CodexLeave"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""08707f14-3da5-441b-80d1-972994e7cf9d"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CodexLeave"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1734,7 +1798,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_HapticChallengeJoystickVerticalAxis = m_Player.FindAction("HapticChallengeJoystickVerticalAxis", throwIfNotFound: true);
         m_Player_Previous = m_Player.FindAction("Previous", throwIfNotFound: true);
         m_Player_Next = m_Player.FindAction("Next", throwIfNotFound: true);
-        m_Player_Codex = m_Player.FindAction("Codex", throwIfNotFound: true);
+        m_Player_CodexEnter = m_Player.FindAction("CodexEnter", throwIfNotFound: true);
+        m_Player_CodexLeave = m_Player.FindAction("CodexLeave", throwIfNotFound: true);
         m_Player_BookMarkRight = m_Player.FindAction("BookMarkRight", throwIfNotFound: true);
         m_Player_PinLeft = m_Player.FindAction("PinLeft", throwIfNotFound: true);
         m_Player_PinRight = m_Player.FindAction("PinRight", throwIfNotFound: true);
@@ -1846,7 +1911,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_HapticChallengeJoystickVerticalAxis;
     private readonly InputAction m_Player_Previous;
     private readonly InputAction m_Player_Next;
-    private readonly InputAction m_Player_Codex;
+    private readonly InputAction m_Player_CodexEnter;
+    private readonly InputAction m_Player_CodexLeave;
     private readonly InputAction m_Player_BookMarkRight;
     private readonly InputAction m_Player_PinLeft;
     private readonly InputAction m_Player_PinRight;
@@ -1883,7 +1949,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @HapticChallengeJoystickVerticalAxis => m_Wrapper.m_Player_HapticChallengeJoystickVerticalAxis;
         public InputAction @Previous => m_Wrapper.m_Player_Previous;
         public InputAction @Next => m_Wrapper.m_Player_Next;
-        public InputAction @Codex => m_Wrapper.m_Player_Codex;
+        public InputAction @CodexEnter => m_Wrapper.m_Player_CodexEnter;
+        public InputAction @CodexLeave => m_Wrapper.m_Player_CodexLeave;
         public InputAction @BookMarkRight => m_Wrapper.m_Player_BookMarkRight;
         public InputAction @PinLeft => m_Wrapper.m_Player_PinLeft;
         public InputAction @PinRight => m_Wrapper.m_Player_PinRight;
@@ -1945,9 +2012,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Next.started += instance.OnNext;
             @Next.performed += instance.OnNext;
             @Next.canceled += instance.OnNext;
-            @Codex.started += instance.OnCodex;
-            @Codex.performed += instance.OnCodex;
-            @Codex.canceled += instance.OnCodex;
+            @CodexEnter.started += instance.OnCodexEnter;
+            @CodexEnter.performed += instance.OnCodexEnter;
+            @CodexEnter.canceled += instance.OnCodexEnter;
+            @CodexLeave.started += instance.OnCodexLeave;
+            @CodexLeave.performed += instance.OnCodexLeave;
+            @CodexLeave.canceled += instance.OnCodexLeave;
             @BookMarkRight.started += instance.OnBookMarkRight;
             @BookMarkRight.performed += instance.OnBookMarkRight;
             @BookMarkRight.canceled += instance.OnBookMarkRight;
@@ -2048,9 +2118,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Next.started -= instance.OnNext;
             @Next.performed -= instance.OnNext;
             @Next.canceled -= instance.OnNext;
-            @Codex.started -= instance.OnCodex;
-            @Codex.performed -= instance.OnCodex;
-            @Codex.canceled -= instance.OnCodex;
+            @CodexEnter.started -= instance.OnCodexEnter;
+            @CodexEnter.performed -= instance.OnCodexEnter;
+            @CodexEnter.canceled -= instance.OnCodexEnter;
+            @CodexLeave.started -= instance.OnCodexLeave;
+            @CodexLeave.performed -= instance.OnCodexLeave;
+            @CodexLeave.canceled -= instance.OnCodexLeave;
             @BookMarkRight.started -= instance.OnBookMarkRight;
             @BookMarkRight.performed -= instance.OnBookMarkRight;
             @BookMarkRight.canceled -= instance.OnBookMarkRight;
@@ -2309,7 +2382,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnHapticChallengeJoystickVerticalAxis(InputAction.CallbackContext context);
         void OnPrevious(InputAction.CallbackContext context);
         void OnNext(InputAction.CallbackContext context);
-        void OnCodex(InputAction.CallbackContext context);
+        void OnCodexEnter(InputAction.CallbackContext context);
+        void OnCodexLeave(InputAction.CallbackContext context);
         void OnBookMarkRight(InputAction.CallbackContext context);
         void OnPinLeft(InputAction.CallbackContext context);
         void OnPinRight(InputAction.CallbackContext context);

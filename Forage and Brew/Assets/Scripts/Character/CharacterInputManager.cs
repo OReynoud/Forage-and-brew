@@ -86,7 +86,8 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.HapticChallengeJoystickHorizontalAxis.canceled += HapticChallengeJoystickHorizontalAxisOnPerformed;
         _inputs.Player.HapticChallengeJoystickVerticalAxis.performed += HapticChallengeJoystickVerticalAxisOnPerformed;
         _inputs.Player.HapticChallengeJoystickVerticalAxis.canceled += HapticChallengeJoystickVerticalAxisOnPerformed;
-        _inputs.Player.Codex.performed += CodexOnPerformed;
+        _inputs.Player.CodexEnter.performed += CodexEnterOnPerformed;
+        _inputs.Player.CodexLeave.performed += CodexLeaveOnPerformed;
         _inputs.Player.BookMarkLeft.performed += BookMarkLeftOnPerformed;
         _inputs.Player.BookMarkRight.performed += BookMarkRightOnPerformed;
         _inputs.Player.StartPageNavigation.performed += StartPageNavigationOnPerformed;
@@ -96,6 +97,8 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.PassLetters.performed += PassLettersOnPerformed;
         _inputs.Player.ToggleRun.performed += ToggleRunOnPerformed;
     }
+
+
 
     #endregion
 
@@ -170,7 +173,8 @@ public class CharacterInputManager : MonoBehaviour
 
     public void EnableCodexInputs()
     {
-        _inputs.Player.Codex.Enable();
+        _inputs.Player.CodexEnter.Enable();
+        _inputs.Player.CodexLeave.Disable();
         _inputs.Player.BookMarkLeft.Enable();
         _inputs.Player.BookMarkRight.Enable();
         _inputs.Player.StartPageNavigation.Enable();
@@ -258,7 +262,8 @@ public class CharacterInputManager : MonoBehaviour
     
     public void DisableCodexInputs()
     {
-        _inputs.Player.Codex.Disable();
+        _inputs.Player.CodexEnter.Disable();
+        _inputs.Player.CodexLeave.Disable();
         _inputs.Player.BookMarkLeft.Disable();
         _inputs.Player.BookMarkRight.Disable();
         _inputs.Player.StartPageNavigation.Disable();
@@ -427,18 +432,28 @@ public class CharacterInputManager : MonoBehaviour
 
     #region Codex Input Callbacks
 
-    private void CodexOnPerformed(InputAction.CallbackContext obj)
+    private void CodexEnterOnPerformed(InputAction.CallbackContext obj)
     {
         CharacterMovementController.Instance.Move(Vector2.zero);
-        showCodex = !showCodex;
-
-        if (!showCodex)
-        {
-            OnNavigationChange.Invoke(false);
-        }
+        showCodex = true;
         
         if (OnCodexShow != null)
             OnCodexShow.Invoke();
+        
+        _inputs.Player.CodexLeave.Enable();
+        
+        _inputs.Player.CodexEnter.Disable();
+    }
+    
+    private void CodexLeaveOnPerformed(InputAction.CallbackContext obj)
+    {
+        showCodex = false;
+        
+        OnNavigationChange.Invoke(false);
+        if (OnCodexShow != null)
+            OnCodexShow.Invoke();
+        _inputs.Player.CodexLeave.Disable();
+        _inputs.Player.CodexEnter.Enable();
     }
     
     private void BookMarkLeftOnPerformed(InputAction.CallbackContext obj)
