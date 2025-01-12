@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class CodexContentManager : Singleton<CodexContentManager>
@@ -8,6 +9,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
     [Foldout("References")] public OrderCodexDisplayBehaviour[] orderPrefabs;
     [Foldout("References")] public RecipeCodexDisplay recipeDisplayPrefab;
     [Foldout("References")] public HistoricCodexDisplayBehavior historicDisplayPrefab;
+    [Foldout("References")] public Image pinImage;
     [Foldout("References")] public Sprite leftEmptyPage;
     [Foldout("References")] public Sprite rightEmptyPage;
     [Foldout("References")] public Sprite leftRecipePage;
@@ -40,6 +42,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
     private void Start()
     {
+        pinImage.enabled = false;
         recipes.Clear();
         historicPages.Clear();
         CharacterInputManager.Instance.OnSelectRecipe.AddListener(SelectCodexPage);
@@ -225,6 +228,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
                     Debug.Log("Selected same recipe, unpinning");
                     PinnedRecipe.instance.UnpinRecipe();
                     pinnedRecipe.pinIcon.enabled = false;
+                    pinImage.enabled = false;
                     return;
                 }
             }
@@ -237,11 +241,13 @@ public class CodexContentManager : Singleton<CodexContentManager>
             Debug.Log("Pinned recipe: " + recipes[recipeIndex].storedPotion.Name);
             pinnedRecipe = recipes[recipeIndex];
             pinnedRecipe.pinIcon.enabled = true;
+            pinImage.enabled = true;
         }
         else
         {
             PinnedRecipe.instance.UnpinRecipe();
             pinnedRecipe.pinIcon.enabled = false;
+            pinImage.enabled = false;
         }
     }
 

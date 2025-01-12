@@ -200,6 +200,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         CharacterInputManager.Instance.DisableMoveInputs();
         CharacterInputManager.Instance.DisableInteractInputs();
         CharacterInputManager.Instance.EnableMailInputs();
+        CharacterInputManager.Instance.DisableCodexInputs();
         moneyDisplayGameObject.SetActive(true);
         _letterPileTargetPosition = letterPileShownPosition;
         _backgroundTargetFadeValue = backgroundShownFadeValue;
@@ -233,6 +234,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         CharacterInputManager.Instance.EnableMoveInputs();
         CharacterInputManager.Instance.EnableInteractInputs();
         CharacterInputManager.Instance.DisableMailInputs();
+        CharacterInputManager.Instance.EnableCodexInputs();
         CharacterInteractController.Instance.CurrentNearMailBoxBehaviour = null;
         DisableInteract();
         
