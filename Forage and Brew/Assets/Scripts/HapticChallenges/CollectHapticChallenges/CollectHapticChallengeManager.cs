@@ -20,6 +20,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
     
     [Header("Visuals")]
     [SerializeField] private float characterHarvestDistance = 1f;
+    [SerializeField] private float characterScrapingDistance = 1f;
     
     // Global variables
     private bool _isCollectHapticChallengeActive;
@@ -46,8 +47,9 @@ public class CollectHapticChallengeManager : MonoBehaviour
     private static readonly int DoBuildUpHarvest = Animator.StringToHash("DoBuildUpHarvest");
     private static readonly int DoCancelHarvest = Animator.StringToHash("DoCancelHarvest");
     private static readonly int DoHarvest = Animator.StringToHash("DoHarvest");
-    
-    
+    private static readonly int DoScrape = Animator.StringToHash("DoScrape");
+
+
     private void Awake()
     {
         Instance = this;
@@ -55,6 +57,8 @@ public class CollectHapticChallengeManager : MonoBehaviour
 
     private void Update()
     {
+        if (CurrentIngredientToCollectBehaviours.Count == 0) return;
+        
         UpdateUnearthing();
         
         UpdateScraping();
@@ -183,37 +187,50 @@ public class CollectHapticChallengeManager : MonoBehaviour
         if (JoystickInputValue.magnitude < 1f - scrapingHapticChallengeSo.JoystickMagnitudeTolerance &&
             _firstScrapingJoystickPosition == Vector2.zero) return;
         
-        if (JoystickInputValue.magnitude > 1f - scrapingHapticChallengeSo.JoystickMagnitudeTolerance &&
-            _firstScrapingJoystickPosition != Vector2.zero) return;
-        
-        CurrentIngredientToCollectBehaviours.Sort((a, b) => Vector3.Distance(transform.position, a.transform.position)
-            .CompareTo(Vector3.Distance(transform.position, b.transform.position)));
-        
-        foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
-        {
-            if (!ingredientToCollectBehaviour.IngredientValuesSo) continue;
+        if (JoystickInputValue.magnitude >= 1f - scrapingHapticChallengeSo.JoystickMagnitudeTolerance &&
+            _firstScrapingJoystickPosition != Vector2.zero && Vector2.Angle(_firstScrapingJoystickPosition,
+                JoystickInputValue) < scrapingHapticChallengeSo.AngleToTravel) return;
 
-            if (ingredientToCollectBehaviour.IngredientValuesSo.Type != scrapingIngredientType) continue;
+        if (!_currentIngredientToCollectBehaviour)
+        {
+            SortIngredientsByDistance();
+        
+            foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
+            {
+                if (!ingredientToCollectBehaviour.IngredientValuesSo) continue;
+
+                if (ingredientToCollectBehaviour.IngredientValuesSo.Type != scrapingIngredientType) continue;
             
-            if (_firstScrapingJoystickPosition == Vector2.zero)
-            {
+                _currentIngredientToCollectBehaviour = ingredientToCollectBehaviour;
                 _firstScrapingJoystickPosition = JoystickInputValue;
-            }
-            else
-            {
-                if (Vector2.Angle(_firstScrapingJoystickPosition, JoystickInputValue) >= scrapingHapticChallengeSo.AngleToTravel)
-                {
-                    ingredientToCollectBehaviour.Collect();
-                    ingredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayScrapingVfx();
-                    CurrentIngredientToCollectBehaviours.Remove(ingredientToCollectBehaviour);
-                    return;
-                }
-                    
-                _firstScrapingJoystickPosition = Vector2.zero;
-            }
                 
-            break;
+                break;
+            }
+            
+            return;
         }
+
+        if (JoystickInputValue.magnitude < 1f - scrapingHapticChallengeSo.JoystickMagnitudeTolerance)
+        {
+            _firstScrapingJoystickPosition = Vector2.zero;
+            _currentIngredientToCollectBehaviour = null;
+            return;
+        }
+        
+        _firstScrapingJoystickPosition = Vector2.zero;
+        
+        characterAnimator.SetTrigger(DoScrape);
+        CharacterInputManager.Instance.DisableMoveInputs();
+
+        Vector3 ingredientPosition = new(_currentIngredientToCollectBehaviour.transform.position.x,
+            transform.position.y, _currentIngredientToCollectBehaviour.transform.position.z);
+        transform.LookAt(ingredientPosition);
+        transform.position = ingredientPosition - transform.forward * characterScrapingDistance;
+        
+        _currentIngredientToCollectBehaviour.Collect();
+        _currentIngredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayScrapingVfx();
+        CurrentIngredientToCollectBehaviours.Remove(_currentIngredientToCollectBehaviour);
+        _currentIngredientToCollectBehaviour = null;
     }
 
     #endregion
@@ -244,6 +261,8 @@ public class CollectHapticChallengeManager : MonoBehaviour
         
         foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
         {
+            if (!ingredientToCollectBehaviour.IngredientValuesSo) continue;
+
             if (ingredientToCollectBehaviour.IngredientValuesSo.Type != harvestIngredientType) continue;
             
             _currentIngredientToCollectBehaviour = ingredientToCollectBehaviour;
@@ -252,10 +271,11 @@ public class CollectHapticChallengeManager : MonoBehaviour
             characterAnimator.SetTrigger(DoBuildUpHarvest);
             CharacterInputManager.Instance.DisableMoveInputs();
             CharacterInputManager.Instance.DisableCodexInputs();
-            transform.LookAt(new Vector3(_currentIngredientToCollectBehaviour.transform.position.x, transform.position.y,
-                _currentIngredientToCollectBehaviour.transform.position.z));
-            transform.position = _currentIngredientToCollectBehaviour.transform.position -
-                                 transform.forward * characterHarvestDistance;
+            
+            Vector3 ingredientPosition = new(_currentIngredientToCollectBehaviour.transform.position.x,
+                transform.position.y, _currentIngredientToCollectBehaviour.transform.position.z);
+            transform.LookAt(ingredientPosition);
+            transform.position = ingredientPosition - transform.forward * characterScrapingDistance;
             
             break;
         }
@@ -271,6 +291,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
         
         if (!_canValidateHarvest)
         {
+            _currentIngredientToCollectBehaviour = null;
             characterAnimator.SetTrigger(DoCancelHarvest);
             CharacterInputManager.Instance.EnableMoveInputs();
             return;
@@ -283,6 +304,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
         _currentIngredientToCollectBehaviour.Collect();
         _currentIngredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayHarvestVfx();
         CurrentIngredientToCollectBehaviours.Remove(_currentIngredientToCollectBehaviour);
+        _currentIngredientToCollectBehaviour = null;
     }
 
     public void OnHarvestAnimationEnd()
