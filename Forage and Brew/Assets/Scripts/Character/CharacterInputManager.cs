@@ -441,8 +441,11 @@ public class CharacterInputManager : MonoBehaviour
             OnCodexShow.Invoke();
         
         _inputs.Player.CodexLeave.Enable();
-        
         _inputs.Player.CodexEnter.Disable();
+        
+        DisableMailInputs();
+        DisableInteractInputs();
+        DisableHapticChallengeInputs();
     }
     
     private void CodexLeaveOnPerformed(InputAction.CallbackContext obj)
@@ -454,6 +457,10 @@ public class CharacterInputManager : MonoBehaviour
             OnCodexShow.Invoke();
         _inputs.Player.CodexLeave.Disable();
         _inputs.Player.CodexEnter.Enable();
+        
+        EnableMailInputs();
+        EnableInteractInputs();
+        EnableHapticChallengeInputs();
     }
     
     private void BookMarkLeftOnPerformed(InputAction.CallbackContext obj)

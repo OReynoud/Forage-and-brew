@@ -76,11 +76,6 @@ public class CodexContentManager : Singleton<CodexContentManager>
         // DebugTickets();
     }
 
-    private void Update()
-    {
-    }
-
-
     public void InsertRecipePages(RectTransform LeftPage, RectTransform RightPage)
     {
         AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[0].index,
@@ -131,7 +126,6 @@ public class CodexContentManager : Singleton<CodexContentManager>
             order.InitializeOrder(client, orderDescription, potionsRequested, moneyReward, timeToComplete,
                 AutoFlip.instance.ControledBook.bookMarks[1].index - 1);
             emptyOrderPage = null;
-            //Debug.Log(AutoFlip.instance.ControledBook.bookPages[AutoFlip.instance.ControledBook.bookMarks[1].index - 1].UIComponent);
         }
 
         AutoFlip.instance.ControledBook.UpdateSprites();
@@ -203,7 +197,6 @@ public class CodexContentManager : Singleton<CodexContentManager>
             historicPages.Add(historic);
             historic.InitializeHistoricPage(originLetter, successLetter);
             emptyHistoricPage = null;
-            //Debug.Log(AutoFlip.instance.ControledBook.bookPages[AutoFlip.instance.ControledBook.bookMarks[1].index - 1].UIComponent);
         }
 
         AutoFlip.instance.ControledBook.UpdateSprites();
