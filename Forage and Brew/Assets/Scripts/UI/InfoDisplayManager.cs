@@ -44,11 +44,16 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
     private void Start()
     {
         CharacterInputManager.Instance.OnInputsEnabled.AddListener(UpdateUIVisibility);
+        CharacterInputManager.Instance.OnNavigationChange.AddListener(UpdateUIVisibilityReverse);
     }
 
     private void UpdateUIVisibility(bool arg0)
     {
         canShow = arg0;
+    }
+    private void UpdateUIVisibilityReverse(bool arg0)
+    {
+        canShow = !arg0;
     }
 
     private void Update()
