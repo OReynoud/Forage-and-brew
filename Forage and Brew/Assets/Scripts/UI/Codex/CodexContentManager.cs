@@ -76,11 +76,6 @@ public class CodexContentManager : Singleton<CodexContentManager>
         // DebugTickets();
     }
 
-    private void Update()
-    {
-    }
-
-
     public void InsertRecipePages(RectTransform LeftPage, RectTransform RightPage)
     {
         AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[0].index,
@@ -94,15 +89,15 @@ public class CodexContentManager : Singleton<CodexContentManager>
         }
     }
 
-    public void ReceiveNewOrder(string clientName, string orderDescription, PotionDemand[] potionsRequested,
-        int moneyReward, int timeToComplete)
+    public void ReceiveNewOrder(ClientSo client, string orderDescription, PotionDemand[] potionsRequested,
+        int moneyReward, int timeToComplete, out OrderCodexDisplayBehaviour order)
     {
         if (!emptyOrderPage)
         {
             var pageContainer = Instantiate(emptyPage, transform);
 
             emptyOrderPage = Instantiate(emptyPage, transform);
-            var order = Instantiate(orderPrefabs[Random.Range(0, orderPrefabs.Length)], pageContainer);
+            order = Instantiate(orderPrefabs[Random.Range(0, orderPrefabs.Length)], pageContainer);
             pageContainer.anchoredPosition = new Vector2(1500, 0);
             emptyOrderPage.anchoredPosition = new Vector2(1500, 0);
 
@@ -116,7 +111,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
             emptyOrderPageIndex = AutoFlip.instance.ControledBook.bookMarks[1].index + 1;
             _orderCodexDisplayBehaviours.Add(order);
-            order.InitializeOrder(clientName, orderDescription, potionsRequested, moneyReward, timeToComplete,
+            order.InitializeOrder(client, orderDescription, potionsRequested, moneyReward, timeToComplete,
                 AutoFlip.instance.ControledBook.bookMarks[1].index);
 
             for (int i = 1; i < AutoFlip.instance.ControledBook.bookMarks.Length; i++)
@@ -126,12 +121,11 @@ public class CodexContentManager : Singleton<CodexContentManager>
         }
         else
         {
-            var order = Instantiate(orderPrefabs[Random.Range(0, orderPrefabs.Length)], emptyOrderPage);
+            order = Instantiate(orderPrefabs[Random.Range(0, orderPrefabs.Length)], emptyOrderPage);
             _orderCodexDisplayBehaviours.Add(order);
-            order.InitializeOrder(clientName, orderDescription, potionsRequested, moneyReward, timeToComplete,
+            order.InitializeOrder(client, orderDescription, potionsRequested, moneyReward, timeToComplete,
                 AutoFlip.instance.ControledBook.bookMarks[1].index - 1);
             emptyOrderPage = null;
-            //Debug.Log(AutoFlip.instance.ControledBook.bookPages[AutoFlip.instance.ControledBook.bookMarks[1].index - 1].UIComponent);
         }
 
         AutoFlip.instance.ControledBook.UpdateSprites();
@@ -203,7 +197,6 @@ public class CodexContentManager : Singleton<CodexContentManager>
             historicPages.Add(historic);
             historic.InitializeHistoricPage(originLetter, successLetter);
             emptyHistoricPage = null;
-            //Debug.Log(AutoFlip.instance.ControledBook.bookPages[AutoFlip.instance.ControledBook.bookMarks[1].index - 1].UIComponent);
         }
 
         AutoFlip.instance.ControledBook.UpdateSprites();
@@ -253,22 +246,22 @@ public class CodexContentManager : Singleton<CodexContentManager>
     }
 
 
-    public void DebugTickets()
-    {
-        var temp = new List<PotionDemand>();
-        temp.Add(new PotionDemand(true, testPotion));
-
-        ReceiveNewOrder("Jean-Eude", "Je me suis coupé le doigt, tu peux me passer de la pommade s'il te plait?",
-            temp.ToArray(), 10, 3);
-        temp.Clear();
-
-        temp.Add(new PotionDemand(false, testTag, "Something against a fever"));
-        ReceiveNewOrder("Paul", "J'ai de la fièvre, t'as quelque chose pour m'aider?", temp.ToArray(), 15, 3);
-        temp.Clear();
-
-        temp.Add(new PotionDemand(true, testPotion));
-        temp.Add(new PotionDemand(true, testPotion));
-        ReceiveNewOrder("Marie", "J'ai besoin de comparer la saveur de ces deux jus, peux-tu me les préparer?",
-            temp.ToArray(), 25, 3);
-    }
+    // public void DebugTickets()
+    // {
+    //     var temp = new List<PotionDemand>();
+    //     temp.Add(new PotionDemand(true, testPotion));
+    //
+    //     ReceiveNewOrder("Jean-Eude", "Je me suis coupé le doigt, tu peux me passer de la pommade s'il te plait?",
+    //         temp.ToArray(), 10, 3);
+    //     temp.Clear();
+    //
+    //     temp.Add(new PotionDemand(false, testTag, "Something against a fever"));
+    //     ReceiveNewOrder("Paul", "J'ai de la fièvre, t'as quelque chose pour m'aider?", temp.ToArray(), 15, 3);
+    //     temp.Clear();
+    //
+    //     temp.Add(new PotionDemand(true, testPotion));
+    //     temp.Add(new PotionDemand(true, testPotion));
+    //     ReceiveNewOrder("Marie", "J'ai besoin de comparer la saveur de ces deux jus, peux-tu me les préparer?",
+    //         temp.ToArray(), 25, 3);
+    // }
 }

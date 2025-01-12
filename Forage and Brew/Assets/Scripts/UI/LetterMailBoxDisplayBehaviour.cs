@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class LetterMailBoxDisplayBehaviour : MonoBehaviour
 {
     public TextMeshProUGUI clientNameText;
+    public Image letterBackground;
     
     public TextMeshProUGUI descriptionText;
     
@@ -37,6 +38,7 @@ public class LetterMailBoxDisplayBehaviour : MonoBehaviour
         
         clientNameText.text = letterContent.Client.Name;
         descriptionText.text = letterContent.TextContent;
+        letterBackground.color = letterContent.Client.AssociatedColor;
 
         foreach (var potionImage in potionImages)
         {

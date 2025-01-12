@@ -134,14 +134,23 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                 letter.RelatedNarrativeBlock.ContentSo.Content,
                 letter.LetterContent);
             letter.RelatedNarrativeBlock.InactiveLetters[index] = false;
+            float percentPenalty = letter.LetterContent.OrderContent.LateMoneyPenaltyPercentage;
+            
+            int moneyToEarn;
             if (letter.RelatedNarrativeBlock.CompletedLetters[letter.RelatedNarrativeBlock.SelfProgressionIndex - 1])
             {
-                _moneyAmountsToEarn.Add((letter.LetterContent.OrderContent.MoneyReward, chosenLetters.Count));
+                moneyToEarn = letter.DeliveredOnTime
+                    ? letter.LetterContent.OrderContent.MoneyReward
+                    : Mathf.RoundToInt(letter.LetterContent.OrderContent.MoneyReward * percentPenalty * 0.01f);
+                _moneyAmountsToEarn.Add((moneyToEarn, chosenLetters.Count));
                 chosenLetters.Add((new Letter(letter.LetterContent.RelatedSuccessLetter, letter.RelatedNarrativeBlock), letter.LetterContent));
             }
             else
             {
-                _moneyAmountsToEarn.Add((letter.LetterContent.OrderContent.ErrorMoneyReward, chosenLetters.Count));
+                moneyToEarn = letter.DeliveredOnTime
+                    ? letter.LetterContent.OrderContent.ErrorMoneyReward
+                    : Mathf.RoundToInt(letter.LetterContent.OrderContent.ErrorMoneyReward * percentPenalty * 0.01f);
+                _moneyAmountsToEarn.Add((moneyToEarn, chosenLetters.Count));
                 chosenLetters.Add((new Letter(letter.LetterContent.RelatedFailureLetter, letter.RelatedNarrativeBlock), letter.LetterContent));
             }
         }

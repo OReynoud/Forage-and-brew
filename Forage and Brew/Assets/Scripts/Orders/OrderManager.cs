@@ -27,15 +27,16 @@ public class OrderManager : MonoBehaviour
 
     public void CreateNewOrder(Letter letter)
     {
-        CurrentOrders.Add(new Order(letter));
 
         CodexContentManager.instance.ReceiveNewOrder(
-            letter.LetterContent.Client.Name,
+            letter.LetterContent.Client,
             letter.LetterContent.TextContent,
             letter.LetterContent.OrderContent.RequestedPotions,
             letter.LetterContent.OrderContent.MoneyReward,
-            letter.LetterContent.OrderContent.TimeToFulfill);
+            letter.LetterContent.OrderContent.TimeToFulfill, out OrderCodexDisplayBehaviour order);
 
+        CurrentOrders.Add(new Order(letter, order));
+        
         GameDontDestroyOnLoadManager.Instance.OrderPotions.Add(new ClientOrderPotions());
         GameDontDestroyOnLoadManager.Instance.OrderPotions[^1].ClientSo = letter.LetterContent.Client;
         for (int i = 0; i < letter.LetterContent.OrderContent.RequestedPotions.Length; i++)
@@ -118,7 +119,7 @@ public class OrderManager : MonoBehaviour
             {
                 GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters.Add(new Letter(
                     CurrentOrders[orderToValidateIndex].RelatedLetter,
-                    CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock));
+                    CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock,  CurrentOrders[orderToValidateIndex].OrderDisplay.daysLeftToComplete <=  0));
                 
                 CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock.CompletedLetters[index] = true;
                 CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock.SelfProgressionIndex++;
@@ -134,7 +135,7 @@ public class OrderManager : MonoBehaviour
             {
                 GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters.Add(new Letter(
                     CurrentOrders[orderToValidateIndex].RelatedLetter,
-                    CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock));
+                    CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock,CurrentOrders[orderToValidateIndex].OrderDisplay.daysLeftToComplete <=  0));
             }
 
             CurrentOrders.RemoveAt(orderToValidateIndex);

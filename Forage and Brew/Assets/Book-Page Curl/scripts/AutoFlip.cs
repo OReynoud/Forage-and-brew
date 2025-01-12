@@ -32,9 +32,7 @@ public class AutoFlip : Singleton<AutoFlip>
 
     
     [Foldout("Deprecated")] public FlipMode Mode;
-    [Foldout("Deprecated")] public float TimeBetweenPages = 1;
-    [Foldout("Deprecated")] public float DelayBeforeStarting = 0;
-    [Foldout("Deprecated")] public bool AutoStartFlip=true;
+    [Foldout("Deprecated")] public bool AutoStartFlip = true;
 
     
     
@@ -220,7 +218,6 @@ public class AutoFlip : Singleton<AutoFlip>
             {
                 FlipRightPage(acceleratedFlipTime);
             }
-            Debug.Log("Flip");
             yield return new WaitUntil(() => isFlipping == false);
         }
     }
@@ -278,6 +275,8 @@ public class AutoFlip : Singleton<AutoFlip>
     /// <param name="flipSide"> true = left, false = right </param>
     public void PlayerInputNavigateBookmarks(bool flipSide)
     {
+        if (isFlipping)
+            return;
         
         if (!flipSide)
         {

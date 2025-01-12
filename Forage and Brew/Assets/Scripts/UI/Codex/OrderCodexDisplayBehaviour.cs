@@ -6,9 +6,11 @@ using UnityEngine.UI;
 public class OrderCodexDisplayBehaviour : MonoBehaviour
 {
     public TextMeshProUGUI clientNameText;
+    public Image orderBackground;
     
     public TextMeshProUGUI descriptionText;
     public TextMeshProUGUI delayTimeText;
+    public Image outdatedStamp;
 
     public List<PotionDemand> potionsDemanded = new();
 
@@ -20,17 +22,35 @@ public class OrderCodexDisplayBehaviour : MonoBehaviour
     public GameObject keywordPotionPrefab;
     public Transform potionList;
 
-    
-    public void InitializeOrder(string client,string description, PotionDemand[] Potions, int Reward, int TTC, int index)
+    private void Start()
     {
-        clientNameText.text = client;
+        SceneTransitionManager.instance.OnSleep.AddListener(UpdateDaysLeftToComplete);
+    }
+
+    private void UpdateDaysLeftToComplete()
+    {
+        daysLeftToComplete--;
+        delayTimeText.text = daysLeftToComplete + " Days";
+        
+        if (daysLeftToComplete <= 0)
+        {
+            outdatedStamp.enabled = true;
+        }
+        
+    }
+
+    public void InitializeOrder(ClientSo client,string description, PotionDemand[] Potions, int Reward, int TTC, int index)
+    {
+        clientNameText.text = client.Name;
         descriptionText.text = description;
         moneyReward = Reward;
         potionsDemanded.Clear();
         potionsDemanded.AddRange(Potions);
         daysLeftToComplete = TTC;
         pageNumber = index;
+        orderBackground.color = client.AssociatedColor;
 
+        outdatedStamp.enabled = false;
         delayTimeText.text = TTC + " Days";
         
         for (int i = 0; i < potionsDemanded.Count; i++)
