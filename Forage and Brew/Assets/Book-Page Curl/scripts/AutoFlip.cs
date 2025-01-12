@@ -32,9 +32,7 @@ public class AutoFlip : Singleton<AutoFlip>
 
     
     [Foldout("Deprecated")] public FlipMode Mode;
-    [Foldout("Deprecated")] public float TimeBetweenPages = 1;
-    [Foldout("Deprecated")] public float DelayBeforeStarting = 0;
-    [Foldout("Deprecated")] public bool AutoStartFlip=true;
+    [Foldout("Deprecated")] public bool AutoStartFlip = true;
 
     
     
