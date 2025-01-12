@@ -26,8 +26,8 @@ public class SceneChangeTriggerBehaviour : MonoBehaviour
                 }
             }
 
-            OutStackableManager.Instance.StoreOutCollectedIngredients();
-            OutStackableManager.Instance.StoreOutCookedPotions();
+            OutStackableManager.Instance?.StoreOutCollectedIngredients();
+            OutStackableManager.Instance?.StoreOutCookedPotions();
             
             if (doesMakeItNighttime)
             {
