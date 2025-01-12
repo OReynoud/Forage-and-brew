@@ -19,8 +19,9 @@ public class CollectHapticChallengeManager : MonoBehaviour
     [SerializeField] private IngredientTypeSo harvestIngredientType;
     
     [Header("Visuals")]
-    [SerializeField] private float characterHarvestDistance = 1f;
+    [SerializeField] private float characterScythingDistance = 1f;
     [SerializeField] private float characterScrapingDistance = 1f;
+    [SerializeField] private float characterHarvestDistance = 1f;
     
     // Global variables
     private bool _isCollectHapticChallengeActive;
@@ -48,6 +49,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
     private static readonly int DoCancelHarvest = Animator.StringToHash("DoCancelHarvest");
     private static readonly int DoHarvest = Animator.StringToHash("DoHarvest");
     private static readonly int DoScrape = Animator.StringToHash("DoScrape");
+    private static readonly int DoScythe = Animator.StringToHash("DoScythe");
 
 
     private void Awake()
@@ -71,16 +73,24 @@ public class CollectHapticChallengeManager : MonoBehaviour
 
     public void CheckScythingInput()
     {
-        CurrentIngredientToCollectBehaviours.Sort((a, b) => Vector3.Distance(transform.position, a.transform.position)
-            .CompareTo(Vector3.Distance(transform.position, b.transform.position)));
+        SortIngredientsByDistance();
         
         foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
         {
+            if (!ingredientToCollectBehaviour.IngredientValuesSo) continue;
+
             if (ingredientToCollectBehaviour.IngredientValuesSo.Type != scythingIngredientType) continue;
             
-            ingredientToCollectBehaviour.Collect();
-            ingredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayScythingVfx();
-            CurrentIngredientToCollectBehaviours.Remove(ingredientToCollectBehaviour);
+            _currentIngredientToCollectBehaviour = ingredientToCollectBehaviour;
+        
+            characterAnimator.SetTrigger(DoScythe);
+            _currentIngredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayScythingVfx();
+            CharacterInputManager.Instance.DisableMoveInputs();
+
+            FaceIngredient(characterScythingDistance);
+
+            CollectIngredient();
+            
             return;
         }
     }
@@ -220,17 +230,12 @@ public class CollectHapticChallengeManager : MonoBehaviour
         _firstScrapingJoystickPosition = Vector2.zero;
         
         characterAnimator.SetTrigger(DoScrape);
+        _currentIngredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayScrapingVfx();
         CharacterInputManager.Instance.DisableMoveInputs();
 
-        Vector3 ingredientPosition = new(_currentIngredientToCollectBehaviour.transform.position.x,
-            transform.position.y, _currentIngredientToCollectBehaviour.transform.position.z);
-        transform.LookAt(ingredientPosition);
-        transform.position = ingredientPosition - transform.forward * characterScrapingDistance;
+        FaceIngredient(characterScrapingDistance);
         
-        _currentIngredientToCollectBehaviour.Collect();
-        _currentIngredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayScrapingVfx();
-        CurrentIngredientToCollectBehaviours.Remove(_currentIngredientToCollectBehaviour);
-        _currentIngredientToCollectBehaviour = null;
+        CollectIngredient();
     }
 
     #endregion
@@ -272,10 +277,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
             CharacterInputManager.Instance.DisableMoveInputs();
             CharacterInputManager.Instance.DisableCodexInputs();
             
-            Vector3 ingredientPosition = new(_currentIngredientToCollectBehaviour.transform.position.x,
-                transform.position.y, _currentIngredientToCollectBehaviour.transform.position.z);
-            transform.LookAt(ingredientPosition);
-            transform.position = ingredientPosition - transform.forward * characterScrapingDistance;
+            FaceIngredient(characterHarvestDistance);
             
             break;
         }
@@ -300,11 +302,9 @@ public class CollectHapticChallengeManager : MonoBehaviour
         _canValidateHarvest = false;
         
         characterAnimator.SetTrigger(DoHarvest);
-        
-        _currentIngredientToCollectBehaviour.Collect();
         _currentIngredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayHarvestVfx();
-        CurrentIngredientToCollectBehaviours.Remove(_currentIngredientToCollectBehaviour);
-        _currentIngredientToCollectBehaviour = null;
+        
+        CollectIngredient();
     }
 
     public void OnHarvestAnimationEnd()
@@ -319,5 +319,20 @@ public class CollectHapticChallengeManager : MonoBehaviour
     {
         CurrentIngredientToCollectBehaviours.Sort((a, b) => Vector3.Distance(transform.position, a.transform.position)
             .CompareTo(Vector3.Distance(transform.position, b.transform.position)));
+    }
+
+    private void FaceIngredient(float characterDistance)
+    {
+        Vector3 ingredientPosition = new(_currentIngredientToCollectBehaviour.transform.position.x,
+            transform.position.y, _currentIngredientToCollectBehaviour.transform.position.z);
+        transform.LookAt(ingredientPosition);
+        transform.position = ingredientPosition - transform.forward * characterDistance;
+    }
+
+    private void CollectIngredient()
+    {
+        _currentIngredientToCollectBehaviour.Collect();
+        CurrentIngredientToCollectBehaviours.Remove(_currentIngredientToCollectBehaviour);
+        _currentIngredientToCollectBehaviour = null;
     }
 }
