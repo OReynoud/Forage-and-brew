@@ -185,6 +185,8 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
                         mainActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[1];
                         break;
                     case GrindingHapticChallengeSo:
+                        mainActionImage[writingIndex].enabled = true;
+                        mainActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[2];
                         break;
                 }
 
