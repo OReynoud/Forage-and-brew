@@ -225,7 +225,6 @@ public class CodexContentManager : Singleton<CodexContentManager>
         {
             int recipeIndex = Mathf.FloorToInt((AutoFlip.instance.ControledBook.currentPage -
                                                 AutoFlip.instance.ControledBook.bookMarks[1].index) * 0.5f);
-            Debug.Log(recipeIndex);
             if (PinnedRecipe.instance.pinnedRecipe)
             {
                 if (PinnedRecipe.instance.pinnedRecipe.Name == recipes[recipeIndex].storedPotion.Name)

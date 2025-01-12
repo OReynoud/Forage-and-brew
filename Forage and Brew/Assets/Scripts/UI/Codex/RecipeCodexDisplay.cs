@@ -134,11 +134,12 @@ public class RecipeCodexDisplay : MonoBehaviour
 
                         break;
                     case ChoppingHapticChallengeListSo:
-
-
-
                         mainActionImage[writingIndex].gameObject.SetActive(true);
                         mainActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[1];
+                        break;
+                    case GrindingHapticChallengeSo:
+                        mainActionImage[writingIndex].gameObject.SetActive(true);
+                        mainActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[2];
                         break;
                 }
 
