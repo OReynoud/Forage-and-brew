@@ -128,7 +128,7 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
     
     public void DisplayDays()
     {
-        daysPassedText.text = "Day " + GameDontDestroyOnLoadManager.Instance.DayPassed;
+        daysPassedText.text = "Day " + (GameDontDestroyOnLoadManager.Instance.DayPassed + 1);
     }
     
     public void DisplayMoney()
