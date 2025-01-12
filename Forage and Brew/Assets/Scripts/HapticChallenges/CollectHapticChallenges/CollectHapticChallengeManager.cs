@@ -10,6 +10,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
     [SerializeField] private UnearthingHapticChallengeSo unearthingHapticChallengeSo;
     [SerializeField] private ScrapingHapticChallengeSo scrapingHapticChallengeSo;
     [SerializeField] private HarvestHapticChallengeSo harvestHapticChallengeSo;
+    [SerializeField] private Animator characterAnimator;
 
     [Header("Ingredient Types")]
     [SerializeField] private IngredientTypeSo scythingIngredientType;
@@ -17,9 +18,13 @@ public class CollectHapticChallengeManager : MonoBehaviour
     [SerializeField] private IngredientTypeSo scrapingIngredientType;
     [SerializeField] private IngredientTypeSo harvestIngredientType;
     
+    [Header("Visuals")]
+    [SerializeField] private float characterHarvestDistance = 1f;
+    
     // Global variables
     private bool _isCollectHapticChallengeActive;
     public List<IngredientToCollectBehaviour> CurrentIngredientToCollectBehaviours { get; } = new();
+    private IngredientToCollectBehaviour _currentIngredientToCollectBehaviour;
     public Vector2 JoystickInputValue { get; set; }
     private Vector2 _lastJoystickInputValue;
     
@@ -36,6 +41,11 @@ public class CollectHapticChallengeManager : MonoBehaviour
     // Harvest
     private float _currentHarvestTime;
     private bool _canValidateHarvest;
+    
+    // Animator Hashes
+    private static readonly int DoBuildUpHarvest = Animator.StringToHash("DoBuildUpHarvest");
+    private static readonly int DoCancelHarvest = Animator.StringToHash("DoCancelHarvest");
+    private static readonly int DoHarvest = Animator.StringToHash("DoHarvest");
     
     
     private void Awake()
@@ -224,50 +234,68 @@ public class CollectHapticChallengeManager : MonoBehaviour
             RumbleManager.Instance.PlayRumble(harvestHapticChallengeSo.InputReleaseVibrationDuration,
                 harvestHapticChallengeSo.InputReleaseVibrationPower);
             
-            foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
-            {
-                if (ingredientToCollectBehaviour.IngredientValuesSo.Type != harvestIngredientType) continue;
-            
-                ingredientToCollectBehaviour.ReleaseHarvest();
-                
-                break;
-            }
+            _currentIngredientToCollectBehaviour.ReleaseHarvest();
         }
     }
     
     public void CheckHarvestInputPressed()
     {
+        SortIngredientsByDistance();
+        
         foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
         {
             if (ingredientToCollectBehaviour.IngredientValuesSo.Type != harvestIngredientType) continue;
             
+            _currentIngredientToCollectBehaviour = ingredientToCollectBehaviour;
             _currentHarvestTime = harvestHapticChallengeSo.InputReleaseDelayTolerance;
-                
+            
+            characterAnimator.SetTrigger(DoBuildUpHarvest);
+            CharacterInputManager.Instance.DisableMoveInputs();
+            CharacterInputManager.Instance.DisableCodexInputs();
+            transform.LookAt(new Vector3(_currentIngredientToCollectBehaviour.transform.position.x, transform.position.y,
+                _currentIngredientToCollectBehaviour.transform.position.z));
+            transform.position = _currentIngredientToCollectBehaviour.transform.position -
+                                 transform.forward * characterHarvestDistance;
+            
             break;
         }
     }
     
     public void CheckHarvestInputReleased()
     {
+        if (_currentHarvestTime == 0f && !_canValidateHarvest) return;
+        
         _currentHarvestTime = 0f;
         
-        if (!_canValidateHarvest) return;
+        CharacterInputManager.Instance.EnableCodexInputs();
+        
+        if (!_canValidateHarvest)
+        {
+            characterAnimator.SetTrigger(DoCancelHarvest);
+            CharacterInputManager.Instance.EnableMoveInputs();
+            return;
+        }
         
         _canValidateHarvest = false;
         
-        CurrentIngredientToCollectBehaviours.Sort((a, b) => Vector3.Distance(transform.position, a.transform.position)
-            .CompareTo(Vector3.Distance(transform.position, b.transform.position)));
+        characterAnimator.SetTrigger(DoHarvest);
         
-        foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
-        {
-            if (ingredientToCollectBehaviour.IngredientValuesSo.Type != harvestIngredientType) continue;
-            
-            ingredientToCollectBehaviour.Collect();
-            ingredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayHarvestVfx();
-            CurrentIngredientToCollectBehaviours.Remove(ingredientToCollectBehaviour);
-            return;
-        }
+        _currentIngredientToCollectBehaviour.Collect();
+        _currentIngredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayHarvestVfx();
+        CurrentIngredientToCollectBehaviours.Remove(_currentIngredientToCollectBehaviour);
+    }
+
+    public void OnHarvestAnimationEnd()
+    {
+        CharacterInputManager.Instance.EnableMoveInputs();
     }
     
     #endregion
+    
+    
+    private void SortIngredientsByDistance()
+    {
+        CurrentIngredientToCollectBehaviours.Sort((a, b) => Vector3.Distance(transform.position, a.transform.position)
+            .CompareTo(Vector3.Distance(transform.position, b.transform.position)));
+    }
 }

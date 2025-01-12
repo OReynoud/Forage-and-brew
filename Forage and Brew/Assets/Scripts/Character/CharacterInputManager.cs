@@ -168,7 +168,7 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.HapticChallengeJoystickVerticalAxis.Enable();
     }
 
-    private void EnableCodexInputs()
+    public void EnableCodexInputs()
     {
         _inputs.Player.Codex.Enable();
         _inputs.Player.BookMarkLeft.Enable();
@@ -256,7 +256,7 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.HapticChallengeJoystickVerticalAxis.Disable();
     }
     
-    private void DisableCodexInputs()
+    public void DisableCodexInputs()
     {
         _inputs.Player.Codex.Disable();
         _inputs.Player.BookMarkLeft.Disable();
