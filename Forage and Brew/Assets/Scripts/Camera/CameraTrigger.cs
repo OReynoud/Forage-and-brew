@@ -25,9 +25,7 @@ public class CameraTrigger : MonoBehaviour
     {
         if (instantTransition)
         {
-            CameraController.instance.scriptableCamSettings = camSettings;
-            CameraController.instance.ApplyScriptableCamSettings();
-            CameraController.instance.InstantCamUpdate();
+            CameraController.instance.ApplyScriptableCamSettings(camSettings, 0);
         }
         else
         {
