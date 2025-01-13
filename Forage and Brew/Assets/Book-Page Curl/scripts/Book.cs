@@ -146,6 +146,13 @@ public class Book : MonoBehaviour
             int pageIndex = bookMarks[2].index + x;
             if (pageIndex % 2 == 1)
                 pageIndex--;
+
+            bookPages[currentPage].UIComponent.gameObject.SetActive(false);
+            if (currentPage > 0)
+            {
+                bookPages[currentPage - 1].UIComponent.gameObject.SetActive(false);
+            }
+            
             currentPage = pageIndex;
             UpdateSprites();
 
