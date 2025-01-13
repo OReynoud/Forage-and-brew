@@ -7,6 +7,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
+using NUnit.Framework;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
@@ -76,6 +77,7 @@ public class Book : MonoBehaviour
     [Foldout("Refs")] public Image RightNext;
     [Foldout("Refs")] public CanvasGroup pinRecipeUI;
     [Foldout("Refs")] public BookPage dummyOrderPage;
+    public Image Test;
     public UnityEvent OnFlip;
 
     float radius1, radius2;
@@ -103,11 +105,13 @@ public class Book : MonoBehaviour
     //current flip mode
     FlipMode mode;
     
+    
     private void Awake()
     {
         bookMarks[^1].index = bookPages.Count - 2;
     }
 
+    [field: SerializeField] private List<IngredientPageDisplay> IngredientPageDisplays { get; set; } = new();
     void Start()
     {
         Left.gameObject.SetActive(false);
@@ -127,6 +131,43 @@ public class Book : MonoBehaviour
         {
             bookMark.basePos = bookMark.UIComponent.anchoredPosition;
         }
+
+        // _matInstance = Instantiate(Test.material);
+        // _matInstance.SetFloat("_Cutoff_Height", 0);
+        // Test.material = _matInstance;
+    }
+
+    public void DisplayNewIngredient(IngredientValuesSo arg0)
+    {
+        for (var x = 0; x < IngredientPageDisplays.Count; x++)
+        {
+            if (IngredientPageDisplays[x].associatedIngredient != arg0)
+                continue;
+            int pageIndex = bookMarks[2].index + x;
+            if (pageIndex % 2 == 1)
+                pageIndex--;
+            currentPage = pageIndex;
+            UpdateSprites();
+
+            var display = IngredientPageDisplays[x];
+            CharacterInputManager.Instance.EnterCodexMethod();
+            display.StartDissolve();
+            return;
+        }
+        
+        Debug.Log("No Matches detected");
+    }
+
+    public void SetupIngredientDisplays()
+    {
+        foreach (var display in IngredientPageDisplays)
+        {
+            Material matInstance = Instantiate(display.dissolveImage.material);
+            display.dissolveImage.material = matInstance;
+        
+            display.dissolveImage.material.SetFloat("_Cutoff_Height", 0);
+        }
+        
     }
 
     private void CalcCurlCriticalPoints()
@@ -144,6 +185,13 @@ public class Book : MonoBehaviour
 
     private void FixedUpdate()
     {
+        
+
+        UpdateBookmarks();
+    }
+
+    private void UpdateBookmarks()
+    {
         if (currentPage >= bookMarks[1].index && currentPage < bookMarks[2].index)
         {
             pinRecipeUI.alpha = 1;
@@ -152,6 +200,7 @@ public class Book : MonoBehaviour
         {
             pinRecipeUI.alpha = 0;
         }
+        
         for (int i = 0; i < bookMarks.Length; i++)
         {
             if (i == bookMarks.Length - 1)
@@ -185,8 +234,6 @@ public class Book : MonoBehaviour
                     bookMarks[i].basePos, bookmarkLerp);
             }
         }
-
-
     }
 
     public void SetupLTRFlip()

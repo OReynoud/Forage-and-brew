@@ -161,7 +161,7 @@ public class CameraController : Singleton<CameraController>
     {
 
         movement = CharacterMovementController.Instance;
-        CharacterInputManager.Instance.OnCodexShow.AddListener(UpdateCamWithCodex);
+        CharacterInputManager.Instance.OnCodexUse.AddListener(UpdateCamWithCodex);
     }
     
     
