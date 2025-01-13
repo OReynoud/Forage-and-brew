@@ -11,7 +11,7 @@ public class CharacterInputManager : MonoBehaviour
     private InputSystem_Actions _inputs;
     
 
-    public UnityEvent OnCodexShow { get; set; } = new();
+    public UnityEvent OnCodexUse { get; set; } = new();
     public UnityEvent<bool> OnNavigationChange { get; set; } = new();
     public UnityEvent<bool> OnSelectRecipe { get; set; } = new();
     public UnityEvent<bool> OnInputsEnabled { get; set; } = new();
@@ -432,13 +432,20 @@ public class CharacterInputManager : MonoBehaviour
 
     #region Codex Input Callbacks
 
+
+
     private void CodexEnterOnPerformed(InputAction.CallbackContext obj)
+    {
+        EnterCodexMethod();
+    }
+
+    public void EnterCodexMethod()
     {
         CharacterMovementController.Instance.Move(Vector2.zero);
         showCodex = true;
         
-        if (OnCodexShow != null)
-            OnCodexShow.Invoke();
+        if (OnCodexUse != null)
+            OnCodexUse.Invoke();
         
         _inputs.Player.CodexLeave.Enable();
         _inputs.Player.CodexEnter.Disable();
@@ -447,14 +454,14 @@ public class CharacterInputManager : MonoBehaviour
         DisableInteractInputs();
         DisableHapticChallengeInputs();
     }
-    
+
     private void CodexLeaveOnPerformed(InputAction.CallbackContext obj)
     {
         showCodex = false;
         
         OnNavigationChange.Invoke(false);
-        if (OnCodexShow != null)
-            OnCodexShow.Invoke();
+        if (OnCodexUse != null)
+            OnCodexUse.Invoke();
         _inputs.Player.CodexLeave.Disable();
         _inputs.Player.CodexEnter.Enable();
         
@@ -489,7 +496,7 @@ public class CharacterInputManager : MonoBehaviour
     private void StartPageNavigationOnPerformed(InputAction.CallbackContext obj)
     {
         if (!showCodex)return;
-        if (OnCodexShow != null)
+        if (OnCodexUse != null)
             OnNavigationChange.Invoke(true);
         
         _inputs.Player.StartPageNavigation.Disable();
