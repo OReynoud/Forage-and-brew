@@ -104,6 +104,7 @@ public class Book : MonoBehaviour
 
     //current flip mode
     FlipMode mode;
+    private IngredientValuesSo newIngredientToDisplay;
     
     
     private void Awake()
@@ -137,11 +138,15 @@ public class Book : MonoBehaviour
         // Test.material = _matInstance;
     }
 
-    public void DisplayNewIngredient(IngredientValuesSo arg0)
+    public void StoreNewIngredient(IngredientValuesSo arg0)
+    {
+        newIngredientToDisplay = arg0;
+    }
+    public void DisplayNewIngredient()
     {
         for (var x = 0; x < IngredientPageDisplays.Count; x++)
         {
-            if (IngredientPageDisplays[x].associatedIngredient != arg0)
+            if (IngredientPageDisplays[x].associatedIngredient != newIngredientToDisplay)
                 continue;
             int pageIndex = bookMarks[2].index + x;
             if (pageIndex % 2 == 1)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,6 +26,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
     
     // Global variables
     private bool _isCollectHapticChallengeActive;
+    private bool _callCodexOnAnimationEnd;
     public List<IngredientToCollectBehaviour> CurrentIngredientToCollectBehaviours { get; } = new();
     private IngredientToCollectBehaviour _currentIngredientToCollectBehaviour;
     public Vector2 JoystickInputValue { get; set; }
@@ -56,6 +58,13 @@ public class CollectHapticChallengeManager : MonoBehaviour
     {
         Instance = this;
     }
+
+    private void Start()
+    {
+        GameDontDestroyOnLoadManager.Instance.OnNewIngredientCollected.AddListener(CodexCall);
+    }
+
+
 
     private void Update()
     {
@@ -310,8 +319,20 @@ public class CollectHapticChallengeManager : MonoBehaviour
     public void OnHarvestAnimationEnd()
     {
         CharacterInputManager.Instance.EnableMoveInputs();
+        
+        if (_callCodexOnAnimationEnd)
+        {
+            AutoFlip.instance.ControledBook.DisplayNewIngredient();
+            _callCodexOnAnimationEnd = false;
+        }
+        //
     }
     
+    
+    private void CodexCall(IngredientValuesSo arg0)
+    {
+        _callCodexOnAnimationEnd = true;
+    }
     #endregion
     
     
