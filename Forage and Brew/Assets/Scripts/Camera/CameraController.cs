@@ -90,7 +90,6 @@ public class CameraController : Singleton<CameraController>
         rotationLerp = scriptableCamSettings.rotationLerp;
         focalLerp = scriptableCamSettings.focalLerp;
         
-        
 
         transform.localPosition = -transform.forward * distanceFromPlayer;
     }
