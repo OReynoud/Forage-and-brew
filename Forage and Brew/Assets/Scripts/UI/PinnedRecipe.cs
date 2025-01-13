@@ -121,7 +121,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.FloorCollectedIngredients)
         {
-            tempCollectedIngredientsList.Add(ingredient.ingredient.icon);
+            tempCollectedIngredientsList.Add(ingredient.Ingredient.icon);
         }
 
         CurrentTemperatureAndIngredients = GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients;
@@ -485,7 +485,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.FloorCollectedIngredients)
         {
-            tempCollectedIngredientsList.Add(ingredient.ingredient.icon);
+            tempCollectedIngredientsList.Add(ingredient.Ingredient.icon);
         }
 
         for (int i = 0; i < potionIngredients.Length; i++)

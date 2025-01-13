@@ -21,9 +21,9 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     // Ingredients and Potions
     public List<IngredientValuesSo> CollectedIngredients { get; private set; } = new();
     public List<CollectedIngredientBehaviour> OutCollectedIngredients { get; private set; } = new();
-    public List<(IngredientValuesSo ingredient, Vector3 position, Quaternion rotation)> FloorCollectedIngredients { get; private set; } = new();
+    public List<FloorIngredient> FloorCollectedIngredients { get; private set; } = new();
     public List<CollectedPotionBehaviour> OutCookedPotions { get; private set; } = new();
-    public List<(PotionValuesSo potion, Vector3 position, Quaternion rotation)> FloorCookedPotions { get; private set; } = new();
+    public List<FloorCookedPotion> FloorCookedPotions { get; private set; } = new();
     public List<ClientOrderPotions> OrderPotions { get; private set; } = new();
     
     // Unlocked Ingredients and Recipes
