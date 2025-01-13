@@ -67,6 +67,9 @@ public class AutoFlip : Singleton<AutoFlip>
         proportions = new Vector2(codexProportions.rect.width ,codexProportions.rect.height);
 
  
+        
+        GameDontDestroyOnLoadManager.Instance.OnNewIngredientCollected.AddListener(ControledBook.DisplayNewIngredient);
+        ControledBook.SetupIngredientDisplays();
 
     }
 
