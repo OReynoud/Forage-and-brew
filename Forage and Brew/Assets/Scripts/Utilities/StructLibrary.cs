@@ -100,3 +100,61 @@ public struct GrindingHapticChallengeCrushInput
         Position = position;
     }
 }
+
+public readonly struct FloorIngredient : IEquatable<FloorIngredient>
+{
+    public FloorIngredient(IngredientValuesSo ingredient, Vector3 position, Quaternion rotation)
+    {
+        Ingredient = ingredient;
+        Position = position;
+        Rotation = rotation;
+    }
+    
+    public IngredientValuesSo Ingredient { get; }
+    public Vector3 Position { get; }
+    public Quaternion Rotation { get; }
+
+    public bool Equals(FloorIngredient other)
+    {
+        return Equals(Ingredient, other.Ingredient) && Position.Equals(other.Position) && Rotation.Equals(other.Rotation);
+    }
+
+    public override bool Equals(object obj)
+    {
+        return obj is FloorIngredient other && Equals(other);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Ingredient, Position, Rotation);
+    }
+}
+
+public readonly struct FloorCookedPotion : IEquatable<FloorCookedPotion>
+{
+    public FloorCookedPotion(PotionValuesSo potion, Vector3 position, Quaternion rotation)
+    {
+        Potion = potion;
+        Position = position;
+        Rotation = rotation;
+    }
+    
+    public PotionValuesSo Potion { get; }
+    public Vector3 Position { get; }
+    public Quaternion Rotation { get; }
+
+    public bool Equals(FloorCookedPotion other)
+    {
+        return Equals(Potion, other.Potion) && Position.Equals(other.Position) && Rotation.Equals(other.Rotation);
+    }
+
+    public override bool Equals(object obj)
+    {
+        return obj is FloorCookedPotion other && Equals(other);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Potion, Position, Rotation);
+    }
+}
