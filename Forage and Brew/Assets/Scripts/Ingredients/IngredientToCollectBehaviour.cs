@@ -12,6 +12,7 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     [field: SerializeField] public IngredientValuesSo IngredientValuesSo { get; set; }
     
     [Header("Data")]
+    [field: SerializeField] public int SpawnIndex { get; private set; }
     [field: SerializeField] public SpawnLocation SpawnLocation { get; private set; }
 
     [Header("Ingredient Types")]
@@ -283,6 +284,7 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     public void Collect()
     {
         GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Add(IngredientValuesSo);
+        GameDontDestroyOnLoadManager.Instance.RemainingIngredientToCollectBehaviours.Remove(SpawnIndex);
         PinnedRecipe.instance.UpdateIngredientCounter();
 
         if (IsNewIngredient())

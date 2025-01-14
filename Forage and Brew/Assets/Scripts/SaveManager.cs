@@ -21,6 +21,8 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private GameDontDestroyOnLoadManager gameDontDestroyOnLoadManager;
     [SerializeField] private WeatherManager weatherManager;
     [SerializeField] private LunarCycleManager lunarCycleManager;
+    [SerializeField] private MoneyManager moneyManager;
+    [SerializeField] private OrderManager orderManager;
     
     private string _directoryPath;
     private string _filePath;
@@ -39,8 +41,6 @@ public class SaveManager : MonoBehaviour
         {
             DestroyImmediate(this);
         }
-        
-        if (!isSaveEnabled) return;
         
         SetPaths();
         LoadGame();
@@ -74,7 +74,7 @@ public class SaveManager : MonoBehaviour
         data.CurrentTimeOfDay = gameDontDestroyOnLoadManager.CurrentTimeOfDay;
         data.DayPassed = gameDontDestroyOnLoadManager.DayPassed;
         
-        // Ingredients
+        // Collected Ingredients
         data.CollectedIngredients = gameDontDestroyOnLoadManager.CollectedIngredients;
         data.FloorCollectedIngredients = new List<FloorIngredient>();
         data.FloorCollectedIngredients.AddRange(gameDontDestroyOnLoadManager.OutCollectedIngredients
@@ -82,7 +82,7 @@ public class SaveManager : MonoBehaviour
                 collectedIngredient.transform.position, collectedIngredient.transform.rotation)));
         data.FloorCollectedIngredients.AddRange(gameDontDestroyOnLoadManager.FloorCollectedIngredients);
         
-        // Potions
+        // Cooked Potions
         data.FloorCookedPotions = new List<FloorCookedPotion>();
         data.FloorCookedPotions.AddRange(gameDontDestroyOnLoadManager.OutCookedPotions
             .Select(collectedPotion => new FloorCookedPotion(collectedPotion.PotionValuesSo,
@@ -93,6 +93,13 @@ public class SaveManager : MonoBehaviour
         // Unlocked Ingredients and Recipes
         data.UnlockedIngredients = gameDontDestroyOnLoadManager.UnlockedIngredients;
         data.UnlockedRecipes = gameDontDestroyOnLoadManager.UnlockedRecipes;
+        
+        // Ingredients to Collect
+        data.HasChosenIngredientsToday = gameDontDestroyOnLoadManager.HasChosenIngredientsToday;
+        data.RemainingIngredientToCollectBehavioursKeys = gameDontDestroyOnLoadManager
+            .RemainingIngredientToCollectBehaviours.Keys.ToList();
+        data.RemainingIngredientToCollectBehavioursValues = gameDontDestroyOnLoadManager
+            .RemainingIngredientToCollectBehaviours.Values.ToList();
         
         // Letters
         data.HasChosenLettersToday = gameDontDestroyOnLoadManager.HasChosenLettersToday;
@@ -109,6 +116,12 @@ public class SaveManager : MonoBehaviour
         data.CurrentWeatherStatesKeys = weatherManager.CurrentWeatherStates.Keys.ToList();
         data.CurrentWeatherStatesValues = weatherManager.CurrentWeatherStates.Values.ToList();
         data.CurrentLunarCycleStateIndex = lunarCycleManager.CurrentLunarCycleStateIndex;
+        
+        // Money
+        data.MoneyAmount = moneyManager.MoneyAmount;
+        
+        // Orders
+        data.CurrentOrders = orderManager.CurrentOrders;
         
         // Save Data
         string jsonData = JsonUtility.ToJson(data, true);
@@ -163,6 +176,15 @@ public class SaveManager : MonoBehaviour
         gameDontDestroyOnLoadManager.UnlockedIngredients.AddRange(data.UnlockedIngredients);
         gameDontDestroyOnLoadManager.UnlockedRecipes.AddRange(data.UnlockedRecipes);
         
+        // Ingredients to Collect
+        gameDontDestroyOnLoadManager.HasChosenIngredientsToday = data.HasChosenIngredientsToday;
+        foreach (int key in data.RemainingIngredientToCollectBehavioursKeys)
+        {
+            gameDontDestroyOnLoadManager.RemainingIngredientToCollectBehaviours.Add(key,
+                data.RemainingIngredientToCollectBehavioursValues
+                    [data.RemainingIngredientToCollectBehavioursKeys.IndexOf(key)]);
+        }
+        
         // Letters
         gameDontDestroyOnLoadManager.HasChosenLettersToday = data.HasChosenLettersToday;
         gameDontDestroyOnLoadManager.QuestProgressionIndex = data.QuestProgressionIndex;
@@ -177,10 +199,17 @@ public class SaveManager : MonoBehaviour
         // Cycles
         foreach (Biome key in data.CurrentWeatherStatesKeys)
         {
-            weatherManager.CurrentWeatherStates.Add(key, data.CurrentWeatherStatesValues[data.CurrentWeatherStatesKeys.IndexOf(key)]);
+            weatherManager.CurrentWeatherStates.Add(key,
+                data.CurrentWeatherStatesValues[data.CurrentWeatherStatesKeys.IndexOf(key)]);
         }
         
         lunarCycleManager.CurrentLunarCycleStateIndex = data.CurrentLunarCycleStateIndex;
+        
+        // Money
+        moneyManager.MoneyAmount = data.MoneyAmount;
+        
+        // Orders
+        orderManager.CurrentOrders.AddRange(data.CurrentOrders);
     }
     
     
@@ -201,6 +230,10 @@ public class SaveManager : MonoBehaviour
         [field: SerializeField] public List<IngredientValuesSo> UnlockedIngredients { get; set; }
         [field: SerializeField] public List<PotionValuesSo> UnlockedRecipes { get; set; }
         
+        [field: SerializeField] public bool HasChosenIngredientsToday { get; set; }
+        [field: SerializeField] public List<int> RemainingIngredientToCollectBehavioursKeys { get; set; }
+        [field: SerializeField] public List<IngredientValuesSo> RemainingIngredientToCollectBehavioursValues { get; set; }
+        
         [field: SerializeField] public bool HasChosenLettersToday { get; set; }
         [field: SerializeField] public int QuestProgressionIndex { get; set; }
         [field: SerializeField] public List<NarrativeBlockOfLetters> AllNarrativeBlocks { get; set; }
@@ -213,5 +246,9 @@ public class SaveManager : MonoBehaviour
         [field: SerializeField] public List<Biome> CurrentWeatherStatesKeys { get; set; }
         [field: SerializeField] public List<WeatherSuccessiveDays> CurrentWeatherStatesValues { get; set; }
         [field: SerializeField] public int CurrentLunarCycleStateIndex { get; set; }
+        
+        [field: SerializeField] public int MoneyAmount { get; set; }
+        
+        [field: SerializeField] public List<Order> CurrentOrders { get; set; }
     }
 }
