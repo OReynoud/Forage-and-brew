@@ -7,36 +7,33 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Book))]
 public class AutoFlip : Singleton<AutoFlip>
 {
-    
     [BoxGroup("References")] public RectTransform codexTransform;
     [BoxGroup("References")] public RectTransform codexProportions;
     [BoxGroup("References")] public Book ControledBook;
-    
+
     [BoxGroup("Page Flipping")] public float PageFlipTime = 1;
     [BoxGroup("Page Flipping")] public float acceleratedFlipTime = 0.2f;
     [BoxGroup("Page Flipping")] public int AnimationFramesCount = 40;
-    
+
     [BoxGroup("Codex Movement")] public Vector2 offset;
     [BoxGroup("Codex Movement")] public float codexLerp = 0.17f;
     [BoxGroup("Codex Movement")] public bool isNavigatingPages;
     [BoxGroup("Codex Movement")] public Vector3 aimedCodexPos;
-    
+
     [BoxGroup("Codex Movement")] public float zoomIntensity = 2;
     [BoxGroup("Codex Movement")] public float yCursorSpeed = 1;
     [BoxGroup("Codex Movement")] public float xCursorSpeed = 1;
-    
-    
-    
-    //Controls
-    
 
-    
+
+    //Controls
+
+
     [Foldout("Deprecated")] public FlipMode Mode;
     [Foldout("Deprecated")] public bool AutoStartFlip = true;
 
-    
-    
+
     private bool isFlipping;
+
     // Use this for initialization
     public override void Awake()
     {
@@ -46,38 +43,36 @@ public class AutoFlip : Singleton<AutoFlip>
         var index = Array.IndexOf(ControledBook.bookPages.ToArray(), ControledBook.dummyOrderPage);
         ControledBook.bookMarks[0].index = index;
         ControledBook.bookMarks[1].index = index;
-        ControledBook.bookMarks[2].index = index + 1;   
-        
+        ControledBook.bookMarks[2].index = index + 1;
+
         ControledBook.bookPages.RemoveAt(index);
         ControledBook.bookPages.RemoveAt(index);
-        
+
         index = Array.IndexOf(ControledBook.bookPages.ToArray(), ControledBook.dummyOrderPage);
-        ControledBook.bookMarks[^1].index = index;
-        
+        ControledBook.bookMarks[^1].index = index + 1;
+
         ControledBook.bookPages.RemoveAt(index);
         ControledBook.bookPages.RemoveAt(index);
     }
-    void Start () 
+
+    void Start()
     {
-        if (AutoStartFlip)
-            StartFlipping();
         ControledBook.OnFlip.AddListener(new UnityEngine.Events.UnityAction(PageFlipped));
         CharacterInputManager.Instance.OnNavigationChange.AddListener(ChangeCodexNavigationType);
         Cursor.lockState = CursorLockMode.Confined;
-        proportions = new Vector2(codexProportions.rect.width ,codexProportions.rect.height);
+        proportions = new Vector2(codexProportions.rect.width, codexProportions.rect.height);
 
- 
-        
+
         GameDontDestroyOnLoadManager.Instance.OnNewIngredientCollected.AddListener(ControledBook.StoreNewIngredient);
         ControledBook.SetupIngredientDisplays();
-
     }
 
     private void Update()
     {
         if (CharacterInputManager.Instance.showCodex)
         {
-            codexTransform.anchoredPosition = Vector2.Lerp(codexTransform.anchoredPosition,aimedCodexPos, isNavigatingPages? codexLerp * 0.3f : codexLerp);
+            codexTransform.anchoredPosition = Vector2.Lerp(codexTransform.anchoredPosition, aimedCodexPos,
+                isNavigatingPages ? codexLerp * 0.3f : codexLerp);
         }
         else
         {
@@ -99,11 +94,8 @@ public class AutoFlip : Singleton<AutoFlip>
     {
         isFlipping = false;
     }
-	public void StartFlipping()
-    {
-        FlipToEnd(PageFlipTime);
-    }
-    public void FlipRightPage(float flipTime)
+
+    public void FlipRightPage(float flipTime, int pageFlips)
     {
         if (isFlipping) return;
         if (ControledBook.currentPage >= ControledBook.TotalPageCount) return;
@@ -113,10 +105,11 @@ public class AutoFlip : Singleton<AutoFlip>
         float xl = ((ControledBook.EndBottomRight.x - ControledBook.EndBottomLeft.x) / 2) * 0.9f;
         //float h =  ControledBook.Height * 0.5f;
         float h = Mathf.Abs(ControledBook.EndBottomRight.y) * 0.9f;
-        float dx = (xl)*2 / AnimationFramesCount;
-        StartCoroutine(FlipRTL(xc, xl, h, frameTime, dx));
+        float dx = (xl) * 2 / AnimationFramesCount;
+        StartCoroutine(FlipRTL(xc, xl, h, frameTime, dx, pageFlips));
     }
-    public void FlipLeftPage(float flipTime)
+
+    public void FlipLeftPage(float flipTime, int pageFlips)
     {
         if (isFlipping) return;
         if (ControledBook.currentPage <= 0) return;
@@ -126,52 +119,15 @@ public class AutoFlip : Singleton<AutoFlip>
         float xl = ((ControledBook.EndBottomRight.x - ControledBook.EndBottomLeft.x) / 2) * 0.9f;
         float h = Mathf.Abs(ControledBook.EndBottomRight.y) * 0.9f;
         float dx = (xl) * 2 / AnimationFramesCount;
-        StartCoroutine(FlipLTR(xc, xl, h, frameTime, dx));
+        StartCoroutine(FlipLTR(xc, xl, h, frameTime, dx, pageFlips));
     }
-    void FlipToEnd(float flipTime)
-    {
-        float frameTime = flipTime / AnimationFramesCount;
-        float xc = (ControledBook.EndBottomRight.x + ControledBook.EndBottomLeft.x) / 2;
-        float xl = ((ControledBook.EndBottomRight.x - ControledBook.EndBottomLeft.x) / 2)*0.9f;
-        //float h =  ControledBook.Height * 0.5f;
-        float h = Mathf.Abs(ControledBook.EndBottomRight.y)*0.9f;
-        //y=-(h/(xl)^2)*(x-xc)^2          
-        //               y         
-        //               |          
-        //               |          
-        //               |          
-        //_______________|_________________x         
-        //              o|o             |
-        //           o   |   o          |
-        //         o     |     o        | h
-        //        o      |      o       |
-        //       o------xc-------o      -
-        //               |<--xl-->
-        //               |
-        //               |
-        float dx = (xl)*2 / AnimationFramesCount;
-        switch (Mode)
-        {
-            case FlipMode.RightToLeft:
-                while (ControledBook.currentPage < ControledBook.TotalPageCount)
-                {
-                    StartCoroutine(FlipRTL(xc, xl, h, frameTime, dx));
-                }
-                break;
-            case FlipMode.LeftToRight:
-                while (ControledBook.currentPage > 0)
-                {
-                    StartCoroutine(FlipLTR(xc, xl, h, frameTime, dx));
-                }
-                break;
-        }
-    }
-    IEnumerator FlipRTL(float xc, float xl, float h, float frameTime, float dx)
+
+    IEnumerator FlipRTL(float xc, float xl, float h, float frameTime, float dx, int pageFlips)
     {
         float x = xc + xl;
         float y = (-h / (xl * xl)) * (x - xc) * (x - xc);
 
-        ControledBook.DragRightPageToPoint(new Vector3(x, y, 0));
+        ControledBook.DragRightPageToPoint(new Vector3(x, y, 0), pageFlips - 1);
         ControledBook.SetupRTLFlip();
         for (int i = 0; i < AnimationFramesCount; i++)
         {
@@ -180,13 +136,15 @@ public class AutoFlip : Singleton<AutoFlip>
             yield return new WaitForSeconds(frameTime);
             x -= dx;
         }
-        ControledBook.ReleasePage();
+
+        ControledBook.ReleasePage(pageFlips);
     }
-    IEnumerator FlipLTR(float xc, float xl, float h, float frameTime, float dx)
+
+    IEnumerator FlipLTR(float xc, float xl, float h, float frameTime, float dx, int pageFlips)
     {
         float x = xc - xl;
         float y = (-h / (xl * xl)) * (x - xc) * (x - xc);
-        ControledBook.DragLeftPageToPoint(new Vector3(x, y, 0));
+        ControledBook.DragLeftPageToPoint(new Vector3(x, y, 0), pageFlips - 1);
         ControledBook.SetupLTRFlip();
         for (int i = 0; i < AnimationFramesCount; i++)
         {
@@ -195,7 +153,8 @@ public class AutoFlip : Singleton<AutoFlip>
             yield return new WaitForSeconds(frameTime);
             x += dx;
         }
-        ControledBook.ReleasePage();
+
+        ControledBook.ReleasePage(pageFlips);
     }
 
     /// <summary>
@@ -211,16 +170,17 @@ public class AutoFlip : Singleton<AutoFlip>
 
     IEnumerator FlipXPagesCoroutine(int pagesAmount, bool flipSide)
     {
+        if (flipSide)
+        {
+            FlipLeftPage(acceleratedFlipTime, pagesAmount);
+        }
+        else
+        {
+            FlipRightPage(acceleratedFlipTime, pagesAmount);
+        }
+
         for (int i = 0; i < pagesAmount; i++)
         {
-            if (flipSide)
-            {
-                FlipLeftPage(acceleratedFlipTime);
-            }
-            else
-            {
-                FlipRightPage(acceleratedFlipTime);
-            }
             yield return new WaitUntil(() => isFlipping == false);
         }
     }
@@ -231,7 +191,10 @@ public class AutoFlip : Singleton<AutoFlip>
         {
             index++;
         }
+
         var pageDiff = Mathf.Abs(index - ControledBook.currentPage);
+
+        if (pageDiff == 0) return;
         
         FlipXPages(Mathf.CeilToInt(pageDiff * 0.5f), index <= ControledBook.currentPage);
     }
@@ -250,25 +213,27 @@ public class AutoFlip : Singleton<AutoFlip>
     }
 
     private Vector2 proportions;
+
     public void PlayerInputFlipPages(Vector2 input)
     {
         if (isNavigatingPages)
         {
-            aimedCodexPos -= new Vector3(input.x * xCursorSpeed,input.y * yCursorSpeed,0);
+            aimedCodexPos -= new Vector3(input.x * xCursorSpeed, input.y * yCursorSpeed, 0);
             aimedCodexPos.x = Mathf.Clamp(aimedCodexPos.x, -proportions.x,
                 proportions.x);
-            
+
             aimedCodexPos.y = Mathf.Clamp(aimedCodexPos.y, -proportions.y,
                 proportions.y);
             return;
         }
+
         if (input.x > 0.5f)
         {
-            FlipRightPage(PageFlipTime);
+            FlipRightPage(PageFlipTime, 1);
         }
         else if (input.x < -0.5f)
         {
-            FlipLeftPage(PageFlipTime);
+            FlipLeftPage(PageFlipTime, 1);
         }
     }
 
@@ -280,7 +245,7 @@ public class AutoFlip : Singleton<AutoFlip>
     {
         if (isFlipping)
             return;
-        
+
         if (!flipSide)
         {
             foreach (var bookMark in ControledBook.bookMarks)
@@ -296,13 +261,12 @@ public class AutoFlip : Singleton<AutoFlip>
         {
             for (int i = ControledBook.bookMarks.Length - 1; i >= 0; i--)
             {
-                if (ControledBook.bookMarks[i].index < ControledBook.currentPage) 
-                { 
+                if (ControledBook.bookMarks[i].index < ControledBook.currentPage)
+                {
                     JumpToBookMark(ControledBook.bookMarks[i].index);
                     return;
                 }
-                
             }
         }
     }
-} 
+}
