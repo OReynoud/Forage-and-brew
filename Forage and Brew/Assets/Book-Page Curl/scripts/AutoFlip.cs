@@ -68,7 +68,7 @@ public class AutoFlip : Singleton<AutoFlip>
 
  
         
-        GameDontDestroyOnLoadManager.Instance.OnNewIngredientCollected.AddListener(ControledBook.DisplayNewIngredient);
+        GameDontDestroyOnLoadManager.Instance.OnNewIngredientCollected.AddListener(ControledBook.StoreNewIngredient);
         ControledBook.SetupIngredientDisplays();
 
     }

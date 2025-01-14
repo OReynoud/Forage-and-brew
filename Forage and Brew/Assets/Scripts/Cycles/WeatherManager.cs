@@ -10,7 +10,7 @@ public class WeatherManager : MonoBehaviour
     [SerializeField] private WeatherStateSo forestStartingWeatherState;
     [SerializeField] private WeatherStateSo swampStartingWeatherState;
     
-    public Dictionary<Biome, (WeatherStateSo weatherState, int successiveCount)> CurrentWeatherStates { get; } = new();
+    public Dictionary<Biome, WeatherSuccessiveDays> CurrentWeatherStates { get; } = new();
 
     
 
@@ -28,20 +28,24 @@ public class WeatherManager : MonoBehaviour
     
     private void Start()
     {
-        CurrentWeatherStates.Add(Biome.Forest, (forestStartingWeatherState, 1));
-        CurrentWeatherStates.Add(Biome.Swamp, (swampStartingWeatherState, 1));
-        Debug.Log("The weather state for the first day is " + CurrentWeatherStates[Biome.Forest].weatherState.Name);
+        if (GameDontDestroyOnLoadManager.Instance.IsFirstGameSession)
+        {
+            CurrentWeatherStates.Add(Biome.Forest, new WeatherSuccessiveDays(forestStartingWeatherState, 1));
+            CurrentWeatherStates.Add(Biome.Swamp, new WeatherSuccessiveDays(swampStartingWeatherState, 1));
+        }
+        Debug.Log("The weather state for the first day is " + CurrentWeatherStates[Biome.Forest].WeatherStateSo.Name +
+                  " in the forest and " + CurrentWeatherStates[Biome.Swamp].WeatherStateSo.Name + " in the swamp.");
         InfoDisplayManager.instance.DisplayWeather();
     }
     
     
     public void PassToNextWeatherState()
     {
-        foreach (KeyValuePair<Biome, (WeatherStateSo weatherState, int successiveCount)> currentWeatherState in CurrentWeatherStates.ToList())
+        foreach (KeyValuePair<Biome, WeatherSuccessiveDays> currentWeatherState in CurrentWeatherStates.ToList())
         {
-            foreach (WeatherStateEndProbabilityBySuccessiveDayNumber weatherStateEndProbability in currentWeatherState.Value.weatherState.EndProbabilities)
+            foreach (WeatherStateEndProbabilityBySuccessiveDayNumber weatherStateEndProbability in currentWeatherState.Value.WeatherStateSo.EndProbabilities)
             {
-                if (weatherStateEndProbability.SuccessiveDayNumber == currentWeatherState.Value.successiveCount)
+                if (weatherStateEndProbability.SuccessiveDayNumber == currentWeatherState.Value.SuccessiveDays)
                 {
                     float randomValue = Random.Range(0f, 1000f);
                     float cumulativeProbability = 0f;
@@ -54,14 +58,16 @@ public class WeatherManager : MonoBehaviour
                         {
                             Debug.Log("The weather state for the next day is " + endProbability.WeatherStateSo.Name);
                         
-                            if (endProbability.WeatherStateSo == currentWeatherState.Value.weatherState)
+                            if (endProbability.WeatherStateSo == currentWeatherState.Value.WeatherStateSo)
                             {
-                                CurrentWeatherStates[currentWeatherState.Key] = (endProbability.WeatherStateSo,
-                                    CurrentWeatherStates[currentWeatherState.Key].successiveCount + 1);
-                                break;
+                                CurrentWeatherStates[currentWeatherState.Key].SuccessiveDays++;
+                            }
+                            else
+                            {
+                                CurrentWeatherStates[currentWeatherState.Key].SuccessiveDays = 1;
                             }
                         
-                            CurrentWeatherStates[currentWeatherState.Key] = (endProbability.WeatherStateSo, 1);
+                            CurrentWeatherStates[currentWeatherState.Key].WeatherStateSo = endProbability.WeatherStateSo;
                         
                             break;
                         }
@@ -72,6 +78,4 @@ public class WeatherManager : MonoBehaviour
         
         InfoDisplayManager.instance.DisplayWeather();
     }
-
-
 }

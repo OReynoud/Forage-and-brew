@@ -8,8 +8,8 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     // Singleton
     public static GameDontDestroyOnLoadManager Instance { get; private set; }
     
-    // Debug
-    [SerializeField] private bool debugMode;
+    // Global Information
+    public bool IsFirstGameSession { get; set; } = true;
     
     // Scene
     [field: SerializeField] public Scene PreviousScene { get; set; }
@@ -35,7 +35,7 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     public bool HasChosenLettersToday { get; set; }
     [field: SerializeField] public int QuestProgressionIndex { get; set; }
     
-    [field: Expandable][field: SerializeField] public List<NarrativeBlockOfLettersContentSo> AllNarrativeBlocksContentSo { get; set; } = new();
+    [field: Expandable] [field: SerializeField] public List<NarrativeBlockOfLettersContentSo> AllNarrativeBlocksContentSo { get; set; } = new();
     public List<NarrativeBlockOfLetters> AllNarrativeBlocks { get; set; } = new();
     
     public List<Letter> ThanksAndErrorLetters { get; set; } = new();
@@ -59,10 +59,6 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
         else
         {
             DestroyImmediate(gameObject);
-        }
-        foreach (var ContentSo in AllNarrativeBlocksContentSo)
-        {
-            AllNarrativeBlocks.Add(new NarrativeBlockOfLetters(ContentSo));
         }
     }
     

@@ -8,21 +8,20 @@ using UnityEngine;
 public class Letter
 {
     [field: SerializeField] public LetterContentSo LetterContent { get; set; }
-    [field: SerializeField] public NarrativeBlockOfLetters RelatedNarrativeBlock { get; private set; }
-    [field: SerializeField] public bool DeliveredOnTime { get; private set; }
+    [field: SerializeField] public NarrativeBlockOfLetters RelatedNarrativeBlock { get; set; }
+    [field: SerializeField] public bool DeliveredOnTime { get; set; }
 
-    public Letter(LetterContentSo Content, NarrativeBlockOfLetters nBlock, bool deliveredOnTime)
+    public Letter(LetterContentSo content, NarrativeBlockOfLetters nBlock, bool deliveredOnTime)
     {
-        LetterContent = Content;
+        LetterContent = content;
         RelatedNarrativeBlock = nBlock;
         DeliveredOnTime = deliveredOnTime;
     }
-    public Letter(LetterContentSo Content, NarrativeBlockOfLetters nBlock)
+    public Letter(LetterContentSo content, NarrativeBlockOfLetters nBlock)
     {
-        LetterContent = Content;
+        LetterContent = content;
         RelatedNarrativeBlock = nBlock;
     }
-    
 }
 
 public class Order
@@ -75,20 +74,34 @@ public class NarrativeBlockOfLetters
     [field: SerializeField] public NarrativeBlockOfLettersContentSo ContentSo { get; set; }
     
     [field: AllowNesting] [field: SerializeField] [field: ReadOnly] public int SelfProgressionIndex { get; set; }
-    public bool[] CompletedLetters { get; set; }
-    public bool[] InactiveLetters { get; set; }
+    [field: SerializeField] [field: HideInInspector] public bool[] CompletedLetters { get; set; }
+    [field: SerializeField] [field: HideInInspector] public bool[] InactiveLetters { get; set; }
 
-    public NarrativeBlockOfLetters(NarrativeBlockOfLettersContentSo Content)
+    public NarrativeBlockOfLetters(NarrativeBlockOfLettersContentSo content)
     {
-        ContentSo = Content;
+        ContentSo = content;
         
         CompletedLetters = new bool [ContentSo.Content.Length];
         InactiveLetters = new bool [ContentSo.Content.Length];
     }
 }
 
+[Serializable]
 public class ClientOrderPotions
 {
-    public ClientSo ClientSo { get; set; }
-    public List<PotionValuesSo> Potions { get; private set; } = new();
+    [field: SerializeField] public ClientSo ClientSo { get; set; }
+    [field: SerializeField] public List<PotionValuesSo> Potions { get; set; } = new();
+}
+
+[Serializable]
+public class WeatherSuccessiveDays
+{
+    [field: SerializeField] public WeatherStateSo WeatherStateSo { get; set; }
+    [field: SerializeField] public int SuccessiveDays { get; set; }
+    
+    public WeatherSuccessiveDays(WeatherStateSo weatherStateSo, int successiveDays)
+    {
+        WeatherStateSo = weatherStateSo;
+        SuccessiveDays = successiveDays;
+    }
 }

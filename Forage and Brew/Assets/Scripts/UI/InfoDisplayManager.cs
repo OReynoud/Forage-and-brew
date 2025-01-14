@@ -127,8 +127,8 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
 
     private void DisplayBiomeWeather(Biome biome, Image weatherDisplay)
     {
-        weatherDisplay.sprite = WeatherManager.Instance.CurrentWeatherStates[biome].weatherState.Icon;
-        weatherDisplay.color = WeatherManager.Instance.CurrentWeatherStates[biome].weatherState.Color;
+        weatherDisplay.sprite = WeatherManager.Instance.CurrentWeatherStates[biome].WeatherStateSo.Icon;
+        weatherDisplay.color = WeatherManager.Instance.CurrentWeatherStates[biome].WeatherStateSo.Color;
     }
     
     public void DisplayDays()
