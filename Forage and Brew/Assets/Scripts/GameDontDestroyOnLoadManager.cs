@@ -30,6 +30,7 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     public List<IngredientValuesSo> UnlockedIngredients { get; private set; } = new();
     public List<PotionValuesSo> UnlockedRecipes { get; private set; } = new();
     public UnityEvent<IngredientValuesSo> OnNewIngredientCollected { get; private set; } = new();
+    public UnityEvent<PotionValuesSo> OnNewRecipeReceived { get; private set; } = new();
     
     // Letters
     public bool HasChosenLettersToday { get; set; }
