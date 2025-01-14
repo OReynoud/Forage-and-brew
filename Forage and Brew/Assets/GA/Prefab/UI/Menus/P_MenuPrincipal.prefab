@@ -102,15 +102,15 @@ RectTransform:
   m_GameObject: {fileID: 4881371404087155909}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 6315858341921446335}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 636.48, y: 283}
-  m_SizeDelta: {x: 544, y: 403}
+  m_AnchoredPosition: {x: 666.6, y: 268.7}
+  m_SizeDelta: {x: 1000, y: 1000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &12680287625532179
 CanvasRenderer:
@@ -186,8 +186,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 666.6, y: -52}
-  m_SizeDelta: {x: 400, y: 100}
+  m_AnchoredPosition: {x: 666.6, y: -125.1}
+  m_SizeDelta: {x: 462.3, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4550315770028530634
 MonoBehaviour:
@@ -206,7 +206,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 4
   m_Spacing: 30
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -399,7 +399,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 752715014750350255, guid: 9b77929bee6d36e44a943f21c9125c00, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 400
+      value: 400.00003
       objectReference: {fileID: 0}
     - target: {fileID: 752715014750350255, guid: 9b77929bee6d36e44a943f21c9125c00, type: 3}
       propertyPath: m_SizeDelta.y
@@ -555,7 +555,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 752715014750350255, guid: 9b77929bee6d36e44a943f21c9125c00, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 400
+      value: 400.00003
       objectReference: {fileID: 0}
     - target: {fileID: 752715014750350255, guid: 9b77929bee6d36e44a943f21c9125c00, type: 3}
       propertyPath: m_SizeDelta.y
@@ -609,6 +609,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5652683800564784185, guid: 9b77929bee6d36e44a943f21c9125c00, type: 3}
+      propertyPath: unhoverColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5652683800564784185, guid: 9b77929bee6d36e44a943f21c9125c00, type: 3}
+      propertyPath: unhoverColor.b
+      value: 0.9098039
+      objectReference: {fileID: 0}
+    - target: {fileID: 5652683800564784185, guid: 9b77929bee6d36e44a943f21c9125c00, type: 3}
+      propertyPath: unhoverColor.g
+      value: 0.92941177
+      objectReference: {fileID: 0}
     - target: {fileID: 6488754996936455282, guid: 9b77929bee6d36e44a943f21c9125c00, type: 3}
       propertyPath: m_Name
       value: P_Button
@@ -657,7 +669,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 752715014750350255, guid: 9b77929bee6d36e44a943f21c9125c00, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 400
+      value: 400.00003
       objectReference: {fileID: 0}
     - target: {fileID: 752715014750350255, guid: 9b77929bee6d36e44a943f21c9125c00, type: 3}
       propertyPath: m_SizeDelta.y
