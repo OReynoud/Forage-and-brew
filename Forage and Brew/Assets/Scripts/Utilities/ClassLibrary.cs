@@ -87,8 +87,22 @@ public class NarrativeBlockOfLetters
     }
 }
 
+[Serializable]
 public class ClientOrderPotions
 {
     public ClientSo ClientSo { get; set; }
     public List<PotionValuesSo> Potions { get; private set; } = new();
+}
+
+[Serializable]
+public class WeatherSuccessiveDays
+{
+    [field: SerializeField] public WeatherStateSo WeatherStateSo { get; set; }
+    [field: SerializeField] public int SuccessiveDays { get; set; }
+    
+    public WeatherSuccessiveDays(WeatherStateSo weatherStateSo, int successiveDays)
+    {
+        WeatherStateSo = weatherStateSo;
+        SuccessiveDays = successiveDays;
+    }
 }

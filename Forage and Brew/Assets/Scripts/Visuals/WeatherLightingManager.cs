@@ -30,15 +30,15 @@ public class WeatherLightingManager : MonoBehaviour
     {
         if (scene == Scene.Biome1)
         {
-            if (WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].weatherState == cloudWeatherState)
+            if (WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == cloudWeatherState)
             {
                 SetCloudLighting();
             }
-            else if (WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].weatherState == rainWeatherState)
+            else if (WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == rainWeatherState)
             {
                 SetRainLighting();
             }
-            else if (WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].weatherState == sunWeatherState)
+            else if (WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == sunWeatherState)
             {
                 SetSunLighting();
             }
