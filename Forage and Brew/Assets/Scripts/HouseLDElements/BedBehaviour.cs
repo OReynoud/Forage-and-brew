@@ -26,6 +26,10 @@ public class BedBehaviour : MonoBehaviour
     public void Sleep()
     {
         SceneTransitionManager.instance.HandleGoingToSleepTransition(1f);
+        
+        // Ingredients to Collect
+        GameDontDestroyOnLoadManager.Instance.HasChosenIngredientsToday = false;
+        
         // Letters
         GameDontDestroyOnLoadManager.Instance.HasChosenLettersToday = false;
         
