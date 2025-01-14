@@ -1396,7 +1396,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 167f8c9e05de8f84fa00374e0b7f3235, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 0
   <PreviousScene>k__BackingField: 1
   <QuestProgressionIndex>k__BackingField: 0
   <AllNarrativeBlocksContentSo>k__BackingField:
@@ -1415,10 +1414,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6938fda956b21a64696f617599ad8222, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSaveEnabled: 0
   sceneListSo: {fileID: 11400000, guid: f9798080daf82cb419ea3c233f9f863b, type: 2}
   gameDontDestroyOnLoadManager: {fileID: 6631589442933190866}
   weatherManager: {fileID: 5935014821520033967}
   lunarCycleManager: {fileID: 3201330203133309056}
+  moneyManager: {fileID: 8835802637744483326}
+  orderManager: {fileID: 4342198150096644585}
+  data:
+    <PreviousScene>k__BackingField: 0
+    <CurrentTimeOfDay>k__BackingField: 0
+    <DayPassed>k__BackingField: 0
+    <CollectedIngredients>k__BackingField: []
+    <FloorCollectedIngredients>k__BackingField: []
+    <FloorCookedPotions>k__BackingField: []
+    <OrderPotions>k__BackingField: []
+    <UnlockedIngredients>k__BackingField: []
+    <UnlockedRecipes>k__BackingField: []
+    <HasChosenIngredientsToday>k__BackingField: 0
+    <RemainingIngredientToCollectBehavioursKeys>k__BackingField: 
+    <RemainingIngredientToCollectBehavioursValues>k__BackingField: []
+    <HasChosenLettersToday>k__BackingField: 0
+    <QuestProgressionIndex>k__BackingField: 0
+    <AllNarrativeBlocks>k__BackingField: []
+    <ThanksAndErrorLetters>k__BackingField: []
+    <MailBoxLetters>k__BackingField: []
+    <CauldronTemperatureAndIngredients>k__BackingField: []
+    <CauldronTemperature>k__BackingField: 0
+    <CurrentWeatherStatesKeys>k__BackingField: 
+    <CurrentWeatherStatesValues>k__BackingField: []
+    <CurrentLunarCycleStateIndex>k__BackingField: 0
+    <MoneyAmount>k__BackingField: 0
+    <CurrentOrders>k__BackingField: []
 --- !u!114 &5935014821520033967
 MonoBehaviour:
   m_ObjectHideFlags: 0
