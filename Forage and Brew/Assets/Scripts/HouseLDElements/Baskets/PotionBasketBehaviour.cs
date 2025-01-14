@@ -38,8 +38,8 @@ public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
         
         if (GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex].Potions[PotionBasketIndex] != null)
         {
-            Instantiate(GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex].Potions[PotionBasketIndex].PotionDifficulty.MeshGameObject,
-                meshParentTransform);
+            Instantiate(GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex].Potions[PotionBasketIndex]
+                    .PotionDifficulty.MeshGameObjectLiquidColorManager, meshParentTransform);
         }
     }
 
@@ -47,7 +47,7 @@ public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
     {
         GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex].Potions[PotionBasketIndex] = collectedPotionBehaviour.PotionValuesSo;
         GameDontDestroyOnLoadManager.Instance.OutCookedPotions.Remove(collectedPotionBehaviour);
-        Instantiate(collectedPotionBehaviour.PotionValuesSo.PotionDifficulty.MeshGameObject, meshParentTransform);
+        Instantiate(collectedPotionBehaviour.PotionValuesSo.PotionDifficulty.MeshGameObjectLiquidColorManager, meshParentTransform);
         Destroy(collectedPotionBehaviour.gameObject);
     }
 

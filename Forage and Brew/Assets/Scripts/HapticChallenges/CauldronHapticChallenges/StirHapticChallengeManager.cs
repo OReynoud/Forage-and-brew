@@ -25,6 +25,7 @@ public class StirHapticChallengeManager : MonoBehaviour
     private readonly List<ConfirmationCircleBehaviour> _confirmationCircles = new();
     [SerializeField] private RectTransform obtainedPotionRectTransform;
     [SerializeField] private Image obtainedPotionImage;
+    [SerializeField] private Image obtainedPotionLiquidImage;
     
     [Header("Camera")]
     [SerializeField] private float cauldronCameraTransitionTime = 0.5f;
@@ -349,7 +350,9 @@ public class StirHapticChallengeManager : MonoBehaviour
     private void ObtainPotion()
     {
         CauldronVfxManager.Instance.PlayObtainedPotionVfx();
-        obtainedPotionImage.sprite = _currentPotion.icon;
+        obtainedPotionImage.sprite = _currentPotion.PotionDifficulty.PotionSprite;
+        obtainedPotionLiquidImage.sprite = _currentPotion.PotionDifficulty.LiquidSprite;
+        obtainedPotionLiquidImage.color = _currentPotion.SpriteLiquidColor;
         obtainedPotionRectTransform.localScale = Vector3.zero;
         obtainedPotionRectTransform.anchoredPosition =
             stirHapticChallengeGlobalValuesSo.ObtainedPotionAnimationStartPosition;

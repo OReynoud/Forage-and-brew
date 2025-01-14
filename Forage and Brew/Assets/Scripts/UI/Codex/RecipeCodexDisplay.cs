@@ -16,6 +16,7 @@ public class RecipeCodexDisplay : MonoBehaviour
     [BoxGroup("Potion Description")] public TextMeshProUGUI potionPrice;
     [BoxGroup("Potion Description")] public GameObject[] potionDifficulty;
     [BoxGroup("Potion Description")] public Image potionIcon;
+    [BoxGroup("Potion Description")] public Image liquidIcon;
     
     
     //Ingredients List
@@ -68,7 +69,9 @@ public class RecipeCodexDisplay : MonoBehaviour
         {
             potionDifficulty[i].SetActive(true);
         }
-        potionIcon.sprite = PotionSteps.icon;
+        potionIcon.sprite = PotionSteps.PotionDifficulty.PotionSprite;
+        liquidIcon.sprite = PotionSteps.PotionDifficulty.LiquidSprite;
+        liquidIcon.color = PotionSteps.SpriteLiquidColor;
         potionIngredients = PotionIngredients;
 
         
