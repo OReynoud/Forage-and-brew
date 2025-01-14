@@ -183,6 +183,13 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.PinRight.Enable();
     }
 
+    public void EnableCodexExitInput()
+    {
+        
+        _inputs.Player.CodexEnter.Disable();
+        _inputs.Player.CodexLeave.Enable();
+    }
+
     public void EnableMailInputs()
     {
         _inputs.Player.PassLetters.Enable();

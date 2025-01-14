@@ -163,6 +163,9 @@ public class Book : MonoBehaviour
 
             var display = IngredientPageDisplays[x];
             CharacterInputManager.Instance.EnterCodexMethod();
+            
+            CharacterInputManager.Instance.DisableCodexInputs();
+            CharacterInputManager.Instance.DisableMoveInputs();
             display.StartDissolve();
             return;
         }
