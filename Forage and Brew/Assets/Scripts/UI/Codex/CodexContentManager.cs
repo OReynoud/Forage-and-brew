@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using NaughtyAttributes;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -39,6 +40,8 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
     [Foldout("Debug")] private List<Sprite> tempIngredientsList = new();
 
+    public List<int> pageIndexesToCheck;
+
 
     private void Start()
     {
@@ -46,13 +49,14 @@ public class CodexContentManager : Singleton<CodexContentManager>
         recipes.Clear();
         historicPages.Clear();
         CharacterInputManager.Instance.OnSelectRecipe.AddListener(SelectCodexPage);
+        GameDontDestroyOnLoadManager.Instance.OnNewRecipeReceived.AddListener(CreateNewRecipePage);
         foreach (var ticket in _orderCodexDisplayBehaviours)
         {
             ticket.gameObject.SetActive(false);
         }
 
 
-        for (int i = potionList.Potions.Length - 1; i >= 0; i--)
+        /*for (int i = potionList.Potions.Length - 1; i >= 0; i--)
         {
             var newRecipe = Instantiate(recipeDisplayPrefab, Vector3.down * 10000, Quaternion.identity, transform);
             recipes.Insert(0, newRecipe);
@@ -74,18 +78,49 @@ public class CodexContentManager : Singleton<CodexContentManager>
             newRecipe.InitPage(tempIngredientsList.ToArray(), potionList.Potions[i]);
             tempIngredientsList.Clear();
             InsertRecipePages(newRecipe.leftPage, newRecipe.rightPage);
-        }
+        }*/
 
         // DebugTickets();
     }
 
-    public void InsertRecipePages(RectTransform LeftPage, RectTransform RightPage)
+    private void CreateNewRecipePage(PotionValuesSo newRecipeValues)
+    {            
+        var newRecipe = Instantiate(recipeDisplayPrefab, Vector3.down * 10000, Quaternion.identity, transform);
+        recipes.Insert(0, newRecipe);
+        foreach (TemperatureChallengeIngredients t in newRecipeValues.TemperatureChallengeIngredients)
+        {
+            foreach (CookedIngredientForm cookedIngredient in t.CookedIngredients)
+            {
+                if (cookedIngredient.IsAType)
+                {
+                    tempIngredientsList.Add(cookedIngredient.IngredientType.Icon);
+                }
+                else
+                {
+                    tempIngredientsList.Add(cookedIngredient.Ingredient.icon);
+                }
+            }
+        }
+
+        newRecipe.InitPage(tempIngredientsList.ToArray(),newRecipeValues);
+        tempIngredientsList.Clear();
+        InsertRecipePages(newRecipe.leftPage,newRecipe.rightPage, newRecipeValues);
+    }
+
+    public void InsertRecipePages(RectTransform LeftPage, RectTransform RightPage, PotionValuesSo recipe)
     {
         AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[0].index,
             new Book.BookPage(rightRecipePage, RightPage));
         AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[0].index,
             new Book.BookPage(leftRecipePage, LeftPage));
 
+        for (var i = 0; i < pageIndexesToCheck.Count; i++)
+        {
+            pageIndexesToCheck[i] += 2;
+        }
+
+        pageIndexesToCheck.Insert(0, AutoFlip.instance.ControledBook.bookMarks[0].index);
+        
         for (int i = 2; i < AutoFlip.instance.ControledBook.bookMarks.Length; i++)
         {
             AutoFlip.instance.ControledBook.bookMarks[i].index += 2;

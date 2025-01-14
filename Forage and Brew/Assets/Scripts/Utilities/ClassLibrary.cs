@@ -24,15 +24,14 @@ public class Letter
     }
 }
 
+[Serializable]
 public class Order
 {
-    public OrderContentSo OrderContent { get; set; }
+    [field: SerializeField] public OrderContentSo OrderContent { get; set; }
     public OrderCodexDisplayBehaviour OrderDisplay { get; set; }
-    public int Days { get; set; }
-    public NarrativeBlockOfLetters RelatedNarrativeBlock { get; private set; }
-    public LetterContentSo RelatedLetter { get; private set; }
-    public LetterContentSo RelatedSuccessLetter { get; private set; }
-    public LetterContentSo RelatedFailureLetter { get; private set; }
+    [field: SerializeField] public int Days { get; set; }
+    [field: SerializeField] public NarrativeBlockOfLetters RelatedNarrativeBlock { get; private set; }
+    [field: SerializeField] public LetterContentSo RelatedLetter { get; private set; }
 
     public Order(Letter LetterToOrder, OrderCodexDisplayBehaviour orderDisplay)
     {
@@ -40,8 +39,6 @@ public class Order
         OrderContent = LetterToOrder.LetterContent.OrderContent;
         Days = OrderContent.TimeToFulfill;
         RelatedLetter = LetterToOrder.LetterContent;
-        RelatedSuccessLetter = LetterToOrder.LetterContent.RelatedSuccessLetter;
-        RelatedFailureLetter = LetterToOrder.LetterContent.RelatedFailureLetter;
         RelatedNarrativeBlock = LetterToOrder.RelatedNarrativeBlock;
     }
 }

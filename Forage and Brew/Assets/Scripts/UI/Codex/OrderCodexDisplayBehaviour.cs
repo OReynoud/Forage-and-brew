@@ -58,7 +58,7 @@ public class OrderCodexDisplayBehaviour : MonoBehaviour
             if (potionsDemanded[i].IsSpecific)
             {
                 var specificPotion = Instantiate(specificPotionPrefab,potionList);
-                specificPotion.potionIcon.sprite = potionsDemanded[i].Potion.icon;
+                specificPotion.potionIcon.sprite = potionsDemanded[i].Potion.PotionDifficulty.PotionSprite;
                 specificPotion.potionName.text = potionsDemanded[i].Potion.Name;
             }
             else

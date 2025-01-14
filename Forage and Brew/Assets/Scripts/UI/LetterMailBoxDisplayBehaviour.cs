@@ -69,7 +69,7 @@ public class LetterMailBoxDisplayBehaviour : MonoBehaviour
             if (potionsDemanded[i].IsSpecific)
             {
                 potionImages[i].transform.parent.gameObject.SetActive(true);
-                potionImages[i].sprite = potionsDemanded[i].Potion.icon;
+                potionImages[i].sprite = potionsDemanded[i].Potion.PotionDifficulty.PotionSprite;
                 potionNames[i].text = potionsDemanded[i].Potion.Name;
             }
             else

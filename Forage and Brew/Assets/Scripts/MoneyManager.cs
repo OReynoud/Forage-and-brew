@@ -5,7 +5,7 @@ public class MoneyManager : MonoBehaviour
     // Singleton
     public static MoneyManager Instance { get; private set; }
     
-    public int MoneyAmount { get; private set; }
+    public int MoneyAmount { get; set; }
     
     
     private void Awake()

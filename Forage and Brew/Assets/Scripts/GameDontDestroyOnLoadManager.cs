@@ -18,7 +18,7 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     public TimeOfDay CurrentTimeOfDay { get; set; } = TimeOfDay.Daytime;
     public int DayPassed { get; set; }
     
-    // Ingredients and Potions
+    // Collected Ingredients and Potions
     public List<IngredientValuesSo> CollectedIngredients { get; private set; } = new();
     public List<CollectedIngredientBehaviour> OutCollectedIngredients { get; private set; } = new();
     public List<FloorIngredient> FloorCollectedIngredients { get; private set; } = new();
@@ -30,6 +30,11 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     public List<IngredientValuesSo> UnlockedIngredients { get; private set; } = new();
     public List<PotionValuesSo> UnlockedRecipes { get; private set; } = new();
     public UnityEvent<IngredientValuesSo> OnNewIngredientCollected { get; private set; } = new();
+    public UnityEvent<PotionValuesSo> OnNewRecipeReceived { get; private set; } = new();
+    
+    // Ingredients to Collect
+    public bool HasChosenIngredientsToday { get; set; }
+    public Dictionary<int, IngredientValuesSo> RemainingIngredientToCollectBehaviours { get; private set; } = new();
     
     // Letters
     public bool HasChosenLettersToday { get; set; }

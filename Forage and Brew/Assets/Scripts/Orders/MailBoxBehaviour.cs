@@ -9,8 +9,9 @@ using UnityEngine.UI;
 
 public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 {
+    [SerializeField] [AllowNesting] [ReadOnly]
+    private List<(Letter, LetterContentSo)> chosenLetters = new();
 
-    [SerializeField] [AllowNesting][ReadOnly] private List<(Letter, LetterContentSo)> chosenLetters = new();
     private readonly List<(int moneyAmount, int letterIndex)> _moneyAmountsToEarn = new();
     public List<LetterMailBoxDisplayBehaviour> GeneratedLetters { get; set; } = new();
 
@@ -37,12 +38,12 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     private float _backgroundTargetFadeValue;
     [SerializeField] private float backgroundShownFadeValue = 0.8f;
     [SerializeField] private float backgroundHiddenFadeValue;
-    
+
     private Vector2 _addMoneyStartPosition;
     [SerializeField] private Vector2 addMoneyLocalOffsetEndPosition = new(0, 100);
     [SerializeField] private float addMoneyStartFadeValue = 1f;
     [SerializeField] private float addMoneyEndFadeValue;
-    
+
     public Collider letterBoxTrigger;
 
     private bool _openedMailOnFrame;
@@ -55,7 +56,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     {
         interactInputCanvasGameObject.SetActive(false);
         CharacterInputManager.Instance.DisableMailInputs();
-        
+
         moneyDisplayGameObject.SetActive(false);
         _letterPileTargetPosition = letterPileHiddenPosition;
         letterPile.anchoredPosition = letterPileHiddenPosition;
@@ -76,7 +77,8 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 
     private void Update()
     {
-        letterPile.anchoredPosition = Vector2.Lerp(letterPile.anchoredPosition, _letterPileTargetPosition, letterPileLerp);
+        letterPile.anchoredPosition =
+            Vector2.Lerp(letterPile.anchoredPosition, _letterPileTargetPosition, letterPileLerp);
         backgroundImage.color = new Color(backgroundImage.color.r, backgroundImage.color.g, backgroundImage.color.b,
             Mathf.Lerp(backgroundImage.color.a, _backgroundTargetFadeValue, backgroundFadeLerp));
         addMoneyRectTransform.anchoredPosition = Vector2.Lerp(addMoneyRectTransform.anchoredPosition,
@@ -116,18 +118,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     {
         chosenLetters.Clear();
 
-        // switch (GameDontDestroyOnLoadManager.Instance.DayPassed)
-        // {
-        //     case 0:
-        //         _chosenLetters.AddRange(day1Letters);
-        //         break;
-        //     case 1:
-        //         _chosenLetters.AddRange(day2Letters);
-        //         break;
-        //     case 2:
-        //         _chosenLetters.AddRange(day3Letters);
-        //         break;
-        // }
+
         foreach (var letter in GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters)
         {
             int index = Array.IndexOf(
@@ -135,7 +126,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                 letter.LetterContent);
             letter.RelatedNarrativeBlock.InactiveLetters[index] = false;
             float percentPenalty = letter.LetterContent.OrderContent.LateMoneyPenaltyPercentage;
-            
+
             int moneyToEarn;
             if (letter.RelatedNarrativeBlock.CompletedLetters[letter.RelatedNarrativeBlock.SelfProgressionIndex - 1])
             {
@@ -143,7 +134,8 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                     ? letter.LetterContent.OrderContent.MoneyReward
                     : Mathf.RoundToInt(letter.LetterContent.OrderContent.MoneyReward * percentPenalty * 0.01f);
                 _moneyAmountsToEarn.Add((moneyToEarn, chosenLetters.Count));
-                chosenLetters.Add((new Letter(letter.LetterContent.RelatedSuccessLetter, letter.RelatedNarrativeBlock), letter.LetterContent));
+                chosenLetters.Add((new Letter(letter.LetterContent.RelatedSuccessLetter, letter.RelatedNarrativeBlock),
+                    letter.LetterContent));
             }
             else
             {
@@ -151,31 +143,33 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                     ? letter.LetterContent.OrderContent.ErrorMoneyReward
                     : Mathf.RoundToInt(letter.LetterContent.OrderContent.ErrorMoneyReward * percentPenalty * 0.01f);
                 _moneyAmountsToEarn.Add((moneyToEarn, chosenLetters.Count));
-                chosenLetters.Add((new Letter(letter.LetterContent.RelatedFailureLetter, letter.RelatedNarrativeBlock), letter.LetterContent));
+                chosenLetters.Add((new Letter(letter.LetterContent.RelatedFailureLetter, letter.RelatedNarrativeBlock),
+                    letter.LetterContent));
             }
         }
-        
+
         foreach (var t in GameDontDestroyOnLoadManager.Instance.AllNarrativeBlocks)
         {
             if (t.ContentSo.RequiredQuestProgressionIndex >
                 GameDontDestroyOnLoadManager.Instance.QuestProgressionIndex)
                 continue;
-            
+
             if (t.SelfProgressionIndex >= t.CompletedLetters.Length)
                 continue;
-            
+
             if (t.CompletedLetters[t.SelfProgressionIndex] || t.InactiveLetters[t.SelfProgressionIndex])
                 continue;
 
-            chosenLetters.Add((new Letter(t.ContentSo.Content[t.SelfProgressionIndex], t),null));
+            chosenLetters.Add((new Letter(t.ContentSo.Content[t.SelfProgressionIndex], t), null));
             t.InactiveLetters[t.SelfProgressionIndex] = true;
         }
+
         GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters.Clear();
         foreach (var letterTupple in chosenLetters)
         {
             GameDontDestroyOnLoadManager.Instance.MailBoxLetters.Add(letterTupple.Item1);
-            
         }
+
         //GameDontDestroyOnLoadManager.Instance.AllLetters.AddRange(_chosenLetters);
         GameDontDestroyOnLoadManager.Instance.HasChosenLettersToday = true;
     }
@@ -226,6 +220,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                 addMoneyRectTransform.anchoredPosition = _addMoneyStartPosition;
                 addMoneyCanvasGroup.alpha = addMoneyStartFadeValue;
             }
+
             GeneratedLetters[i].AnimateLetter(true);
 
             if (i != GeneratedLetters.Count - 1) return;
@@ -237,7 +232,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         CharacterInputManager.Instance.EnableCodexInputs();
         CharacterInteractController.Instance.CurrentNearMailBoxBehaviour = null;
         DisableInteract();
-        
+
         letterBoxTrigger.enabled = false;
         moneyDisplayGameObject.SetActive(false);
         _letterPileTargetPosition = letterPileHiddenPosition;
@@ -245,14 +240,22 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 
         foreach (var letter in chosenLetters)
         {
-
             switch (letter.Item1.LetterContent.LetterType)
             {
                 case LetterType.Orders:
+                    foreach (var demand in letter.Item1.LetterContent.OrderContent.RequestedPotions)
+                    {
+                        if (demand.IsSpecific) continue;
+                        if (!GameDontDestroyOnLoadManager.Instance.UnlockedRecipes.Contains(demand.Potion))
+                        {
+                            GameDontDestroyOnLoadManager.Instance.UnlockedRecipes.Add(demand.Potion);
+                            GameDontDestroyOnLoadManager.Instance.OnNewRecipeReceived.Invoke(demand.Potion);
+                        }
+                    }
                     OrderManager.Instance.CreateNewOrder(letter.Item1);
                     break;
                 case LetterType.Thanks:
-                    CodexContentManager.instance.AddHistoricPage(letter.Item2,letter.Item1.LetterContent);
+                    CodexContentManager.instance.AddHistoricPage(letter.Item2, letter.Item1.LetterContent);
                     break;
                 case LetterType.ShippingError:
                     break;

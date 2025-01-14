@@ -20,6 +20,25 @@ public class IngredientToCollectSpawnManager : MonoBehaviour
     
     private void Start()
     {
+        if (GameDontDestroyOnLoadManager.Instance.HasChosenIngredientsToday)
+        {
+            foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in IngredientToCollectBehaviours)
+            {
+                if (GameDontDestroyOnLoadManager.Instance.RemainingIngredientToCollectBehaviours
+                    .TryGetValue(ingredientToCollectBehaviour.SpawnIndex, out IngredientValuesSo ingredientValuesSo))
+                {
+                    ingredientToCollectBehaviour.IngredientValuesSo = ingredientValuesSo;
+                    ingredientToCollectBehaviour.SpawnMesh();
+                }
+                else
+                {
+                    ingredientToCollectBehaviour.gameObject.SetActive(false);
+                }
+            }
+            
+            return;
+        }
+        
         List<IngredientValuesSo> ingredientValuesList = new();
         
         foreach (IngredientValuesSo ingredientValues in ingredientListSo.IngredientValues)
@@ -31,6 +50,14 @@ public class IngredientToCollectSpawnManager : MonoBehaviour
                 ingredientValuesList.Add(ingredientValues);
             }
         }
+
+#if UNITY_EDITOR
+        if (IngredientToCollectBehaviours.Select(ingredientToCollectBehaviour => ingredientToCollectBehaviour
+                .SpawnIndex).Distinct().Count() != IngredientToCollectBehaviours.Count)
+        {
+            Debug.LogError("Spawn Indexes are not unique. You need to reassign them.");
+        }
+#endif
 
         foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in IngredientToCollectBehaviours)
         {
@@ -48,11 +75,16 @@ public class IngredientToCollectSpawnManager : MonoBehaviour
             {
                 ingredientToCollectBehaviour.IngredientValuesSo = localIngredientValuesList[Random.Range(0, localIngredientValuesList.Count)];
                 ingredientToCollectBehaviour.SpawnMesh();
+                
+                GameDontDestroyOnLoadManager.Instance.RemainingIngredientToCollectBehaviours
+                    .Add(ingredientToCollectBehaviour.SpawnIndex, ingredientToCollectBehaviour.IngredientValuesSo);
             }
             else
             {
                 ingredientToCollectBehaviour.gameObject.SetActive(false);
             }
         }
+        
+        GameDontDestroyOnLoadManager.Instance.HasChosenIngredientsToday = true;
     }
 }
