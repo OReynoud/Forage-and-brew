@@ -77,8 +77,8 @@ public struct TemperatureChallengeIngredients
         Temperature = temperature;
     }
     
-    [field: SerializeField] public List<CookedIngredientForm> CookedIngredients { get; private set; }
-    [field: SerializeField] public Temperature Temperature { get; private set; }
+    [field: SerializeField] public List<CookedIngredientForm> CookedIngredients { get; set; }
+    [field: SerializeField] public Temperature Temperature { get; set; }
 }
 
 [Serializable]
@@ -101,7 +101,8 @@ public struct GrindingHapticChallengeCrushInput
     }
 }
 
-public readonly struct FloorIngredient : IEquatable<FloorIngredient>
+[Serializable]
+public struct FloorIngredient : IEquatable<FloorIngredient>
 {
     public FloorIngredient(IngredientValuesSo ingredient, Vector3 position, Quaternion rotation)
     {
@@ -110,9 +111,9 @@ public readonly struct FloorIngredient : IEquatable<FloorIngredient>
         Rotation = rotation;
     }
     
-    public IngredientValuesSo Ingredient { get; }
-    public Vector3 Position { get; }
-    public Quaternion Rotation { get; }
+    [field: SerializeField] public IngredientValuesSo Ingredient { get; set; }
+    [field: SerializeField] public Vector3 Position { get; set; }
+    [field: SerializeField] public Quaternion Rotation { get; set; }
 
     public bool Equals(FloorIngredient other)
     {
@@ -130,7 +131,8 @@ public readonly struct FloorIngredient : IEquatable<FloorIngredient>
     }
 }
 
-public readonly struct FloorCookedPotion : IEquatable<FloorCookedPotion>
+[Serializable]
+public struct FloorCookedPotion : IEquatable<FloorCookedPotion>
 {
     public FloorCookedPotion(PotionValuesSo potion, Vector3 position, Quaternion rotation)
     {
@@ -139,9 +141,9 @@ public readonly struct FloorCookedPotion : IEquatable<FloorCookedPotion>
         Rotation = rotation;
     }
     
-    public PotionValuesSo Potion { get; }
-    public Vector3 Position { get; }
-    public Quaternion Rotation { get; }
+    [field: SerializeField] public PotionValuesSo Potion { get; set; }
+    [field: SerializeField] public Vector3 Position { get; set; }
+    [field: SerializeField] public Quaternion Rotation { get; set; }
 
     public bool Equals(FloorCookedPotion other)
     {

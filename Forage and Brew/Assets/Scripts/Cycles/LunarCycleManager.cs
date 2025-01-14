@@ -8,8 +8,8 @@ public class LunarCycleManager : MonoBehaviour
     [SerializeField] private LunarCycleStateOrderSo lunarCycleStateOrderSo;
     [SerializeField] private int startingLunarCycleStateIndex;
     
-    private int _currentLunarCycleStateIndex;
-    public LunarCycleStateSo CurrentLunarCycleState => lunarCycleStateOrderSo.LunarCycleStates[_currentLunarCycleStateIndex];
+    public int CurrentLunarCycleStateIndex { get; set; }
+    public LunarCycleStateSo CurrentLunarCycleState => lunarCycleStateOrderSo.LunarCycleStates[CurrentLunarCycleStateIndex];
     
 
     private void Awake()
@@ -26,21 +26,24 @@ public class LunarCycleManager : MonoBehaviour
     
     private void Start()
     {
-        _currentLunarCycleStateIndex = startingLunarCycleStateIndex;
-        Debug.Log("The current lunar cycle state is: " + lunarCycleStateOrderSo.LunarCycleStates[_currentLunarCycleStateIndex].Name);
+        if (GameDontDestroyOnLoadManager.Instance.IsFirstGameSession)
+        {
+            CurrentLunarCycleStateIndex = startingLunarCycleStateIndex;
+        }
+        Debug.Log("The current lunar cycle state is: " + lunarCycleStateOrderSo.LunarCycleStates[CurrentLunarCycleStateIndex].Name);
         InfoDisplayManager.instance.DisplayMoonCycles();
     }
     
     
     public void PassToNextLunarCycleState()
     {
-        _currentLunarCycleStateIndex++;
-        if (_currentLunarCycleStateIndex >= lunarCycleStateOrderSo.LunarCycleStates.Length)
+        CurrentLunarCycleStateIndex++;
+        if (CurrentLunarCycleStateIndex >= lunarCycleStateOrderSo.LunarCycleStates.Length)
         {
-            _currentLunarCycleStateIndex = 0;
+            CurrentLunarCycleStateIndex = 0;
         }
         
-        Debug.Log("The current lunar cycle state is: " + lunarCycleStateOrderSo.LunarCycleStates[_currentLunarCycleStateIndex].Name);
+        Debug.Log("The current lunar cycle state is: " + lunarCycleStateOrderSo.LunarCycleStates[CurrentLunarCycleStateIndex].Name);
         
         InfoDisplayManager.instance.DisplayMoonCycles();
     }

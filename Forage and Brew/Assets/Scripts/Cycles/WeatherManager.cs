@@ -28,8 +28,11 @@ public class WeatherManager : MonoBehaviour
     
     private void Start()
     {
+        if (GameDontDestroyOnLoadManager.Instance.IsFirstGameSession)
+        {
             CurrentWeatherStates.Add(Biome.Forest, new WeatherSuccessiveDays(forestStartingWeatherState, 1));
             CurrentWeatherStates.Add(Biome.Swamp, new WeatherSuccessiveDays(swampStartingWeatherState, 1));
+        }
         Debug.Log("The weather state for the first day is " + CurrentWeatherStates[Biome.Forest].WeatherStateSo.Name +
                   " in the forest and " + CurrentWeatherStates[Biome.Swamp].WeatherStateSo.Name + " in the swamp.");
         InfoDisplayManager.instance.DisplayWeather();
@@ -38,7 +41,7 @@ public class WeatherManager : MonoBehaviour
     
     public void PassToNextWeatherState()
     {
-        foreach (System.Collections.Generic.KeyValuePair<Biome, WeatherSuccessiveDays> currentWeatherState in CurrentWeatherStates.ToList())
+        foreach (KeyValuePair<Biome, WeatherSuccessiveDays> currentWeatherState in CurrentWeatherStates.ToList())
         {
             foreach (WeatherStateEndProbabilityBySuccessiveDayNumber weatherStateEndProbability in currentWeatherState.Value.WeatherStateSo.EndProbabilities)
             {
