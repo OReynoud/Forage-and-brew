@@ -31,7 +31,7 @@ public class CollectedPotionBehaviour : MonoBehaviour, IStackable
 
     private void Start()
     {
-        Instantiate(PotionValuesSo.MeshGameObject, meshParentTransform);
+        Instantiate(PotionValuesSo.PotionDifficulty.MeshGameObject, meshParentTransform);
         grabInputCanvasGameObject.SetActive(false);
         StackHeight = collectedPotionGlobalValuesSo.StackHeight;
         _dropInTargetLerp = Random.Range(collectedPotionGlobalValuesSo.MinDropInTargetLerp,

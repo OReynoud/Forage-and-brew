@@ -64,7 +64,7 @@ public class RecipeCodexDisplay : MonoBehaviour
         potionName.text = PotionSteps.Name;
         potionFlavorText.text = PotionSteps.Description;
         potionPrice.text = PotionSteps.SalePrice.ToString(CultureInfo.InvariantCulture);
-        for (int i = 0; i < PotionSteps.Difficulty; i++)
+        for (int i = 0; i < PotionSteps.PotionDifficulty.Difficulty; i++)
         {
             potionDifficulty[i].SetActive(true);
         }
