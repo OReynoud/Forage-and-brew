@@ -309,6 +309,11 @@ public class AutoFlip : Singleton<AutoFlip>
                 CodexContentManager.instance.pageIndexesToCheck[i].Item2.StartDissolve();
                 yield return new WaitWhile(() => isDissolving);
             }
+            else
+            {
+                
+                yield return new WaitForSeconds(0.4f);
+            }
             
         }
         
