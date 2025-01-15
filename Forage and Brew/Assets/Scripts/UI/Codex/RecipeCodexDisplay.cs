@@ -232,4 +232,10 @@ public class RecipeCodexDisplay : MonoBehaviour
         
         
     }
+
+    public void RemoveDissolve()
+    {
+        leftPageDissolve.material.SetFloat(Ex.CutoffHeight, 1);
+        rightPageDissolve.material.SetFloat(Ex.CutoffHeight, 1);
+    }
 }
