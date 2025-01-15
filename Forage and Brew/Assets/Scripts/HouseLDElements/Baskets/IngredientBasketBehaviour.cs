@@ -74,6 +74,11 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
         IngredientCount++;
         GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients.Remove(collectedIngredientBehaviour);
         GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Add(ingredient);
+        collectedIngredientBehaviour.OnIngredientDropEnd.AddListener(DestroyIngredient);
+    }
+    
+    private void DestroyIngredient(CollectedIngredientBehaviour collectedIngredientBehaviour)
+    {
         Destroy(collectedIngredientBehaviour.gameObject);
         meshParentTransform.gameObject.SetActive(true);
     }
