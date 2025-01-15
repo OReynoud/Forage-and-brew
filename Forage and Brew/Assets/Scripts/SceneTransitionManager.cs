@@ -58,7 +58,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
     
     private IEnumerator HideScreen(float waitTime)
     {
-        Time.timeScale = 0;
+        CharacterInputManager.Instance.DisableInputs();
         timer = 0;
         transitionElement.gameObject.SetActive(true);
         while (timer < transitionTime)
@@ -83,7 +83,6 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
     private IEnumerator ShowScreen()
     {
         transitionElement.gameObject.SetActive(false);
-        Time.timeScale = 0;
         timer = 0;
         maskElement.sizeDelta = Vector2.zero;
         transitionElement.gameObject.SetActive(true);
@@ -96,6 +95,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         }
 
         transitionElement.gameObject.SetActive(false);
-        Time.timeScale = 1;
+        
+        CharacterInputManager.Instance.EnableInputs();
     }
 }
