@@ -137,7 +137,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                 chosenLetters.Add((new Letter(letter.LetterContent.RelatedSuccessLetter, letter.RelatedNarrativeBlock),
                     letter.LetterContent));
                 letter.RelatedNarrativeBlock.NewLetterCountDown =
-                    letter.RelatedNarrativeBlock.ContentSo.TimeForNewLetterAfterSuccess;
+                    letter.RelatedNarrativeBlock.ContentSo.TimeForLetterAfterSuccess;
             }
             else
             {
@@ -148,7 +148,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                 chosenLetters.Add((new Letter(letter.LetterContent.RelatedFailureLetter, letter.RelatedNarrativeBlock),
                     letter.LetterContent));
                 letter.RelatedNarrativeBlock.NewLetterCountDown =
-                    letter.RelatedNarrativeBlock.ContentSo.TimeForNewLetterAfterFailure;
+                    letter.RelatedNarrativeBlock.ContentSo.TimeForLetterAfterFailure;
             }
         }
 
