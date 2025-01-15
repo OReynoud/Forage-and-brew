@@ -127,28 +127,19 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
             letter.RelatedNarrativeBlock.InactiveLetters[index] = false;
             float percentPenalty = letter.LetterContent.OrderContent.LateMoneyPenaltyPercentage;
 
-            int moneyToEarn;
-            if (letter.RelatedNarrativeBlock.SelfProgressionIndex > 0 && letter.RelatedNarrativeBlock.CompletedLetters[letter.RelatedNarrativeBlock.SelfProgressionIndex - 1])
+            if (letter.RelatedNarrativeBlock.SelfProgressionIndex == 0)
             {
-                moneyToEarn = letter.DeliveredOnTime
-                    ? letter.LetterContent.OrderContent.MoneyReward
-                    : Mathf.RoundToInt(letter.LetterContent.OrderContent.MoneyReward * percentPenalty * 0.01f);
-                _moneyAmountsToEarn.Add((moneyToEarn, chosenLetters.Count));
-                chosenLetters.Add((new Letter(letter.LetterContent.RelatedSuccessLetter, letter.RelatedNarrativeBlock),
-                    letter.LetterContent));
-                letter.RelatedNarrativeBlock.NewLetterCountDown =
-                    letter.RelatedNarrativeBlock.ContentSo.TimeForLetterAfterSuccess;
+                GenerateFailureLetter(letter, percentPenalty);
+                continue;
             }
-            else
+            if (letter.RelatedNarrativeBlock.SelfProgressionIndex == letter.RelatedNarrativeBlock.CompletedLetters.Length)
             {
-                moneyToEarn = letter.DeliveredOnTime
-                    ? letter.LetterContent.OrderContent.ErrorMoneyReward
-                    : Mathf.RoundToInt(letter.LetterContent.OrderContent.ErrorMoneyReward * percentPenalty * 0.01f);
-                _moneyAmountsToEarn.Add((moneyToEarn, chosenLetters.Count));
-                chosenLetters.Add((new Letter(letter.LetterContent.RelatedFailureLetter, letter.RelatedNarrativeBlock),
-                    letter.LetterContent));
-                letter.RelatedNarrativeBlock.NewLetterCountDown =
-                    letter.RelatedNarrativeBlock.ContentSo.TimeForLetterAfterFailure;
+                GenerateSuccessLetter(letter, percentPenalty);
+                continue;
+            }
+            if (letter.RelatedNarrativeBlock.CompletedLetters[letter.RelatedNarrativeBlock.SelfProgressionIndex])
+            {
+                GenerateSuccessLetter(letter, percentPenalty);
             }
         }
 
@@ -181,6 +172,32 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 
         //GameDontDestroyOnLoadManager.Instance.AllLetters.AddRange(_chosenLetters);
         GameDontDestroyOnLoadManager.Instance.HasChosenLettersToday = true;
+    }
+
+    private void GenerateFailureLetter(Letter letter, float percentPenalty)
+    {
+        int moneyToEarn;
+        moneyToEarn = letter.DeliveredOnTime
+            ? letter.LetterContent.OrderContent.ErrorMoneyReward
+            : Mathf.RoundToInt(letter.LetterContent.OrderContent.ErrorMoneyReward * percentPenalty * 0.01f);
+        _moneyAmountsToEarn.Add((moneyToEarn, chosenLetters.Count));
+        chosenLetters.Add((new Letter(letter.LetterContent.RelatedFailureLetter, letter.RelatedNarrativeBlock),
+            letter.LetterContent));
+        letter.RelatedNarrativeBlock.NewLetterCountDown =
+            letter.RelatedNarrativeBlock.ContentSo.TimeForLetterAfterFailure;
+    }
+
+    private void GenerateSuccessLetter(Letter letter, float percentPenalty)
+    {
+        int moneyToEarn;
+        moneyToEarn = letter.DeliveredOnTime
+            ? letter.LetterContent.OrderContent.MoneyReward
+            : Mathf.RoundToInt(letter.LetterContent.OrderContent.MoneyReward * percentPenalty * 0.01f);
+        _moneyAmountsToEarn.Add((moneyToEarn, chosenLetters.Count));
+        chosenLetters.Add((new Letter(letter.LetterContent.RelatedSuccessLetter, letter.RelatedNarrativeBlock),
+            letter.LetterContent));
+        letter.RelatedNarrativeBlock.NewLetterCountDown =
+            letter.RelatedNarrativeBlock.ContentSo.TimeForLetterAfterSuccess;
     }
 
     public void GenerateLetters()
