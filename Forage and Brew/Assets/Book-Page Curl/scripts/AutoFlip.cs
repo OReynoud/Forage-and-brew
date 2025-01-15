@@ -301,7 +301,7 @@ public class AutoFlip : Singleton<AutoFlip>
 
     IEnumerator PresentNewCodexContent()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.1f);
         for (int i = CodexContentManager.instance.pageIndexesToCheck.Count - 1; i >= 0; i--)
         {
             FlipToPageIndex(CodexContentManager.instance.pageIndexesToCheck[i].Item1);
@@ -314,10 +314,8 @@ public class AutoFlip : Singleton<AutoFlip>
             }
             else
             {
-                
-                yield return new WaitForSeconds(0.4f);
+                yield return new WaitForSeconds(0.2f);
             }
-            
         }
         
         CodexContentManager.instance.pageIndexesToCheck.Clear();

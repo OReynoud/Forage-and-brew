@@ -1397,10 +1397,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <PreviousScene>k__BackingField: 1
+  <HasChosenLettersToday>k__BackingField: 0
   <QuestProgressionIndex>k__BackingField: 0
   <AllNarrativeBlocksContentSo>k__BackingField:
   - {fileID: 11400000, guid: 65f0006ebfe8c9f4587793ad14cfd265, type: 2}
   - {fileID: 11400000, guid: c67a758d3c0dcbb4dac8c12fdc08b20f, type: 2}
+  <MailBoxLetters>k__BackingField: []
   <CauldronTemperature>k__BackingField: 1
 --- !u!114 &8749834936499281840
 MonoBehaviour:
@@ -1417,6 +1419,7 @@ MonoBehaviour:
   isSaveEnabled: 0
   sceneListSo: {fileID: 11400000, guid: f9798080daf82cb419ea3c233f9f863b, type: 2}
   gameDontDestroyOnLoadManager: {fileID: 6631589442933190866}
+  codexManager: {fileID: 4284047151458457464}
   weatherManager: {fileID: 5935014821520033967}
   lunarCycleManager: {fileID: 3201330203133309056}
   moneyManager: {fileID: 8835802637744483326}
@@ -3392,3 +3395,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1561651975351071565, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
   m_PrefabInstance: {fileID: 3599737956469123593}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4284047151458457464 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 758619827947552113, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+  m_PrefabInstance: {fileID: 3599737956469123593}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ad78ddc3e3c17d46bb9501e694549c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

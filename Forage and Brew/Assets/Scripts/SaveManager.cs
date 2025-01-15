@@ -19,6 +19,7 @@ public class SaveManager : MonoBehaviour
     
     [Header("Dependencies")]
     [SerializeField] private GameDontDestroyOnLoadManager gameDontDestroyOnLoadManager;
+    [SerializeField] private CodexContentManager codexManager;
     [SerializeField] private WeatherManager weatherManager;
     [SerializeField] private LunarCycleManager lunarCycleManager;
     [SerializeField] private MoneyManager moneyManager;
@@ -63,6 +64,7 @@ public class SaveManager : MonoBehaviour
         {
             Directory.CreateDirectory(_directoryPath);
         }
+        Debug.Log(_filePath);
     }
     
     public void SaveGame()
@@ -250,5 +252,6 @@ public class SaveManager : MonoBehaviour
         [field: SerializeField] public int MoneyAmount { get; set; }
         
         [field: SerializeField] public List<Order> CurrentOrders { get; set; }
+    
     }
 }
