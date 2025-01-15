@@ -278,6 +278,9 @@ public class AutoFlip : Singleton<AutoFlip>
     
     public void HandleNewRecipes()
     {
+
+        if (CodexContentManager.instance.pageIndexesToCheck.Count == 0)
+            return;
         if (CodexContentManager.instance.pageIndexesToCheck[^1].Item1 % 2 == 1)
         {
             ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1].Item1 + 1);
@@ -317,6 +320,7 @@ public class AutoFlip : Singleton<AutoFlip>
             
         }
         
+        CodexContentManager.instance.pageIndexesToCheck.Clear();
         CharacterInputManager.Instance.EnableCodexInputs();
         CharacterInputManager.Instance.EnableCodexExitInput();
         CharacterInputManager.Instance.EnableMoveInputs();
