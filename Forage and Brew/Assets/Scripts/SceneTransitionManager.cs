@@ -13,25 +13,22 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
 
     public RectTransform maskElement;
     public UnityEvent OnSleep { get; set; } = new();
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
+    private Coroutine _coroutine;
 
     public void HandleSceneChange(string SceneName)
     {
-        StartCoroutine(ChangeScenes(SceneName));
+        if (_coroutine != null)
+            StopCoroutine(_coroutine);
+        _coroutine = StartCoroutine(ChangeScenes(SceneName));
     }
 
     public void HandleLoadNewScene()
     {
-        StartCoroutine(ShowScreen());
+        if (_coroutine != null)
+            StopCoroutine(_coroutine);
+        _coroutine = StartCoroutine(ShowScreen());
+        
     }
 
     public void HandleGoingToSleepTransition(float waitTime)
