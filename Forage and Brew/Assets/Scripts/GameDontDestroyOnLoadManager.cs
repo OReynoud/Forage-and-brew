@@ -41,7 +41,7 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     [field: SerializeField] public int QuestProgressionIndex { get; set; }
     
     [field: Expandable] [field: SerializeField] public List<NarrativeBlockOfLettersContentSo> AllNarrativeBlocksContentSo { get; set; } = new();
-    public List<NarrativeBlockOfLetters> AllNarrativeBlocks { get; set; } = new();
+    [field: SerializeField] [field: AllowNesting] public List<NarrativeBlockOfLetters> AllNarrativeBlocks { get; set; } = new();
     
     public List<Letter> ThanksAndErrorLetters { get; set; } = new();
     [field: SerializeField]public List<Letter> MailBoxLetters { get; set; } = new();

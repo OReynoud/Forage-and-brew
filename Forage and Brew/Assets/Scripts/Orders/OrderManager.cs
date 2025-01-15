@@ -144,9 +144,10 @@ public class OrderManager : MonoBehaviour
 
             if (isOrderCorrect)
             {
+                Debug.Log("Valid order");
                 GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters.Add(new Letter(
                     CurrentOrders[orderToValidateIndex].RelatedLetter,
-                    CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock,  CurrentOrders[orderToValidateIndex].OrderDisplay.daysLeftToComplete <=  0));
+                    CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock,  CurrentOrders[orderToValidateIndex].OrderDisplay.daysLeftToComplete >=  0));
                 
                 CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock.CompletedLetters[index] = true;
                 CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock.SelfProgressionIndex++;
@@ -160,9 +161,10 @@ public class OrderManager : MonoBehaviour
             }
             else
             {
+                Debug.Log("Incorrect order");
                 GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters.Add(new Letter(
                     CurrentOrders[orderToValidateIndex].RelatedLetter,
-                    CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock,CurrentOrders[orderToValidateIndex].OrderDisplay.daysLeftToComplete <=  0));
+                    CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock,CurrentOrders[orderToValidateIndex].OrderDisplay.daysLeftToComplete >=  0));
             }
 
             CurrentOrders.RemoveAt(orderToValidateIndex);

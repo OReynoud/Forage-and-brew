@@ -257,7 +257,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
             {
                 if (PinnedRecipe.instance.pinnedRecipe.Name == recipes[recipeIndex].storedPotion.Name)
                 {
-                    Debug.Log("Selected same recipe, unpinning");
+                    //Debug.Log("Selected same recipe, unpinning");
                     PinnedRecipe.instance.UnpinRecipe();
                     pinnedRecipe.pinIcon.enabled = false;
                     pinImage.enabled = false;
@@ -270,7 +270,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
                 pinnedRecipe.pinIcon.enabled = false;
             }
             PinnedRecipe.instance.PinRecipe(recipes[recipeIndex].storedPotion, recipes[recipeIndex].potionIngredients);
-            Debug.Log("Pinned recipe: " + recipes[recipeIndex].storedPotion.Name);
+            //Debug.Log("Pinned recipe: " + recipes[recipeIndex].storedPotion.Name);
             pinnedRecipe = recipes[recipeIndex];
             pinnedRecipe.pinIcon.enabled = true;
             pinImage.enabled = true;
