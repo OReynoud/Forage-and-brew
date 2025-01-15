@@ -245,8 +245,8 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                 case LetterType.Orders:
                     foreach (var demand in letter.Item1.LetterContent.OrderContent.RequestedPotions)
                     {
-                        if (demand.IsSpecific) continue;
-                        if (!GameDontDestroyOnLoadManager.Instance.UnlockedRecipes.Contains(demand.Potion))
+                        if (!demand.IsSpecific) continue;
+                        if (IsNewRecipe(demand))
                         {
                             GameDontDestroyOnLoadManager.Instance.UnlockedRecipes.Add(demand.Potion);
                             GameDontDestroyOnLoadManager.Instance.OnNewRecipeReceived.Invoke(demand.Potion);
@@ -265,6 +265,12 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         }
 
         GameDontDestroyOnLoadManager.Instance.MailBoxLetters.Clear();
+        AutoFlip.instance.HandleNewRecipes();
+    }
+
+    private bool IsNewRecipe(PotionDemand demand)
+    {
+        return !GameDontDestroyOnLoadManager.Instance.UnlockedRecipes.Contains(demand.Potion);
     }
 
     private IEnumerator HandleMultipleExecutions()

@@ -30,6 +30,7 @@ public class AutoFlip : Singleton<AutoFlip>
 
     [Foldout("Deprecated")] public FlipMode Mode;
     [Foldout("Deprecated")] public bool AutoStartFlip = true;
+    public bool isDissolving { get; set; }
 
 
     private bool isFlipping;
@@ -68,6 +69,11 @@ public class AutoFlip : Singleton<AutoFlip>
     }
 
     private void Update()
+    {
+        CodexNavigation();
+    }
+
+    private void CodexNavigation()
     {
         if (CharacterInputManager.Instance.showCodex)
         {
@@ -185,7 +191,7 @@ public class AutoFlip : Singleton<AutoFlip>
         }
     }
 
-    public void JumpToBookMark(int index)
+    public void FlipToPageIndex(int index)
     {
         if (index % 2 == 1)
         {
@@ -252,7 +258,7 @@ public class AutoFlip : Singleton<AutoFlip>
             {
                 if (bookMark.index > ControledBook.currentPage)
                 {
-                    JumpToBookMark(bookMark.index);
+                    FlipToPageIndex(bookMark.index);
                     return;
                 }
             }
@@ -263,10 +269,56 @@ public class AutoFlip : Singleton<AutoFlip>
             {
                 if (ControledBook.bookMarks[i].index < ControledBook.currentPage)
                 {
-                    JumpToBookMark(ControledBook.bookMarks[i].index);
+                    FlipToPageIndex(ControledBook.bookMarks[i].index);
                     return;
                 }
             }
         }
+    }
+    
+    public void HandleNewRecipes()
+    {
+        if (CodexContentManager.instance.pageIndexesToCheck[^1].Item1 % 2 == 1)
+        {
+            ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1].Item1 + 1);
+        }
+        else
+        {
+            ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1].Item1);
+        }
+        
+        
+        CharacterInputManager.Instance.EnterCodexMethod();
+            
+        CharacterInputManager.Instance.DisableCodexInputs();
+        CharacterInputManager.Instance.DisableMoveInputs();
+
+        StartCoroutine(PresentNewCodexContent());
+    }
+
+    IEnumerator PresentNewCodexContent()
+    {
+        yield return new WaitForSeconds(0.2f);
+        for (int i = CodexContentManager.instance.pageIndexesToCheck.Count - 1; i >= 0; i--)
+        {
+            FlipToPageIndex(CodexContentManager.instance.pageIndexesToCheck[i].Item1);
+            isDissolving = true;
+            yield return new WaitWhile(() => isFlipping);
+            if (CodexContentManager.instance.pageIndexesToCheck[i].Item2 != null)
+            {
+                CodexContentManager.instance.pageIndexesToCheck[i].Item2.StartDissolve();
+                yield return new WaitWhile(() => isDissolving);
+            }
+            else
+            {
+                
+                yield return new WaitForSeconds(0.4f);
+            }
+            
+        }
+        
+        CharacterInputManager.Instance.EnableCodexInputs();
+        CharacterInputManager.Instance.EnableCodexExitInput();
+        CharacterInputManager.Instance.EnableMoveInputs();
     }
 }

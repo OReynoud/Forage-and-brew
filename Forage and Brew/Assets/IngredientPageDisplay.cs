@@ -35,6 +35,7 @@ public class IngredientPageDisplay : MonoBehaviour
 
         if (dissolveTimer > animationTime)
         {
+            CharacterInputManager.Instance.EnableCodexInputs();
             CharacterInputManager.Instance.EnableCodexExitInput();
             CharacterInputManager.Instance.EnableMoveInputs();
             enabled = false;

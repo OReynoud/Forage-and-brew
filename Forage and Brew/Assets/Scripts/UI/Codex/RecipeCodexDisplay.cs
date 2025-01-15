@@ -10,6 +10,9 @@ public class RecipeCodexDisplay : MonoBehaviour
     [BoxGroup("Refs")] public RectTransform leftPage;
     [BoxGroup("Refs")] public RectTransform rightPage;
     [BoxGroup("Refs")] public Image pinIcon;
+    [BoxGroup("Refs")] public Image leftPageDissolve;
+    [BoxGroup("Refs")] public Image rightPageDissolve;
+    [BoxGroup("Refs")] public AnimationCurve animCurveDissolve;
     [BoxGroup("Potion Description")] public PotionValuesSo storedPotion;
     [BoxGroup("Potion Description")] public TextMeshProUGUI potionName;
     [BoxGroup("Potion Description")] public TextMeshProUGUI potionFlavorText;
@@ -29,6 +32,9 @@ public class RecipeCodexDisplay : MonoBehaviour
     [BoxGroup("Brewing Steps")] public Image[] ingredientStepImage;
     [BoxGroup("Brewing Steps")] public Image[] mainActionImage;
     [BoxGroup("Brewing Steps")] public Image[] singleActionImage;
+
+    private bool doDissolve;
+    private float dissolveTimer;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -48,9 +54,52 @@ public class RecipeCodexDisplay : MonoBehaviour
             stepText[i].transform.parent.gameObject.SetActive(false);
         }
 
+
+        
+        
+        
+
         foreach (var VARIABLE in potionDifficulty)
         {
             VARIABLE.SetActive(false);
+        }
+    }
+
+    private void Start()
+    {
+
+    }
+
+    public void StartDissolve()
+    {
+        Material mat = Instantiate(leftPageDissolve.material);
+        leftPageDissolve.material.SetFloat(Ex.CutoffHeight, 0);
+        leftPageDissolve.material = mat;
+
+        Material mat2 = Instantiate(rightPageDissolve.material);
+        rightPageDissolve.material.SetFloat(Ex.CutoffHeight, 0);
+        rightPageDissolve.material = mat2;
+        
+        doDissolve = true;
+    }
+
+    private void Update()
+    {
+        if (!doDissolve) return;
+        
+        dissolveTimer += Time.deltaTime;
+            
+        leftPageDissolve.material.SetFloat(Ex.CutoffHeight, animCurveDissolve.Evaluate(dissolveTimer));
+        rightPageDissolve.material.SetFloat(Ex.CutoffHeight, animCurveDissolve.Evaluate(dissolveTimer));
+
+        //Debug.Log(rightPageDissolve.material.GetFloat(Ex.CutoffHeight));
+        if (dissolveTimer > animCurveDissolve.keys[^1].time)
+        {
+            CharacterInputManager.Instance.EnableCodexInputs();
+            CharacterInputManager.Instance.EnableCodexExitInput();
+            CharacterInputManager.Instance.EnableMoveInputs();
+            doDissolve = false;
+            AutoFlip.instance.isDissolving = false;
         }
     }
 
