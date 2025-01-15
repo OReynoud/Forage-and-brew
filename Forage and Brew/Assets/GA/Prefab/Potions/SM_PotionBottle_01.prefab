@@ -113,6 +113,7 @@ GameObject:
   - component: {fileID: 3103666658443317962}
   - component: {fileID: 3556074987804266091}
   - component: {fileID: 8255219225679484991}
+  - component: {fileID: 6590261115292044135}
   m_Layer: 0
   m_Name: SM_PotionLiquid_01
   m_TagString: Untagged
@@ -188,6 +189,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6590261115292044135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5239802708155331624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12c395a6f4fa83c47b21d0c171565c23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  updateMode: 0
+  MaxWobble: 0.03
+  WobbleSpeedMove: 0.5
+  fillAmount: 0.5
+  Recovery: 1
+  Thickness: 0.5
+  CompensateShapeAmount: 0.132
+  mesh: {fileID: 8197621684262769644, guid: 52cc6f775ee657645853269816f7483c, type: 3}
+  rend: {fileID: 8255219225679484991}
 --- !u!1 &8407206271782340958
 GameObject:
   m_ObjectHideFlags: 0
