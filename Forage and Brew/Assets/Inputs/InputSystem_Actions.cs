@@ -1195,6 +1195,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""7cf2d32d-f1c5-4bc4-a9ba-664c676c6dcc"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Harvest"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""6bf68a35-2618-4d2c-a2e7-b74e602061f0"",
                     ""path"": ""<Gamepad>/rightStick/down"",
                     ""interactions"": """",
