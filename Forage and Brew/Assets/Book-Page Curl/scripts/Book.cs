@@ -149,14 +149,7 @@ public class Book : MonoBehaviour
             if (pageIndex % 2 == 1)
                 pageIndex--;
 
-            bookPages[currentPage].UIComponent.gameObject.SetActive(false);
-            if (currentPage > 0)
-            {
-                bookPages[currentPage - 1].UIComponent.gameObject.SetActive(false);
-            }
-            
-            currentPage = pageIndex;
-            UpdateSprites();
+            JumpToPage(pageIndex);
 
             var display = IngredientPageDisplays[x];
             CharacterInputManager.Instance.EnterCodexMethod();
@@ -169,6 +162,8 @@ public class Book : MonoBehaviour
         
         Debug.Log("No Matches detected");
     }
+
+
 
     public void SetupIngredientDisplays()
     {
@@ -649,5 +644,17 @@ public class Book : MonoBehaviour
 
         if (onFinish != null)
             onFinish();
+    }
+
+    public void JumpToPage(int pageIndex)
+    {
+        bookPages[currentPage].UIComponent.gameObject.SetActive(false);
+        if (currentPage > 0)
+        {
+            bookPages[currentPage - 1].UIComponent.gameObject.SetActive(false);
+        }
+
+        currentPage = pageIndex;
+        UpdateSprites();
     }
 }
