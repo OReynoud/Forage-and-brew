@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -63,8 +62,6 @@ public class CollectHapticChallengeManager : MonoBehaviour
     {
         GameDontDestroyOnLoadManager.Instance.OnNewIngredientCollected.AddListener(CodexCall);
     }
-
-
 
     private void Update()
     {
@@ -257,6 +254,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
         if (_currentHarvestTime <= 0f) return;
         
         _currentHarvestTime -= Time.deltaTime;
+        _currentIngredientToCollectBehaviour.SetHarvestValue(1f - _currentHarvestTime / harvestHapticChallengeSo.InputReleaseDelayTolerance);
         
         if (_currentHarvestTime <= 0f)
         {
@@ -297,6 +295,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
         if (_currentHarvestTime == 0f && !_canValidateHarvest) return;
         
         _currentHarvestTime = 0f;
+        _currentIngredientToCollectBehaviour.SetHarvestValue(0f);
         
         CharacterInputManager.Instance.EnableCodexInputs();
         
