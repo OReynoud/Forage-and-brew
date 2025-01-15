@@ -128,7 +128,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
             float percentPenalty = letter.LetterContent.OrderContent.LateMoneyPenaltyPercentage;
 
             int moneyToEarn;
-            if (letter.RelatedNarrativeBlock.CompletedLetters[letter.RelatedNarrativeBlock.SelfProgressionIndex - 1])
+            if (letter.RelatedNarrativeBlock.SelfProgressionIndex > 0 && letter.RelatedNarrativeBlock.CompletedLetters[letter.RelatedNarrativeBlock.SelfProgressionIndex - 1])
             {
                 moneyToEarn = letter.DeliveredOnTime
                     ? letter.LetterContent.OrderContent.MoneyReward
@@ -136,6 +136,8 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                 _moneyAmountsToEarn.Add((moneyToEarn, chosenLetters.Count));
                 chosenLetters.Add((new Letter(letter.LetterContent.RelatedSuccessLetter, letter.RelatedNarrativeBlock),
                     letter.LetterContent));
+                letter.RelatedNarrativeBlock.NewLetterCountDown =
+                    letter.RelatedNarrativeBlock.ContentSo.TimeForLetterAfterSuccess;
             }
             else
             {
@@ -145,6 +147,8 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                 _moneyAmountsToEarn.Add((moneyToEarn, chosenLetters.Count));
                 chosenLetters.Add((new Letter(letter.LetterContent.RelatedFailureLetter, letter.RelatedNarrativeBlock),
                     letter.LetterContent));
+                letter.RelatedNarrativeBlock.NewLetterCountDown =
+                    letter.RelatedNarrativeBlock.ContentSo.TimeForLetterAfterFailure;
             }
         }
 
@@ -159,6 +163,11 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 
             if (t.CompletedLetters[t.SelfProgressionIndex] || t.InactiveLetters[t.SelfProgressionIndex])
                 continue;
+            if (t.NewLetterCountDown > 0)
+            {
+                t.NewLetterCountDown--;
+                continue;
+            }
 
             chosenLetters.Add((new Letter(t.ContentSo.Content[t.SelfProgressionIndex], t), null));
             t.InactiveLetters[t.SelfProgressionIndex] = true;

@@ -60,8 +60,15 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
         GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients.Remove(collectedIngredientBehaviour);
         GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients[^1].CookedIngredients.Add(new CookedIngredientForm(
             collectedIngredientBehaviour.IngredientValuesSo, collectedIngredientBehaviour.CookedForm));
+        
+        collectedIngredientBehaviour.OnIngredientDropEnd.AddListener(DestroyIngredient);
 
         PinnedRecipe.instance.UpdateRecipeStepsCounter();
+    }
+    
+    private void DestroyIngredient(CollectedIngredientBehaviour collectedIngredientBehaviour)
+    {
+        Destroy(collectedIngredientBehaviour.gameObject);
     }
     
     public void AddTemperature(Temperature temperature)

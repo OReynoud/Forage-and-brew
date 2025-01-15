@@ -34,6 +34,8 @@ public class RumbleManager : MonoBehaviour
 
     public void PlayRumble(float duration, float magnitude)
     {
+        if (Gamepad.current == null) return;
+        
         Gamepad.current.SetMotorSpeeds(magnitude * 0.5f, magnitude);
         _rumbleIntervalTimeLeft = 0f;
         _rumbleDurationsLeft = new List<float>();
@@ -42,6 +44,8 @@ public class RumbleManager : MonoBehaviour
 
     public void PlayMultipleRumbles(List<float> durations, float magnitude, List<float> intervals)
     {
+        if (Gamepad.current == null) return;
+
         Gamepad.current.SetMotorSpeeds(magnitude * 0.5f, magnitude);
         _rumbleDurationsLeft = durations.GetRange(1, durations.Count - 1);
         _rumbleTimeLeft = durations[0];

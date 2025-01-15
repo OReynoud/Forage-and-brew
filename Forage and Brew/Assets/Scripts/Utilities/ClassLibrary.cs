@@ -73,6 +73,7 @@ public class NarrativeBlockOfLetters
     [field: AllowNesting] [field: SerializeField] [field: ReadOnly] public int SelfProgressionIndex { get; set; }
     [field: SerializeField] [field: HideInInspector] public bool[] CompletedLetters { get; set; }
     [field: SerializeField] [field: HideInInspector] public bool[] InactiveLetters { get; set; }
+    [field: AllowNesting] [field: SerializeField] [field: ReadOnly] public int NewLetterCountDown { get; set; }
 
     public NarrativeBlockOfLetters(NarrativeBlockOfLettersContentSo content)
     {

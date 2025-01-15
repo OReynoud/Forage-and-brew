@@ -48,11 +48,13 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     [SerializeField] private GameObject scrapingInputLeftGameObject;
     [SerializeField] private GameObject scrapingInputRightGameObject;
     [SerializeField] private GameObject harvestInputLeftGameObject;
-    [SerializeField] private GameObject harvestArrowLeftGameObject;
     [SerializeField] private GameObject harvestReleaseLeftGameObject;
+    [SerializeField] private GameObject harvestGaugeLeftGameObject;
+    [SerializeField] private Slider harvestGaugeLeftSlider;
     [SerializeField] private GameObject harvestInputRightGameObject;
-    [SerializeField] private GameObject harvestArrowRightGameObject;
     [SerializeField] private GameObject harvestReleaseRightGameObject;
+    [SerializeField] private GameObject harvestGaugeRightGameObject;
+    [SerializeField] private Slider harvestGaugeRightSlider;
     public bool DoesNeedToShowUi { get; set; }
     private float _currentTriggerTime;
     
@@ -153,12 +155,14 @@ public class IngredientToCollectBehaviour : MonoBehaviour
             if (isUiRight)
             {
                 harvestInputRightGameObject.SetActive(true);
-                harvestArrowRightGameObject.SetActive(true);
+                harvestGaugeRightGameObject.SetActive(true);
+                harvestGaugeRightSlider.value = 0f;
             }
             else
             {
                 harvestInputLeftGameObject.SetActive(true);
-                harvestArrowLeftGameObject.SetActive(true);
+                harvestGaugeLeftGameObject.SetActive(true);
+                harvestGaugeLeftSlider.value = 0f;
             }
         }
     }
@@ -189,11 +193,11 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         scrapingInputLeftGameObject.SetActive(false);
         scrapingInputRightGameObject.SetActive(false);
         harvestInputLeftGameObject.SetActive(false);
-        harvestArrowLeftGameObject.SetActive(false);
         harvestReleaseLeftGameObject.SetActive(false);
+        harvestGaugeLeftGameObject.SetActive(false);
         harvestInputRightGameObject.SetActive(false);
-        harvestArrowRightGameObject.SetActive(false);
         harvestReleaseRightGameObject.SetActive(false);
+        harvestGaugeRightGameObject.SetActive(false);
     }
 
     public void PressUnearthing()
@@ -232,16 +236,26 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         }
     }
     
+    public void SetHarvestValue(float value)
+    {
+        if (isUiRight)
+        {
+            harvestGaugeRightSlider.value = value;
+        }
+        else
+        {
+            harvestGaugeLeftSlider.value = value;
+        }
+    }
+    
     public void ReleaseHarvest()
     {
         if (isUiRight)
         {
-            harvestArrowRightGameObject.SetActive(false);
             harvestReleaseRightGameObject.SetActive(true);
         }
         else
         {
-            harvestArrowLeftGameObject.SetActive(false);
             harvestReleaseLeftGameObject.SetActive(true);
         }
     }

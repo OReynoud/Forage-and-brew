@@ -7,4 +7,8 @@ public class NarrativeBlockOfLettersContentSo : ScriptableObject
     [field: SerializeField] public LetterContentSo[] Content { get; private set; }
     [field: SerializeField] public int RequiredQuestProgressionIndex { get; private set; }
     [field: SerializeField] public bool CanAdvanceQuestProgressionIndex { get; set; }
+    
+    [field: SerializeField] public int TimeForLetterAfterSuccess { get; set; }
+    
+    [field: SerializeField] public int TimeForLetterAfterFailure { get; set; }
 }
