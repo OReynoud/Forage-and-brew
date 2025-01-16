@@ -125,7 +125,7 @@ public class CameraController : Singleton<CameraController>
         posMinClamp = TargetCamSettings.posMinClamp;
         
         applyClamping = posMaxClamp.sqrMagnitude + posMinClamp.sqrMagnitude >= 1;
-        Debug.Log("Cam Settings: " + preset.name);
+        //Debug.Log("Cam Settings: " + preset.name);
     }
 
     private void ApplyScriptableCamSettings(float TransitionTime)

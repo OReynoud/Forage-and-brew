@@ -4,5 +4,6 @@ using UnityEngine;
 public class IngredientTypeSo : ScriptableObject
 {
     [field: SerializeField] public string Name { get; private set; }
-    [field: SerializeField] public Sprite Icon { get; private set; }
+    [field: SerializeField] public Sprite IconLow { get; private set; }
+    [field: SerializeField] public Sprite IconHigh { get; private set; }
 }

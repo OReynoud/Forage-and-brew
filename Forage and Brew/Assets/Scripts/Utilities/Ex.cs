@@ -39,14 +39,14 @@ public static class Ex
     }
 
 
-    public static Sprite HandleWritingIngredientType(CookedIngredientForm cookedIngredient)
+    public static Sprite HandleWritingIngredientType(CookedIngredientForm cookedIngredient, bool useLow)
     {
         if (cookedIngredient.IsAType)
         {
-            return cookedIngredient.IngredientType.Icon;
+            return useLow ? cookedIngredient.IngredientType.IconLow : cookedIngredient.IngredientType.IconHigh;
         }
         
-        return cookedIngredient.Ingredient.icon;
+        return useLow ? cookedIngredient.Ingredient.iconLow : cookedIngredient.Ingredient.iconHigh;
         
     }
 }
