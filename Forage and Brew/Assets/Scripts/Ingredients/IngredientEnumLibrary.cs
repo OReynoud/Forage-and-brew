@@ -17,14 +17,12 @@ public enum SpawnLocation
     RiverBank = 1 << 6,
     RiverBed = 1 << 7,
     Pond = 1 << 8,
-    ImmergedLand = 1 << 9,
+    SubmergedLand = 1 << 9,
     BaseOfBigTree = 1 << 10,
     MagicTreeStump = 1 << 11,
     MagicDeadTrunk = 1 << 12,
-    SpikyBush = 1 << 13,
-    RockBig = 1 << 14,
-    RockMedium = 1 << 15,
-    RockSmall = 1 << 16,
+    Rock = 1 << 13,
+  
    
     
 }
