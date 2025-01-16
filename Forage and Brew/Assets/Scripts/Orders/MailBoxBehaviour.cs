@@ -159,6 +159,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                 continue;
             }
 
+            Debug.Log("Generated a letter");
             GameDontDestroyOnLoadManager.Instance.ChosenLetters.Add((new Letter(t.ContentSo.Content[t.SelfProgressionIndex], t), null));
             t.InactiveLetters[t.SelfProgressionIndex] = true;
         }

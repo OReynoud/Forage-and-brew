@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class CameraController : Singleton<CameraController>
 {
@@ -17,8 +18,8 @@ public class CameraController : Singleton<CameraController>
     [BoxGroup("Adjustable Variables")] [Range(0,1)]public float rotationLerp = 0.02f;
     [BoxGroup("Adjustable Variables")] [Range(0,1)]public float focalLerp = 0.07f;
     
-    [BoxGroup("Adjustable Variables")] public Vector2 posMaxClamp;
-    [BoxGroup("Adjustable Variables")] public Vector2 posMinClamp;
+    [BoxGroup("Adjustable Variables")] public Vector3 posMaxClamp;
+    [BoxGroup("Adjustable Variables")] public Vector3 posMinClamp;
 
     [BoxGroup] [Expandable] public CameraPreset scriptableCamSettings;
     private CameraPreset previousCamSettings;
@@ -30,7 +31,8 @@ public class CameraController : Singleton<CameraController>
 
     private float transitionTime = 0.001f;
     private float counter;
-    private bool applyClamping;
+    [SerializeField][ReadOnly]private bool applyXYClamping;
+    [SerializeField][ReadOnly]private bool applyZClamping;
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -50,7 +52,8 @@ public class CameraController : Singleton<CameraController>
     public override void Awake()
     {
         base.Awake();
-        applyClamping = posMaxClamp.sqrMagnitude + posMinClamp.sqrMagnitude >= 1;
+        applyXYClamping = Mathf.Abs(posMaxClamp.x + posMaxClamp.y)  >= 1 || Mathf.Abs(posMinClamp.x + posMinClamp.y) >= 1;
+        applyZClamping = posMaxClamp.z >= 1 || posMinClamp.z <= -1;
         
         cam = Camera.main;
         targetFocalLength = cam.focalLength;
@@ -124,7 +127,9 @@ public class CameraController : Singleton<CameraController>
         posMaxClamp = TargetCamSettings.posMaxClamp;
         posMinClamp = TargetCamSettings.posMinClamp;
         
-        applyClamping = posMaxClamp.sqrMagnitude + posMinClamp.sqrMagnitude >= 1;
+        
+        applyXYClamping = Mathf.Abs(posMaxClamp.x + posMaxClamp.y)  >= 1 || Mathf.Abs(posMinClamp.x + posMinClamp.y) >= 1;
+        applyZClamping = posMaxClamp.z >= 1 || posMinClamp.z <= -1;
         //Debug.Log("Cam Settings: " + preset.name);
     }
 
@@ -181,7 +186,7 @@ public class CameraController : Singleton<CameraController>
 
     private void ClampCamPos()
     {
-        if (!applyClamping || GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge) 
+        if (!applyXYClamping || GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge) 
             return;
         
         if (transform.parent.position.x > posMaxClamp.x)
@@ -203,6 +208,20 @@ public class CameraController : Singleton<CameraController>
         {
             transform.parent.position =
                 new Vector3(transform.parent.position.x, transform.parent.position.y, posMinClamp.y);
+        }
+
+        if (!applyZClamping)
+            return;
+        
+        if (transform.parent.position.y > posMaxClamp.z)
+        {
+            transform.parent.position =
+                new Vector3(transform.parent.position.x, posMaxClamp.z, transform.parent.position.z);
+        }
+        if (transform.parent.position.y < posMinClamp.z)
+        {
+            transform.parent.position =
+                new Vector3(transform.parent.position.x, posMinClamp.z, transform.parent.position.z);
         }
     }
 
