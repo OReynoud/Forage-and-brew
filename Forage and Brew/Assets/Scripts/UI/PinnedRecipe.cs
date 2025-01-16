@@ -191,62 +191,45 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
                 stepIngredientCounter[writingIndex].gameObject.SetActive(true);
                 if (j < CurrentTemperatureAndIngredients.Count)
                 {
-                    if (counter.CookedIngredients.Count > 0 && i < counter.CookedIngredients.Count)
+                    int amount = 0;
+                    foreach (var cooked in counter.CookedIngredients)
                     {
-                        bool valid = true;
-
                         //Check for same ingredient or type
                         if (target.CookedIngredients[i].IsAType)
                         {
-                            if (counter.CookedIngredients[i].Ingredient.Type !=
+                            if (cooked.Ingredient.Type !=
                                 target.CookedIngredients[i].IngredientType)
                             {
-                                valid = false;
+                                continue;
                             }
                         }
                         else
                         {
-                            if (counter.CookedIngredients[i].Ingredient !=
+                            if (cooked.Ingredient !=
                                 target.CookedIngredients[i].Ingredient)
                             {
-                                valid = false;
+                                continue;
                             }
                         }
 
-                        //Check for same cooked form
-                        if (target.CookedIngredients[i].CookedForm != counter.CookedIngredients[i].CookedForm)
+                        if (target.CookedIngredients[i].CookedForm != cooked.CookedForm)
                         {
-                            valid = false;
+                            continue;
                         }
 
-                        if (valid)
-                        {
-                            int ingredientCounter =
-                                Ex.CheckForSameElementsIngredientSo(i, 0, counter.CookedIngredients);
-                            stepIngredientCounter[writingIndex].text = (ingredientCounter + 1).ToString();
-                            if (ingredientCounter == numberOfIngredients)
-                            {
-                                stepIngredientCounter[writingIndex].color = positiveColor;
-                                checkMarkImage[writingIndex].enabled = true;
-                            }
-                            else
-                            {
-                                stepIngredientCounter[writingIndex].color = negativeColor;
-                                checkMarkImage[writingIndex].enabled = false;
-                            }
-                        }
-                        else
-                        {
-                            stepIngredientCounter[writingIndex].color = negativeColor;
-                            checkMarkImage[writingIndex].enabled = false;
-                            stepIngredientCounter[writingIndex].text = "0";
-                        }
+                        amount++;
+                    }
+
+                    stepIngredientCounter[writingIndex].text = amount.ToString();
+                    if (amount == numberOfIngredients + 1)
+                    {
+                        stepIngredientCounter[writingIndex].color = positiveColor;
+                        checkMarkImage[writingIndex].enabled = true;
                     }
                     else
                     {
                         stepIngredientCounter[writingIndex].color = negativeColor;
                         checkMarkImage[writingIndex].enabled = false;
-                        stepIngredientCounter[writingIndex].text = "0";
                     }
                 }
                 else
@@ -289,7 +272,15 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
             if (j < CurrentTemperatureAndIngredients.Count)
             {
-                if (counter.Temperature == target.Temperature)
+                bool ingredientConditionSatisfied = true;
+                for (int y = 0; y < writingIndex - 1; y++)
+                {
+                    if (checkMarkImage[y].enabled)
+                        continue;
+                    ingredientConditionSatisfied = false;
+                    break;
+                }
+                if (counter.Temperature == target.Temperature && ingredientConditionSatisfied)
                 {
                     checkMarkImage[writingIndex].enabled = true;
                 }
@@ -318,7 +309,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
             checkMarkImage[i].enabled = false;
             stepIngredientCounter[i].text = "0";
         }
-        
+
         CurrentTemperatureAndIngredients = GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients;
 
         for (int j = 0; j < pinnedRecipe.TemperatureChallengeIngredients.Length; j++)
@@ -340,68 +331,71 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
                 stepIngredientCounter[i].enabled = true;
                 if (j < CurrentTemperatureAndIngredients.Count)
                 {
-                    if (counter.CookedIngredients.Count > 0 && i < counter.CookedIngredients.Count)
+                    int amount = 0;
+                    foreach (var cooked in counter.CookedIngredients)
                     {
-                        bool valid = true;
-
                         //Check for same ingredient or type
                         if (target.CookedIngredients[i].IsAType)
                         {
-                            if (counter.CookedIngredients[i].Ingredient.Type !=
+                            if (cooked.Ingredient.Type !=
                                 target.CookedIngredients[i].IngredientType)
                             {
-                                valid = false;
+                                continue;
                             }
                         }
                         else
                         {
-                            if (counter.CookedIngredients[i].Ingredient !=
+                            if (cooked.Ingredient !=
                                 target.CookedIngredients[i].Ingredient)
                             {
-                                valid = false;
+                                continue;
                             }
                         }
 
-                        //Check for same cooked form
-                        if (target.CookedIngredients[i].CookedForm != counter.CookedIngredients[i].CookedForm)
+                        if (target.CookedIngredients[i].CookedForm != cooked.CookedForm)
                         {
-                            valid = false;
+                            continue;
                         }
 
-                        if (valid)
-                        {
-                            int ingredientCounter =
-                                Ex.CheckForSameElementsIngredientSo(i, 0, counter.CookedIngredients);
-                            stepIngredientCounter[writingIndex].text = (ingredientCounter + 1).ToString();
-                            if (ingredientCounter == numberOfIngredients)
-                            {
-                                stepIngredientCounter[writingIndex].color = positiveColor;
-                                checkMarkImage[writingIndex].enabled = true;
-                            }
-                            else
-                            {
-                                stepIngredientCounter[writingIndex].color = negativeColor;
-                                checkMarkImage[writingIndex].enabled = false;
-                            }
-                        }
-                        else
-                        {
-                            stepIngredientCounter[writingIndex].text = "0";
-                        }
+                        amount++;
+                    }
+
+                    stepIngredientCounter[writingIndex].text = amount.ToString();
+                    if (amount == numberOfIngredients + 1)
+                    {
+                        stepIngredientCounter[writingIndex].color = positiveColor;
+                        checkMarkImage[writingIndex].enabled = true;
                     }
                     else
                     {
-                        stepIngredientCounter[writingIndex].text = "0";
+                        stepIngredientCounter[writingIndex].color = negativeColor;
+                        checkMarkImage[writingIndex].enabled = false;
                     }
+                }
+                else
+                {
+                    stepIngredientCounter[writingIndex].color = negativeColor;
+                    checkMarkImage[writingIndex].enabled = false;
+                    stepIngredientCounter[writingIndex].text = "0";
                 }
 
                 i += numberOfIngredients;
                 writingIndex++;
             }
+            
 
             if (j < CurrentTemperatureAndIngredients.Count)
             {
-                if (counter.Temperature == target.Temperature)
+                bool ingredientConditionSatisfied = true;
+                for (int y = 0; y < writingIndex - 1; y++)
+                {
+                    if (checkMarkImage[y].enabled)
+                        continue;
+                    ingredientConditionSatisfied = false;
+                    break;
+                }
+                
+                if (counter.Temperature == target.Temperature && ingredientConditionSatisfied)
                 {
                     checkMarkImage[writingIndex].enabled = true;
                 }
