@@ -125,7 +125,7 @@ public class CameraController : Singleton<CameraController>
         
         
         applyXYClamping = Mathf.Abs(TargetCamSettings.posMaxClamp.x + TargetCamSettings.posMaxClamp.y)  >= 1 || Mathf.Abs(TargetCamSettings.posMinClamp.x + TargetCamSettings.posMinClamp.y) >= 1;
-        applyZClamping = Mathf.Abs(TargetCamSettings.posMaxClamp.z) >= 1 || Mathf.Abs(TargetCamSettings.posMinClamp.z) >= -1;
+        applyZClamping = Mathf.Abs(TargetCamSettings.posMaxClamp.z) >= 1 || Mathf.Abs(TargetCamSettings.posMinClamp.z) >= 1;
         //Debug.Log("Cam Settings: " + preset.name);
     }
 
