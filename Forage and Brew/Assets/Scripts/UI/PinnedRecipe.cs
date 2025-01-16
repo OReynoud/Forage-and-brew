@@ -19,6 +19,8 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
     [BoxGroup("References")] public TextMeshProUGUI title;
     [BoxGroup("References")] public CanvasGroup ingredientsCanvas;
     [BoxGroup("References")] public CanvasGroup recipeStepsCanvas;
+    [BoxGroup("References")] public Sprite ingredientBackground;
+    [BoxGroup("References")] public Sprite ingredientTypeBackground;
 
     [BoxGroup("Behavior")] public Vector3 restingPos;
     [BoxGroup("Behavior")] public Vector3 pinnedPos;
@@ -28,6 +30,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
 
     //Recipe ingredients
+    [BoxGroup("Recipe Ingredients")] public Image[] backGround;
     [BoxGroup("Recipe Ingredients")] public Image[] potionIngredientsImage;
     [BoxGroup("Recipe Ingredients")] public TextMeshProUGUI[] potionIngredientQuantity;
     [BoxGroup("Recipe Ingredients")] public TextMeshProUGUI[] potionIngredientCounter;
@@ -111,17 +114,17 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         tempCollectedIngredientsList.Clear();
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.CollectedIngredients)
         {
-            tempCollectedIngredientsList.Add(ingredient.icon);
+            tempCollectedIngredientsList.Add(ingredient.iconLow);
         }
 
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients)
         {
-            tempCollectedIngredientsList.Add(ingredient.IngredientValuesSo.icon);
+            tempCollectedIngredientsList.Add(ingredient.IngredientValuesSo.iconLow);
         }
 
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.FloorCollectedIngredients)
         {
-            tempCollectedIngredientsList.Add(ingredient.Ingredient.icon);
+            tempCollectedIngredientsList.Add(ingredient.Ingredient.iconLow);
         }
 
         CurrentTemperatureAndIngredients = GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients;
@@ -169,7 +172,16 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
 
                 ingredientStepImage[writingIndex].enabled = true;
-                ingredientStepImage[writingIndex].sprite = Ex.HandleWritingIngredientType(cookedIngredient);
+                ingredientStepImage[writingIndex].sprite = Ex.HandleWritingIngredientType(cookedIngredient, false);
+                if (cookedIngredient.IsAType)
+                {
+                    backGround[writingIndex].sprite = ingredientTypeBackground;
+                }
+                else
+                {
+                    
+                    backGround[writingIndex].sprite = ingredientBackground;
+                }
 
                 switch (cookedIngredient.CookedForm)
                 {
@@ -469,17 +481,17 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         tempCollectedIngredientsList.Clear();
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.CollectedIngredients)
         {
-            tempCollectedIngredientsList.Add(ingredient.icon);
+            tempCollectedIngredientsList.Add(ingredient.iconLow);
         }
 
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients)
         {
-            tempCollectedIngredientsList.Add(ingredient.IngredientValuesSo.icon);
+            tempCollectedIngredientsList.Add(ingredient.IngredientValuesSo.iconLow);
         }
 
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.FloorCollectedIngredients)
         {
-            tempCollectedIngredientsList.Add(ingredient.Ingredient.icon);
+            tempCollectedIngredientsList.Add(ingredient.Ingredient.iconLow);
         }
 
         for (int i = 0; i < potionIngredients.Length; i++)

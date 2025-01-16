@@ -38,7 +38,8 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
     [Foldout("Debug")] public PotionValuesSo testPotion;
 
-    [Foldout("Debug")] private List<Sprite> tempIngredientsList = new();
+    [Foldout("Debug")] private List<Sprite> tempIngredientsLow = new();
+    [Foldout("Debug")] private List<Sprite> tempIngredientsHigh = new();
 
     public List<(int, RecipeCodexDisplay)> pageIndexesToCheck = new ();
 
@@ -78,17 +79,19 @@ public class CodexContentManager : Singleton<CodexContentManager>
             {
                 if (cookedIngredient.IsAType)
                 {
-                    tempIngredientsList.Add(cookedIngredient.IngredientType.Icon);
+                    tempIngredientsLow.Add(cookedIngredient.IngredientType.IconLow);
+                    tempIngredientsHigh.Add(cookedIngredient.IngredientType.IconHigh);
                 }
                 else
                 {
-                    tempIngredientsList.Add(cookedIngredient.Ingredient.icon);
+                    tempIngredientsLow.Add(cookedIngredient.Ingredient.iconLow);
+                    tempIngredientsHigh.Add(cookedIngredient.Ingredient.iconHigh);
                 }
             }
         }
 
-        newRecipe.InitPage(tempIngredientsList.ToArray(),newRecipeValues);
-        tempIngredientsList.Clear();
+        newRecipe.InitPage(tempIngredientsLow.ToArray(), tempIngredientsHigh.ToArray() ,newRecipeValues);
+        tempIngredientsLow.Clear();
         InsertRecipePages( newRecipeValues, newRecipe);
     }
 
@@ -269,7 +272,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
             {
                 pinnedRecipe.pinIcon.enabled = false;
             }
-            PinnedRecipe.instance.PinRecipe(recipes[recipeIndex].storedPotion, recipes[recipeIndex].potionIngredients);
+            PinnedRecipe.instance.PinRecipe(recipes[recipeIndex].storedPotion, recipes[recipeIndex].potionIngredientsHigh);
             //Debug.Log("Pinned recipe: " + recipes[recipeIndex].storedPotion.Name);
             pinnedRecipe = recipes[recipeIndex];
             pinnedRecipe.pinIcon.enabled = true;
