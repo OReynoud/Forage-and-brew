@@ -124,12 +124,8 @@ public class CameraController : Singleton<CameraController>
         counter = 0;
         
         
-        posMaxClamp = TargetCamSettings.posMaxClamp;
-        posMinClamp = TargetCamSettings.posMinClamp;
-        
-        
-        applyXYClamping = Mathf.Abs(posMaxClamp.x + posMaxClamp.y)  >= 1 || Mathf.Abs(posMinClamp.x + posMinClamp.y) >= 1;
-        applyZClamping = posMaxClamp.z >= 1 || posMinClamp.z <= -1;
+        applyXYClamping = Mathf.Abs(TargetCamSettings.posMaxClamp.x + TargetCamSettings.posMaxClamp.y)  >= 1 || Mathf.Abs(TargetCamSettings.posMinClamp.x + TargetCamSettings.posMinClamp.y) >= 1;
+        applyZClamping = Mathf.Abs(TargetCamSettings.posMaxClamp.z) >= 1 || Mathf.Abs(TargetCamSettings.posMinClamp.z) >= -1;
         //Debug.Log("Cam Settings: " + preset.name);
     }
 
@@ -257,5 +253,8 @@ public class CameraController : Singleton<CameraController>
         positionLerp = Mathf.Lerp(previousCamSettings.positionLerp,TargetCamSettings.positionLerp, counter / transitionTime);
         rotationLerp = Mathf.Lerp(previousCamSettings.rotationLerp,TargetCamSettings.rotationLerp, counter / transitionTime);
         focalLerp = Mathf.Lerp(previousCamSettings.focalLerp,TargetCamSettings.focalLerp, counter / transitionTime);
+        
+        posMaxClamp = Vector3.Lerp(previousCamSettings.posMaxClamp,TargetCamSettings.posMaxClamp,counter / transitionTime);
+        posMinClamp = Vector3.Lerp(previousCamSettings.posMinClamp,TargetCamSettings.posMinClamp,counter / transitionTime);
     }
 }

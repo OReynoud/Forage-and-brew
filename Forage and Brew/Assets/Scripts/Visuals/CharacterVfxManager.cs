@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class CharacterVfxManager : MonoBehaviour
 {
@@ -8,8 +9,9 @@ public class CharacterVfxManager : MonoBehaviour
     [Header("Rain")]
     [SerializeField] private WeatherStateSo rainWeatherState;
     [SerializeField] private GameObject rainVfxGameObject;
-    [SerializeField] private AudioSource rainSfx;
-    [SerializeField] private AudioSource houseSfx;
+    [SerializeField] private AudioSource musicSource;
+    
+    [SerializeField] private AudioResource musicHouse;
 
     
     private void Awake()
@@ -29,7 +31,8 @@ public class CharacterVfxManager : MonoBehaviour
     {
         if (scene == Scene.Biome1 && WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == rainWeatherState)
         {
-            rainSfx.Play();
+            //musicSource.resource
+            musicSource.Play();
             PlayRainVfx();
         }
 
@@ -40,7 +43,7 @@ public class CharacterVfxManager : MonoBehaviour
 
         if (scene == Scene.House && GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay == TimeOfDay.Nighttime)
         {
-            houseSfx.Play();
+            musicSource.Play();
         }
     }
     
