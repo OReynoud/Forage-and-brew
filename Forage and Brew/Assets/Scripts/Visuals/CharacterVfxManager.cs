@@ -32,7 +32,7 @@ public class CharacterVfxManager : MonoBehaviour
     {
         if (scene == Scene.Biome1 && WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == rainWeatherState)
         {
-            musicSource.resource = musicHouse;
+            musicSource.resource = musicRainForest;
             musicSource.Play();
             PlayRainVfx();
         }
@@ -42,10 +42,10 @@ public class CharacterVfxManager : MonoBehaviour
             PlayRainVfx();
         }
 
-        //&& GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay == TimeOfDay.Nighttime
-        if (scene == Scene.House )
+        
+        if (scene == Scene.House && GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay == TimeOfDay.Nighttime)
         {
-            musicSource.resource = musicRainForest;
+            musicSource.resource = musicHouse;
             musicSource.Play();
         }
     }
