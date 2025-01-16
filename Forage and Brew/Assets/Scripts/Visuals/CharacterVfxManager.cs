@@ -37,6 +37,11 @@ public class CharacterVfxManager : MonoBehaviour
         {
             PlayRainVfx();
         }
+
+        if (scene == Scene.House && GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay == TimeOfDay.Nighttime)
+        {
+            houseSfx.Play();
+        }
     }
     
     public void PlayRainVfx()

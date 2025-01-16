@@ -17,8 +17,8 @@ public class CameraController : Singleton<CameraController>
     [BoxGroup("Adjustable Variables")] [Range(0,1)]public float rotationLerp = 0.02f;
     [BoxGroup("Adjustable Variables")] [Range(0,1)]public float focalLerp = 0.07f;
     
-    [BoxGroup("Adjustable Variables")] public Vector2 posMaxClamp;
-    [BoxGroup("Adjustable Variables")] public Vector2 posMinClamp;
+    [BoxGroup("Adjustable Variables")] public Vector3 posMaxClamp;
+    [BoxGroup("Adjustable Variables")] public Vector3 posMinClamp;
 
     [BoxGroup] [Expandable] public CameraPreset scriptableCamSettings;
     private CameraPreset previousCamSettings;
@@ -50,7 +50,7 @@ public class CameraController : Singleton<CameraController>
     public override void Awake()
     {
         base.Awake();
-        applyClamping = posMaxClamp.sqrMagnitude + posMinClamp.sqrMagnitude >= 1;
+        applyClamping = posMaxClamp.sqrMagnitude  >= 1 || posMinClamp.sqrMagnitude >= 1;
         
         cam = Camera.main;
         targetFocalLength = cam.focalLength;
@@ -203,6 +203,16 @@ public class CameraController : Singleton<CameraController>
         {
             transform.parent.position =
                 new Vector3(transform.parent.position.x, transform.parent.position.y, posMinClamp.y);
+        }
+        if (transform.parent.position.y > posMaxClamp.z)
+        {
+            transform.parent.position =
+                new Vector3(transform.parent.position.x, posMaxClamp.z, transform.parent.position.z);
+        }
+        if (transform.parent.position.y < posMinClamp.z)
+        {
+            transform.parent.position =
+                new Vector3(transform.parent.position.x, posMinClamp.z, transform.parent.position.z);
         }
     }
 
