@@ -8,6 +8,8 @@ public class CharacterVfxManager : MonoBehaviour
     [Header("Rain")]
     [SerializeField] private WeatherStateSo rainWeatherState;
     [SerializeField] private GameObject rainVfxGameObject;
+    [SerializeField] private AudioSource rainSfx;
+    [SerializeField] private AudioSource houseSfx;
 
     
     private void Awake()
@@ -25,8 +27,13 @@ public class CharacterVfxManager : MonoBehaviour
 
     public void CheckForRainVfx(Scene scene)
     {
-        if (scene == Scene.Biome1 && WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == rainWeatherState ||
-            scene == Scene.Biome2 && WeatherManager.Instance.CurrentWeatherStates[Biome.Swamp].WeatherStateSo == rainWeatherState)
+        if (scene == Scene.Biome1 && WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == rainWeatherState)
+        {
+            rainSfx.Play();
+            PlayRainVfx();
+        }
+
+        if (scene == Scene.Biome2 && WeatherManager.Instance.CurrentWeatherStates[Biome.Swamp].WeatherStateSo == rainWeatherState)
         {
             PlayRainVfx();
         }
