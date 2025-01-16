@@ -13,6 +13,6 @@ public class CameraPreset : ScriptableObject
     [Range(0,1)]public float rotationLerp = 0.02f;
     [Range(0,1)]public float focalLerp = 0.07f;
     
-    [BoxGroup("Adjustable Variables")] public Vector3 posMaxClamp;
-    [BoxGroup("Adjustable Variables")] public Vector3 posMinClamp;
+    [BoxGroup("Adjustable Variables")] public Vector3 posMaxClamp = new Vector3(0,0,100);
+    [BoxGroup("Adjustable Variables")] public Vector3 posMinClamp = new Vector3(0,0,-100);
 }

@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class CameraController : Singleton<CameraController>
 {
@@ -30,7 +31,8 @@ public class CameraController : Singleton<CameraController>
 
     private float transitionTime = 0.001f;
     private float counter;
-    private bool applyClamping;
+    [SerializeField][ReadOnly]private bool applyXYClamping;
+    [SerializeField][ReadOnly]private bool applyZClamping;
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -50,7 +52,8 @@ public class CameraController : Singleton<CameraController>
     public override void Awake()
     {
         base.Awake();
-        applyClamping = posMaxClamp.sqrMagnitude  >= 1 || posMinClamp.sqrMagnitude >= 1;
+        applyXYClamping = Mathf.Abs(posMaxClamp.x + posMaxClamp.y)  >= 1 || Mathf.Abs(posMinClamp.x + posMinClamp.y) >= 1;
+        applyZClamping = posMaxClamp.z >= 1 || posMinClamp.z <= -1;
         
         cam = Camera.main;
         targetFocalLength = cam.focalLength;
@@ -124,7 +127,9 @@ public class CameraController : Singleton<CameraController>
         posMaxClamp = TargetCamSettings.posMaxClamp;
         posMinClamp = TargetCamSettings.posMinClamp;
         
-        applyClamping = posMaxClamp.sqrMagnitude + posMinClamp.sqrMagnitude >= 1;
+        
+        applyXYClamping = Mathf.Abs(posMaxClamp.x + posMaxClamp.y)  >= 1 || Mathf.Abs(posMinClamp.x + posMinClamp.y) >= 1;
+        applyZClamping = posMaxClamp.z >= 1 || posMinClamp.z <= -1;
         //Debug.Log("Cam Settings: " + preset.name);
     }
 
@@ -181,7 +186,7 @@ public class CameraController : Singleton<CameraController>
 
     private void ClampCamPos()
     {
-        if (!applyClamping || GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge) 
+        if (!applyXYClamping || GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge) 
             return;
         
         if (transform.parent.position.x > posMaxClamp.x)
@@ -204,6 +209,10 @@ public class CameraController : Singleton<CameraController>
             transform.parent.position =
                 new Vector3(transform.parent.position.x, transform.parent.position.y, posMinClamp.y);
         }
+
+        if (!applyZClamping)
+            return;
+        
         if (transform.parent.position.y > posMaxClamp.z)
         {
             transform.parent.position =
