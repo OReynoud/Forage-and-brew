@@ -135,6 +135,9 @@ public class CameraController : Singleton<CameraController>
         fixedPos = TargetCamSettings.isFixedCameraPos;
         fixedRotation = TargetCamSettings.isFixedCameraRotation;
 
+        
+        applyXYClamping = Mathf.Abs(TargetCamSettings.posMaxClamp.x + TargetCamSettings.posMaxClamp.y) >= 1 ||
+                          Mathf.Abs(TargetCamSettings.posMinClamp.x + TargetCamSettings.posMinClamp.y) >= 1;
         applyZClamping = Mathf.Abs(TargetCamSettings.posMaxClamp.z) >= 1 ||
                          Mathf.Abs(TargetCamSettings.posMinClamp.z) >= 1;
 
@@ -255,11 +258,6 @@ public class CameraController : Singleton<CameraController>
         if (counter < transitionTime)
         {
             counter += Time.deltaTime;
-        }
-        else
-        {
-            applyXYClamping = Mathf.Abs(TargetCamSettings.posMaxClamp.x + TargetCamSettings.posMaxClamp.y) >= 1 ||
-                              Mathf.Abs(TargetCamSettings.posMinClamp.x + TargetCamSettings.posMinClamp.y) >= 1;
         }
 
 
