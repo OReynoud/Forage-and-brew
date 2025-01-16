@@ -20,26 +20,6 @@ public enum Temperature
     HighHeat
 }
 
-public enum HapticChallengeMovementDirection
-{
-    UpDown,
-    LeftRight,
-    UpLeftDownRight,
-    UpRightDownLeft
-}
-
-public enum OrdersQuestLineTags
-{
-    None,
-    Tutorial,
-    FirstOrdersFromGrandma1,
-    FirstOrdersFromGrandma2,
-    HelpingAnOldMan,
-    WorkersNeedAMeal,
-    RoutineOrders
-    
-}
-
 public enum TutorialTriggerConditions
 {
     ZoneTrigger = 1 << 0,
@@ -49,9 +29,21 @@ public enum TutorialTriggerConditions
     ObtainPotion = 1 << 4,
     IsCarryingObject = 1 << 5
 }
+
 public enum LetterType
 {
     Orders,
     Thanks,
     ShippingError
+}
+
+public enum JoystickDirection
+{
+    Up,
+    Down,
+    Left,
+    Right,
+    Clockwise,
+    CounterClockwise,
+    ArcOfACircleDownCounterClockwise
 }
