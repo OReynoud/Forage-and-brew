@@ -130,9 +130,14 @@ public class Book : MonoBehaviour
             bookMark.basePos = bookMark.UIComponent.anchoredPosition;
         }
 
-        // _matInstance = Instantiate(Test.material);
-        // _matInstance.SetFloat("_Cutoff_Height", 0);
-        // Test.material = _matInstance;
+        if (GameDontDestroyOnLoadManager.Instance)
+        {
+            foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.UnlockedIngredients)
+            {
+                StoreNewIngredient(ingredient);
+                DisplayNewIngredientFromSave();
+            }
+        }
     }
 
     public void StoreNewIngredient(IngredientValuesSo arg0)
@@ -157,6 +162,21 @@ public class Book : MonoBehaviour
             CharacterInputManager.Instance.DisableCodexInputs();
             CharacterInputManager.Instance.DisableMoveInputs();
             display.StartDissolve();
+            return;
+        }
+        
+        Debug.Log("No Matches detected");
+    }
+    public void DisplayNewIngredientFromSave()
+    {
+        for (var x = 0; x < IngredientPageDisplays.Count; x++)
+        {
+            if (IngredientPageDisplays[x].associatedIngredient != newIngredientToDisplay)
+                continue;
+
+            var display = IngredientPageDisplays[x];
+
+            display.dissolveImage.material.SetFloat(Ex.CutoffHeight, 1);
             return;
         }
         

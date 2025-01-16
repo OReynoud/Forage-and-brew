@@ -9,11 +9,10 @@ using UnityEngine.UI;
 
 public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 {
-    [SerializeField] [AllowNesting] [ReadOnly]
-    private List<(Letter, LetterContentSo)> chosenLetters = new();
+    
 
     private readonly List<(int moneyAmount, int letterIndex)> _moneyAmountsToEarn = new();
-    public List<LetterMailBoxDisplayBehaviour> GeneratedLetters { get; set; } = new();
+    [field: SerializeField]public List<LetterMailBoxDisplayBehaviour> GeneratedLetters { get; set; } = new();
 
     [SerializeField] private GameObject interactInputCanvasGameObject;
 
@@ -116,7 +115,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 
     public void ChooseLetters()
     {
-        chosenLetters.Clear();
+        GameDontDestroyOnLoadManager.Instance.ChosenLetters.Clear();
 
 
         foreach (var letter in GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters)
@@ -127,28 +126,19 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
             letter.RelatedNarrativeBlock.InactiveLetters[index] = false;
             float percentPenalty = letter.LetterContent.OrderContent.LateMoneyPenaltyPercentage;
 
-            int moneyToEarn;
-            if (letter.RelatedNarrativeBlock.SelfProgressionIndex > 0 && letter.RelatedNarrativeBlock.CompletedLetters[letter.RelatedNarrativeBlock.SelfProgressionIndex - 1])
+            if (letter.RelatedNarrativeBlock.SelfProgressionIndex == 0)
             {
-                moneyToEarn = letter.DeliveredOnTime
-                    ? letter.LetterContent.OrderContent.MoneyReward
-                    : Mathf.RoundToInt(letter.LetterContent.OrderContent.MoneyReward * percentPenalty * 0.01f);
-                _moneyAmountsToEarn.Add((moneyToEarn, chosenLetters.Count));
-                chosenLetters.Add((new Letter(letter.LetterContent.RelatedSuccessLetter, letter.RelatedNarrativeBlock),
-                    letter.LetterContent));
-                letter.RelatedNarrativeBlock.NewLetterCountDown =
-                    letter.RelatedNarrativeBlock.ContentSo.TimeForLetterAfterSuccess;
+                GenerateFailureLetter(letter, percentPenalty);
+                continue;
             }
-            else
+            if (letter.RelatedNarrativeBlock.SelfProgressionIndex == letter.RelatedNarrativeBlock.CompletedLetters.Length)
             {
-                moneyToEarn = letter.DeliveredOnTime
-                    ? letter.LetterContent.OrderContent.ErrorMoneyReward
-                    : Mathf.RoundToInt(letter.LetterContent.OrderContent.ErrorMoneyReward * percentPenalty * 0.01f);
-                _moneyAmountsToEarn.Add((moneyToEarn, chosenLetters.Count));
-                chosenLetters.Add((new Letter(letter.LetterContent.RelatedFailureLetter, letter.RelatedNarrativeBlock),
-                    letter.LetterContent));
-                letter.RelatedNarrativeBlock.NewLetterCountDown =
-                    letter.RelatedNarrativeBlock.ContentSo.TimeForLetterAfterFailure;
+                GenerateSuccessLetter(letter, percentPenalty);
+                continue;
+            }
+            if (letter.RelatedNarrativeBlock.CompletedLetters[letter.RelatedNarrativeBlock.SelfProgressionIndex])
+            {
+                GenerateSuccessLetter(letter, percentPenalty);
             }
         }
 
@@ -169,18 +159,44 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                 continue;
             }
 
-            chosenLetters.Add((new Letter(t.ContentSo.Content[t.SelfProgressionIndex], t), null));
+            GameDontDestroyOnLoadManager.Instance.ChosenLetters.Add((new Letter(t.ContentSo.Content[t.SelfProgressionIndex], t), null));
             t.InactiveLetters[t.SelfProgressionIndex] = true;
         }
 
         GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters.Clear();
-        foreach (var letterTupple in chosenLetters)
+        foreach (var letterTupple in GameDontDestroyOnLoadManager.Instance.ChosenLetters)
         {
             GameDontDestroyOnLoadManager.Instance.MailBoxLetters.Add(letterTupple.Item1);
         }
 
         //GameDontDestroyOnLoadManager.Instance.AllLetters.AddRange(_chosenLetters);
         GameDontDestroyOnLoadManager.Instance.HasChosenLettersToday = true;
+    }
+
+    private void GenerateFailureLetter(Letter letter, float percentPenalty)
+    {
+        int moneyToEarn;
+        moneyToEarn = letter.DeliveredOnTime
+            ? letter.LetterContent.OrderContent.ErrorMoneyReward
+            : Mathf.RoundToInt(letter.LetterContent.OrderContent.ErrorMoneyReward * percentPenalty * 0.01f);
+        _moneyAmountsToEarn.Add((moneyToEarn, GameDontDestroyOnLoadManager.Instance.ChosenLetters.Count));
+        GameDontDestroyOnLoadManager.Instance.ChosenLetters.Add((new Letter(letter.LetterContent.RelatedFailureLetter, letter.RelatedNarrativeBlock),
+            letter.LetterContent));
+        letter.RelatedNarrativeBlock.NewLetterCountDown =
+            letter.RelatedNarrativeBlock.ContentSo.TimeForLetterAfterFailure;
+    }
+
+    private void GenerateSuccessLetter(Letter letter, float percentPenalty)
+    {
+        int moneyToEarn;
+        moneyToEarn = letter.DeliveredOnTime
+            ? letter.LetterContent.OrderContent.MoneyReward
+            : Mathf.RoundToInt(letter.LetterContent.OrderContent.MoneyReward * percentPenalty * 0.01f);
+        _moneyAmountsToEarn.Add((moneyToEarn, GameDontDestroyOnLoadManager.Instance.ChosenLetters.Count));
+        GameDontDestroyOnLoadManager.Instance.ChosenLetters.Add((new Letter(letter.LetterContent.RelatedSuccessLetter, letter.RelatedNarrativeBlock),
+            letter.LetterContent));
+        letter.RelatedNarrativeBlock.NewLetterCountDown =
+            letter.RelatedNarrativeBlock.ContentSo.TimeForLetterAfterSuccess;
     }
 
     public void GenerateLetters()
@@ -247,7 +263,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         _letterPileTargetPosition = letterPileHiddenPosition;
         _backgroundTargetFadeValue = backgroundHiddenFadeValue;
 
-        foreach (var letter in chosenLetters)
+        foreach (var letter in GameDontDestroyOnLoadManager.Instance.ChosenLetters)
         {
             switch (letter.Item1.LetterContent.LetterType)
             {

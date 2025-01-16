@@ -216,6 +216,7 @@ public class CharacterInputManager : MonoBehaviour
     {
         _inputs.Player.Move.Disable();
         _inputs.Player.ToggleRun.Disable();
+        CharacterMovementController.Instance.Move(Vector2.zero);
     }
     
     public void DisableInteractInputs()

@@ -29,6 +29,7 @@ public class BedBehaviour : MonoBehaviour
         
         // Ingredients to Collect
         GameDontDestroyOnLoadManager.Instance.HasChosenIngredientsToday = false;
+        GameDontDestroyOnLoadManager.Instance.RemainingIngredientToCollectBehaviours.Clear();
         
         // Letters
         GameDontDestroyOnLoadManager.Instance.HasChosenLettersToday = false;

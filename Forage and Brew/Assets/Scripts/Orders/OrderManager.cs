@@ -8,7 +8,7 @@ public class OrderManager : MonoBehaviour
 {
     public static OrderManager Instance { get; private set; }
 
-    public List<Order> CurrentOrders { get; } = new();
+    [field: AllowNesting] [field: SerializeField] public List<Order> CurrentOrders { get; } = new();
     [field: SerializeField] [field: ReadOnly] public List<int> OrderToValidateIndices { get; set; } = new();
 
 
@@ -24,6 +24,11 @@ public class OrderManager : MonoBehaviour
         }
     }
 
+
+    private void Start()
+    {
+        CreateOrdersFromSave();
+    }
 
     public void CreateNewOrder(Letter letter)
     {
@@ -43,6 +48,28 @@ public class OrderManager : MonoBehaviour
         {
             GameDontDestroyOnLoadManager.Instance.OrderPotions[^1].Potions.Add(null);
         }
+    }
+    public void CreateOrdersFromSave()
+    {
+        foreach (var o in CurrentOrders)
+        {
+            CodexContentManager.instance.ReceiveNewOrder(
+                o.RelatedLetter.Client,
+                o.RelatedLetter.TextContent,
+                o.RelatedLetter.OrderContent.RequestedPotions,
+                o.RelatedLetter.OrderContent.MoneyReward,
+                o.RelatedLetter.OrderContent.TimeToFulfill, out OrderCodexDisplayBehaviour order);
+
+        
+            GameDontDestroyOnLoadManager.Instance.OrderPotions.Add(new ClientOrderPotions());
+            GameDontDestroyOnLoadManager.Instance.OrderPotions[^1].ClientSo = o.RelatedLetter.Client;
+            for (int i = 0; i < o.RelatedLetter.OrderContent.RequestedPotions.Length; i++)
+            {
+                GameDontDestroyOnLoadManager.Instance.OrderPotions[^1].Potions.Add(null);
+            }
+        }
+
+        CodexContentManager.instance.pageIndexesToCheck.Clear();
     }
     
     public void AddOrdersToValidate()
@@ -117,9 +144,10 @@ public class OrderManager : MonoBehaviour
 
             if (isOrderCorrect)
             {
+                Debug.Log("Valid order");
                 GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters.Add(new Letter(
                     CurrentOrders[orderToValidateIndex].RelatedLetter,
-                    CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock,  CurrentOrders[orderToValidateIndex].OrderDisplay.daysLeftToComplete <=  0));
+                    CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock,  CurrentOrders[orderToValidateIndex].OrderDisplay.daysLeftToComplete >=  0));
                 
                 CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock.CompletedLetters[index] = true;
                 CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock.SelfProgressionIndex++;
@@ -133,9 +161,10 @@ public class OrderManager : MonoBehaviour
             }
             else
             {
+                Debug.Log("Incorrect order");
                 GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters.Add(new Letter(
                     CurrentOrders[orderToValidateIndex].RelatedLetter,
-                    CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock,CurrentOrders[orderToValidateIndex].OrderDisplay.daysLeftToComplete <=  0));
+                    CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock,CurrentOrders[orderToValidateIndex].OrderDisplay.daysLeftToComplete >=  0));
             }
 
             CurrentOrders.RemoveAt(orderToValidateIndex);

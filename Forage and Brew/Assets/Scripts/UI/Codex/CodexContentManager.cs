@@ -56,31 +56,16 @@ public class CodexContentManager : Singleton<CodexContentManager>
         }
 
 
-        /*for (int i = potionList.Potions.Length - 1; i >= 0; i--)
+        foreach (var recipes in GameDontDestroyOnLoadManager.Instance.UnlockedRecipes)
         {
-            var newRecipe = Instantiate(recipeDisplayPrefab, Vector3.down * 10000, Quaternion.identity, transform);
-            recipes.Insert(0, newRecipe);
-            foreach (TemperatureChallengeIngredients t in potionList.Potions[i].TemperatureChallengeIngredients)
-            {
-                foreach (CookedIngredientForm cookedIngredient in t.CookedIngredients)
-                {
-                    if (cookedIngredient.IsAType)
-                    {
-                        tempIngredientsList.Add(cookedIngredient.IngredientType.Icon);
-                    }
-                    else
-                    {
-                        tempIngredientsList.Add(cookedIngredient.Ingredient.icon);
-                    }
-                }
-            }
+            CreateNewRecipePage(recipes);
+        }
 
-            newRecipe.InitPage(tempIngredientsList.ToArray(), potionList.Potions[i]);
-            tempIngredientsList.Clear();
-            InsertRecipePages(newRecipe.leftPage, newRecipe.rightPage);
-        }*/
-
-        // DebugTickets();
+        foreach (var display in recipes)
+        {
+            display.RemoveDissolve();
+        }
+        pageIndexesToCheck.Clear();
     }
 
     private void CreateNewRecipePage(PotionValuesSo newRecipeValues)
@@ -272,7 +257,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
             {
                 if (PinnedRecipe.instance.pinnedRecipe.Name == recipes[recipeIndex].storedPotion.Name)
                 {
-                    Debug.Log("Selected same recipe, unpinning");
+                    //Debug.Log("Selected same recipe, unpinning");
                     PinnedRecipe.instance.UnpinRecipe();
                     pinnedRecipe.pinIcon.enabled = false;
                     pinImage.enabled = false;
@@ -285,7 +270,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
                 pinnedRecipe.pinIcon.enabled = false;
             }
             PinnedRecipe.instance.PinRecipe(recipes[recipeIndex].storedPotion, recipes[recipeIndex].potionIngredients);
-            Debug.Log("Pinned recipe: " + recipes[recipeIndex].storedPotion.Name);
+            //Debug.Log("Pinned recipe: " + recipes[recipeIndex].storedPotion.Name);
             pinnedRecipe = recipes[recipeIndex];
             pinnedRecipe.pinIcon.enabled = true;
             pinImage.enabled = true;
