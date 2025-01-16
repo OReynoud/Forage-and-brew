@@ -12,6 +12,7 @@ public class CharacterVfxManager : MonoBehaviour
     [SerializeField] private AudioSource musicSource;
     
     [SerializeField] private AudioResource musicHouse;
+    [SerializeField] private AudioResource musicRainForest;
 
     
     private void Awake()
@@ -31,7 +32,7 @@ public class CharacterVfxManager : MonoBehaviour
     {
         if (scene == Scene.Biome1 && WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == rainWeatherState)
         {
-            //musicSource.resource
+            musicSource.resource = musicHouse;
             musicSource.Play();
             PlayRainVfx();
         }
@@ -41,8 +42,10 @@ public class CharacterVfxManager : MonoBehaviour
             PlayRainVfx();
         }
 
-        if (scene == Scene.House && GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay == TimeOfDay.Nighttime)
+        //&& GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay == TimeOfDay.Nighttime
+        if (scene == Scene.House )
         {
+            musicSource.resource = musicRainForest;
             musicSource.Play();
         }
     }
