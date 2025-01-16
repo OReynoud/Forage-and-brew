@@ -281,6 +281,8 @@ public class AutoFlip : Singleton<AutoFlip>
 
         if (CodexContentManager.instance.pageIndexesToCheck.Count == 0)
             return;
+        
+        TutorialManager.instance.NotifyFromRecipeReceived();
         if (CodexContentManager.instance.pageIndexesToCheck[^1].Item1 % 2 == 1)
         {
             ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1].Item1 + 1);

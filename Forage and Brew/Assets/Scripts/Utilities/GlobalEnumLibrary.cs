@@ -40,6 +40,15 @@ public enum OrdersQuestLineTags
     
 }
 
+public enum TutorialTriggerConditions
+{
+    ZoneTrigger = 1 << 0,
+    TimeOfTheDay = 1 << 1,
+    ObtainCommand = 1 << 2,
+    ObtainIngredient = 1 << 3,
+    ObtainPotion = 1 << 4,
+    IsCarryingObject = 1 << 5
+}
 public enum LetterType
 {
     Orders,

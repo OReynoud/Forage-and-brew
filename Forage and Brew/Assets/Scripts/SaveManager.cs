@@ -64,7 +64,6 @@ public class SaveManager : MonoBehaviour
         {
             Directory.CreateDirectory(_directoryPath);
         }
-        Debug.Log(_filePath);
     }
     
     public void SaveGame()

@@ -321,10 +321,10 @@ public class CollectHapticChallengeManager : MonoBehaviour
         
         if (_callCodexOnAnimationEnd)
         {
+            TutorialManager.instance.NotifyFromIngredientReceived();
             AutoFlip.instance.ControledBook.DisplayNewIngredient();
             _callCodexOnAnimationEnd = false;
         }
-        //
     }
     
     

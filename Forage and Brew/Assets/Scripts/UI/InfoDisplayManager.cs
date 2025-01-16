@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class InfoDisplayManager : Singleton<InfoDisplayManager>
@@ -13,7 +14,7 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
     [BoxGroup("Top Right")][SerializeField] private Image swampWeather;
     [BoxGroup("Top Right")][SerializeField] private Image moonCyclesDisplay;
     
-    [BoxGroup("Top Left")][SerializeField] private RectTransform letterIcon;
+    [BoxGroup("Top Left")][SerializeField] private RectTransform tutorialPopup;
     
     [BoxGroup("Bottom Right")][SerializeField] private RectTransform moneyUIContainer;
     [BoxGroup("Bottom Right")][SerializeField] private TextMeshProUGUI moneyText;
@@ -31,6 +32,8 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
     [BoxGroup("Behavior")] [SerializeField] private Vector2 bottomRightHiddenPos;
     [BoxGroup("Behavior")] [SerializeField] private Vector2 bottomLeftShownPos;
     [BoxGroup("Behavior")] [SerializeField] private Vector2 bottomLeftHiddenPos;
+    
+    public float tutorialTimer { get; set; }
 
     
     public void DisplayAll()
@@ -64,12 +67,10 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
             moneyUIContainer.anchoredPosition = Vector2.Lerp(moneyUIContainer.anchoredPosition, bottomRightShownPos, lerp);
             if (!CharacterInputManager.Instance.showCodex)
             {
-                letterIcon.anchoredPosition = Vector2.Lerp(letterIcon.anchoredPosition, topLeftShownPos, lerp);
                 codexIcon.anchoredPosition = Vector2.Lerp(codexIcon.anchoredPosition, bottomLeftShownPos, lerp);
             }
             else
             {
-                letterIcon.anchoredPosition = Vector2.Lerp(letterIcon.anchoredPosition,topLeftHiddenPos, lerp);
                 codexIcon.anchoredPosition = Vector2.Lerp( codexIcon.anchoredPosition,bottomLeftHiddenPos, lerp);
             }
         }
@@ -77,8 +78,17 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
         {
             weatherUIContainer.anchoredPosition = Vector2.Lerp( weatherUIContainer.anchoredPosition, topRightHiddenPos, lerp);
             moneyUIContainer.anchoredPosition = Vector2.Lerp( moneyUIContainer.anchoredPosition, bottomRightHiddenPos, lerp);
-            letterIcon.anchoredPosition = Vector2.Lerp(letterIcon.anchoredPosition,topLeftHiddenPos, lerp);
             codexIcon.anchoredPosition = Vector2.Lerp( codexIcon.anchoredPosition,bottomLeftHiddenPos, lerp);
+        }
+
+        if (tutorialTimer > 0)
+        {
+            tutorialPopup.anchoredPosition = Vector2.Lerp(tutorialPopup.anchoredPosition, topLeftShownPos, lerp);
+            tutorialTimer -= Time.deltaTime;
+        }
+        else
+        {
+            tutorialPopup.anchoredPosition = Vector2.Lerp(tutorialPopup.anchoredPosition, topLeftHiddenPos, lerp);
         }
     }
 

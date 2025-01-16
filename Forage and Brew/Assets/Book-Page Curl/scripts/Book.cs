@@ -130,13 +130,13 @@ public class Book : MonoBehaviour
             bookMark.basePos = bookMark.UIComponent.anchoredPosition;
         }
 
-        if (GameDontDestroyOnLoadManager.Instance)
+        if (!GameDontDestroyOnLoadManager.Instance) 
+            return;
+        
+        foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.UnlockedIngredients)
         {
-            foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.UnlockedIngredients)
-            {
-                StoreNewIngredient(ingredient);
-                DisplayNewIngredientFromSave();
-            }
+            StoreNewIngredient(ingredient);
+            DisplayNewIngredientFromSave();
         }
     }
 

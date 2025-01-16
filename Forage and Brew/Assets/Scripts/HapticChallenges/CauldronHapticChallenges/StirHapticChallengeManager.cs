@@ -359,6 +359,8 @@ public class StirHapticChallengeManager : MonoBehaviour
         obtainedPotionRectTransform.gameObject.SetActive(true);
         _isObtainedPotionAnimationPlaying = true;
         _currentObtainedPotionAnimationTime = 0f;
+        
+        TutorialManager.instance.NotifyFromCompletePotion();
     }
 
     private void StopStirChallenge()

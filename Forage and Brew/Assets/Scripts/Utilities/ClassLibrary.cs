@@ -103,3 +103,18 @@ public class WeatherSuccessiveDays
         SuccessiveDays = successiveDays;
     }
 }
+
+[Serializable]
+public class TutorialBlock
+{
+    [field: SerializeField] [field: AllowNesting] [field: ReadOnly] public bool hasBeenTriggered { get; set; }
+
+    [field: SerializeField] [field: AllowNesting] [field: ReadOnly] public TutoBlockSo data { get; set; }
+
+    public TutorialBlock(TutoBlockSo Data)
+    {
+        data = Data;
+        hasBeenTriggered = false;
+    }
+
+}
