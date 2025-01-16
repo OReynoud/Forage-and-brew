@@ -4,6 +4,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CameraPresets", menuName = "Scriptable Objects/CameraPreset")]
 public class CameraPreset : ScriptableObject
 {
+    public bool isFixedCameraPos;
+    [ShowIf("isFixedCameraPos")] public bool isFixedCameraRotation = true;
+    [ShowIf("isFixedCameraPos")] public Vector3 fixedCameraPos;
     public Vector3 cameraOffset;
     public Vector3 cameraRotation;
     public float targetFocalLength;
