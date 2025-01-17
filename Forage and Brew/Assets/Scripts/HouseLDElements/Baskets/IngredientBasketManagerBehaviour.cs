@@ -6,6 +6,10 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
     [SerializeField] private List<IngredientBasketBehaviour> ingredientBaskets;
     [SerializeField] private IngredientListSo ingredientListSo;
     [SerializeField] private IngredientTypeListSo ingredientTypeListSo;
+    [SerializeField] private float enableDisableTime = 0.5f;
+    
+    [Header("UI")]
+    [SerializeField] private GameObject localCanvasGameObject;
     
     private readonly List<IngredientBasketBehaviour> _currentTriggeredIngredientBaskets = new();
     private readonly List<List<IngredientValuesSo>> _ingredientSets = new();
@@ -22,6 +26,8 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
 
     private void Start()
     {
+        localCanvasGameObject.SetActive(false);
+        
         int setIndex = -1;
         int ingredientIndex = 0;
 
@@ -76,12 +82,17 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
             if (i < _ingredientSets[_currentIngredientSetIndex].Count)
             {
                 ingredientBaskets[i].SetBasketContent(_ingredientSets[_currentIngredientSetIndex][i]);
-                ingredientBaskets[i].gameObject.SetActive(true);
+                ingredientBaskets[i].StartEnable(enableDisableTime);
                 ingredientBaskets[i].DoesNeedToCheckAvailability = true;
+                ingredientBaskets[i].BasketVfxManager.PlaySmokescreen();
             }
             else
             {
-                ingredientBaskets[i].gameObject.SetActive(false);
+                if (i < _ingredientSets[_currentIngredientSetIndex - 1].Count)
+                {
+                    ingredientBaskets[i].BasketVfxManager.PlaySmokescreen();
+                    ingredientBaskets[i].StartDisable(enableDisableTime);
+                }
             }
         }
     }
@@ -92,6 +103,11 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
         if (_currentTriggeredIngredientBaskets.Count == 0)
         {
             BasketInputManager.Instance.CurrentBasketManagers.Add(this);
+            
+            if (_ingredientSets.Count > 1)
+            {
+                localCanvasGameObject.SetActive(true);
+            }
         }
         
         _currentTriggeredIngredientBaskets.Add(ingredientBasket);
@@ -104,6 +120,7 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
         if (_currentTriggeredIngredientBaskets.Count == 0)
         {
             BasketInputManager.Instance.CurrentBasketManagers.Remove(this);
+            localCanvasGameObject.SetActive(false);
         }
     }
 }
