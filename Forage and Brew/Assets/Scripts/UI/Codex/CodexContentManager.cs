@@ -151,8 +151,9 @@ public class CodexContentManager : Singleton<CodexContentManager>
             {
                 AutoFlip.instance.ControledBook.bookMarks[i].index += 2;
             }
-            
-            
+
+            AutoFlip.instance.ControledBook.currentPage += 2;
+
         }
         else
         {
@@ -201,6 +202,8 @@ public class CodexContentManager : Singleton<CodexContentManager>
             {
                 AutoFlip.instance.ControledBook.bookMarks[i].index -= 2;
             }
+            
+            AutoFlip.instance.ControledBook.currentPage -= 2;
         }
 
         AutoFlip.instance.ControledBook.UpdateSprites();
