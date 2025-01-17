@@ -292,6 +292,8 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 
         GameDontDestroyOnLoadManager.Instance.MailBoxLetters.Clear();
         AutoFlip.instance.HandleNewRecipes();
+        
+        GameDontDestroyOnLoadManager.Instance.ChosenLetters.Clear();
     }
 
     private bool IsNewRecipe(PotionDemand demand)
