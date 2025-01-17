@@ -1,5 +1,7 @@
+using System;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class CharacterMovementController : MonoBehaviour
 {
@@ -8,6 +10,10 @@ public class CharacterMovementController : MonoBehaviour
     
     [Header("Dependencies")]
     [SerializeField] private Animator animator;
+    [SerializeField] private AudioSource walkAudioSource;
+    [SerializeField] private AudioResource walkHome;
+    [SerializeField] private AudioResource walkForest;
+    [SerializeField] private AudioResource walkSwamp;
     
     [Header("Movement Settings")]
     [SerializeField] private float walkSpeed = 5;
@@ -21,6 +27,11 @@ public class CharacterMovementController : MonoBehaviour
     [Foldout("Debug")] [SerializeField] [ReadOnly] private bool isGrounded;
     [Foldout("Debug")] [SerializeField] [ReadOnly] private bool isMoving;
     [Foldout("Debug")] public bool isRunning;
+    
+    
+    [SerializeField] private float walkFootStepInterval;
+    [SerializeField] private float runFootStepInterval;
+    [SerializeField] private float footStepTimer;
     
     private Rigidbody rb;
     private LayerMask groundMask;
@@ -53,6 +64,8 @@ public class CharacterMovementController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         groundMask = LayerMask.GetMask("Default");
     }
+    
+    
 
     private void Update()
     {
@@ -68,6 +81,26 @@ public class CharacterMovementController : MonoBehaviour
 
     #endregion
 
+    public void SetupAudio(Scene scene)
+    {
+        switch (scene)
+        {
+            case Scene.House:
+                walkAudioSource.resource = walkHome;
+                break;
+            case Scene.Outdoor:
+                walkAudioSource.resource = walkForest;
+                break;
+            case Scene.Biome1:
+                walkAudioSource.resource = walkForest;
+                break;
+            case Scene.Biome2:
+                walkAudioSource.resource = walkSwamp;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(scene), scene, null);
+        }
+    }
     
     public void Move(Vector2 inputDir)
     {
@@ -127,9 +160,19 @@ public class CharacterMovementController : MonoBehaviour
             isMoving = true;
             animator.SetFloat(WalkSpeed,isRunning? runSpeed / walkSpeed : playerDir.magnitude);
             animator.SetBool(IsWalking, true);
+            if (footStepTimer <= 0)
+            {
+                footStepTimer = isRunning ? runFootStepInterval : walkFootStepInterval;
+                walkAudioSource.Play();
+            }
+            else
+            {
+                footStepTimer -= Time.deltaTime;
+            }
         }
-        else 
+        else
         {
+            footStepTimer = 0;
             accelerationCurveIndex = 0;
             isMoving = false;
             isRunning = false;

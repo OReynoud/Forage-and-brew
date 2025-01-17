@@ -2569,7 +2569,7 @@ GameObject:
   - component: {fileID: 1372873746447769143}
   - component: {fileID: 4186557093257494386}
   m_Layer: 6
-  m_Name: Player Sfx
+  m_Name: Player Walk Sfx
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2600,8 +2600,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 3010747782147503782, guid: 732473d1fc60b004aa2a7bcc74502194, type: 2}
-  m_audioClip: {fileID: 8300000, guid: e10ce397522b706488a0f7c4e21f4758, type: 3}
-  m_Resource: {fileID: 8300000, guid: e10ce397522b706488a0f7c4e21f4758, type: 3}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 6418180475301049370, guid: f5783f0a053f2b2499716da8613fd6ea, type: 2}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -3719,6 +3719,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 4177848238698293520}
+  walkAudioSource: {fileID: 4186557093257494386}
+  walkHome: {fileID: 6418180475301049370, guid: f5783f0a053f2b2499716da8613fd6ea, type: 2}
+  walkForest: {fileID: 6418180475301049370, guid: a60acb934a173564fb9b5b238de1e5f7, type: 2}
+  walkSwamp: {fileID: 6418180475301049370, guid: ed3af8fec8a1996478a0ed4ad10d6bef, type: 2}
   walkSpeed: 4.5
   runSpeed: 7.5
   rotationSpeed: 0.177
@@ -3761,6 +3765,9 @@ MonoBehaviour:
   isGrounded: 0
   isMoving: 0
   isRunning: 0
+  walkFootStepInterval: 0.39
+  runFootStepInterval: 0.295
+  footStepTimer: 0
 --- !u!114 &454307287895772554
 MonoBehaviour:
   m_ObjectHideFlags: 0
