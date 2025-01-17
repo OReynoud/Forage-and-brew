@@ -89,7 +89,7 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         CameraController.instance.ApplyScriptableCamSettings(choppingChallengeCameraPreset, choppingCameraTransitionTime);
 
         // Character
-        transform.position = CurrentChoppingCountertopBehaviour.transform.position + characterChoppingPosition;
+        transform.position = CurrentChoppingCountertopBehaviour.transform.position + CurrentChoppingCountertopBehaviour.transform.rotation * characterChoppingPosition;
         transform.rotation = CurrentChoppingCountertopBehaviour.transform.rotation * Quaternion.Euler(characterChoppingRotation);
         
         // Animation
