@@ -152,7 +152,10 @@ public class CodexContentManager : Singleton<CodexContentManager>
                 AutoFlip.instance.ControledBook.bookMarks[i].index += 2;
             }
 
-            AutoFlip.instance.ControledBook.currentPage += 2;
+            if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[1].index)
+            {
+                AutoFlip.instance.ControledBook.currentPage += 2;
+            }
 
         }
         else
@@ -202,8 +205,11 @@ public class CodexContentManager : Singleton<CodexContentManager>
             {
                 AutoFlip.instance.ControledBook.bookMarks[i].index -= 2;
             }
-            
-            AutoFlip.instance.ControledBook.currentPage -= 2;
+
+            if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[1].index)
+            {
+                AutoFlip.instance.ControledBook.currentPage -= 2;
+            }
         }
 
         AutoFlip.instance.ControledBook.UpdateSprites();
@@ -283,9 +289,11 @@ public class CodexContentManager : Singleton<CodexContentManager>
         }
         else
         {
-            PinnedRecipe.instance.UnpinRecipe();
+            if (!pinnedRecipe) 
+                return;
             pinnedRecipe.pinIcon.enabled = false;
             pinImage.enabled = false;
+            PinnedRecipe.instance.UnpinRecipe();
         }
     }
 
