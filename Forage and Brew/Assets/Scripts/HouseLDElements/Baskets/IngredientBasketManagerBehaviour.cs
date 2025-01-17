@@ -84,6 +84,7 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
                 ingredientBaskets[i].SetBasketContent(_ingredientSets[_currentIngredientSetIndex][i]);
                 ingredientBaskets[i].StartEnable(enableDisableTime);
                 ingredientBaskets[i].DoesNeedToCheckAvailability = true;
+                ingredientBaskets[i].BasketVfxManager.PlaySmokescreen();
             }
             else
             {
