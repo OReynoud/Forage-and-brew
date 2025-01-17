@@ -150,7 +150,8 @@ public class Book : MonoBehaviour
         //REMOVE WHEN MUSHROOM ANIMATION IS INTEGRATED
         if (newIngredientToDisplay.Type == AutoFlip.instance.ControledBook.tempMushroomType)
         {
-                CollectHapticChallengeManager.Instance.OnHarvestAnimationEnd();
+            CollectHapticChallengeManager.Instance.CodexCall(arg0);
+            CollectHapticChallengeManager.Instance.OnHarvestAnimationEnd();
         }
     }
     public void DisplayNewIngredient()
