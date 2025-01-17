@@ -318,7 +318,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
     public void OnHarvestAnimationEnd()
     {
         CharacterInputManager.Instance.EnableMoveInputs();
-        
+        Debug.Log(_callCodexOnAnimationEnd);
         if (_callCodexOnAnimationEnd)
         {
             TutorialManager.instance.NotifyFromIngredientReceived();
@@ -327,8 +327,8 @@ public class CollectHapticChallengeManager : MonoBehaviour
         }
     }
 
-    
-    private void CodexCall(IngredientValuesSo arg0)
+
+    public void CodexCall(IngredientValuesSo arg0)
     {
         _callCodexOnAnimationEnd = true;
     }

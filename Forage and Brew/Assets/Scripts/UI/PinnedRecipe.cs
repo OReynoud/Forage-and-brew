@@ -114,17 +114,17 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         tempCollectedIngredientsList.Clear();
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.CollectedIngredients)
         {
-            tempCollectedIngredientsList.Add(ingredient.iconLow);
+            tempCollectedIngredientsList.Add(ingredient.iconHigh);
         }
 
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients)
         {
-            tempCollectedIngredientsList.Add(ingredient.IngredientValuesSo.iconLow);
+            tempCollectedIngredientsList.Add(ingredient.IngredientValuesSo.iconHigh);
         }
 
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.FloorCollectedIngredients)
         {
-            tempCollectedIngredientsList.Add(ingredient.Ingredient.iconLow);
+            tempCollectedIngredientsList.Add(ingredient.Ingredient.iconHigh);
         }
 
         CurrentTemperatureAndIngredients = GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients;
@@ -481,17 +481,17 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         tempCollectedIngredientsList.Clear();
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.CollectedIngredients)
         {
-            tempCollectedIngredientsList.Add(ingredient.iconLow);
+            tempCollectedIngredientsList.Add(ingredient.iconHigh);
         }
 
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients)
         {
-            tempCollectedIngredientsList.Add(ingredient.IngredientValuesSo.iconLow);
+            tempCollectedIngredientsList.Add(ingredient.IngredientValuesSo.iconHigh);
         }
 
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.FloorCollectedIngredients)
         {
-            tempCollectedIngredientsList.Add(ingredient.Ingredient.iconLow);
+            tempCollectedIngredientsList.Add(ingredient.Ingredient.iconHigh);
         }
 
         for (int i = 0; i < potionIngredients.Length; i++)
