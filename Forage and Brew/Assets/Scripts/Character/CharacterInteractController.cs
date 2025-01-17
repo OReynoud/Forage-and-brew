@@ -56,6 +56,8 @@ public class CharacterInteractController : MonoBehaviour
     
     [SerializeField] private Vector3 choppingOffset = new(0f, 1.3f, -0.05f);
     [SerializeField] private Vector3 grindingOffset = new(0f, 1.3f, 0.1f);
+    
+    
 
 
     private void Awake()
@@ -318,6 +320,7 @@ public class CharacterInteractController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        
         DisplaceStack();
     }
 
