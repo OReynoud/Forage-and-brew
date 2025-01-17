@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class TemperatureHapticChallengeManager : MonoBehaviour
@@ -35,7 +36,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
     [SerializeField] private Vector3 characterBlowPosition;
     [SerializeField] private Vector3 characterBlowRotation;
     
-    private bool _isChallengeActive;
+    public bool IsChallengeActive { get; set; }
     private float _currentBlowTime;
     private float _temperatureMaintenanceTime;
     private Temperature _currentTemperature;
@@ -64,7 +65,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
 
     private void Update()
     {
-        if (!_isChallengeActive) return;
+        if (!IsChallengeActive) return;
         
         UpdateTemperatureChallenge();
     }
@@ -73,6 +74,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
     public void StartTemperatureChallenge()
     {
         if (!CurrentBellows) return;
+        IsChallengeActive = true;
         
         _previousCameraPreset = CameraController.instance.TargetCamSettings;
         CameraController.instance.ApplyScriptableCamSettings(stirChallengeCameraPreset, cauldronCameraTransitionTime);
@@ -87,7 +89,6 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
         CurrentBellows.DisableInteract();
         CurrentBellows.EnterTemperatureHapticChallenge();
         
-        _isChallengeActive = true;
         _currentBlowTime = 0f;
         _temperatureMaintenanceTime = 0f;
         
@@ -265,7 +266,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
         
         CauldronBehaviour.instance.AddTemperature(_currentTemperature);
         GameDontDestroyOnLoadManager.Instance.CauldronTemperature = _currentTemperature;
-        _isChallengeActive = false;
+        IsChallengeActive = false;
         temperatureChallengeGameObject.SetActive(false);        
         
         GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge = false;
@@ -273,7 +274,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
     
     public void IncreaseTemperature()
     {
-        if (!_isChallengeActive) return;
+        if (!IsChallengeActive) return;
         
         characterAnimator.SetTrigger(DoPushBellows);
         CurrentBellows.PlayBellowsAnimation();
