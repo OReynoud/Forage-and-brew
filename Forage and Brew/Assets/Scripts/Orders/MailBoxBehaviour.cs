@@ -72,6 +72,11 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         }
 
         GenerateLetters();
+
+        if (GeneratedLetters.Count == 0)
+        {
+            letterBoxTrigger.enabled = false;
+        }
     }
 
     private void Update()
