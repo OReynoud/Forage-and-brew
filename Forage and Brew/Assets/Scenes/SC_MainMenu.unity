@@ -777,11 +777,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5100067842094463061, guid: d49ff1ce5a28427438251374b135338a, type: 3}
   m_PrefabInstance: {fileID: 1479254082}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &279200160 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7699115678879488483, guid: 2419e2cd9f0345042858487a013c2cbb, type: 3}
-  m_PrefabInstance: {fileID: 3044750724395282067}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &279200163 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8829716980938491942, guid: 2419e2cd9f0345042858487a013c2cbb, type: 3}
@@ -1133,11 +1128,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &462207453 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 6026970751972785050, guid: ab434f6348120374e9d192822da0286c, type: 3}
-  m_PrefabInstance: {fileID: 7664751776733852875}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &462207457 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 895632274119897654, guid: ab434f6348120374e9d192822da0286c, type: 3}
@@ -6191,68 +6181,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2419e2cd9f0345042858487a013c2cbb, type: 3}
---- !u!114 &3136355371139637594
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8201888325129226639}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd0ea493a98df6e4eaaaa59db1b33003, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 462207453}
-  walkAudioSource: {fileID: 4186557093909174579}
-  walkHome: {fileID: 6418180475301049370, guid: f5783f0a053f2b2499716da8613fd6ea, type: 2}
-  walkForest: {fileID: 6418180475301049370, guid: a60acb934a173564fb9b5b238de1e5f7, type: 2}
-  walkSwamp: {fileID: 6418180475301049370, guid: ed3af8fec8a1996478a0ed4ad10d6bef, type: 2}
-  walkSpeed: 4.5
-  runSpeed: 7.5
-  rotationSpeed: 0.177
-  maxAngle: 30
-  accelerationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.15446684
-      value: 0.8579511
-      inSlope: 0.4654215
-      outSlope: 0.4654215
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.80419815
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  playerDir: {x: 0, y: 0, z: 0}
-  accelerationCurveIndex: 0
-  isGrounded: 0
-  isMoving: 0
-  isRunning: 0
-  walkFootStepInterval: 0.39
-  runFootStepInterval: 0.295
-  footStepTimer: 0
 --- !u!33 &3463109631412769354
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -6772,21 +6700,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!114 &7281466326184295696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8201888325129226639}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 557547d938ee3604288481c03d2ecca9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 462207453}
-  minTimeBetweenBlinks: 2
-  maxTimeBetweenBlinks: 5
 --- !u!1 &7469387054240215163
 GameObject:
   m_ObjectHideFlags: 0
@@ -11683,9 +11596,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3957903691532304135}
   - component: {fileID: 846135936155671233}
-  - component: {fileID: 3136355371139637594}
-  - component: {fileID: 8878050061391074209}
-  - component: {fileID: 7281466326184295696}
   m_Layer: 6
   m_Name: P_Player
   m_TagString: Player
@@ -11805,23 +11715,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &8878050061391074209
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8201888325129226639}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e2fb54bd6ff9154bb2048cacd5f661b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rainWeatherState: {fileID: 11400000, guid: 661321d48d03fea4f86f528de00f7210, type: 2}
-  rainVfxGameObject: {fileID: 279200160}
-  musicSource: {fileID: 8279311652033081184}
-  musicHouse: {fileID: 8300000, guid: 8c172b70bb7fdc843af094c945333a22, type: 3}
-  musicRainForest: {fileID: 8300000, guid: 0e497260a392572499ed09cd0c893c44, type: 3}
 --- !u!114 &9156968420600173637
 MonoBehaviour:
   m_ObjectHideFlags: 0
