@@ -167,7 +167,7 @@ public class CharacterMovementController : MonoBehaviour
             }
             else
             {
-                footStepTimer -= Time.deltaTime;
+                footStepTimer -= Time.deltaTime * playerDir.magnitude;
             }
         }
         else

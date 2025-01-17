@@ -326,7 +326,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
             _callCodexOnAnimationEnd = false;
         }
     }
-    
+
     
     private void CodexCall(IngredientValuesSo arg0)
     {

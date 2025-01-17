@@ -79,6 +79,9 @@ public class Book : MonoBehaviour
     [Foldout("Refs")] public BookPage dummyOrderPage;
     public Image Test;
     public UnityEvent OnFlip;
+    
+    //REMOVE WHEN MUSHROOM ANIMATION IS INTEGRATED
+    public IngredientTypeSo tempMushroomType;
 
     float radius1, radius2;
 
@@ -143,6 +146,12 @@ public class Book : MonoBehaviour
     public void StoreNewIngredient(IngredientValuesSo arg0)
     {
         newIngredientToDisplay = arg0;
+        
+        //REMOVE WHEN MUSHROOM ANIMATION IS INTEGRATED
+        if (newIngredientToDisplay.Type == AutoFlip.instance.ControledBook.tempMushroomType)
+        {
+                CollectHapticChallengeManager.Instance.OnHarvestAnimationEnd();
+        }
     }
     public void DisplayNewIngredient()
     {
