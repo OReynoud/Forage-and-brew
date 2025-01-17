@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 412986ee3e71df144b8340841251e512, type: 3}
   m_Name: _HouseOutdoor_HouseFront
   m_EditorClassIdentifier: 
+  isFixedCameraPos: 0
+  isFixedCameraRotation: 1
+  fixedCameraPos: {x: 0, y: 0, z: 0}
   cameraOffset: {x: 0, y: 2.96, z: -0.89}
   cameraRotation: {x: 12.49, y: 0, z: 0}
   targetFocalLength: 29.48
@@ -19,3 +22,5 @@ MonoBehaviour:
   positionLerp: 0.121
   rotationLerp: 0.077
   focalLerp: 0.156
+  posMaxClamp: {x: 1000, y: 1000, z: 100}
+  posMinClamp: {x: -1000, y: -1000, z: -100}

@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 412986ee3e71df144b8340841251e512, type: 3}
   m_Name: _HouseOutdoor_Yard
   m_EditorClassIdentifier: 
+  isFixedCameraPos: 0
+  isFixedCameraRotation: 1
+  fixedCameraPos: {x: 0, y: 0, z: 0}
   cameraOffset: {x: 0, y: 3.42, z: -2.5}
-  cameraRotation: {x: 28.76, y: 90, z: 0}
+  cameraRotation: {x: 28.76, y: 0, z: 0}
   targetFocalLength: 30.4
   distanceFromPlayer: 11.1
   positionLerp: 0.112
   rotationLerp: 0.121
   focalLerp: 0.112
-  posMaxClamp: {x: 0, y: 0, z: 100}
-  posMinClamp: {x: 0, y: 0, z: -100}
+  posMaxClamp: {x: 1000, y: 1000, z: 100}
+  posMinClamp: {x: -1000, y: -1000, z: -100}
