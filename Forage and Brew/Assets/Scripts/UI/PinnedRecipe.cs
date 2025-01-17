@@ -61,6 +61,11 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
     private void ChangePos(bool arg0)
     {
+        if (TemperatureHapticChallengeManager.Instance.IsChallengeActive)
+        {
+            canShow = true;
+            return;
+        }
         canShow = arg0;
     }
 
