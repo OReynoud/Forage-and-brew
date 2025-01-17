@@ -230,6 +230,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         _letterPileTargetPosition = letterPileShownPosition;
         _backgroundTargetFadeValue = backgroundShownFadeValue;
         moneyText.text = MoneyManager.Instance.MoneyAmount.ToString();
+        CharacterInteractController.Instance.CurrentNearMailBoxBehaviour = null;
     }
 
     public void PassToNextLetter()
@@ -261,7 +262,6 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         CharacterInputManager.Instance.EnableInteractInputs();
         CharacterInputManager.Instance.DisableMailInputs();
         CharacterInputManager.Instance.EnableCodexInputs();
-        CharacterInteractController.Instance.CurrentNearMailBoxBehaviour = null;
         DisableInteract();
 
         letterBoxTrigger.enabled = false;
