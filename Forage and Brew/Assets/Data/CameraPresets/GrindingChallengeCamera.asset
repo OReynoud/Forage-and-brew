@@ -12,10 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 412986ee3e71df144b8340841251e512, type: 3}
   m_Name: GrindingChallengeCamera
   m_EditorClassIdentifier: 
-  cameraOffset: {x: 1, y: 1.8, z: 0}
-  cameraRotation: {x: 60, y: -90, z: 0}
+  isFixedCameraPos: 0
+  isFixedCameraRotation: 1
+  fixedCameraPos: {x: 0, y: 0, z: 0}
+  cameraOffset: {x: 1.8, y: 1.8, z: 0}
+  cameraRotation: {x: 70, y: 100, z: 0}
   targetFocalLength: 20
   distanceFromPlayer: 3
   positionLerp: 0.35
   rotationLerp: 0.2
   focalLerp: 0.35
+  posMaxClamp: {x: 0, y: 0, z: 100}
+  posMinClamp: {x: 0, y: 0, z: -100}
