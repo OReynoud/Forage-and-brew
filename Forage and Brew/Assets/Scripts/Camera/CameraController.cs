@@ -1,7 +1,5 @@
 using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 public class CameraController : Singleton<CameraController>
 {
@@ -9,6 +7,8 @@ public class CameraController : Singleton<CameraController>
     public Transform player;
     private CharacterMovementController movement;
 
+    public Camera overlayUiCam;
+    
     [BoxGroup("Calculated at Start")] public float targetFocalLength;
     [BoxGroup("Calculated at Start")] public Vector3 cameraRotation;
 
@@ -92,6 +92,7 @@ public class CameraController : Singleton<CameraController>
         }
 
         cam.focalLength = scriptableCamSettings.targetFocalLength;
+        overlayUiCam.focalLength = scriptableCamSettings.targetFocalLength;
         targetFocalLength = scriptableCamSettings.targetFocalLength;
         transform.rotation = Quaternion.Euler(scriptableCamSettings.cameraRotation);
         cameraRotation = scriptableCamSettings.cameraRotation;
@@ -168,6 +169,7 @@ public class CameraController : Singleton<CameraController>
         transform.localRotation = Quaternion.Euler(TargetCamSettings.cameraRotation);
         transform.localPosition = -transform.forward * TargetCamSettings.distanceFromPlayer;
         cam.focalLength = TargetCamSettings.targetFocalLength;
+        overlayUiCam.focalLength = TargetCamSettings.targetFocalLength;
         ClampCamPos();
         //Debug.Log("Instant Cam Settings: " + TargetCamSettings.name);
     }
@@ -202,6 +204,7 @@ public class CameraController : Singleton<CameraController>
             transform.localPosition =
                 Vector3.Lerp(transform.localPosition, -transform.forward * distanceFromPlayer, positionLerp);
             cam.focalLength = Mathf.Lerp(cam.focalLength, targetFocalLength, focalLerp);
+            overlayUiCam.focalLength = Mathf.Lerp(overlayUiCam.focalLength, targetFocalLength, focalLerp);
             transform.localRotation =
                 Quaternion.Lerp(transform.localRotation, Quaternion.Euler(cameraRotation), rotationLerp);
         }
