@@ -61,6 +61,11 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
     private void ChangePos(bool arg0)
     {
+        if (TemperatureHapticChallengeManager.Instance.IsChallengeActive)
+        {
+            canShow = true;
+            return;
+        }
         canShow = arg0;
     }
 
@@ -528,5 +533,10 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
                 potionIngredientCounter[i].color = negativeColor;
             }
         }
+    }
+
+    public void AutoPin(PotionValuesSo demand, Sprite[] array)
+    {
+        PinRecipe(demand,array);
     }
 }

@@ -44,6 +44,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
     public List<(int, RecipeCodexDisplay)> pageIndexesToCheck = new ();
 
 
+
     private void Start()
     {
         pinImage.enabled = false;
@@ -256,6 +257,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
     /// <param name="side"> true = right, false = left</param>
 
     private RecipeCodexDisplay pinnedRecipe;
+
     public void SelectCodexPage(bool side)
     {
         if (!CharacterInputManager.Instance.showCodex) return;
@@ -291,6 +293,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
         {
             if (!pinnedRecipe) 
                 return;
+            //Debug.Log("Selected nothing, unpinning");
             pinnedRecipe.pinIcon.enabled = false;
             pinImage.enabled = false;
             PinnedRecipe.instance.UnpinRecipe();

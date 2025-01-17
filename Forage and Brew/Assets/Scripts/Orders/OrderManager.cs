@@ -33,6 +33,7 @@ public class OrderManager : MonoBehaviour
     public void CreateNewOrder(Letter letter)
     {
 
+        bool triggerAutoPin = CurrentOrders.Count == 0;
         CodexContentManager.instance.ReceiveNewOrder(
             letter.LetterContent.Client,
             letter.LetterContent.TextContent,
@@ -41,7 +42,13 @@ public class OrderManager : MonoBehaviour
             letter.LetterContent.OrderContent.TimeToFulfill, out OrderCodexDisplayBehaviour order);
 
         CurrentOrders.Add(new Order(letter, order));
-        
+        if (triggerAutoPin)
+        {
+            if (CurrentOrders[0].OrderContent.RequestedPotions[0].IsSpecific)
+            {
+                AutoFlip.instance.recipeToPin = CurrentOrders[0].OrderContent.RequestedPotions[0].Potion;
+            }
+        }
         GameDontDestroyOnLoadManager.Instance.OrderPotions.Add(new ClientOrderPotions());
         GameDontDestroyOnLoadManager.Instance.OrderPotions[^1].ClientSo = letter.LetterContent.Client;
         for (int i = 0; i < letter.LetterContent.OrderContent.RequestedPotions.Length; i++)
