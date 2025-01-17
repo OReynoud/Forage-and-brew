@@ -40,7 +40,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
 
     private IEnumerator ChangeScenes(string sceneName)
     {
-        Time.timeScale = 0;
+        CharacterInputManager.Instance.DisableInputs();
         timer = 0;
         transitionElement.gameObject.SetActive(true);
         while (timer < transitionTime)
@@ -49,7 +49,6 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
             maskElement.sizeDelta = Vector2.Lerp(fullyExtendedDimensions, Vector2.zero, timer/transitionTime);
             yield return new WaitForSecondsRealtime(Time.unscaledDeltaTime);
         }
-        Time.timeScale = 1;
         SceneManager.LoadScene(sceneName);
     }
     
