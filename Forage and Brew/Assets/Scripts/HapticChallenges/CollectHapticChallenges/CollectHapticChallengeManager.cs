@@ -20,6 +20,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
     
     [Header("Visuals")]
     [SerializeField] private float characterScythingDistance = 1f;
+    [SerializeField] private float characterUnearthingDistance = 1f;
     [SerializeField] private float characterScrapingDistance = 1f;
     [SerializeField] private float characterHarvestDistance = 1f;
     
@@ -51,6 +52,9 @@ public class CollectHapticChallengeManager : MonoBehaviour
     private static readonly int DoHarvest = Animator.StringToHash("DoHarvest");
     private static readonly int DoScrape = Animator.StringToHash("DoScrape");
     private static readonly int DoScythe = Animator.StringToHash("DoScythe");
+    private static readonly int DoBuildUpUnearth = Animator.StringToHash("DoBuildUpUnearth");
+    private static readonly int DoCancelUnearth = Animator.StringToHash("DoCancelUnearth");
+    private static readonly int DoUnearth = Animator.StringToHash("DoUnearth");
 
 
     private void Awake()
@@ -118,40 +122,42 @@ public class CollectHapticChallengeManager : MonoBehaviour
             _areBothUnearthingInputsPressed = false;
             _unearthingInputIndexAlreadyReleased = 0;
         
-            foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
-            {
-                if (ingredientToCollectBehaviour.IngredientValuesSo.Type != unearthingIngredientType) continue;
+            _currentIngredientToCollectBehaviour.PressUnearthing();
             
-                ingredientToCollectBehaviour.PressUnearthing();
-                
-                break;
-            }
+            characterAnimator.SetTrigger(DoCancelUnearth);
+            CharacterInputManager.Instance.EnableMoveInputs();
         }
     }
     
     public void CheckUnearthingInputPressed(int inputIndex)
     {
-        CurrentIngredientToCollectBehaviours.Sort((a, b) => Vector3.Distance(transform.position, a.transform.position)
-            .CompareTo(Vector3.Distance(transform.position, b.transform.position)));
-        
-        foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
+        if (_unearthingInputIndexAlreadyPressed == 0)
         {
-            if (ingredientToCollectBehaviour.IngredientValuesSo.Type != unearthingIngredientType) continue;
+            SortIngredientsByDistance();
+        
+            foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
+            {
+                if (ingredientToCollectBehaviour.IngredientValuesSo.Type != unearthingIngredientType) continue;
             
-            if (_unearthingInputIndexAlreadyPressed != 0)
-            {
-                if (inputIndex != _unearthingInputIndexAlreadyPressed)
-                {
-                    _areBothUnearthingInputsPressed = true;
-                    ingredientToCollectBehaviour.ReleaseUnearthing();
-                }
-            }
-            else
-            {
+                _currentIngredientToCollectBehaviour = ingredientToCollectBehaviour;
                 _unearthingInputIndexAlreadyPressed = inputIndex;
-            }
                 
-            break;
+                break;
+            }
+            
+            return;
+        }
+        
+        if (inputIndex != _unearthingInputIndexAlreadyPressed)
+        {
+            _areBothUnearthingInputsPressed = true;
+            _currentIngredientToCollectBehaviour.ReleaseUnearthing();
+            
+            characterAnimator.SetTrigger(DoBuildUpUnearth);
+            CharacterInputManager.Instance.DisableMoveInputs();
+            CharacterInputManager.Instance.DisableCodexInputs();
+            
+            FaceIngredient(characterUnearthingDistance);
         }
     }
     
@@ -160,36 +166,34 @@ public class CollectHapticChallengeManager : MonoBehaviour
         if (!_areBothUnearthingInputsPressed)
         {
             _unearthingInputIndexAlreadyPressed = 0;
+            _currentIngredientToCollectBehaviour = null;
             return;
         }
         
-        foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
+        CharacterInputManager.Instance.EnableCodexInputs();
+
+        if (!_canValidateUnearthing)
         {
-            if (ingredientToCollectBehaviour.IngredientValuesSo.Type != unearthingIngredientType) continue;
-            
-            if (_canValidateUnearthing)
+            _unearthingInputIndexAlreadyReleased = inputIndex;
+            _unearthingInputIndexAlreadyPressed = inputIndex % 2 + 1;
+            _canValidateUnearthing = true;
+            _currentUnearthingTime = unearthingHapticChallengeSo.InputReleaseDelayTolerance;
+        }
+        else
+        {
+            if (inputIndex != _unearthingInputIndexAlreadyReleased)
             {
-                if (inputIndex != _unearthingInputIndexAlreadyReleased)
-                {
-                    ingredientToCollectBehaviour.Collect();
-                    ingredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayUnearthingVfx();
-                    CurrentIngredientToCollectBehaviours.Remove(ingredientToCollectBehaviour);
-                    _unearthingInputIndexAlreadyPressed = 0;
-                    _unearthingInputIndexAlreadyReleased = 0;
-                    _areBothUnearthingInputsPressed = false;
-                    _canValidateUnearthing = false;
-                    return;
-                }
-            }
-            else
-            {
-                _unearthingInputIndexAlreadyReleased = inputIndex;
-                _unearthingInputIndexAlreadyPressed = inputIndex % 2 + 1;
-                _canValidateUnearthing = true;
-                _currentUnearthingTime = unearthingHapticChallengeSo.InputReleaseDelayTolerance;
-            }
+                characterAnimator.SetTrigger(DoUnearth);
+                _currentIngredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayUnearthingVfx();
                 
-            break;
+                CollectIngredient();
+                _currentUnearthingTime = 0f;
+                _unearthingInputIndexAlreadyPressed = 0;
+                _unearthingInputIndexAlreadyReleased = 0;
+                _areBothUnearthingInputsPressed = false;
+                _canValidateUnearthing = false;
+                return;
+            }
         }
     }
 
@@ -314,23 +318,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
         
         CollectIngredient();
     }
-
-    public void OnHarvestAnimationEnd()
-    {
-        CharacterInputManager.Instance.EnableMoveInputs();
-        if (_callCodexOnAnimationEnd)
-        {
-            TutorialManager.instance.NotifyFromIngredientReceived();
-            AutoFlip.instance.ControledBook.DisplayNewIngredient();
-            _callCodexOnAnimationEnd = false;
-        }
-    }
-
-
-    public void CodexCall(IngredientValuesSo arg0)
-    {
-        _callCodexOnAnimationEnd = true;
-    }
+    
     #endregion
     
     
@@ -353,5 +341,21 @@ public class CollectHapticChallengeManager : MonoBehaviour
         _currentIngredientToCollectBehaviour.Collect();
         CurrentIngredientToCollectBehaviours.Remove(_currentIngredientToCollectBehaviour);
         _currentIngredientToCollectBehaviour = null;
+    }
+
+    public void OnCollectAnimationEnd()
+    {
+        CharacterInputManager.Instance.EnableMoveInputs();
+        if (_callCodexOnAnimationEnd)
+        {
+            TutorialManager.instance.NotifyFromIngredientReceived();
+            AutoFlip.instance.ControledBook.DisplayNewIngredient();
+            _callCodexOnAnimationEnd = false;
+        }
+    }
+
+    public void CodexCall(IngredientValuesSo arg0)
+    {
+        _callCodexOnAnimationEnd = true;
     }
 }
