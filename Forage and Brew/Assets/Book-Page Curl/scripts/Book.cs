@@ -77,7 +77,6 @@ public class Book : MonoBehaviour
     [Foldout("Refs")] public Image RightNext;
     [Foldout("Refs")] public CanvasGroup pinRecipeUI;
     [Foldout("Refs")] public BookPage dummyOrderPage;
-    public Image Test;
     public UnityEvent OnFlip;
     
 
