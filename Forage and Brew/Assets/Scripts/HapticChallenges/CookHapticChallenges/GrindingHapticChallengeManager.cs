@@ -14,6 +14,7 @@ public class GrindingHapticChallengeManager : MonoBehaviour
     [SerializeField] private GameObject mortarGameObject;
     
     [Header("UI")]
+    [SerializeField] private GameObject splinesGameObject;
     [SerializeField] private GameObject grindingHapticChallengeGameObject;
     [SerializeField] private SplineContainer previewSplineContainer;
     [SerializeField] private SplineExtrude previewSplineExtrude;
@@ -69,6 +70,7 @@ public class GrindingHapticChallengeManager : MonoBehaviour
         }
         
         grindingHapticChallengeGameObject.SetActive(false);
+        splinesGameObject.SetActive(false);
     }
 
     private void Update()
@@ -90,6 +92,7 @@ public class GrindingHapticChallengeManager : MonoBehaviour
         
         // UI
         grindingHapticChallengeGameObject.SetActive(true);
+        splinesGameObject.SetActive(true);
         
         // Splines
         previewSplineContainer.Spline.Clear();
@@ -157,7 +160,8 @@ public class GrindingHapticChallengeManager : MonoBehaviour
         CameraController.instance.ApplyScriptableCamSettings(grindingChallengeCameraPreset, grindingCameraTransitionTime);
 
         // Character
-        transform.position = CurrentGrindingCountertopBehaviour.transform.position + characterGrindingPosition;
+        transform.position = CurrentGrindingCountertopBehaviour.transform.position +
+                             CurrentGrindingCountertopBehaviour.transform.rotation * characterGrindingPosition;
         transform.rotation = CurrentGrindingCountertopBehaviour.transform.rotation * Quaternion.Euler(characterGrindingRotation);
         
         // Animation
@@ -175,6 +179,7 @@ public class GrindingHapticChallengeManager : MonoBehaviour
         _isChallengeActive = false;
 
         grindingHapticChallengeGameObject.SetActive(false);
+        splinesGameObject.SetActive(false);
         
         CameraController.instance.ApplyScriptableCamSettings(_previousCameraPreset, grindingCameraTransitionTime);
         CharacterInputManager.Instance.EnableInputs();

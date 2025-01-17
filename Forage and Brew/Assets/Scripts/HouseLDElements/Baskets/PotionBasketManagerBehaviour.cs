@@ -32,7 +32,6 @@ public class PotionBasketManagerBehaviour : BasketManagerBehaviour
 
         for (int i = 0; i < potionBaskets.Count; i++)
         {
-            potionBaskets[i].gameObject.SetActive(false);
             potionBaskets[i].PotionBasketIndex = i;
         }
 
@@ -42,6 +41,8 @@ public class PotionBasketManagerBehaviour : BasketManagerBehaviour
     
     public override void IncreaseCurrentSetIndex()
     {
+        if (_currentOrderIndex == 0 && GameDontDestroyOnLoadManager.Instance.OrderPotions.Count == 1) return;
+        
         _currentOrderIndex++;
         
         ReactivateRightPotionBaskets();
@@ -49,6 +50,8 @@ public class PotionBasketManagerBehaviour : BasketManagerBehaviour
     
     public override void DecreaseCurrentSetIndex()
     {
+        if (_currentOrderIndex == 0 && GameDontDestroyOnLoadManager.Instance.OrderPotions.Count == 1) return;
+        
         _currentOrderIndex--;
         if (_currentOrderIndex < 0)
         {
@@ -72,7 +75,7 @@ public class PotionBasketManagerBehaviour : BasketManagerBehaviour
         {
             potionBasket.StartDisable(enableDisableTime);
             
-            if (potionBasket.gameObject.activeSelf)
+            if (potionBasket.enabled)
             {
                 previousActivePotionBasketsCount++;
             }
