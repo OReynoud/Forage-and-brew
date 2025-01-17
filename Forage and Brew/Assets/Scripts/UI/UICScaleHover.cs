@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
 
-public class UIScaleHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
+public class UIScaleHover : MonoBehaviour, ISelectHandler, IDeselectHandler, IPointerDownHandler, IPointerUpHandler
 {
     [Header("Hover")]
     [SerializeField] private Vector3 multiplier;
@@ -34,23 +34,6 @@ public class UIScaleHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         _baseSize = transform.localScale;
     }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        transform.DOKill();
-        transform.DOScale(new Vector3(_baseSize.x * multiplier.x, _baseSize.y * multiplier.y, _baseSize.z * multiplier.z), durationInOut.x).SetEase(inCurve).SetUpdate(true);
-
-        GetComponent<Image>().DOColor(hoverColor, 0.2f);
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        transform.DOKill();
-        transform.DOScale(_baseSize, durationInOut.y).SetEase(outCurve).SetUpdate(true);
-        
-        GetComponent<Image>().DOColor(unhoverColor, 0.2f);
-    }
-
     public void OnPointerDown(PointerEventData eventData)
     {
         transform.DOKill();
@@ -62,5 +45,21 @@ public class UIScaleHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         transform.DOKill();
         transform.DOScale(new Vector3(_baseSize.x, _baseSize.y, _baseSize.z), durationClickInOut.y).SetEase(outCurveClick).SetUpdate(true);
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        transform.DOKill();
+        transform.DOScale(new Vector3(_baseSize.x * multiplier.x, _baseSize.y * multiplier.y, _baseSize.z * multiplier.z), durationInOut.x).SetEase(inCurve).SetUpdate(true);
+
+        GetComponent<Image>().DOColor(hoverColor, 0.2f);
+    }
+
+    public void OnDeselect(BaseEventData eventData)
+    {
+        transform.DOKill();
+        transform.DOScale(_baseSize, durationInOut.y).SetEase(outCurve).SetUpdate(true);
+        
+        GetComponent<Image>().DOColor(unhoverColor, 0.2f);
     }
 }
