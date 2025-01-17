@@ -10,6 +10,7 @@ public class CharacterAnimManager : MonoBehaviour
     [BoxGroup("Blinking Animation")] private float timeForNextBlink;
     
     private static readonly int DoBlink = Animator.StringToHash("DoBlink");
+    public static readonly int IsCarrying = Animator.StringToHash("IsCarrying");
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -25,5 +26,7 @@ public class CharacterAnimManager : MonoBehaviour
             animator.SetTrigger(DoBlink);
             timeForNextBlink = Random.Range(minTimeBetweenBlinks, maxTimeBetweenBlinks);
         }
+        
+        animator.SetBool(IsCarrying, CharacterInteractController.Instance.AreHandsFull);
     }
 }
