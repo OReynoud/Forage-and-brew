@@ -529,4 +529,9 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
             }
         }
     }
+
+    public void AutoPin(PotionValuesSo demand, Sprite[] array)
+    {
+        PinRecipe(demand,array);
+    }
 }
