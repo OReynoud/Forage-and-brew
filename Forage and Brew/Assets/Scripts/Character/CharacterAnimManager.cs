@@ -1,9 +1,9 @@
 using NaughtyAttributes;
 using UnityEngine;
 
-public class CharacterAnimManager : MonoBehaviour
+public class CharacterAnimManager : Singleton<CharacterAnimManager>
 {
-    [SerializeField] private Animator animator;
+    [SerializeField] public Animator animator;
 
     [BoxGroup("Blinking Animation")] [SerializeField] private float minTimeBetweenBlinks;
     [BoxGroup("Blinking Animation")] [SerializeField] private float maxTimeBetweenBlinks;
