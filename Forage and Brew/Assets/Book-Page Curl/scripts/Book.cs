@@ -10,6 +10,7 @@ using NaughtyAttributes;
 using NUnit.Framework;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public enum FlipMode
 {
@@ -66,7 +67,8 @@ public class Book : MonoBehaviour
         get { return BookPanel.rect.height; }
     }
 
-    [Foldout("Refs")] public Sprite background;
+    [Foldout("Refs")] public Sprite leftBackground;
+    [Foldout("Refs")] public Sprite rightBackground;
     [Foldout("Refs")] public Image ClippingPlane;
     [Foldout("Refs")] public Image NextPageClip;
     [Foldout("Refs")] public Image Shadow;
@@ -455,7 +457,7 @@ public class Book : MonoBehaviour
             bookPages[currentPage].UIComponent.anchoredPosition = Vector2.zero;
         }
         else
-            Left.sprite = background;
+            Left.sprite = leftBackground;
 
         Left.transform.SetAsFirstSibling();
 
@@ -471,7 +473,7 @@ public class Book : MonoBehaviour
             bookPages[currentPage + 1 + 2 * pageFlips].UIComponent.gameObject.SetActive(true);
         }
         else
-            Right.sprite = background;
+            Right.sprite = rightBackground;
 
         if (currentPage < bookPages.Count - (2 + 2 * pageFlips))
         {
@@ -482,7 +484,7 @@ public class Book : MonoBehaviour
             bookPages[currentPage + 2 + 2 * pageFlips].UIComponent.gameObject.SetActive(true);
         }
         else
-            RightNext.sprite = background;
+            RightNext.sprite = rightBackground;
 
         if (currentPage >= 2)
         {
@@ -531,7 +533,7 @@ public class Book : MonoBehaviour
             bookPages[currentPage - 2 - 2 * pageFlips].UIComponent.anchoredPosition = Vector2.zero;
         }
         else
-            Left.sprite = background;
+            Left.sprite = leftBackground;
 
 
         if (currentPage >= 3)
@@ -543,7 +545,7 @@ public class Book : MonoBehaviour
             bookPages[currentPage - 3 - 2 * pageFlips].UIComponent.anchoredPosition = Vector2.zero;
         }
         else
-            LeftNext.sprite = background;
+            LeftNext.sprite = leftBackground;
 
         RightNext.transform.SetAsFirstSibling();
         if (enableShadowEffect) ShadowLTR.gameObject.SetActive(true);
@@ -576,7 +578,7 @@ public class Book : MonoBehaviour
             }
         }
         else
-            LeftNext.sprite = background;
+            LeftNext.sprite = leftBackground;
 
         if (currentPage >= 0 && currentPage < bookPages.Count)
         {
@@ -588,7 +590,7 @@ public class Book : MonoBehaviour
             bookPages[currentPage].UIComponent.gameObject.SetActive(true);
         }
         else
-            RightNext.sprite = background;
+            RightNext.sprite = leftBackground;
 
         if (currentPage + 2 < bookPages.Count)
         {
