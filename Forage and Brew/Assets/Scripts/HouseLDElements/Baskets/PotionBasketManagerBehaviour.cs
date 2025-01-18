@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ public class PotionBasketManagerBehaviour : BasketManagerBehaviour
     [SerializeField] private GameObject clientCanvasGameObject;
     [SerializeField] private GameObject localCanvasGameObject;
     [SerializeField] private TMP_Text clientNameText;
+    [SerializeField] private GameObject clientCheckmarkGameObject;
     
     private readonly List<PotionBasketBehaviour> _currentTriggeredPotionBaskets = new();
     private int _currentOrderIndex = -1;
@@ -82,6 +84,9 @@ public class PotionBasketManagerBehaviour : BasketManagerBehaviour
         }
         
         clientCanvasGameObject.SetActive(GameDontDestroyOnLoadManager.Instance.OrderPotions.Count > 0);
+        clientCheckmarkGameObject.SetActive(GameDontDestroyOnLoadManager.Instance.OrderPotions.Count > 0 &&
+                                            GameDontDestroyOnLoadManager.Instance.OrderPotions[_currentOrderIndex]
+                                                .Potions.All(potion => potion));
 
         if (GameDontDestroyOnLoadManager.Instance.OrderPotions.Count > 0)
         {
@@ -105,6 +110,13 @@ public class PotionBasketManagerBehaviour : BasketManagerBehaviour
                 }
             }
         }
+    }
+    
+    public void CheckCompletion()
+    {
+        clientCheckmarkGameObject.SetActive(GameDontDestroyOnLoadManager.Instance.OrderPotions.Count > 0 &&
+                                            GameDontDestroyOnLoadManager.Instance.OrderPotions[_currentOrderIndex]
+                                                .Potions.All(potion => potion));
     }
     
     
