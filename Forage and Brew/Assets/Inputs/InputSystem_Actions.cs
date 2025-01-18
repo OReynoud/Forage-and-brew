@@ -350,6 +350,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""QuitHapticChallenge"",
+                    ""type"": ""Button"",
+                    ""id"": ""bd5d560f-c2a5-4aaf-a59b-0ee85a13bb77"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1331,6 +1340,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""PauseOut"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bbb25c36-db5e-424e-9484-d58b95ddcc99"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuitHapticChallenge"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1952,6 +1972,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_GrindingHapticChallenge2 = m_Player.FindAction("GrindingHapticChallenge2", throwIfNotFound: true);
         m_Player_PauseIn = m_Player.FindAction("PauseIn", throwIfNotFound: true);
         m_Player_PauseOut = m_Player.FindAction("PauseOut", throwIfNotFound: true);
+        m_Player_QuitHapticChallenge = m_Player.FindAction("QuitHapticChallenge", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -2067,6 +2088,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_GrindingHapticChallenge2;
     private readonly InputAction m_Player_PauseIn;
     private readonly InputAction m_Player_PauseOut;
+    private readonly InputAction m_Player_QuitHapticChallenge;
     public struct PlayerActions
     {
         private @InputSystem_Actions m_Wrapper;
@@ -2107,6 +2129,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @GrindingHapticChallenge2 => m_Wrapper.m_Player_GrindingHapticChallenge2;
         public InputAction @PauseIn => m_Wrapper.m_Player_PauseIn;
         public InputAction @PauseOut => m_Wrapper.m_Player_PauseOut;
+        public InputAction @QuitHapticChallenge => m_Wrapper.m_Player_QuitHapticChallenge;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2224,6 +2247,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @PauseOut.started += instance.OnPauseOut;
             @PauseOut.performed += instance.OnPauseOut;
             @PauseOut.canceled += instance.OnPauseOut;
+            @QuitHapticChallenge.started += instance.OnQuitHapticChallenge;
+            @QuitHapticChallenge.performed += instance.OnQuitHapticChallenge;
+            @QuitHapticChallenge.canceled += instance.OnQuitHapticChallenge;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -2336,6 +2362,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @PauseOut.started -= instance.OnPauseOut;
             @PauseOut.performed -= instance.OnPauseOut;
             @PauseOut.canceled -= instance.OnPauseOut;
+            @QuitHapticChallenge.started -= instance.OnQuitHapticChallenge;
+            @QuitHapticChallenge.performed -= instance.OnQuitHapticChallenge;
+            @QuitHapticChallenge.canceled -= instance.OnQuitHapticChallenge;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -2554,6 +2583,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnGrindingHapticChallenge2(InputAction.CallbackContext context);
         void OnPauseIn(InputAction.CallbackContext context);
         void OnPauseOut(InputAction.CallbackContext context);
+        void OnQuitHapticChallenge(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
