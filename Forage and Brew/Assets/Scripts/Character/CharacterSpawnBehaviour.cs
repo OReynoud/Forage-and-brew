@@ -24,6 +24,16 @@ public class CharacterSpawnBehaviour : MonoBehaviour
                     GameDontDestroyOnLoadManager.Instance.CurrentScene = sceneName.Scene;
                     CharacterVfxManager.Instance.CheckForRainVfx(sceneName.Scene);
                     WeatherLightingManager.Instance?.SetRightLighting(sceneName.Scene);
+                    
+                    if (sourceScene == Scene.House && sceneName.Name == sceneListSo.SceneNames[0].Name)
+                    {
+                        SceneTransitionManager.instance.Wake();
+                    }
+                    else
+                    {
+                        Debug.Log("Oui");
+                        SceneTransitionManager.instance.HandleLoadNewScene();
+                    }
                     break;
                 }
             }
@@ -40,7 +50,8 @@ public class CharacterSpawnBehaviour : MonoBehaviour
                 CameraController.instance.ApplyScriptableCamSettings(camSettings, 0);
                 CameraController.instance.InstantCamUpdate();
             }
-            SceneTransitionManager.instance.HandleLoadNewScene();
+
+
         }
     }
 }
