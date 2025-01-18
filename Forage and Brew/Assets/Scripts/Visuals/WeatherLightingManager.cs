@@ -33,20 +33,20 @@ public class WeatherLightingManager : MonoBehaviour
     
     public void SetRightLighting(Scene scene)
     {
-        if (scene == Scene.Biome1)
+        switch (scene)
         {
-            if (WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == cloudWeatherState)
-            {
+            case Scene.Biome1 when WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == cloudWeatherState:
+            case Scene.Biome2 when WeatherManager.Instance.CurrentWeatherStates[Biome.Swamp].WeatherStateSo == cloudWeatherState:
                 SetCloudLighting();
-            }
-            else if (WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == rainWeatherState)
-            {
+                break;
+            case Scene.Biome1 when WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == rainWeatherState:
+            case Scene.Biome2 when WeatherManager.Instance.CurrentWeatherStates[Biome.Swamp].WeatherStateSo == rainWeatherState:
                 SetRainLighting();
-            }
-            else if (WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == sunWeatherState)
-            {
+                break;
+            case Scene.Biome1 when WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == sunWeatherState:
+            case Scene.Biome2 when WeatherManager.Instance.CurrentWeatherStates[Biome.Swamp].WeatherStateSo == sunWeatherState:
                 SetSunLighting();
-            }
+                break;
         }
     }
     
