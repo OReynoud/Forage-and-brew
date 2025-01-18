@@ -69,7 +69,7 @@ public class SaveManager : MonoBehaviour
     public void SaveGame()
     {
         // Scene
-        data.PreviousScene = gameDontDestroyOnLoadManager.PreviousScene;
+        data.PreviousScene = gameDontDestroyOnLoadManager.CurrentScene;
         
         // Days
         data.CurrentTimeOfDay = gameDontDestroyOnLoadManager.CurrentTimeOfDay;
@@ -150,7 +150,7 @@ public class SaveManager : MonoBehaviour
         data = JsonUtility.FromJson<SavedData>(jsonData);
         
         // Scene
-        gameDontDestroyOnLoadManager.PreviousScene = data.PreviousScene;
+        gameDontDestroyOnLoadManager.CurrentScene = data.PreviousScene;
         foreach (SceneName sceneName in sceneListSo.SceneNames)
         {
             if (sceneName.Scene == data.PreviousScene)

@@ -15,7 +15,7 @@ public class SceneChangeTriggerBehaviour : MonoBehaviour
         
         if (doesNeedToBeDaytime && GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay != TimeOfDay.Daytime) return;
         
-        if (other.CompareTag("Player") && GameDontDestroyOnLoadManager.Instance.PreviousScene != scene)
+        if (other.CompareTag("Player") && GameDontDestroyOnLoadManager.Instance.CurrentScene != scene)
         {
             foreach (SceneName sceneName in sceneListSo.SceneNames)
             {

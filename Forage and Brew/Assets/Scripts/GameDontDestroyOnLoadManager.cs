@@ -12,7 +12,7 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     public bool IsFirstGameSession { get; set; } = true;
     
     // Scene
-    [field: SerializeField] public Scene PreviousScene { get; set; }
+    [field: SerializeField] public Scene CurrentScene { get; set; }
     
     // Days
     public TimeOfDay CurrentTimeOfDay { get; set; } = TimeOfDay.Daytime;
