@@ -60,6 +60,7 @@ public class AutoFlip : Singleton<AutoFlip>
     void Start()
     {
         ControledBook.OnFlip.AddListener(new UnityEngine.Events.UnityAction(PageFlipped));
+        CharacterInputManager.Instance.OnCodexUse.AddListener(ControledBook.PlayCodexSound);
         CharacterInputManager.Instance.OnNavigationChange.AddListener(ChangeCodexNavigationType);
         Cursor.lockState = CursorLockMode.Confined;
         proportions = new Vector2(codexProportions.rect.width, codexProportions.rect.height);
