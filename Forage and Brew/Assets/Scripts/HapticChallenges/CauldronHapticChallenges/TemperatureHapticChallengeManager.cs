@@ -259,6 +259,8 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
 
     public void StopTemperatureChallenge(bool isSuccessful =  true)
     {
+        if (!IsChallengeActive) return;
+        
         CameraController.instance.ApplyScriptableCamSettings(_previousCameraPreset, cauldronCameraTransitionTime);
         CharacterInputManager.Instance.EnableInputs();
         CurrentBellows.EnableInteract();
