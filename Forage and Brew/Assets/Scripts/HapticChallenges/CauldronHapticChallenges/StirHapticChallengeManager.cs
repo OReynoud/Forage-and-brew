@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -25,6 +26,7 @@ public class StirHapticChallengeManager : MonoBehaviour
     [SerializeField] private ConfirmationCircleBehaviour confirmationCirclePrefab;
     private readonly List<ConfirmationCircleBehaviour> _confirmationCircles = new();
     [SerializeField] private RectTransform obtainedPotionRectTransform;
+    [SerializeField] private TMP_Text obtainedPotionNameText;
     [SerializeField] private Image obtainedPotionImage;
     [SerializeField] private Image obtainedPotionLiquidImage;
     
@@ -375,6 +377,7 @@ public class StirHapticChallengeManager : MonoBehaviour
         obtainedPotionImage.sprite = _currentPotion.PotionDifficulty.PotionSprite;
         obtainedPotionLiquidImage.sprite = _currentPotion.PotionDifficulty.LiquidSprite;
         obtainedPotionLiquidImage.color = _currentPotion.SpriteLiquidColor;
+        obtainedPotionNameText.text = _currentPotion.Name;
         obtainedPotionRectTransform.localScale = Vector3.zero;
         obtainedPotionRectTransform.anchoredPosition =
             stirHapticChallengeGlobalValuesSo.ObtainedPotionAnimationStartPosition;
