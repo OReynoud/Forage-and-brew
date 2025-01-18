@@ -49,6 +49,8 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 
     [BoxGroup("LetterAnimation")] public AnimationCurve animCurve;
     [BoxGroup("LetterAnimation")] public float animSpeed;
+    [BoxGroup("LetterAnimation")] public Animator anim;
+    [BoxGroup("LetterAnimation")] public GameObject blink;
 
 
     private void Start()
@@ -76,6 +78,8 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         if (GeneratedLetters.Count == 0)
         {
             letterBoxTrigger.enabled = false;
+            anim.SetBool("IsOpen", true);
+            blink.SetActive(false);
         }
     }
 
@@ -221,12 +225,14 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     {
         if (GeneratedLetters.Count == 0) return;
 
+        
+        anim.SetBool("IsOpen", true);
+        blink.SetActive(false);
         StartCoroutine(HandleMultipleExecutions()); // Wait to be able to pass to next letter
         CharacterInputManager.Instance.DisableMoveInputs();
         CharacterInputManager.Instance.DisableInteractInputs();
         CharacterInputManager.Instance.EnableMailInputs();
         CharacterInputManager.Instance.DisableCodexInputs();
-        InfoDisplayManager.instance.ShowBackground();
         moneyDisplayGameObject.SetActive(true);
         _letterPileTargetPosition = letterPileShownPosition;
         _backgroundTargetFadeValue = backgroundShownFadeValue;
@@ -295,7 +301,6 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                     throw new ArgumentOutOfRangeException();
             }
         }
-        InfoDisplayManager.instance.HideBackground();
 
         GameDontDestroyOnLoadManager.Instance.MailBoxLetters.Clear();
         AutoFlip.instance.HandleNewRecipes();
