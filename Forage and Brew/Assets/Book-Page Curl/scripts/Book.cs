@@ -462,7 +462,7 @@ public class Book : MonoBehaviour
         Right.gameObject.SetActive(true);
         Right.transform.position = RightNext.transform.position;
         Right.transform.eulerAngles = new Vector3(0, 0, 0);
-        if (currentPage < bookPages.Count - 1)
+        if (currentPage < bookPages.Count - (1 + 2 * pageFlips))
         {
             Right.sprite = bookPages[currentPage + 1 + 2 * pageFlips].pageSprite;
             bookPages[currentPage + 1 + 2 * pageFlips].UIComponent.SetParent(Right.transform);
@@ -473,7 +473,7 @@ public class Book : MonoBehaviour
         else
             Right.sprite = background;
 
-        if (currentPage < bookPages.Count - 2)
+        if (currentPage < bookPages.Count - (2 + 2 * pageFlips))
         {
             RightNext.sprite = bookPages[currentPage + 2 + 2 * pageFlips].pageSprite;
             bookPages[currentPage + 2 + 2 * pageFlips].UIComponent.SetParent(RightNext.transform);
