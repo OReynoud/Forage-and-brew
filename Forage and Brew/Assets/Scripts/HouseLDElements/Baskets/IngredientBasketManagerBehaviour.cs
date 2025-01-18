@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
     
     [Header("UI")]
     [SerializeField] private GameObject localCanvasGameObject;
+    [SerializeField] private Transform currentTypeBackgroundTransform;
+    [SerializeField] private List<Transform> ingredientTypeTransforms;
     
     private readonly List<IngredientBasketBehaviour> _currentTriggeredIngredientBaskets = new();
     private readonly List<List<IngredientValuesSo>> _ingredientSets = new();
@@ -77,6 +80,8 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
     
     private void ReactivateRightIngredientBaskets()
     {
+        currentTypeBackgroundTransform.position = ingredientTypeTransforms[_currentIngredientSetIndex].position;
+        
         for (int i = 0; i < ingredientBaskets.Count; i++)
         {
             if (i < _ingredientSets[_currentIngredientSetIndex].Count)
