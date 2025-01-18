@@ -30,7 +30,7 @@ public class CharacterInputManager : MonoBehaviour
     private void Start()
     {
         SetupInputs();
-        EnableInputs();
+        //EnableInputs();
     }
 
     private void Update()
