@@ -79,6 +79,8 @@ public class Book : MonoBehaviour
     [Foldout("Refs")] public Image RightNext;
     [Foldout("Refs")] public CanvasGroup pinRecipeUI;
     [Foldout("Refs")] public BookPage dummyOrderPage;
+    [Foldout("Refs")] public AudioSource codexShowAudio;
+    [Foldout("Refs")] public AudioSource pageflipAudio;
     public UnityEvent OnFlip;
     
 
@@ -140,6 +142,12 @@ public class Book : MonoBehaviour
             StoreNewIngredient(ingredient);
             DisplayNewIngredientFromSave();
         }
+    }
+
+    public void PlayCodexSound()
+    {
+        codexShowAudio.Stop();
+        codexShowAudio.Play();
     }
 
     public void StoreNewIngredient(IngredientValuesSo arg0)
@@ -268,6 +276,7 @@ public class Book : MonoBehaviour
 
     public void SetupLTRFlip()
     {
+        pageflipAudio.Play();
         Right.transform.SetParent(ClippingPlane.transform, true);
         Left.transform.SetParent(ClippingPlane.transform, true);
 
@@ -315,6 +324,7 @@ public class Book : MonoBehaviour
 
     public void SetupRTLFlip()
     {
+        pageflipAudio.Play();
         Left.transform.SetParent(ClippingPlane.transform, true);
         Right.transform.SetParent(ClippingPlane.transform, true);
 
