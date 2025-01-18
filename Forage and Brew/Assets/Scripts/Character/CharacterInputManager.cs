@@ -559,7 +559,7 @@ public class CharacterInputManager : MonoBehaviour
     
     private void PassLettersOnPerformed(InputAction.CallbackContext obj)
     {
-        if (!MailBoxBehaviour.instance) 
+        if (!MailBoxBehaviour.instance || !CharacterInteractController.Instance.CurrentNearMailBoxBehaviour) 
             return;
         MailBoxBehaviour.instance.PassToNextLetter();
     }

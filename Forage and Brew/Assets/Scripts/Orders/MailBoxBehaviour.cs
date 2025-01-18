@@ -51,6 +51,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     [BoxGroup("LetterAnimation")] public float animSpeed;
     [BoxGroup("LetterAnimation")] public Animator anim;
     [BoxGroup("LetterAnimation")] public GameObject blink;
+    [BoxGroup("LetterAnimation")] public AudioSource audio;
 
 
     private void Start()
@@ -225,7 +226,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     {
         if (GeneratedLetters.Count == 0) return;
 
-        
+        audio.Play();
         anim.SetBool("IsOpen", true);
         blink.SetActive(false);
         StartCoroutine(HandleMultipleExecutions()); // Wait to be able to pass to next letter
@@ -237,11 +238,11 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         _letterPileTargetPosition = letterPileShownPosition;
         _backgroundTargetFadeValue = backgroundShownFadeValue;
         moneyText.text = MoneyManager.Instance.MoneyAmount.ToString();
-        CharacterInteractController.Instance.CurrentNearMailBoxBehaviour = null;
     }
 
     public void PassToNextLetter()
     {
+        Debug.Log("WTF LA TEAM");
         if (_openedMailOnFrame) return;
 
         for (int i = 0; i < GeneratedLetters.Count; i++)
@@ -302,9 +303,11 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
             }
         }
 
+        CharacterInteractController.Instance.CurrentNearMailBoxBehaviour = null;
         GameDontDestroyOnLoadManager.Instance.MailBoxLetters.Clear();
         AutoFlip.instance.HandleNewRecipes();
-        
+        audio.Stop();
+        audio.Play();
         GameDontDestroyOnLoadManager.Instance.ChosenLetters.Clear();
     }
 
