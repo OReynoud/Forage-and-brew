@@ -229,10 +229,10 @@ public class CodexContentManager : Singleton<CodexContentManager>
             pageContainer.anchoredPosition = new Vector2(1500, 0);
             emptyHistoricPage.anchoredPosition = new Vector2(1500, 0);
             
-            AutoFlip.instance.ControledBook.bookPages.Add( new Book.BookPage(leftEmptyPage, pageContainer));
+            AutoFlip.instance.ControledBook.bookPages.Add( new Book.BookPage(rightEmptyPage, pageContainer));
             pageContainer.name = "Page " + AutoFlip.instance.ControledBook.bookMarks[0].index;
 
-            AutoFlip.instance.ControledBook.bookPages.Add(new Book.BookPage(rightEmptyPage, emptyHistoricPage));
+            AutoFlip.instance.ControledBook.bookPages.Add(new Book.BookPage(leftEmptyPage, emptyHistoricPage));
             emptyHistoricPage.name = "Page " + (AutoFlip.instance.ControledBook.bookMarks[0].index + 1);
             
             
