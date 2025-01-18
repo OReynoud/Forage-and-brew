@@ -1,16 +1,21 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class WeatherLightingManager : MonoBehaviour
 {
     // Singleton
     public static WeatherLightingManager Instance { get; private set; }
 
+    [SerializeField] private Volume globalVolume;
     [SerializeField] private WeatherStateSo cloudWeatherState;
     [SerializeField] private GameObject cloudLightingGameObject;
+    [SerializeField] private VolumeProfile cloudVolumeProfile;
     [SerializeField] private WeatherStateSo rainWeatherState;
     [SerializeField] private GameObject rainLightingGameObject;
+    [SerializeField] private VolumeProfile rainVolumeProfile;
     [SerializeField] private WeatherStateSo sunWeatherState;
     [SerializeField] private GameObject sunLightingGameObject;
+    [SerializeField] private VolumeProfile sunVolumeProfile;
     
 
     private void Awake()
@@ -28,20 +33,20 @@ public class WeatherLightingManager : MonoBehaviour
     
     public void SetRightLighting(Scene scene)
     {
-        if (scene == Scene.Biome1)
+        switch (scene)
         {
-            if (WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == cloudWeatherState)
-            {
+            case Scene.Biome1 when WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == cloudWeatherState:
+            case Scene.Biome2 when WeatherManager.Instance.CurrentWeatherStates[Biome.Swamp].WeatherStateSo == cloudWeatherState:
                 SetCloudLighting();
-            }
-            else if (WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == rainWeatherState)
-            {
+                break;
+            case Scene.Biome1 when WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == rainWeatherState:
+            case Scene.Biome2 when WeatherManager.Instance.CurrentWeatherStates[Biome.Swamp].WeatherStateSo == rainWeatherState:
                 SetRainLighting();
-            }
-            else if (WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == sunWeatherState)
-            {
+                break;
+            case Scene.Biome1 when WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == sunWeatherState:
+            case Scene.Biome2 when WeatherManager.Instance.CurrentWeatherStates[Biome.Swamp].WeatherStateSo == sunWeatherState:
                 SetSunLighting();
-            }
+                break;
         }
     }
     
@@ -50,6 +55,7 @@ public class WeatherLightingManager : MonoBehaviour
         cloudLightingGameObject.SetActive(true);
         rainLightingGameObject.SetActive(false);
         sunLightingGameObject.SetActive(false);
+        globalVolume.profile = cloudVolumeProfile;
     }
     
     public void SetRainLighting()
@@ -57,6 +63,7 @@ public class WeatherLightingManager : MonoBehaviour
         cloudLightingGameObject.SetActive(false);
         rainLightingGameObject.SetActive(true);
         sunLightingGameObject.SetActive(false);
+        globalVolume.profile = rainVolumeProfile;
     }
     
     public void SetSunLighting()
@@ -64,5 +71,6 @@ public class WeatherLightingManager : MonoBehaviour
         cloudLightingGameObject.SetActive(false);
         rainLightingGameObject.SetActive(false);
         sunLightingGameObject.SetActive(true);
+        globalVolume.profile = sunVolumeProfile;
     }
 }
