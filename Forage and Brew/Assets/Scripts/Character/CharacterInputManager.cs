@@ -30,7 +30,7 @@ public class CharacterInputManager : MonoBehaviour
     private void Start()
     {
         SetupInputs();
-        EnableInputs();
+        //EnableInputs();
     }
 
     private void Update()
@@ -65,6 +65,7 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.NextBasketSet.performed += NextBasketSetOnPerformed;
         _inputs.Player.HapticChallenge.performed += HapticChallengeOnPerformed;
         _inputs.Player.HapticChallengeSecond.performed += HapticChallengeSecondOnPerformed;
+        _inputs.Player.QuitHapticChallenge.performed += QuitHapticChallengeOnPerformed;
         _inputs.Player.Scythe.performed += ScytheOnPerformed;
         _inputs.Player.Unearth1.performed += Unearth1OnPerformed;
         _inputs.Player.Unearth2.performed += Unearth2OnPerformed;
@@ -146,6 +147,7 @@ public class CharacterInputManager : MonoBehaviour
     {
         _inputs.Player.HapticChallenge.Enable();
         _inputs.Player.HapticChallengeSecond.Enable();
+        EnableQuitHapticChallengeInputs();
         _inputs.Player.Scythe.Enable();
         _inputs.Player.Unearth1.Enable();
         _inputs.Player.Unearth2.Enable();
@@ -153,6 +155,11 @@ public class CharacterInputManager : MonoBehaviour
         EnableChoppingHapticChallengeInputs();
         EnableGrindingHapticChallengeInputs();
         EnableTemperatureHapticChallengeInputs();
+    }
+    
+    public void EnableQuitHapticChallengeInputs()
+    {
+        _inputs.Player.QuitHapticChallenge.Enable();
     }
     
     public void EnableChoppingHapticChallengeInputs()
@@ -243,6 +250,7 @@ public class CharacterInputManager : MonoBehaviour
     {
         _inputs.Player.HapticChallenge.Disable();
         _inputs.Player.HapticChallengeSecond.Disable();
+        DisableQuitHapticChallengeInputs();
         _inputs.Player.Scythe.Disable();
         _inputs.Player.Unearth1.Disable();
         _inputs.Player.Unearth2.Disable();
@@ -250,6 +258,11 @@ public class CharacterInputManager : MonoBehaviour
         DisableChoppingHapticChallengeInputs();
         DisableGrindingHapticChallengeInputs();
         DisableTemperatureHapticChallengeInputs();
+    }
+    
+    public void DisableQuitHapticChallengeInputs()
+    {
+        _inputs.Player.QuitHapticChallenge.Disable();
     }
     
     public void DisableChoppingHapticChallengeInputs()
@@ -349,6 +362,12 @@ public class CharacterInputManager : MonoBehaviour
     {
         StirHapticChallengeManager.Instance.StartStirChallenge();
         CharacterInteractController.Instance.DropIngredientsInGrindingCountertop();
+    }
+    
+    private void QuitHapticChallengeOnPerformed(InputAction.CallbackContext obj)
+    {
+        StirHapticChallengeManager.Instance.StopStirChallenge(false);
+        TemperatureHapticChallengeManager.Instance.StopTemperatureChallenge(false);
     }
     
     private void ScytheOnPerformed(InputAction.CallbackContext obj)
@@ -540,7 +559,7 @@ public class CharacterInputManager : MonoBehaviour
     
     private void PassLettersOnPerformed(InputAction.CallbackContext obj)
     {
-        if (!MailBoxBehaviour.instance) 
+        if (!MailBoxBehaviour.instance || !CharacterInteractController.Instance.CurrentNearMailBoxBehaviour) 
             return;
         MailBoxBehaviour.instance.PassToNextLetter();
     }

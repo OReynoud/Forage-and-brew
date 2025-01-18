@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -25,6 +26,7 @@ public class StirHapticChallengeManager : MonoBehaviour
     [SerializeField] private ConfirmationCircleBehaviour confirmationCirclePrefab;
     private readonly List<ConfirmationCircleBehaviour> _confirmationCircles = new();
     [SerializeField] private RectTransform obtainedPotionRectTransform;
+    [SerializeField] private TMP_Text obtainedPotionNameText;
     [SerializeField] private Image obtainedPotionImage;
     [SerializeField] private Image obtainedPotionLiquidImage;
     
@@ -187,6 +189,7 @@ public class StirHapticChallengeManager : MonoBehaviour
         // Inputs
         CharacterInputManager.Instance.DisableInputs();
         CharacterInputManager.Instance.EnableHapticChallengeJoystickInputs();
+        CharacterInputManager.Instance.EnableQuitHapticChallengeInputs();
         
         // Cauldron
         CurrentCauldron.DisableInteract();
@@ -374,6 +377,7 @@ public class StirHapticChallengeManager : MonoBehaviour
         obtainedPotionImage.sprite = _currentPotion.PotionDifficulty.PotionSprite;
         obtainedPotionLiquidImage.sprite = _currentPotion.PotionDifficulty.LiquidSprite;
         obtainedPotionLiquidImage.color = _currentPotion.SpriteLiquidColor;
+        obtainedPotionNameText.text = _currentPotion.Name;
         obtainedPotionRectTransform.localScale = Vector3.zero;
         obtainedPotionRectTransform.anchoredPosition =
             stirHapticChallengeGlobalValuesSo.ObtainedPotionAnimationStartPosition;
@@ -384,25 +388,31 @@ public class StirHapticChallengeManager : MonoBehaviour
         TutorialManager.instance.NotifyFromCompletePotion();
     }
 
-    private void StopStirChallenge()
+    public void StopStirChallenge(bool isSuccessful = true)
     {
-        float averageDifference = 0;
+        if (!_currentChallenge) return;
         
-        foreach (float difference in _joystickInputDifferences)
-        {
-            averageDifference += difference;
-        }
+        // float averageDifference = 0;
         
-        averageDifference /= _joystickInputDifferences.Count;
-        Debug.Log("Average Difference: " + averageDifference);
+        // foreach (float difference in _joystickInputDifferences)
+        // {
+        //     averageDifference += difference;
+        // }
         
-        Debug.Log(_currentPotion.Name + " Stir Challenge Finished");
+        // averageDifference /= _joystickInputDifferences.Count;
+        // Debug.Log("Average Difference: " + averageDifference);
+        
+        // Debug.Log(_currentPotion.Name + " Stir Challenge Finished");
 
-        CollectedPotionBehaviour collectedPotionBehaviour = Instantiate(collectedPotionPrefab,
-            CurrentCauldron.transform.position, Quaternion.identity);
-        collectedPotionBehaviour.PotionValuesSo = _currentPotion;
-        CharacterInteractController.Instance.AddToPile(collectedPotionBehaviour);
-        GameDontDestroyOnLoadManager.Instance.OutCookedPotions.Add(collectedPotionBehaviour);
+        if (isSuccessful)
+        {
+            CollectedPotionBehaviour collectedPotionBehaviour = Instantiate(collectedPotionPrefab,
+                CurrentCauldron.transform.position, Quaternion.identity);
+            collectedPotionBehaviour.PotionValuesSo = _currentPotion;
+            CharacterInteractController.Instance.AddToPile(collectedPotionBehaviour);
+            GameDontDestroyOnLoadManager.Instance.OutCookedPotions.Add(collectedPotionBehaviour);
+            GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients.Clear();
+        }
 
         foreach (ConfirmationCircleBehaviour confirmationCircle in _confirmationCircles)
         {

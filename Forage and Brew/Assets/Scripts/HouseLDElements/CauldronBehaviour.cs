@@ -93,7 +93,6 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
     {
         List<TemperatureChallengeIngredients> temperatureAndIngredientsList =
             new(GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients);
-        GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients.Clear();
         CauldronVfxManager.Instance.ChangeSmokeVfx(false);
         
         return temperatureAndIngredientsList;

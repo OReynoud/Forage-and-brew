@@ -328,6 +328,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "QuitHapticChallenge",
+                    "type": "Button",
+                    "id": "bd5d560f-c2a5-4aaf-a59b-0ee85a13bb77",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1060,7 +1069,7 @@
                 {
                     "name": "",
                     "id": "d3f18fe6-d5fa-46c1-96a7-362a573dc724",
-                    "path": "<Gamepad>/leftShoulder",
+                    "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
@@ -1071,7 +1080,7 @@
                 {
                     "name": "",
                     "id": "cf70bb32-c292-44ed-af9d-79cc49be1197",
-                    "path": "<Gamepad>/rightShoulder",
+                    "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
@@ -1085,7 +1094,7 @@
                     "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Gamepad",
+                    "groups": ";Keyboard&Mouse",
                     "action": "ToggleRun",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -1104,7 +1113,7 @@
                 {
                     "name": "",
                     "id": "ec8563b3-f111-4ccf-860e-12bbba361ff8",
-                    "path": "<Gamepad>/rightTrigger",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -1115,7 +1124,7 @@
                 {
                     "name": "",
                     "id": "135aa2f1-3406-41cc-9d7c-0b80a1cc2e6f",
-                    "path": "<Gamepad>/leftTrigger",
+                    "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -1307,6 +1316,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "PauseOut",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bbb25c36-db5e-424e-9484-d58b95ddcc99",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QuitHapticChallenge",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

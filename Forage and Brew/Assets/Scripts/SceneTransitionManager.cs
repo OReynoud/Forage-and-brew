@@ -35,7 +35,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
     {
         if (OnSleep != null)
             OnSleep.Invoke();
-        StartCoroutine(HideScreen(waitTime));
+        StartCoroutine(HideScreen());
     }
 
     private IEnumerator ChangeScenes(string sceneName)
@@ -52,7 +52,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         SceneManager.LoadScene(sceneName);
     }
     
-    private IEnumerator HideScreen(float waitTime)
+    private IEnumerator HideScreen()
     {
         CharacterInputManager.Instance.DisableInputs();
         timer = 0;
@@ -72,16 +72,15 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         WeatherManager.Instance.PassToNextWeatherState();
         LunarCycleManager.Instance.PassToNextLunarCycleState();
 
-        yield return new WaitForSecondsRealtime(waitTime);
         
-        StartCoroutine(ShowScreen());
+        StartCoroutine(WakeUp());
     }
     private IEnumerator ShowScreen()
     {
         transitionElement.gameObject.SetActive(false);
         timer = 0;
-        maskElement.sizeDelta = Vector2.zero;
         transitionElement.gameObject.SetActive(true);
+        maskElement.sizeDelta = Vector2.zero;
         yield return new WaitForSecondsRealtime(0.5f);
         while (timer < transitionTime)
         {
@@ -93,5 +92,27 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         transitionElement.gameObject.SetActive(false);
         
         CharacterInputManager.Instance.EnableInputs();
+    }
+
+    public void Wake()
+    {
+        StartCoroutine(WakeUp());
+    }
+    private IEnumerator WakeUp()
+    {
+        CharacterInputManager.Instance.DisableInputs();
+        transitionElement.gameObject.SetActive(false);
+        transitionElement.gameObject.SetActive(true);
+        maskElement.sizeDelta = Vector2.zero;
+        yield return new WaitForSecondsRealtime(0.5f);
+        CharacterAnimManager.instance.animator.SetTrigger("DoWakeUp");
+        while (timer < transitionTime)
+        {
+            timer += Time.unscaledDeltaTime;
+            maskElement.sizeDelta = Vector2.Lerp(Vector2.zero, fullyExtendedDimensions, timer/transitionTime);
+            yield return new WaitForSecondsRealtime(Time.unscaledDeltaTime);
+        }
+
+        transitionElement.gameObject.SetActive(false);
     }
 }
