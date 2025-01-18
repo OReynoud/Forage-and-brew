@@ -41,13 +41,16 @@ public class BedBehaviour : MonoBehaviour
         {
             potionBasketManagerBehaviour.ReactivateRightPotionBaskets();
         }
-
-        Debug.Log("It's daytime now");
+        
+        CharacterInteractController.Instance.CurrentNearBed = null;
+        DisableInteract();
     }
     
     
     private void OnTriggerEnter(Collider other)
     {
+        if (GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay == TimeOfDay.Daytime) return;
+        
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
             characterInteractController.CurrentNearBed = this;
