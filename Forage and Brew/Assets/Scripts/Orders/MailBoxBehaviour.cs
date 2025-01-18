@@ -226,6 +226,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         CharacterInputManager.Instance.DisableInteractInputs();
         CharacterInputManager.Instance.EnableMailInputs();
         CharacterInputManager.Instance.DisableCodexInputs();
+        InfoDisplayManager.instance.ShowBackground();
         moneyDisplayGameObject.SetActive(true);
         _letterPileTargetPosition = letterPileShownPosition;
         _backgroundTargetFadeValue = backgroundShownFadeValue;
@@ -294,6 +295,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                     throw new ArgumentOutOfRangeException();
             }
         }
+        InfoDisplayManager.instance.HideBackground();
 
         GameDontDestroyOnLoadManager.Instance.MailBoxLetters.Clear();
         AutoFlip.instance.HandleNewRecipes();

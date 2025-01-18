@@ -96,9 +96,21 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.PinRight.performed += PinRightOnPerformed;
         _inputs.Player.PassLetters.performed += PassLettersOnPerformed;
         _inputs.Player.ToggleRun.performed += ToggleRunOnPerformed;
+        
+        
+        _inputs.Player.PauseIn.performed += PauseInOnPerformed;
+        _inputs.Player.PauseOut.performed += PauseOutOnPerformed;
     }
 
+    private void PauseOutOnPerformed(InputAction.CallbackContext obj)
+    {
+        InfoDisplayManager.instance.ShowPause();
+    }
 
+    private void PauseInOnPerformed(InputAction.CallbackContext obj)
+    {
+        InfoDisplayManager.instance.HidePause();
+    }
 
     #endregion
 
@@ -455,12 +467,17 @@ public class CharacterInputManager : MonoBehaviour
         if (OnCodexUse != null)
             OnCodexUse.Invoke();
         
-        _inputs.Player.CodexLeave.Enable();
-        _inputs.Player.CodexEnter.Disable();
-        
+        EnableCodexExit();
+
         DisableMailInputs();
         DisableInteractInputs();
         DisableHapticChallengeInputs();
+    }
+
+    public void EnableCodexExit()
+    {
+        _inputs.Player.CodexLeave.Enable();
+        _inputs.Player.CodexEnter.Disable();
     }
 
     private void CodexLeaveOnPerformed(InputAction.CallbackContext obj)

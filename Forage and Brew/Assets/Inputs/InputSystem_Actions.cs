@@ -332,6 +332,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PauseIn"",
+                    ""type"": ""Button"",
+                    ""id"": ""35b39d7c-cdbc-4f16-bd82-b746b6189076"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PauseOut"",
+                    ""type"": ""Button"",
+                    ""id"": ""a6f2c84f-74a5-4e90-a13b-ce2f4b08b858"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1108,7 +1126,18 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ec8563b3-f111-4ccf-860e-12bbba361ff8"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleRun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""135aa2f1-3406-41cc-9d7c-0b80a1cc2e6f"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -1256,6 +1285,50 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""GrindingHapticChallenge2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bf01f0b0-eb29-49e5-ab5b-0eb3aca7a90c"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PauseIn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0883c0a8-e4d8-4284-af75-b84ec8720e5a"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PauseIn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cfc83293-85d1-4034-8882-82fc2031bb1c"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PauseOut"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0df16994-359e-42ff-8e58-fc852ddf6040"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PauseOut"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1877,6 +1950,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_ChoppingHapticChallenge5 = m_Player.FindAction("ChoppingHapticChallenge5", throwIfNotFound: true);
         m_Player_GrindingHapticChallenge1 = m_Player.FindAction("GrindingHapticChallenge1", throwIfNotFound: true);
         m_Player_GrindingHapticChallenge2 = m_Player.FindAction("GrindingHapticChallenge2", throwIfNotFound: true);
+        m_Player_PauseIn = m_Player.FindAction("PauseIn", throwIfNotFound: true);
+        m_Player_PauseOut = m_Player.FindAction("PauseOut", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1990,6 +2065,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ChoppingHapticChallenge5;
     private readonly InputAction m_Player_GrindingHapticChallenge1;
     private readonly InputAction m_Player_GrindingHapticChallenge2;
+    private readonly InputAction m_Player_PauseIn;
+    private readonly InputAction m_Player_PauseOut;
     public struct PlayerActions
     {
         private @InputSystem_Actions m_Wrapper;
@@ -2028,6 +2105,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @ChoppingHapticChallenge5 => m_Wrapper.m_Player_ChoppingHapticChallenge5;
         public InputAction @GrindingHapticChallenge1 => m_Wrapper.m_Player_GrindingHapticChallenge1;
         public InputAction @GrindingHapticChallenge2 => m_Wrapper.m_Player_GrindingHapticChallenge2;
+        public InputAction @PauseIn => m_Wrapper.m_Player_PauseIn;
+        public InputAction @PauseOut => m_Wrapper.m_Player_PauseOut;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2139,6 +2218,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @GrindingHapticChallenge2.started += instance.OnGrindingHapticChallenge2;
             @GrindingHapticChallenge2.performed += instance.OnGrindingHapticChallenge2;
             @GrindingHapticChallenge2.canceled += instance.OnGrindingHapticChallenge2;
+            @PauseIn.started += instance.OnPauseIn;
+            @PauseIn.performed += instance.OnPauseIn;
+            @PauseIn.canceled += instance.OnPauseIn;
+            @PauseOut.started += instance.OnPauseOut;
+            @PauseOut.performed += instance.OnPauseOut;
+            @PauseOut.canceled += instance.OnPauseOut;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -2245,6 +2330,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @GrindingHapticChallenge2.started -= instance.OnGrindingHapticChallenge2;
             @GrindingHapticChallenge2.performed -= instance.OnGrindingHapticChallenge2;
             @GrindingHapticChallenge2.canceled -= instance.OnGrindingHapticChallenge2;
+            @PauseIn.started -= instance.OnPauseIn;
+            @PauseIn.performed -= instance.OnPauseIn;
+            @PauseIn.canceled -= instance.OnPauseIn;
+            @PauseOut.started -= instance.OnPauseOut;
+            @PauseOut.performed -= instance.OnPauseOut;
+            @PauseOut.canceled -= instance.OnPauseOut;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -2461,6 +2552,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnChoppingHapticChallenge5(InputAction.CallbackContext context);
         void OnGrindingHapticChallenge1(InputAction.CallbackContext context);
         void OnGrindingHapticChallenge2(InputAction.CallbackContext context);
+        void OnPauseIn(InputAction.CallbackContext context);
+        void OnPauseOut(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

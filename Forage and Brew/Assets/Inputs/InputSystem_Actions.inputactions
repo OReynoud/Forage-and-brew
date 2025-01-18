@@ -310,6 +310,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "PauseIn",
+                    "type": "Button",
+                    "id": "35b39d7c-cdbc-4f16-bd82-b746b6189076",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PauseOut",
+                    "type": "Button",
+                    "id": "a6f2c84f-74a5-4e90-a13b-ce2f4b08b858",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1086,7 +1104,18 @@
                 {
                     "name": "",
                     "id": "ec8563b3-f111-4ccf-860e-12bbba361ff8",
-                    "path": "<Gamepad>/rightShoulder",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleRun",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "135aa2f1-3406-41cc-9d7c-0b80a1cc2e6f",
+                    "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -1234,6 +1263,50 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "GrindingHapticChallenge2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bf01f0b0-eb29-49e5-ab5b-0eb3aca7a90c",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseIn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0883c0a8-e4d8-4284-af75-b84ec8720e5a",
+                    "path": "<Gamepad>/select",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseIn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cfc83293-85d1-4034-8882-82fc2031bb1c",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseOut",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0df16994-359e-42ff-8e58-fc852ddf6040",
+                    "path": "<Gamepad>/select",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseOut",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
