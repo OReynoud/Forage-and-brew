@@ -5,10 +5,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Image))]
-
 public class UIScaleHover : MonoBehaviour, ISelectHandler, IDeselectHandler, IPointerDownHandler, IPointerUpHandler
 {
+
+    [Header("Target")] [SerializeField] private Image target;
     [Header("Hover")]
     [SerializeField] private Vector3 multiplier;
     
@@ -32,34 +32,36 @@ public class UIScaleHover : MonoBehaviour, ISelectHandler, IDeselectHandler, IPo
     
     void Start()
     {
-        _baseSize = transform.localScale;
+        if (!target)
+            target = GetComponent<Image>();
+        _baseSize = target.transform.localScale;
     }
     public void OnPointerDown(PointerEventData eventData)
     {
-        transform.DOKill();
-        transform.localScale = _baseSize;
-        transform.DOScale(new Vector3(_baseSize.x * multiplierClick.x, _baseSize.y * multiplierClick.y, _baseSize.z * multiplierClick.z), durationClickInOut.x).SetEase(inCurveClick).SetUpdate(true);
+        target.transform.DOKill();
+        target.transform.localScale = _baseSize;
+        target.transform.DOScale(new Vector3(_baseSize.x * multiplierClick.x, _baseSize.y * multiplierClick.y, _baseSize.z * multiplierClick.z), durationClickInOut.x).SetEase(inCurveClick).SetUpdate(true);
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        transform.DOKill();
-        transform.DOScale(new Vector3(_baseSize.x, _baseSize.y, _baseSize.z), durationClickInOut.y).SetEase(outCurveClick).SetUpdate(true);
+        target.transform.DOKill();
+        target.transform.DOScale(new Vector3(_baseSize.x, _baseSize.y, _baseSize.z), durationClickInOut.y).SetEase(outCurveClick).SetUpdate(true);
     }
 
     public void OnSelect(BaseEventData eventData)
     {
-        transform.DOKill();
-        transform.DOScale(new Vector3(_baseSize.x * multiplier.x, _baseSize.y * multiplier.y, _baseSize.z * multiplier.z), durationInOut.x).SetEase(inCurve).SetUpdate(true);
+        target.transform.DOKill();
+        target.transform.DOScale(new Vector3(_baseSize.x * multiplier.x, _baseSize.y * multiplier.y, _baseSize.z * multiplier.z), durationInOut.x).SetEase(inCurve).SetUpdate(true);
 
-        GetComponent<Image>().DOColor(hoverColor, 0.2f);
+        target.DOColor(hoverColor, 0.2f);
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
-        transform.DOKill();
-        transform.DOScale(_baseSize, durationInOut.y).SetEase(outCurve).SetUpdate(true);
+        target.transform.DOKill();
+        target.transform.DOScale(_baseSize, durationInOut.y).SetEase(outCurve).SetUpdate(true);
         
-        GetComponent<Image>().DOColor(unhoverColor, 0.2f);
+        target.DOColor(unhoverColor, 0.2f);
     }
 }
