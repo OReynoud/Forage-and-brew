@@ -57,10 +57,14 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
-        mixer.GetFloat("musicVolume", out float volume);
+        float volume = PlayerPrefs.GetFloat(Ex.MusicVolume);
+        float volumeFX = PlayerPrefs.GetFloat(Ex.SfxVolume);
+        mixer.SetFloat(Ex.MusicVolume, volume == musicSlider.minValue ? -80 : volume);
         musicSlider.value = volume;
-        mixer.GetFloat("sfxVolume", out volume);
-        sfxSlider.value = volume;
+        mixer.SetFloat(Ex.SfxVolume, volumeFX == sfxSlider.minValue ? -80 : volumeFX);
+        sfxSlider.value = volumeFX;
+        Debug.Log(PlayerPrefs.GetFloat(Ex.SfxVolume));
+        
     }
 
     private void Update()
@@ -70,7 +74,6 @@ public class MainMenu : MonoBehaviour
 
         options.anchoredPosition = Vector2.Lerp(options.anchoredPosition, showOptions ? Vector2.zero : new Vector2(0, Screen.height), posLerp);
         
-        
         credits.anchoredPosition = Vector2.Lerp(credits.anchoredPosition, showCredits ? Vector2.zero : new Vector2(0, Screen.height), posLerp);
 
     }
@@ -78,8 +81,11 @@ public class MainMenu : MonoBehaviour
     public void UpdateSoundSettings()
     {
         
-        mixer.SetFloat("musicVolume", musicSlider.value == musicSlider.minValue ? -80 : musicSlider.value );
-        mixer.SetFloat("sfxVolume", sfxSlider.value == sfxSlider.minValue ? -80 : sfxSlider.value );
-        
+        mixer.SetFloat(Ex.MusicVolume, musicSlider.value == musicSlider.minValue ? -80 : musicSlider.value );
+        mixer.SetFloat(Ex.SfxVolume, sfxSlider.value == sfxSlider.minValue ? -80 : sfxSlider.value );
+        PlayerPrefs.SetFloat(Ex.MusicVolume, musicSlider.value);
+        PlayerPrefs.SetFloat(Ex.SfxVolume, sfxSlider.value);
+        PlayerPrefs.Save();
+        Debug.Log(PlayerPrefs.GetFloat(Ex.SfxVolume));
     }
 }
