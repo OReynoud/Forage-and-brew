@@ -237,7 +237,6 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         _letterPileTargetPosition = letterPileShownPosition;
         _backgroundTargetFadeValue = backgroundShownFadeValue;
         moneyText.text = MoneyManager.Instance.MoneyAmount.ToString();
-        CharacterInteractController.Instance.CurrentNearMailBoxBehaviour = null;
     }
 
     public void PassToNextLetter()
@@ -303,6 +302,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
             }
         }
 
+        CharacterInteractController.Instance.CurrentNearMailBoxBehaviour = null;
         GameDontDestroyOnLoadManager.Instance.MailBoxLetters.Clear();
         AutoFlip.instance.HandleNewRecipes();
         
