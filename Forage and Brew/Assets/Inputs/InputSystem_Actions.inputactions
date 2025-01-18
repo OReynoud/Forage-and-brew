@@ -328,6 +328,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "QuitHapticChallenge",
+                    "type": "Button",
+                    "id": "bd5d560f-c2a5-4aaf-a59b-0ee85a13bb77",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1307,6 +1316,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "PauseOut",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bbb25c36-db5e-424e-9484-d58b95ddcc99",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QuitHapticChallenge",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

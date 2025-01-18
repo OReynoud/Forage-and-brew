@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class TemperatureHapticChallengeManager : MonoBehaviour
@@ -83,6 +82,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
         transform.rotation = CurrentBellows.transform.rotation * Quaternion.Euler(characterBlowRotation);
         CharacterInputManager.Instance.DisableInputs();
         CharacterInputManager.Instance.EnableTemperatureHapticChallengeInputs();        
+        CharacterInputManager.Instance.EnableQuitHapticChallengeInputs();
         
         GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge = true;
         
@@ -257,15 +257,19 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
         }
     }
 
-    private void StopTemperatureChallenge()
+    public void StopTemperatureChallenge(bool isSuccessful =  true)
     {
         CameraController.instance.ApplyScriptableCamSettings(_previousCameraPreset, cauldronCameraTransitionTime);
         CharacterInputManager.Instance.EnableInputs();
         CurrentBellows.EnableInteract();
         CurrentBellows.ExitTemperatureHapticChallenge();
+
+        if (isSuccessful)
+        {
+            CauldronBehaviour.instance.AddTemperature(_currentTemperature);
+            GameDontDestroyOnLoadManager.Instance.CauldronTemperature = _currentTemperature;
+        }
         
-        CauldronBehaviour.instance.AddTemperature(_currentTemperature);
-        GameDontDestroyOnLoadManager.Instance.CauldronTemperature = _currentTemperature;
         IsChallengeActive = false;
         temperatureChallengeGameObject.SetActive(false);        
         
