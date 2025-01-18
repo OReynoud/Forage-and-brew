@@ -242,6 +242,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 
     public void PassToNextLetter()
     {
+        Debug.Log("WTF LA TEAM");
         if (_openedMailOnFrame) return;
 
         for (int i = 0; i < GeneratedLetters.Count; i++)
