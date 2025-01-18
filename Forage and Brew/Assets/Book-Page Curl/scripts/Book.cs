@@ -564,7 +564,7 @@ public class Book : MonoBehaviour
 
     public void UpdateSprites()
     {
-        if (currentPage > 0 && currentPage <= bookPages.Count)
+        if (currentPage > 0)
         {
             LeftNext.sprite = bookPages[currentPage - 1].pageSprite;
             bookPages[currentPage - 1].UIComponent.SetParent(LeftNext.transform);
@@ -580,7 +580,7 @@ public class Book : MonoBehaviour
         else
             LeftNext.sprite = leftBackground;
 
-        if (currentPage >= 0 && currentPage < bookPages.Count)
+        if (currentPage < bookPages.Count)
         {
             RightNext.sprite = bookPages[currentPage].pageSprite;
             bookPages[currentPage].UIComponent.SetParent(RightNext.transform);
@@ -590,7 +590,7 @@ public class Book : MonoBehaviour
             bookPages[currentPage].UIComponent.gameObject.SetActive(true);
         }
         else
-            RightNext.sprite = leftBackground;
+            RightNext.sprite = rightBackground;
 
         if (currentPage + 2 < bookPages.Count)
         {
