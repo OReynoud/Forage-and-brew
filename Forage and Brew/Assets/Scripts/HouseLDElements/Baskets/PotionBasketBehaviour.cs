@@ -49,6 +49,7 @@ public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
         GameDontDestroyOnLoadManager.Instance.OutCookedPotions.Remove(collectedPotionBehaviour);
         Instantiate(collectedPotionBehaviour.PotionValuesSo.PotionDifficulty.MeshGameObjectLiquidColorManager, meshParentTransform);
         Destroy(collectedPotionBehaviour.gameObject);
+        PotionBasketManagerBehaviour.CheckCompletion();
     }
 
     public CollectedPotionBehaviour InstantiateCollectedPotion()
