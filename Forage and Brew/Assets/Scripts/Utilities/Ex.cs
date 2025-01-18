@@ -4,6 +4,8 @@ using UnityEngine;
 public static class Ex
 {
     public static readonly int CutoffHeight = Shader.PropertyToID("_Cutoff_Height");
+    public static readonly string MusicVolume = "musicVolume";
+    public static readonly string SfxVolume = "sfxVolume";
     public static int CheckForSameElementsSprite(int index, int similes, Sprite[] potionIngredients)
     {
         if (index + similes + 1 >= potionIngredients.Length)

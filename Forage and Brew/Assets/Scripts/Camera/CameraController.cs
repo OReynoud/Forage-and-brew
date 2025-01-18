@@ -156,10 +156,12 @@ public class CameraController : Singleton<CameraController>
         if (CharacterInputManager.Instance.showCodex)
         {
             ApplyScriptableCamSettings(codexEnterTime);
+            InfoDisplayManager.instance.ShowBackground();
         }
         else
         {
             ApplyScriptableCamSettings(codexExitTime);
+            InfoDisplayManager.instance.HideBackground();
         }
     }
 
