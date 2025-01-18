@@ -10,18 +10,18 @@ public class CharacterSpawnBehaviour : MonoBehaviour
 
     private void Start()
     {
-        if (sourceScene == GameDontDestroyOnLoadManager.Instance.PreviousScene)
+        if (sourceScene == GameDontDestroyOnLoadManager.Instance.CurrentScene)
         {
             characterTransform.position = transform.position;
             characterTransform.rotation = transform.rotation;
             
-            CharacterMovementController.Instance.SetupAudio(GameDontDestroyOnLoadManager.Instance.PreviousScene);
+            CharacterMovementController.Instance.SetupAudio(GameDontDestroyOnLoadManager.Instance.CurrentScene);
             
             foreach (SceneName sceneName in sceneListSo.SceneNames)
             {
                 if (sceneName.Name == SceneManager.GetActiveScene().name)
                 {
-                    GameDontDestroyOnLoadManager.Instance.PreviousScene = sceneName.Scene;
+                    GameDontDestroyOnLoadManager.Instance.CurrentScene = sceneName.Scene;
                     CharacterVfxManager.Instance.CheckForRainVfx(sceneName.Scene);
                     WeatherLightingManager.Instance?.SetRightLighting(sceneName.Scene);
                     break;

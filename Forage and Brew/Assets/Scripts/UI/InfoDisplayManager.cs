@@ -189,7 +189,7 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
 
         Biome currentBiome = Biome.None;
 
-        switch (GameDontDestroyOnLoadManager.Instance.PreviousScene)
+        switch (GameDontDestroyOnLoadManager.Instance.CurrentScene)
         {
             case Scene.House:
             case Scene.Outdoor:
