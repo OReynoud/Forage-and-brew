@@ -692,9 +692,6 @@ public class Book : MonoBehaviour
             //Debug.Log(bookPages[currentPage - 1].UIComponent.name);
         }
 
-        Debug.Log(currentPage);
-        Debug.Log(pageIndex);
-        
         currentPage = pageIndex;
         
         UpdateSprites();

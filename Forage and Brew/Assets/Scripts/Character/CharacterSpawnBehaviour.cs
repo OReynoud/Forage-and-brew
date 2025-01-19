@@ -36,11 +36,6 @@ public class CharacterSpawnBehaviour : MonoBehaviour
             }
             
             PinnedRecipe.instance.Start();
-
-            if (WeatherManager.Instance.CurrentWeatherStates.Count != 0)
-            {
-                InfoDisplayManager.instance.DisplayWeather();
-            }
             
             if (camSettings != null)
             {
