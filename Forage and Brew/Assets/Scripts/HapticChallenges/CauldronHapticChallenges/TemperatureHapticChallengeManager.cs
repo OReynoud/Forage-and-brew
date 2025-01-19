@@ -284,6 +284,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
         CharacterInputManager.Instance.EnableInputs();
         CurrentBellows.EnableInteract();
         CurrentBellows.ExitTemperatureHapticChallenge();
+        CauldronVfxManager.Instance.ChangeTemperatureVfx(_currentTemperature);
 
         if (isSuccessful)
         {

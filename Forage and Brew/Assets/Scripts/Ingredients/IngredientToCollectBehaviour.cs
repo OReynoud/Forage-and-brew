@@ -55,7 +55,7 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     [SerializeField] private GameObject harvestReleaseRightGameObject;
     [SerializeField] private GameObject harvestGaugeRightGameObject;
     [SerializeField] private Slider harvestGaugeRightSlider;
-    public bool DoesNeedToShowUi { get; set; }
+    public bool DoesNeedToShowUi { get; set; } = true;
     private float _currentTriggerTime;
     
 
@@ -79,11 +79,6 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         obtainingFeedbackRectTransform.gameObject.SetActive(false);
         _obtainingFeedbackStartPosition = obtainingFeedbackRectTransform.anchoredPosition;
 
-        if (GameDontDestroyOnLoadManager.Instance.DayPassed == 0)
-        {
-            DoesNeedToShowUi = true;
-        }
-
         if (!ingredientToCollectSpawnManager && IngredientValuesSo)
         {
             SpawnMesh();
@@ -104,6 +99,11 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         }
         
         Instantiate(IngredientValuesSo.MeshGameObject, meshParentTransform);
+
+        // if (!GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Contains(IngredientValuesSo))
+        // {
+        //     DoesNeedToShowUi = true;
+        // }
     }
 
 
