@@ -11,5 +11,6 @@ public enum PotionTag
     ShallowCuts = 1 << 2,
     Beverage = 1 << 5,
     EnergyDrink = 1 << 6,
+    ContainCatnip = 1 << 8,
     
 }
