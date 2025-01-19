@@ -23,11 +23,11 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         _coroutine = StartCoroutine(ChangeScenes(SceneName));
     }
 
-    public void HandleLoadNewScene()
+    public void HandleLoadNewScene(Scene newScene)
     {
         if (_coroutine != null)
             StopCoroutine(_coroutine);
-        _coroutine = StartCoroutine(ShowScreen());
+        _coroutine = StartCoroutine(ShowScreen(newScene));
         
     }
 
@@ -75,7 +75,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         
         StartCoroutine(WakeUp());
     }
-    private IEnumerator ShowScreen()
+    private IEnumerator ShowScreen(Scene newScene)
     {
         transitionElement.gameObject.SetActive(false);
         timer = 0;
@@ -91,6 +91,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
 
         transitionElement.gameObject.SetActive(false);
         
+        GameDontDestroyOnLoadManager.Instance.CurrentScene = newScene;
         CharacterInputManager.Instance.EnableInputs();
     }
 
