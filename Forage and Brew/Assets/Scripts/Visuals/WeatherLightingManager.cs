@@ -10,12 +10,15 @@ public class WeatherLightingManager : MonoBehaviour
     [SerializeField] private WeatherStateSo cloudWeatherState;
     [SerializeField] private GameObject cloudLightingGameObject;
     [SerializeField] private VolumeProfile cloudVolumeProfile;
+    [SerializeField] private float cloudFogDensity = 0.08f;
     [SerializeField] private WeatherStateSo rainWeatherState;
     [SerializeField] private GameObject rainLightingGameObject;
     [SerializeField] private VolumeProfile rainVolumeProfile;
+    [SerializeField] private float rainFogDensity = 0.08f;
     [SerializeField] private WeatherStateSo sunWeatherState;
     [SerializeField] private GameObject sunLightingGameObject;
     [SerializeField] private VolumeProfile sunVolumeProfile;
+    [SerializeField] private float sunFogDensity;
     
 
     private void Awake()
@@ -56,6 +59,8 @@ public class WeatherLightingManager : MonoBehaviour
         rainLightingGameObject.SetActive(false);
         sunLightingGameObject.SetActive(false);
         globalVolume.profile = cloudVolumeProfile;
+        RenderSettings.fog = cloudFogDensity > 0f;
+        RenderSettings.fogDensity = cloudFogDensity;
     }
     
     public void SetRainLighting()
@@ -64,6 +69,8 @@ public class WeatherLightingManager : MonoBehaviour
         rainLightingGameObject.SetActive(true);
         sunLightingGameObject.SetActive(false);
         globalVolume.profile = rainVolumeProfile;
+        RenderSettings.fog = rainFogDensity > 0f;
+        RenderSettings.fogDensity = rainFogDensity;
     }
     
     public void SetSunLighting()
@@ -72,5 +79,7 @@ public class WeatherLightingManager : MonoBehaviour
         rainLightingGameObject.SetActive(false);
         sunLightingGameObject.SetActive(true);
         globalVolume.profile = sunVolumeProfile;
+        RenderSettings.fog = sunFogDensity > 0f;
+        RenderSettings.fogDensity = sunFogDensity;
     }
 }
