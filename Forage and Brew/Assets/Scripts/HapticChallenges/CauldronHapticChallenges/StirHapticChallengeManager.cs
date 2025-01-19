@@ -35,6 +35,7 @@ public class StirHapticChallengeManager : MonoBehaviour
     private CameraPreset _previousCameraPreset;
     
     [Header("Character")]
+    [SerializeField] private Animator characterAnimator;
     [SerializeField] private Vector3 characterStirPosition;
     [SerializeField] private Vector3 characterStirRotation;
     
@@ -54,6 +55,9 @@ public class StirHapticChallengeManager : MonoBehaviour
     public Vector2 JoystickInputValue { get; set; }
     private readonly List<Vector2> _storedJoystickInputValues = new();
     private readonly List<float> _joystickInputDifferences = new();
+    
+    // Animator Hashes
+    private static readonly int IsStirring = Animator.StringToHash("IsStirring");
     
     
     private void Awake()
@@ -185,6 +189,7 @@ public class StirHapticChallengeManager : MonoBehaviour
         // Character
         transform.position = CurrentCauldron.transform.position + characterStirPosition;
         transform.rotation = Quaternion.Euler(characterStirRotation);
+        characterAnimator.SetBool(IsStirring, true);
         
         // Inputs
         CharacterInputManager.Instance.DisableInputs();
@@ -428,6 +433,7 @@ public class StirHapticChallengeManager : MonoBehaviour
         
         // Sound
         CurrentCauldron.StopBrewingSound();
+        characterAnimator.SetBool(IsStirring, false);
         CameraController.instance.ApplyScriptableCamSettings(_previousCameraPreset, cauldronCameraTransitionTime);
         CharacterInputManager.Instance.EnableInputs();
         CurrentCauldron.EnableInteract(false);        
