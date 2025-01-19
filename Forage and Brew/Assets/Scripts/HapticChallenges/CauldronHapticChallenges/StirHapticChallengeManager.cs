@@ -376,7 +376,7 @@ public class StirHapticChallengeManager : MonoBehaviour
     
     private bool CheckInput()
     {
-        if (_storedJoystickInputValues.Count == 0 && JoystickInputValue == Vector2.zero) return true;
+        if (JoystickInputValue == Vector2.zero) return true;
         
         if (_storedJoystickInputValues.Count == 3 &&
             Vector2.Angle(JoystickInputValue.normalized, Vector2.down) <=
