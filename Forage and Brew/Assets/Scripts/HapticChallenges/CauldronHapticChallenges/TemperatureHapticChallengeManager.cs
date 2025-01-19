@@ -163,6 +163,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
                     _temperatureMaintenanceTime = 0f;
                     _currentTemperature = Temperature.None;
                     CauldronVfxManager.Instance.ChangeTemperatureVfx(_currentTemperature);
+                    CauldronBehaviour.instance.StopFireAmbiance();
                 }
                 else
                 {
@@ -188,6 +189,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
                     _temperatureMaintenanceTime = 0f;
                     _currentTemperature = Temperature.None;
                     CauldronVfxManager.Instance.ChangeTemperatureVfx(_currentTemperature);
+                    CauldronBehaviour.instance.StopFireAmbiance();
                 }
                 else
                 {
@@ -207,6 +209,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
                     _temperatureMaintenanceTime = 0f;
                     _currentTemperature = Temperature.None;
                     CauldronVfxManager.Instance.ChangeTemperatureVfx(_currentTemperature);
+                    CauldronBehaviour.instance.StopFireAmbiance();
                 }
                 else
                 {
@@ -219,6 +222,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
                 {
                     _currentTemperature = Temperature.LowHeat;
                     CauldronVfxManager.Instance.ChangeTemperatureVfx(_currentTemperature);
+                    CauldronBehaviour.instance.PlayFireAmbiance();
                     _temperatureMaintenanceTime += Time.deltaTime;
                 }
                 else if (gaugeImage.fillAmount >= temperatureHapticChallengeGlobalValuesSo.MediumHeatMinValue &&
@@ -226,6 +230,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
                 {
                     _currentTemperature = Temperature.MediumHeat;
                     CauldronVfxManager.Instance.ChangeTemperatureVfx(_currentTemperature);
+                    CauldronBehaviour.instance.PlayFireAmbiance();
                     _temperatureMaintenanceTime += Time.deltaTime;
                 }
                 else if (gaugeImage.fillAmount >= temperatureHapticChallengeGlobalValuesSo.HighHeatMinValue &&
@@ -233,6 +238,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
                 {
                     _currentTemperature = Temperature.HighHeat;
                     CauldronVfxManager.Instance.ChangeTemperatureVfx(_currentTemperature);
+                    CauldronBehaviour.instance.PlayFireAmbiance();
                     _temperatureMaintenanceTime += Time.deltaTime;
                 }
                 break;

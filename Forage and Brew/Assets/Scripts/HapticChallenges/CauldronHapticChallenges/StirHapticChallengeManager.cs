@@ -228,6 +228,7 @@ public class StirHapticChallengeManager : MonoBehaviour
         _confirmationCircles[_currentStirIndex].SetCurrentCircle();
         CameraController.instance.ApplyScriptableCamSettings(_currentChallenge.StirCamerasAndDurations[_currentStirIndex].Camera,
             cauldronCameraTransitionTime);
+        CurrentCauldron.PlayBrewingSound(_currentStirIndex);
         StartStirTurn();
     }
 
@@ -355,6 +356,7 @@ public class StirHapticChallengeManager : MonoBehaviour
         
         RumbleManager.Instance.PlayRumble(stirHapticChallengeGlobalValuesSo.StirTurnVibrationDuration,
             stirHapticChallengeGlobalValuesSo.StirTurnVibrationPower);
+        CurrentCauldron.PlayCheckInputSound(_currentStirIndex);
         
         _currentStirTime = 0;
         _currentStirIndex++;
@@ -374,6 +376,7 @@ public class StirHapticChallengeManager : MonoBehaviour
     private void ObtainPotion()
     {
         CauldronVfxManager.Instance.PlayObtainedPotionVfx();
+        CurrentCauldron.PlayCheckInputFinalSound();
         obtainedPotionImage.sprite = _currentPotion.PotionDifficulty.PotionSprite;
         obtainedPotionLiquidImage.sprite = _currentPotion.PotionDifficulty.LiquidSprite;
         obtainedPotionLiquidImage.color = _currentPotion.SpriteLiquidColor;
@@ -403,7 +406,7 @@ public class StirHapticChallengeManager : MonoBehaviour
         // Debug.Log("Average Difference: " + averageDifference);
         
         // Debug.Log(_currentPotion.Name + " Stir Challenge Finished");
-
+        
         if (isSuccessful)
         {
             CollectedPotionBehaviour collectedPotionBehaviour = Instantiate(collectedPotionPrefab,
@@ -423,6 +426,8 @@ public class StirHapticChallengeManager : MonoBehaviour
         _currentPotion = null;
         _currentChallenge = null;
         
+        // Sound
+        CurrentCauldron.StopBrewingSound();
         CameraController.instance.ApplyScriptableCamSettings(_previousCameraPreset, cauldronCameraTransitionTime);
         CharacterInputManager.Instance.EnableInputs();
         CurrentCauldron.EnableInteract(false);        

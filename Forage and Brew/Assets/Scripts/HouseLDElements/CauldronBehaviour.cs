@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddable
@@ -8,7 +9,15 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
     [SerializeField] private GameObject buttonYGameObject;
     [field: SerializeField] public Transform SpoonTransform { get; private set; }
     
-
+    [SerializeField] private List<AudioSource> fireAmbianceAudioSources;
+    private readonly List<float> _fireAmbianceVolumes = new();
+    [SerializeField] private float fireAmbianceFadeDuration = 1f;
+    [SerializeField] private AudioSource checkInputAudioSource;
+    [SerializeField] private List<AudioClip> checkInputAudioClips;
+    [SerializeField] private AudioSource checkInputFinalAudioSource;
+    [SerializeField] private AudioSource brewingAudioSource;
+    [SerializeField] private List<AudioClip> brewingAudioClips;
+    
     
     private void Start()
     {
@@ -96,6 +105,49 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
         CauldronVfxManager.Instance.ChangeSmokeVfx(false);
         
         return temperatureAndIngredientsList;
+    }
+    
+    
+    public void StopFireAmbiance()
+    {
+        _fireAmbianceVolumes.Clear();
+        
+        foreach (AudioSource fireAmbianceAudioSource in fireAmbianceAudioSources)
+        {
+            _fireAmbianceVolumes.Add(fireAmbianceAudioSource.volume);
+            fireAmbianceAudioSource.DOFade(0f, fireAmbianceFadeDuration).OnComplete(() => fireAmbianceAudioSource.Stop());
+        }
+    }
+    
+    public void PlayFireAmbiance()
+    {
+        for (int i = 0; i < fireAmbianceAudioSources.Count; i++)
+        {
+            fireAmbianceAudioSources[i].DOKill();
+            fireAmbianceAudioSources[i].Play();
+            fireAmbianceAudioSources[i].volume = _fireAmbianceVolumes[i];
+        }
+    }
+    
+    public void PlayCheckInputSound(int index)
+    {
+        checkInputAudioSource.PlayOneShot(checkInputAudioClips[index]);
+    }
+    
+    public void PlayCheckInputFinalSound()
+    {
+        checkInputFinalAudioSource.Play();
+    }
+    
+    public void PlayBrewingSound(int index)
+    {
+        brewingAudioSource.clip = brewingAudioClips[index];
+        brewingAudioSource.Play();
+    }
+    
+    public void StopBrewingSound()
+    {
+        brewingAudioSource.Stop();
     }
     
     
