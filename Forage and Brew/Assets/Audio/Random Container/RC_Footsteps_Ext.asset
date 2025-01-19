@@ -1,23 +1,53 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1233149941 &-8190996181764876093
+--- !u!1233149941 &-8397626124457436268
 AudioContainerElement:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SFX_WalkForest_10_{-8190996181764876093}
-  m_AudioClip: {fileID: 8300000, guid: d231b441a8247a7439bd421ff62a2a5c, type: 3}
+  m_Name: SFX_GrassFootstep04_{-8397626124457436268}
+  m_AudioClip: {fileID: 8300000, guid: 76b57f7074e206a4cb7a88691efa7822, type: 3}
   m_Volume: 0
   m_Enabled: 1
---- !u!1233149941 &-5874722206647977887
+--- !u!1233149941 &-8330053649510468022
 AudioContainerElement:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SFX_WalkForest_09_{-5874722206647977887}
-  m_AudioClip: {fileID: 8300000, guid: 82b7641ae42f72440ba417d8dd2cd03e, type: 3}
+  m_Name: SFX_GrassFootstep05_{-8330053649510468022}
+  m_AudioClip: {fileID: 8300000, guid: 046e02f81267fb94b8178b72a1fff99d, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &1448713762027068523
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_GrassFootstep06_{1448713762027068523}
+  m_AudioClip: {fileID: 8300000, guid: 4afd2827ebbea5042929cd333ed96ade, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &1627711781586688093
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_GrassFootstep02_{1627711781586688093}
+  m_AudioClip: {fileID: 8300000, guid: 570cb8ce5df40164a8c33c138760b060, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &4532198935594448087
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SFX_GrassFootstep03_{4532198935594448087}
+  m_AudioClip: {fileID: 8300000, guid: a3e5857936073b247be24305a222b824, type: 3}
   m_Volume: 0
   m_Enabled: 1
 --- !u!1307931743 &6418180475301049370
@@ -27,34 +57,37 @@ AudioRandomContainer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: RC_Footsteps_Ext
-  m_Volume: 0
+  m_Volume: -15
   m_Pitch: 0
-  m_AutomaticTriggerTime: 0.2
+  m_AutomaticTriggerTime: 0
   m_LoopCount: 1
-  m_VolumeRandomizationRange: {x: 0, y: 0}
-  m_PitchRandomizationRange: {x: 0, y: 0}
+  m_VolumeRandomizationRange: {x: -12.715235, y: 0}
+  m_PitchRandomizationRange: {x: -270.19867, y: 0}
   m_AutomaticTriggerTimeRandomizationRange: {x: 0, y: 0}
   m_LoopCountRandomizationRange: {x: 0, y: 0}
   m_Elements:
-  - {fileID: -5874722206647977887}
-  - {fileID: -8190996181764876093}
-  - {fileID: 7727568002237983197}
-  m_AvoidRepeatingLast: 2
+  - {fileID: 8139719892820952950}
+  - {fileID: 1627711781586688093}
+  - {fileID: 4532198935594448087}
+  - {fileID: -8397626124457436268}
+  - {fileID: -8330053649510468022}
+  - {fileID: 1448713762027068523}
+  m_AvoidRepeatingLast: 0
   m_PlaybackMode: 2
   m_TriggerMode: 1
   m_AutomaticTriggerMode: 1
   m_LoopMode: 1
   m_VolumeRandomizationEnabled: 0
-  m_PitchRandomizationEnabled: 0
+  m_PitchRandomizationEnabled: 1
   m_AutomaticTriggerTimeRandomizationEnabled: 0
   m_LoopCountRandomizationEnabled: 0
---- !u!1233149941 &7727568002237983197
+--- !u!1233149941 &8139719892820952950
 AudioContainerElement:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SFX_WalkForest_11_{7727568002237983197}
-  m_AudioClip: {fileID: 8300000, guid: 01e55b1b1d2a71444af77878cc918357, type: 3}
+  m_Name: SFX_GrassFootstep01_{8139719892820952950}
+  m_AudioClip: {fileID: 8300000, guid: f045808c3dba3ef4d8815e2c5408bc3e, type: 3}
   m_Volume: 0
   m_Enabled: 1
