@@ -132,7 +132,10 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         transitionElement.gameObject.SetActive(false);
         
         GameDontDestroyOnLoadManager.Instance.CurrentScene = newScene;
-        
+        if (WeatherManager.Instance.CurrentWeatherStates.Count != 0)
+        {
+            InfoDisplayManager.instance.DisplayWeather();
+        }
         CharacterMovementController.Instance.SetupAudio(GameDontDestroyOnLoadManager.Instance.CurrentScene);
         CharacterInputManager.Instance.EnableInputs();
     }
