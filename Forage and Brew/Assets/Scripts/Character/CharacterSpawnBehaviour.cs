@@ -15,7 +15,6 @@ public class CharacterSpawnBehaviour : MonoBehaviour
             characterTransform.position = transform.position;
             characterTransform.rotation = transform.rotation;
             
-            CharacterMovementController.Instance.SetupAudio(GameDontDestroyOnLoadManager.Instance.CurrentScene);
             
             foreach (SceneName sceneName in sceneListSo.SceneNames)
             {
