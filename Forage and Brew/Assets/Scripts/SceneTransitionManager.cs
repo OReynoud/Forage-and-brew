@@ -132,6 +132,8 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         transitionElement.gameObject.SetActive(false);
         
         GameDontDestroyOnLoadManager.Instance.CurrentScene = newScene;
+        
+        CharacterMovementController.Instance.SetupAudio(GameDontDestroyOnLoadManager.Instance.CurrentScene);
         CharacterInputManager.Instance.EnableInputs();
     }
 
