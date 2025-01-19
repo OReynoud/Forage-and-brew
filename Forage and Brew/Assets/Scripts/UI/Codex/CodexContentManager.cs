@@ -114,6 +114,10 @@ public class CodexContentManager : Singleton<CodexContentManager>
         {
             AutoFlip.instance.ControledBook.bookMarks[i].index += 2;
         }
+        if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[2].index)
+        {
+            AutoFlip.instance.ControledBook.currentPage += 2;
+        }
     }
 
     public void ReceiveNewOrder(ClientSo client, string orderDescription, PotionDemand[] potionsRequested,

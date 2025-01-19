@@ -319,7 +319,11 @@ public class AutoFlip : Singleton<AutoFlip>
             recipeToPin = null;
             tempIngredientsHigh.Clear();
         }
-        
+
+        foreach (var tupple in CodexContentManager.instance.pageIndexesToCheck)
+        {
+            Debug.Log(tupple.Item1);
+        }
         if (CodexContentManager.instance.pageIndexesToCheck[^1].Item1 % 2 == 1)
         {
             ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1].Item1 + 1);
