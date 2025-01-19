@@ -170,7 +170,12 @@ public class StirHapticChallengeManager : MonoBehaviour
             if (!isRightPotion) continue;
             
             _currentPotion = potion;
-            
+            if (_currentPotion == PinnedRecipe.instance.pinnedRecipe)
+            {
+                PinnedRecipe.instance.UnpinRecipe();
+                CodexContentManager.instance.pinnedRecipe.pinIcon.enabled = false;
+                CodexContentManager.instance.pinImage.enabled = false;
+            }
             return;
         }
         
