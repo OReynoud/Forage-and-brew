@@ -36,8 +36,10 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
 
     [BoxGroup("Top Right")] [SerializeField]
     private RectTransform weatherUIContainer;
+
     [BoxGroup("Top Right")] [SerializeField]
     private float houseHeight;
+
     [BoxGroup("Top Right")] [SerializeField]
     private float inBiomeHeight;
 
@@ -70,6 +72,15 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
 
     [BoxGroup("Bottom Left")] [SerializeField]
     private RectTransform codexIcon;
+
+    [BoxGroup("Bottom Left")] [SerializeField]
+    private Image crossImage;
+
+    [BoxGroup("Bottom Left")] [SerializeField]
+    private Sprite upArrow;
+
+    [BoxGroup("Bottom Left")] [SerializeField]
+    private Sprite downArrow;
 
     [BoxGroup("Behavior")] [SerializeField]
     private float lerp;
@@ -120,6 +131,7 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
     {
         CharacterInputManager.Instance.OnInputsEnabled.AddListener(UpdateUIVisibility);
         CharacterInputManager.Instance.OnNavigationChange.AddListener(UpdateUIVisibilityReverse);
+        CharacterInputManager.Instance.OnCodexUse.AddListener(UpdateCodexSprite);
 
         float volume = PlayerPrefs.GetFloat(Ex.MusicVolume);
         float volumeFX = PlayerPrefs.GetFloat(Ex.SfxVolume);
@@ -127,6 +139,11 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
         musicSlider.value = volume;
         mixer.SetFloat(Ex.SfxVolume, volumeFX == sfxSlider.minValue ? -80 : volumeFX);
         sfxSlider.value = volumeFX;
+    }
+
+    private void UpdateCodexSprite()
+    {
+        crossImage.sprite = CharacterInputManager.Instance.showCodex ? downArrow : upArrow;
     }
 
     private void UpdateUIVisibility(bool arg0)
@@ -147,14 +164,8 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
                 Vector2.Lerp(weatherUIContainer.anchoredPosition, topRightShownPos, lerp);
             moneyUIContainer.anchoredPosition =
                 Vector2.Lerp(moneyUIContainer.anchoredPosition, bottomRightShownPos, lerp);
-            if (!CharacterInputManager.Instance.showCodex)
-            {
-                codexIcon.anchoredPosition = Vector2.Lerp(codexIcon.anchoredPosition, bottomLeftShownPos, lerp);
-            }
-            else
-            {
-                codexIcon.anchoredPosition = Vector2.Lerp(codexIcon.anchoredPosition, bottomLeftHiddenPos, lerp);
-            }
+            codexIcon.anchoredPosition = 
+                Vector2.Lerp(codexIcon.anchoredPosition, bottomLeftShownPos, lerp);
         }
         else
         {
@@ -211,7 +222,7 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
         switch (currentBiome)
         {
             case Biome.None:
-                forestDisplay.SetActive(true); 
+                forestDisplay.SetActive(true);
                 DisplayBiomeWeather(Biome.Forest, forestWeather);
 
                 swampDisplay.SetActive(true);
@@ -267,12 +278,12 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
     {
         if (showPause) return;
         if (!_canInputPause) return;
-        
+
         showPause = true;
         CharacterInputManager.Instance.DisableInputs();
         CharacterInputManager.Instance.EnablePauseInputs();
         uiInput.enabled = true;
-        
+
         _canInputPause = false;
         StartCoroutine(PauseInputBuffer());
     }
@@ -281,7 +292,7 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
     {
         if (!showPause) return;
         if (!_canInputPause) return;
-        
+
         showPause = false;
         CharacterInputManager.Instance.EnableInputs();
         if (CharacterInputManager.Instance.showCodex)
@@ -290,15 +301,15 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
         }
 
         uiInput.enabled = false;
-        
+
         _canInputPause = false;
         StartCoroutine(PauseInputBuffer());
     }
-    
+
     private IEnumerator PauseInputBuffer()
     {
         yield return new WaitForNextFrameUnit();
-        
+
         _canInputPause = true;
     }
 
@@ -313,7 +324,7 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
         showOptions = false;
         CharacterInputManager.Instance.EnablePauseInputs();
     }
-    
+
     public void ClearData()
     {
         SaveManager.DeleteSave(false);
