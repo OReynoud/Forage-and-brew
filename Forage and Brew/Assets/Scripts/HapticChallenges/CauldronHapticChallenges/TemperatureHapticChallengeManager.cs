@@ -48,6 +48,8 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
     
     // Animator Hashes
     private static readonly int DoPushBellows = Animator.StringToHash("DoPushBellows");
+    private static readonly int DoEnterBellows = Animator.StringToHash("DoEnterBellows");
+    private static readonly int DoExitBellows = Animator.StringToHash("DoExitBellows");
     
     
     private void Awake()
@@ -78,7 +80,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
     {
         if (!CurrentBellows) return;
         IsChallengeActive = true;
-        
+        characterAnimator.SetTrigger(DoEnterBellows);
         _previousCameraPreset = CameraController.instance.TargetCamSettings;
         CameraController.instance.ApplyScriptableCamSettings(stirChallengeCameraPreset, cauldronCameraTransitionTime);
 
@@ -280,6 +282,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
     {
         if (!IsChallengeActive) return;
         
+        characterAnimator.SetTrigger(DoExitBellows);
         CameraController.instance.ApplyScriptableCamSettings(_previousCameraPreset, cauldronCameraTransitionTime);
         CharacterInputManager.Instance.EnableInputs();
         CurrentBellows.EnableInteract();
