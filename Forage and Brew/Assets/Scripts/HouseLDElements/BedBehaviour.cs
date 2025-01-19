@@ -4,6 +4,7 @@ public class BedBehaviour : MonoBehaviour
 {
     [SerializeField] private PotionBasketManagerBehaviour[] potionBasketManagerBehaviours;
     [SerializeField] private GameObject interactInputCanvasGameObject;
+    [SerializeField] private Transform bedSpawnPoint;
 
 
     private void Start()
@@ -25,7 +26,7 @@ public class BedBehaviour : MonoBehaviour
 
     public void Sleep()
     {
-        SceneTransitionManager.instance.HandleGoingToSleepTransition(1f);
+        SceneTransitionManager.instance.HandleGoingToSleepTransition(bedSpawnPoint);
         
         // Ingredients to Collect
         GameDontDestroyOnLoadManager.Instance.HasChosenIngredientsToday = false;
@@ -49,7 +50,7 @@ public class BedBehaviour : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        if (GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay == TimeOfDay.Daytime) return;
+        //if (GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay == TimeOfDay.Daytime) return;
         
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
