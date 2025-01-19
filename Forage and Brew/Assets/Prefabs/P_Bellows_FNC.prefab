@@ -329,6 +329,61 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &5544562880800298859
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4349700768190201996}
+  - component: {fileID: 5972662908675111997}
+  m_Layer: 0
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4349700768190201996
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5544562880800298859}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7359685, y: 0.000000029802322, z: -0.000000029802322, w: 0.6770159}
+  m_LocalPosition: {x: 0, y: 1.058, z: 0.347}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7142508373073014181}
+  m_LocalEulerAnglesHint: {x: 94.778015, y: 0, z: 0}
+--- !u!136 &5972662908675111997
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5544562880800298859}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5667737
+  m_Height: 3.2405324
+  m_Direction: 1
+  m_Center: {x: 0.066773914, y: -0.10307816, z: -0.000000081566164}
 --- !u!1 &6069491999963403695
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,6 +419,7 @@ Transform:
   - {fileID: 2656487525142525044}
   - {fileID: 7877143515726776887}
   - {fileID: 4577643183400614811}
+  - {fileID: 4349700768190201996}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!135 &8978841895534039609
@@ -401,6 +457,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactInputCanvasGameObject: {fileID: 1224711761624223245}
   bellowsAnimator: {fileID: 1965395277991657675}
+  pushSpeedOutsideTemperatureChallenge: 0.5
+  pushSpeedInsideTemperatureChallenge: 2
 --- !u!136 &8944386256488753399
 CapsuleCollider:
   m_ObjectHideFlags: 0
