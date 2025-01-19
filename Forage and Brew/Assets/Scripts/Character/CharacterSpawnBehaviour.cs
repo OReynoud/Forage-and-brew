@@ -21,18 +21,16 @@ public class CharacterSpawnBehaviour : MonoBehaviour
             {
                 if (sceneName.Name == SceneManager.GetActiveScene().name)
                 {
-                    GameDontDestroyOnLoadManager.Instance.CurrentScene = sceneName.Scene;
                     CharacterVfxManager.Instance.CheckForRainVfx(sceneName.Scene);
                     WeatherLightingManager.Instance?.SetRightLighting(sceneName.Scene);
                     
-                    if (sourceScene == Scene.House && sceneName.Name == sceneListSo.SceneNames[0].Name)
+                    if (sourceScene == Scene.House && sceneName.Scene == Scene.House)
                     {
                         SceneTransitionManager.instance.Wake();
                     }
                     else
                     {
-                        Debug.Log("Oui");
-                        SceneTransitionManager.instance.HandleLoadNewScene();
+                        SceneTransitionManager.instance.HandleLoadNewScene(sceneName.Scene);
                     }
                     break;
                 }

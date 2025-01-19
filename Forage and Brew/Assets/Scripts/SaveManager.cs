@@ -156,7 +156,7 @@ public class SaveManager : MonoBehaviour
             if (sceneName.Scene == data.PreviousScene)
             {
                 SceneManager.LoadScene(sceneName.Name);
-                SceneTransitionManager.instance.HandleLoadNewScene();
+                SceneTransitionManager.instance.HandleLoadNewScene(sceneName.Scene);
                 break;
             }
         }

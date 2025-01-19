@@ -1,10 +1,10 @@
+using System.Collections;
 using NaughtyAttributes;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class InfoDisplayManager : Singleton<InfoDisplayManager>
@@ -98,9 +98,10 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
     private Vector2 bottomLeftHiddenPos;
 
     public float tutorialTimer { get; set; }
-    private bool showBackground { get; set; }
-    private bool showPause { get; set; }
-    private bool showOptions { get; set; }
+    private bool showBackground;
+    private bool showPause;
+    private bool showOptions;
+    private bool _canInputPause = true;
 
 
     public void DisplayAll()
@@ -258,13 +259,23 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
 
     public void ShowPause()
     {
+        if (showPause) return;
+        if (!_canInputPause) return;
+        
         showPause = true;
         CharacterInputManager.Instance.DisableInputs();
+        CharacterInputManager.Instance.EnablePauseInputs();
         uiInput.enabled = true;
+        
+        _canInputPause = false;
+        StartCoroutine(PauseInputBuffer());
     }
 
     public void HidePause()
     {
+        if (!showPause) return;
+        if (!_canInputPause) return;
+        
         showPause = false;
         CharacterInputManager.Instance.EnableInputs();
         if (CharacterInputManager.Instance.showCodex)
@@ -273,16 +284,28 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
         }
 
         uiInput.enabled = false;
+        
+        _canInputPause = false;
+        StartCoroutine(PauseInputBuffer());
+    }
+    
+    private IEnumerator PauseInputBuffer()
+    {
+        yield return new WaitForNextFrameUnit();
+        
+        _canInputPause = true;
     }
 
     public void ShowOptions()
     {
         showOptions = true;
+        CharacterInputManager.Instance.DisablePauseInputs();
     }
 
     public void HideOptions()
     {
         showOptions = false;
+        CharacterInputManager.Instance.EnablePauseInputs();
     }
 
     public void Quit()
