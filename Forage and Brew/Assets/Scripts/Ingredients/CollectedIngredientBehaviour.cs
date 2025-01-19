@@ -26,7 +26,10 @@ public class CollectedIngredientBehaviour : MonoBehaviour, IStackable
     private float _lerp;
 
     [Header("UI")]
-    [SerializeField] private GameObject grabInputCanvasGameObject;
+    [SerializeField] private GameObject localCanvasGameObject;
+    [SerializeField] private GameObject grabInputGameObject;
+    [SerializeField] private GameObject chopIconGameObject;
+    [SerializeField] private GameObject grindIconGameObject;
 
     public Transform GetTransform() => transform;
     public StackableValuesSo GetStackableValuesSo() => IngredientValuesSo;
@@ -36,10 +39,12 @@ public class CollectedIngredientBehaviour : MonoBehaviour, IStackable
     private void Start()
     {
         Instantiate(IngredientValuesSo.MeshGameObject, meshParentTransform);
-        grabInputCanvasGameObject.SetActive(false);
+        grabInputGameObject.SetActive(false);
         StackHeight = collectedIngredientGlobalValuesSo.StackHeight;
         _dropInTargetLerp = Random.Range(collectedIngredientGlobalValuesSo.MinDropInTargetLerp,
             collectedIngredientGlobalValuesSo.MaxDropInTargetLerp);
+        
+        UpdateCookedForm();
     }
 
     private void Update()
@@ -66,12 +71,44 @@ public class CollectedIngredientBehaviour : MonoBehaviour, IStackable
 
     public void EnableGrab()
     {
-        grabInputCanvasGameObject.SetActive(true);
+        localCanvasGameObject.SetActive(true);
+        grabInputGameObject.SetActive(true);
     }
     
     public void DisableGrab()
     {
-        grabInputCanvasGameObject.SetActive(false);
+        grabInputGameObject.SetActive(false);
+        localCanvasGameObject.SetActive(grabInputGameObject.activeSelf || chopIconGameObject.activeSelf ||
+                                        grindIconGameObject.activeSelf);
+    }
+    
+    
+    public void SetCookedForm(CookHapticChallengeSo cookedForm)
+    {
+        CookedForm = cookedForm;
+        UpdateCookedForm();
+    }
+    
+    private void UpdateCookedForm()
+    {
+        if (CookedForm is ChoppingHapticChallengeListSo)
+        {
+            localCanvasGameObject.SetActive(true);
+            chopIconGameObject.SetActive(true);
+            grindIconGameObject.SetActive(false);
+        }
+        else if (CookedForm is GrindingHapticChallengeSo)
+        {
+            localCanvasGameObject.SetActive(true);
+            chopIconGameObject.SetActive(false);
+            grindIconGameObject.SetActive(true);
+        }
+        else
+        {
+            localCanvasGameObject.SetActive(false);
+            chopIconGameObject.SetActive(false);
+            grindIconGameObject.SetActive(false);
+        }
     }
 
 

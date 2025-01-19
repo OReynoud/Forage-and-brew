@@ -33,7 +33,7 @@ public class ChoppingCountertopBehaviour : MonoBehaviour, IIngredientAddable
 
     public void ChopIngredient(CookHapticChallengeSo cookHapticChallengeSo)
     {
-        _collectedIngredients[0].CookedForm = cookHapticChallengeSo;
+        _collectedIngredients[0].SetCookedForm(cookHapticChallengeSo);
         CharacterInteractController.Instance.AddToPile(_collectedIngredients[0]);
         _collectedIngredients.RemoveAt(0);
 
