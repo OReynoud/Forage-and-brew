@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,8 +22,13 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
     [SerializeField] private RectTransform highHeatFlameRectTransform;
     [SerializeField] private RectTransform gaugeArrowRectTransform;
     [SerializeField] private Image gaugeImage;
-    [SerializeField] private Image temperatureMaintenanceTimeImage;
-    [SerializeField] private TMP_Text temperatureMaintenanceTimeText;
+    [SerializeField] private float timerFadeValue = 0.5f;
+    [SerializeField] private CanvasGroup maintenanceTimeCanvasGroup;
+    [SerializeField] private Sprite lowHeatMaintenanceTimeFillSprite;
+    [SerializeField] private Sprite mediumHeatMaintenanceTimeFillSprite;
+    [SerializeField] private Sprite highHeatMaintenanceTimeFillSprite;
+    [SerializeField] private Image maintenanceTimeFillImage;
+    [SerializeField] private Image maintenanceTimeNeedleImage;
     
     [Header("Camera")]
     [SerializeField] private CameraPreset stirChallengeCameraPreset;
@@ -243,23 +247,32 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
                 }
                 break;
         }
+        
+        // UI Update
+        switch (_currentTemperature)
+        {
+            case Temperature.LowHeat:
+                maintenanceTimeFillImage.sprite = lowHeatMaintenanceTimeFillSprite;
+                break;
+            case Temperature.MediumHeat:
+                maintenanceTimeFillImage.sprite = mediumHeatMaintenanceTimeFillSprite;
+                break;
+            case Temperature.HighHeat:
+                maintenanceTimeFillImage.sprite = highHeatMaintenanceTimeFillSprite;
+                break;
+        }
 
-        temperatureMaintenanceTimeText.text = Mathf.CeilToInt(temperatureHapticChallengeGlobalValuesSo.
-            TemperatureMaintenanceDuration - _temperatureMaintenanceTime).ToString();
+        float temperatureValue = _temperatureMaintenanceTime / temperatureHapticChallengeGlobalValuesSo.TemperatureMaintenanceDuration;
+        maintenanceTimeFillImage.fillAmount = temperatureValue;
+        maintenanceTimeNeedleImage.rectTransform.rotation = Quaternion.Euler(0f, 0f, -360f * temperatureValue);
 
         if (_currentTemperature == Temperature.None)
         {
-            temperatureMaintenanceTimeImage.color = new Color(temperatureMaintenanceTimeImage.color.r,
-                temperatureMaintenanceTimeImage.color.g, temperatureMaintenanceTimeImage.color.b, 0.5f);
-            temperatureMaintenanceTimeText.color = new Color(temperatureMaintenanceTimeText.color.r,
-                temperatureMaintenanceTimeText.color.g, temperatureMaintenanceTimeText.color.b, 0.5f);
+            maintenanceTimeCanvasGroup.alpha = timerFadeValue;
         }
         else
         {
-            temperatureMaintenanceTimeImage.color = new Color(temperatureMaintenanceTimeImage.color.r,
-                temperatureMaintenanceTimeImage.color.g, temperatureMaintenanceTimeImage.color.b, 1f);
-            temperatureMaintenanceTimeText.color = new Color(temperatureMaintenanceTimeText.color.r,
-                temperatureMaintenanceTimeText.color.g, temperatureMaintenanceTimeText.color.b, 1f);
+            maintenanceTimeCanvasGroup.alpha = 1f;
         }
     }
 
