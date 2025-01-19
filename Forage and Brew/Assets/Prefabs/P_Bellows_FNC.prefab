@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 176125518741245308}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: 0, z: 1.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -54,9 +54,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 4
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -64,23 +64,32 @@ AudioSource:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
+      time: 0.25
       value: 1
-      inSlope: 0
-      outSlope: 0
+      inSlope: -4.0016
+      outSlope: -4.0016
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 0.4
+      inSlope: -1.2220937
+      outSlope: -1.2220937
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.15159464
     - serializedVersion: 3
       time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
+      value: 0.05
+      inSlope: -0.2501
+      outSlope: -0.2501
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -89,7 +98,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -478,6 +487,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7874163035939196021, guid: 1613b2cb065763248a8dac10a9698a4f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1965395277991657675}
+    - targetCorrespondingSourceObject: {fileID: 7874163035939196021, guid: 1613b2cb065763248a8dac10a9698a4f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7293770768435572663}
   m_SourcePrefab: {fileID: 100100000, guid: 1613b2cb065763248a8dac10a9698a4f, type: 3}
 --- !u!4 &2656487525142525044 stripped
 Transform:
@@ -511,3 +523,16 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7293770768435572663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3429049081644723918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f17e85222ce896543a8bcde2ee254266, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blowSoundAudioSource: {fileID: 4657613931315511732}
