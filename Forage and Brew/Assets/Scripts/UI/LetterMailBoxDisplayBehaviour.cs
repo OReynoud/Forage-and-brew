@@ -17,6 +17,7 @@ public class LetterMailBoxDisplayBehaviour : MonoBehaviour
     private LetterContentSo letterContent;
     public List<PotionDemand> potionsDemanded = new();
 
+    public Image[] liquidImages;
     public Image[] potionImages;
     public TextMeshProUGUI[] potionNames;
     public TextMeshProUGUI[] potionKeywords;
@@ -69,6 +70,8 @@ public class LetterMailBoxDisplayBehaviour : MonoBehaviour
             if (potionsDemanded[i].IsSpecific)
             {
                 potionImages[i].transform.parent.gameObject.SetActive(true);
+                liquidImages[i].sprite = potionsDemanded[i].Potion.PotionDifficulty.LiquidSprite;
+                liquidImages[i].color = potionsDemanded[i].Potion.SpriteLiquidColor;
                 potionImages[i].sprite = potionsDemanded[i].Potion.PotionDifficulty.PotionSprite;
                 potionNames[i].text = potionsDemanded[i].Potion.Name;
             }
