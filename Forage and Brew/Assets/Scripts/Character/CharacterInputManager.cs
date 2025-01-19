@@ -97,8 +97,6 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.PinRight.performed += PinRightOnPerformed;
         _inputs.Player.PassLetters.performed += PassLettersOnPerformed;
         _inputs.Player.ToggleRun.performed += ToggleRunOnPerformed;
-        
-        
         _inputs.Player.PauseIn.performed += PauseInOnPerformed;
         _inputs.Player.PauseOut.performed += PauseOutOnPerformed;
     }
@@ -125,6 +123,7 @@ public class CharacterInputManager : MonoBehaviour
         EnableInteractInputs();
         EnableHapticChallengeInputs();
         EnableCodexInputs();
+        EnablePauseInputs();
         if (OnInputsEnabled != null)
             OnInputsEnabled.Invoke(true);
     }
@@ -213,6 +212,12 @@ public class CharacterInputManager : MonoBehaviour
     {
         _inputs.Player.PassLetters.Enable();
     }
+    
+    public void EnablePauseInputs()
+    {
+        _inputs.Player.PauseIn.Enable();
+        _inputs.Player.PauseOut.Enable();
+    }
 
     #endregion
 
@@ -226,6 +231,7 @@ public class CharacterInputManager : MonoBehaviour
         DisableHapticChallengeInputs();
         DisableCodexInputs();
         DisableMailInputs();
+        DisablePauseInputs();
         _inputs.Player.Disable();
         if (OnInputsEnabled != null)
             OnInputsEnabled.Invoke(false);
@@ -308,6 +314,12 @@ public class CharacterInputManager : MonoBehaviour
     public void DisableMailInputs()
     {
         _inputs.Player.PassLetters.Disable();
+    }
+    
+    public void DisablePauseInputs()
+    {
+        _inputs.Player.PauseIn.Disable();
+        _inputs.Player.PauseOut.Disable();
     }
 
     #endregion
