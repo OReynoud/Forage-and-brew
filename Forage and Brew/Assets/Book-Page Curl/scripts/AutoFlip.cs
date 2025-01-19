@@ -269,7 +269,7 @@ public class AutoFlip : Singleton<AutoFlip>
         {
             for (int i = ControledBook.bookMarks.Length - 1; i >= 0; i--)
             {
-                if (ControledBook.bookMarks[i].index < ControledBook.currentPage)
+                if (ControledBook.bookMarks[i].index < ControledBook.currentPage - 1)
                 {
                     FlipToPageIndex(ControledBook.bookMarks[i].index);
                     return;
@@ -319,11 +319,7 @@ public class AutoFlip : Singleton<AutoFlip>
             recipeToPin = null;
             tempIngredientsHigh.Clear();
         }
-
-        foreach (var tupple in CodexContentManager.instance.pageIndexesToCheck)
-        {
-            Debug.Log(tupple.Item1);
-        }
+        
         if (CodexContentManager.instance.pageIndexesToCheck[^1].Item1 % 2 == 1)
         {
             ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1].Item1 + 1);
