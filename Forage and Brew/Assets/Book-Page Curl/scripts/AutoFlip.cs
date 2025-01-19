@@ -307,7 +307,12 @@ public class AutoFlip : Singleton<AutoFlip>
             for (int i = 0; i < CodexContentManager.instance.recipes.Count; i++)
             {
                 if (CodexContentManager.instance.recipes[i].storedPotion != recipeToPin)
+                {
+                    CodexContentManager.instance.recipes[i].pinIcon.enabled = false;
                     continue;
+                }
+
+                CodexContentManager.instance.pinnedRecipe = CodexContentManager.instance.recipes[i];
                 CodexContentManager.instance.recipes[i].pinIcon.enabled = true;
                 CodexContentManager.instance.pinImage.enabled = true;
             }

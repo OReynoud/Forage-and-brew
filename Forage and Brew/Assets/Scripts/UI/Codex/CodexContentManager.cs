@@ -256,7 +256,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
     /// </summary>
     /// <param name="side"> true = right, false = left</param>
 
-    private RecipeCodexDisplay pinnedRecipe;
+    public RecipeCodexDisplay pinnedRecipe { get; set; }
 
     public void SelectCodexPage(bool side)
     {

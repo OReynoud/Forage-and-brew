@@ -55,8 +55,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
             potionIngredientsImage[i].preserveAspect = true;
         }
 
-        if (pinnedRecipe)
-            PinRecipe(pinnedRecipe, potionIngredients);
+
     }
 
     private void ChangePos(bool arg0)
@@ -67,6 +66,9 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
             return;
         }
         canShow = arg0;
+        
+        if (pinnedRecipe)
+            PinRecipe(pinnedRecipe, potionIngredients);
     }
 
     private void Update()
