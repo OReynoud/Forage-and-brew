@@ -11,6 +11,7 @@ public class BasketBehaviour : MonoBehaviour
     [field: SerializeField] public BasketVfxManager BasketVfxManager { get; private set; }
     public bool DoesNeedToCheckAvailability { get; set; }
     
+    public bool IsEnabled { get; private set; } = true;
     private bool _hasToBeDisabled;
     private bool _hasToBeEnabled;
     private float _currentTimeLeft;
@@ -28,7 +29,7 @@ public class BasketBehaviour : MonoBehaviour
             meshGameObject.SetActive(_hasToBeEnabled);
             basketCollider.enabled = _hasToBeEnabled;
             basketTrigger.enabled = _hasToBeEnabled;
-            enabled = _hasToBeEnabled;
+            IsEnabled = _hasToBeEnabled;
             _hasToBeDisabled = false;
             _hasToBeEnabled = false;
         }

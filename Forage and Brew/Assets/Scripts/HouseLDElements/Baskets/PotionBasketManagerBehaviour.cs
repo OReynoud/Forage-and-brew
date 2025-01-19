@@ -77,7 +77,7 @@ public class PotionBasketManagerBehaviour : BasketManagerBehaviour
         {
             potionBasket.StartDisable(enableDisableTime);
             
-            if (potionBasket.enabled)
+            if (potionBasket.IsEnabled)
             {
                 previousActivePotionBasketsCount++;
             }
