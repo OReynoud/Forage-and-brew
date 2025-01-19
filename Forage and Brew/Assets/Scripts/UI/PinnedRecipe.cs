@@ -431,7 +431,6 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
     void ShowRecipeIngredients()
     {
         
-        Debug.LogError(potionIngredients.Length);
         foreach (var ingredient in potionIngredientsImage)
         {
             ingredient.transform.parent.gameObject.SetActive(false);

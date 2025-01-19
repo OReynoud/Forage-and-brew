@@ -36,6 +36,10 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
 
     [BoxGroup("Top Right")] [SerializeField]
     private RectTransform weatherUIContainer;
+    [BoxGroup("Top Right")] [SerializeField]
+    private float houseHeight;
+    [BoxGroup("Top Right")] [SerializeField]
+    private float inBiomeHeight;
 
     [BoxGroup("Top Right")] [SerializeField]
     private TextMeshProUGUI daysPassedText;
@@ -185,6 +189,7 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
 
     public void DisplayWeather()
     {
+        weatherUIContainer.sizeDelta = new Vector2(Mathf.Abs(weatherUIContainer.rect.x), inBiomeHeight);
         forestDisplay.SetActive(false);
         swampDisplay.SetActive(false);
 
@@ -206,11 +211,12 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
         switch (currentBiome)
         {
             case Biome.None:
-                forestDisplay.SetActive(true);
+                forestDisplay.SetActive(true); 
                 DisplayBiomeWeather(Biome.Forest, forestWeather);
 
                 swampDisplay.SetActive(true);
                 DisplayBiomeWeather(Biome.Swamp, swampWeather);
+                weatherUIContainer.sizeDelta = new Vector2(Mathf.Abs(weatherUIContainer.rect.x), houseHeight);
                 break;
 
             case Biome.Forest:
