@@ -93,6 +93,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
         newRecipe.InitPage(tempIngredientsLow.ToArray(), tempIngredientsHigh.ToArray() ,newRecipeValues);
         tempIngredientsLow.Clear();
+        tempIngredientsHigh.Clear();
         InsertRecipePages( newRecipeValues, newRecipe);
     }
 
@@ -113,6 +114,10 @@ public class CodexContentManager : Singleton<CodexContentManager>
         for (int i = 2; i < AutoFlip.instance.ControledBook.bookMarks.Length; i++)
         {
             AutoFlip.instance.ControledBook.bookMarks[i].index += 2;
+        }
+        if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[2].index)
+        {
+            AutoFlip.instance.ControledBook.currentPage += 2;
         }
     }
 

@@ -50,7 +50,7 @@ public class BedBehaviour : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        if (GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay == TimeOfDay.Daytime) return;
+        //if (GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay == TimeOfDay.Daytime) return;
         
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {

@@ -585,6 +585,7 @@ public class Book : MonoBehaviour
             if (currentPage - 3 >= 1)
             {
                 bookPages[currentPage - 3].UIComponent.gameObject.SetActive(false);
+                //Debug.Log("Set false: " + bookPages[currentPage - 3].UIComponent.name,bookPages[currentPage].UIComponent);
             }
         }
         else
@@ -602,10 +603,13 @@ public class Book : MonoBehaviour
         else
             RightNext.sprite = rightBackground;
 
+        
         if (currentPage + 2 < bookPages.Count)
         {
             bookPages[currentPage + 1].UIComponent.gameObject.SetActive(false);
             bookPages[currentPage + 2].UIComponent.gameObject.SetActive(false);
+            //Debug.Log("Set false: " + bookPages[currentPage + 1].UIComponent.name,bookPages[currentPage].UIComponent);
+            //Debug.Log("Set false: " + bookPages[currentPage + 2].UIComponent.name,bookPages[currentPage].UIComponent);
         }
     }
 
@@ -685,9 +689,14 @@ public class Book : MonoBehaviour
         if (currentPage > 0)
         {
             bookPages[currentPage - 1].UIComponent.gameObject.SetActive(false);
+            //Debug.Log(bookPages[currentPage - 1].UIComponent.name);
         }
 
+        Debug.Log(currentPage);
+        Debug.Log(pageIndex);
+        
         currentPage = pageIndex;
+        
         UpdateSprites();
     }
 }

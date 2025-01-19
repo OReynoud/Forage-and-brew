@@ -269,7 +269,7 @@ public class AutoFlip : Singleton<AutoFlip>
         {
             for (int i = ControledBook.bookMarks.Length - 1; i >= 0; i--)
             {
-                if (ControledBook.bookMarks[i].index < ControledBook.currentPage)
+                if (ControledBook.bookMarks[i].index < ControledBook.currentPage - 1)
                 {
                     FlipToPageIndex(ControledBook.bookMarks[i].index);
                     return;

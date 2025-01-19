@@ -5,6 +5,9 @@ public class BellowsBehaviour : MonoBehaviour
     [SerializeField] private GameObject interactInputCanvasGameObject;
     [SerializeField] private Animator bellowsAnimator;
     
+    [SerializeField] private float pushSpeedOutsideTemperatureChallenge = 0.5f;
+    [SerializeField] private float pushSpeedInsideTemperatureChallenge = 2f;
+    
     // Animator Hashes
     private static readonly int DoPushBellows = Animator.StringToHash("DoPushBellows");
     private static readonly int IsInTemperatureChallenge = Animator.StringToHash("IsInTemperatureChallenge");
@@ -14,6 +17,7 @@ public class BellowsBehaviour : MonoBehaviour
     private void Start()
     {
         interactInputCanvasGameObject.SetActive(false);
+        bellowsAnimator.SetFloat(PushSpeed, pushSpeedOutsideTemperatureChallenge);
     }
 
 
@@ -36,13 +40,13 @@ public class BellowsBehaviour : MonoBehaviour
     public void EnterTemperatureHapticChallenge()
     {
         bellowsAnimator.SetBool(IsInTemperatureChallenge, true);
-        bellowsAnimator.SetFloat(PushSpeed, 2f);
+        bellowsAnimator.SetFloat(PushSpeed, pushSpeedInsideTemperatureChallenge);
     }
     
     public void ExitTemperatureHapticChallenge()
     {
         bellowsAnimator.SetBool(IsInTemperatureChallenge, false);
-        bellowsAnimator.SetFloat(PushSpeed, 1f);
+        bellowsAnimator.SetFloat(PushSpeed, pushSpeedOutsideTemperatureChallenge);
     }
     
     
