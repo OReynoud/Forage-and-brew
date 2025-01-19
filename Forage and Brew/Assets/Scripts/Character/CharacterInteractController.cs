@@ -93,7 +93,11 @@ public class CharacterInteractController : MonoBehaviour
 
     public void Interact()
     {
-        if (CurrentNearPotionBaskets.Count > 0 && collectedStack.Count > 0 && (CollectedPotionBehaviour)collectedStack[0].stackable)
+        if (CurrentStackableBehaviours.Count > 0)
+        {
+            AddToPile(CurrentStackableBehaviours[^1]);
+        }
+        else if (CurrentNearPotionBaskets.Count > 0 && collectedStack.Count > 0 && (CollectedPotionBehaviour)collectedStack[0].stackable)
         {
             ChoosePotionBasket();
         }
@@ -105,10 +109,6 @@ public class CharacterInteractController : MonoBehaviour
         {
             CurrentNearCauldron.DisableInteract(true);
             ShoveStackInTarget(CurrentNearCauldron.transform, CurrentNearCauldron);
-        }
-        else if (CurrentStackableBehaviours.Count > 0)
-        {
-            AddToPile(CurrentStackableBehaviours[^1]);
         }
         else if (CurrentNearBed && collectedStack.Count == 0)
         {
