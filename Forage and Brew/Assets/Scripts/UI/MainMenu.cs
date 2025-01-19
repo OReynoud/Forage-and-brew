@@ -49,6 +49,11 @@ public class MainMenu : MonoBehaviour
         showBackground = false;
         showCredits = false;
     }
+    
+    public void ClearData()
+    {
+        SaveManager.DeleteSave(true);
+    }
 
     public void Quit()
     {

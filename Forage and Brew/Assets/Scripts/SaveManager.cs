@@ -25,8 +25,8 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private MoneyManager moneyManager;
     [SerializeField] private OrderManager orderManager;
     
-    private string _directoryPath;
-    private string _filePath;
+    private static string DirectoryPath => Path.Combine(Application.persistentDataPath, "Saves");
+    private static string FilePath => Path.Combine(DirectoryPath, "Save.json");
     private readonly Encoding _encoding = Encoding.UTF8;
     
     [SerializeField, HideInInspector] private SavedData data = new();
@@ -43,7 +43,7 @@ public class SaveManager : MonoBehaviour
             DestroyImmediate(this);
         }
         
-        SetPaths();
+        SetDirectory();
         LoadGame();
     }
     
@@ -55,14 +55,11 @@ public class SaveManager : MonoBehaviour
     }
     
     
-    private void SetPaths()
+    private void SetDirectory()
     {
-        _directoryPath = Path.Combine(Application.persistentDataPath, "Saves");
-        _filePath = Path.Combine(_directoryPath, "Save.json");
-        
-        if (!File.Exists(_directoryPath))
+        if (!File.Exists(DirectoryPath))
         {
-            Directory.CreateDirectory(_directoryPath);
+            Directory.CreateDirectory(DirectoryPath);
         }
     }
     
@@ -126,13 +123,13 @@ public class SaveManager : MonoBehaviour
         
         // Save Data
         string jsonData = JsonUtility.ToJson(data, true);
-        File.WriteAllText(_filePath, jsonData, _encoding);
+        File.WriteAllText(FilePath, jsonData, _encoding);
     }
 
     public void LoadGame()
     {
         // Check if there is no save file
-        if (!File.Exists(_filePath))
+        if (!File.Exists(FilePath))
         {
             foreach (NarrativeBlockOfLettersContentSo contentSo in gameDontDestroyOnLoadManager.AllNarrativeBlocksContentSo)
             {
@@ -146,7 +143,7 @@ public class SaveManager : MonoBehaviour
         gameDontDestroyOnLoadManager.IsFirstGameSession = false;
         
         // Load Data
-        string jsonData = File.ReadAllText(_filePath, _encoding);
+        string jsonData = File.ReadAllText(FilePath, _encoding);
         data = JsonUtility.FromJson<SavedData>(jsonData);
         
         // Scene
@@ -211,6 +208,23 @@ public class SaveManager : MonoBehaviour
         
         // Orders
         orderManager.CurrentOrders.AddRange(data.CurrentOrders);
+    }
+    
+    public static void DeleteSave(bool isOnMainMenu)
+    {
+        if (File.Exists(FilePath))
+        {
+            File.Delete(FilePath);
+        }
+        
+        if (isOnMainMenu) return;
+        
+        SceneManager.LoadScene("SC_MainMenu");
+
+        if (Instance)
+        {
+            DestroyImmediate(Instance.gameObject);
+        }
     }
     
     

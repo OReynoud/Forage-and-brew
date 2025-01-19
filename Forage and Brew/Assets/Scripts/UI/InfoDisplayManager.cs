@@ -307,6 +307,11 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
         showOptions = false;
         CharacterInputManager.Instance.EnablePauseInputs();
     }
+    
+    public void ClearData()
+    {
+        SaveManager.DeleteSave(false);
+    }
 
     public void Quit()
     {
