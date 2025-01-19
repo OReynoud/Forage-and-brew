@@ -36,6 +36,7 @@ public class OutStackableManager : MonoBehaviour
             CollectedIngredientBehaviour collectedIngredient = Instantiate(collectedIngredientPrefab,
                 floorCollectedIngredient.Position, floorCollectedIngredient.Rotation);
             collectedIngredient.IngredientValuesSo = floorCollectedIngredient.Ingredient;
+            collectedIngredient.CookedForm = floorCollectedIngredient.CookedForm;
             GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients.Add(collectedIngredient);
             GameDontDestroyOnLoadManager.Instance.FloorCollectedIngredients.Remove(floorCollectedIngredient);
         }
@@ -59,8 +60,8 @@ public class OutStackableManager : MonoBehaviour
         {
             GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients.Remove(collectedIngredientBehaviour);
             GameDontDestroyOnLoadManager.Instance.FloorCollectedIngredients.Add(new FloorIngredient(
-                collectedIngredientBehaviour.IngredientValuesSo, collectedIngredientBehaviour.transform.position,
-                collectedIngredientBehaviour.transform.rotation));
+                collectedIngredientBehaviour.IngredientValuesSo, collectedIngredientBehaviour.CookedForm,
+                collectedIngredientBehaviour.transform.position, collectedIngredientBehaviour.transform.rotation));
         }
     }
 

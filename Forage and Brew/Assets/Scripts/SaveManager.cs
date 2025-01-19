@@ -77,7 +77,8 @@ public class SaveManager : MonoBehaviour
         data.FloorCollectedIngredients = new List<FloorIngredient>();
         data.FloorCollectedIngredients.AddRange(gameDontDestroyOnLoadManager.OutCollectedIngredients
             .Select(collectedIngredient => new FloorIngredient(collectedIngredient.IngredientValuesSo,
-                collectedIngredient.transform.position, collectedIngredient.transform.rotation)));
+                collectedIngredient.CookedForm, collectedIngredient.transform.position,
+                collectedIngredient.transform.rotation)));
         data.FloorCollectedIngredients.AddRange(gameDontDestroyOnLoadManager.FloorCollectedIngredients);
         
         // Cooked Potions

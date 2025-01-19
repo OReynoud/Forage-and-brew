@@ -104,20 +104,24 @@ public struct GrindingHapticChallengeCrushInput
 [Serializable]
 public struct FloorIngredient : IEquatable<FloorIngredient>
 {
-    public FloorIngredient(IngredientValuesSo ingredient, Vector3 position, Quaternion rotation)
+    public FloorIngredient(IngredientValuesSo ingredient, CookHapticChallengeSo cookedForm, Vector3 position,
+        Quaternion rotation)
     {
         Ingredient = ingredient;
+        CookedForm = cookedForm;
         Position = position;
         Rotation = rotation;
     }
     
     [field: SerializeField] public IngredientValuesSo Ingredient { get; set; }
+    [field: SerializeField] public CookHapticChallengeSo CookedForm { get; set; }
     [field: SerializeField] public Vector3 Position { get; set; }
     [field: SerializeField] public Quaternion Rotation { get; set; }
 
     public bool Equals(FloorIngredient other)
     {
-        return Equals(Ingredient, other.Ingredient) && Position.Equals(other.Position) && Rotation.Equals(other.Rotation);
+        return Equals(Ingredient, other.Ingredient) && Equals(CookedForm, other.CookedForm) &&
+               Position.Equals(other.Position) && Rotation.Equals(other.Rotation);
     }
 
     public override bool Equals(object obj)
@@ -127,7 +131,7 @@ public struct FloorIngredient : IEquatable<FloorIngredient>
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Ingredient, Position, Rotation);
+        return HashCode.Combine(Ingredient, CookedForm, Position, Rotation);
     }
 }
 
