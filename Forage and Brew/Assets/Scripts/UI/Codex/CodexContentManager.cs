@@ -93,6 +93,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
         newRecipe.InitPage(tempIngredientsLow.ToArray(), tempIngredientsHigh.ToArray() ,newRecipeValues);
         tempIngredientsLow.Clear();
+        tempIngredientsHigh.Clear();
         InsertRecipePages( newRecipeValues, newRecipe);
     }
 

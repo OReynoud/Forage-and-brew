@@ -430,6 +430,8 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
     void ShowRecipeIngredients()
     {
+        
+        Debug.LogError(potionIngredients.Length);
         foreach (var ingredient in potionIngredientsImage)
         {
             ingredient.transform.parent.gameObject.SetActive(false);
@@ -437,46 +439,48 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
         for (int i = 0; i < potionIngredients.Length; i++)
         {
-            potionIngredientsImage[i].transform.parent.gameObject.SetActive(true);
-            potionIngredientsImage[i].sprite = potionIngredients[i];
+            potionIngredientsImage[writingIndex].transform.parent.gameObject.SetActive(true);
+            potionIngredientsImage[writingIndex].sprite = potionIngredients[i];
 
             var i1 = i;
             var temp = tempCollectedIngredientsList.Where(x => x == potionIngredients[i1]);
 
             var enumerable = temp.ToArray();
             //Debug.Log(enumerable.Length);
-            potionIngredientCounter[i].text = enumerable.Length + "";
+            potionIngredientCounter[writingIndex].text = enumerable.Length + "";
             if (i + 1 < potionIngredients.Length)
             {
                 int numberOfIngredients = Ex.CheckForSameElementsSprite(i, 0, potionIngredients);
 
 
-                potionIngredientCounter[i].text = enumerable.Length + "";
+                potionIngredientCounter[writingIndex].text = enumerable.Length + "";
 
                 if (enumerable.Length >= 1 + numberOfIngredients)
                 {
-                    potionIngredientCounter[i].color = positiveColor;
+                    potionIngredientCounter[writingIndex].color = positiveColor;
                 }
                 else
                 {
-                    potionIngredientCounter[i].color = negativeColor;
+                    potionIngredientCounter[writingIndex].color = negativeColor;
                 }
 
 
-                potionIngredientQuantity[i].text = (1 + numberOfIngredients).ToString();
+                potionIngredientQuantity[writingIndex].text = (1 + numberOfIngredients).ToString();
 
                 i += numberOfIngredients;
+                writingIndex++;
             }
 
 
             if (enumerable.Length >= 1)
             {
-                potionIngredientCounter[i].color = positiveColor;
+                potionIngredientCounter[writingIndex].color = positiveColor;
             }
             else
             {
-                potionIngredientCounter[i].color = negativeColor;
+                potionIngredientCounter[writingIndex].color = negativeColor;
             }
+
         }
     }
 
@@ -485,6 +489,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
     {
         if (!isPinned || GameDontDestroyOnLoadManager.Instance.CurrentScene == Scene.House) return;
 
+        writingIndex = 0;
         tempCollectedIngredientsList.Clear();
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.CollectedIngredients)
         {
@@ -507,7 +512,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
             var temp = tempCollectedIngredientsList.Where(x => x == potionIngredients[i1]);
 
             var enumerable = temp.ToArray();
-            potionIngredientCounter[i].text = enumerable.Length + "";
+            potionIngredientCounter[writingIndex].text = enumerable.Length + "";
 
             if (i + 1 < potionIngredients.Length)
             {
@@ -516,23 +521,24 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
                 if (enumerable.Length >= 1 + numberOfIngredients)
                 {
-                    potionIngredientCounter[i].color = positiveColor;
+                    potionIngredientCounter[writingIndex].color = positiveColor;
                 }
                 else
                 {
-                    potionIngredientCounter[i].color = negativeColor;
+                    potionIngredientCounter[writingIndex].color = negativeColor;
                 }
 
                 i += numberOfIngredients;
+                writingIndex++;
             }
 
             if (enumerable.Length >= 1)
             {
-                potionIngredientCounter[i].color = positiveColor;
+                potionIngredientCounter[writingIndex].color = positiveColor;
             }
             else
             {
-                potionIngredientCounter[i].color = negativeColor;
+                potionIngredientCounter[writingIndex].color = negativeColor;
             }
         }
     }
