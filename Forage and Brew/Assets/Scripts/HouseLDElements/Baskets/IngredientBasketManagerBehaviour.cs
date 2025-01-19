@@ -1,5 +1,6 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
@@ -56,6 +57,8 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
         }
         
         ReactivateRightIngredientBaskets();
+        
+        StartCoroutine(UpdateIngredientTypeBackgroundAtStart());
     }
     
     
@@ -100,6 +103,13 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
                 }
             }
         }
+    }
+    
+    private IEnumerator UpdateIngredientTypeBackgroundAtStart()
+    {
+        yield return new WaitForNextFrameUnit();
+        
+        currentTypeBackgroundTransform.position = ingredientTypeTransforms[_currentIngredientSetIndex].position;
     }
     
     
