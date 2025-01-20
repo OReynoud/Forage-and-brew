@@ -8,6 +8,7 @@ public class LetterMailBoxDisplayBehaviour : MonoBehaviour
 {
     public TextMeshProUGUI clientNameText;
     public Image letterBackground;
+    public Image bills;
     
     public TextMeshProUGUI descriptionText;
     
@@ -57,6 +58,8 @@ public class LetterMailBoxDisplayBehaviour : MonoBehaviour
             moneyText.transform.parent.gameObject.SetActive(false);
             return;
         }
+
+        bills.enabled = letterType == LetterType.Thanks;
         moneyReward = letterContent.OrderContent.MoneyReward;
         moneyText.text = moneyReward.ToString();
         daysLeftToComplete = letterContent.OrderContent.TimeToFulfill;
