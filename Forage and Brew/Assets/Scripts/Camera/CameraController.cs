@@ -36,7 +36,7 @@ public class CameraController : Singleton<CameraController>
     public float codexExitTime;
 
     private float transitionTime = 0.001f;
-    private float counter;
+    [SerializeField] [ReadOnly] private float counter;
     [SerializeField] [ReadOnly] private bool applyXYClamping;
     [SerializeField] [ReadOnly] private bool applyZClamping;
     [SerializeField] [ReadOnly] private bool fixedPos;
@@ -53,6 +53,11 @@ public class CameraController : Singleton<CameraController>
             transform.localPosition = -transform.forward * distanceFromPlayer;
             transform.LookAt(transform.parent);
         }
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireSphere(transform.parent.position, 0.4f);
     }
 
 
@@ -130,9 +135,13 @@ public class CameraController : Singleton<CameraController>
     {
         previousCamSettings = TargetCamSettings;
         TargetCamSettings = preset;
-        transitionTime = TransitionTime == 0 ? 0.001f : TransitionTime;
+        
         counter = 0;
+        
 
+        transitionTime = TransitionTime == 0 ? 0.001f : TransitionTime;
+        
+        
         fixedPos = TargetCamSettings.isFixedCameraPos;
         fixedRotation = TargetCamSettings.isFixedCameraRotation;
 
@@ -190,21 +199,26 @@ public class CameraController : Singleton<CameraController>
         {
             transform.parent.position = Vector3.Lerp(transform.parent.position, player.position + cameraOffset,
                 movement.isRunning ? positionLerp * 2.5f : positionLerp);
+            transform.localPosition =
+                Vector3.Lerp(transform.localPosition, -transform.forward * distanceFromPlayer, positionLerp);
             ClampCamPos();
         }
         else
         {
-            transform.parent.position = Vector3.Lerp(transform.parent.position,TargetCamSettings.fixedCameraPos,positionLerp);
+            transform.parent.position = Vector3.Lerp(transform.parent.position,TargetCamSettings.fixedCameraPos,positionLerp * (counter / transitionTime));            
+            transform.localPosition =
+                Vector3.Lerp(transform.localPosition, Vector3.zero, positionLerp * (counter / transitionTime));
         }
 
         if (fixedPos && !fixedRotation)
         {
-            transform.LookAt(player);
+            Quaternion rotation = Quaternion.LookRotation((player.position - transform.position) + Vector3.up, Vector3.up);
+            transform.localRotation =
+                Quaternion.Lerp(transform.localRotation, rotation, rotationLerp * (counter / transitionTime));
+            
         }
         else
         {
-            transform.localPosition =
-                Vector3.Lerp(transform.localPosition, -transform.forward * distanceFromPlayer, positionLerp);
             cam.focalLength = Mathf.Lerp(cam.focalLength, targetFocalLength, focalLerp);
             overlayUiCam.focalLength = Mathf.Lerp(overlayUiCam.focalLength, targetFocalLength, focalLerp);
             transform.localRotation =
