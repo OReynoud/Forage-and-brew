@@ -359,6 +359,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchClothes"",
+                    ""type"": ""Button"",
+                    ""id"": ""a6c2f8c6-9c7a-4b12-9f81-d318d3aef6e0"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1351,6 +1360,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""QuitHapticChallenge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""485f3afb-5c5e-42c1-970e-13925f543640"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchClothes"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1973,6 +1993,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_PauseIn = m_Player.FindAction("PauseIn", throwIfNotFound: true);
         m_Player_PauseOut = m_Player.FindAction("PauseOut", throwIfNotFound: true);
         m_Player_QuitHapticChallenge = m_Player.FindAction("QuitHapticChallenge", throwIfNotFound: true);
+        m_Player_SwitchClothes = m_Player.FindAction("SwitchClothes", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -2089,6 +2110,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_PauseIn;
     private readonly InputAction m_Player_PauseOut;
     private readonly InputAction m_Player_QuitHapticChallenge;
+    private readonly InputAction m_Player_SwitchClothes;
     public struct PlayerActions
     {
         private @InputSystem_Actions m_Wrapper;
@@ -2130,6 +2152,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @PauseIn => m_Wrapper.m_Player_PauseIn;
         public InputAction @PauseOut => m_Wrapper.m_Player_PauseOut;
         public InputAction @QuitHapticChallenge => m_Wrapper.m_Player_QuitHapticChallenge;
+        public InputAction @SwitchClothes => m_Wrapper.m_Player_SwitchClothes;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2250,6 +2273,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @QuitHapticChallenge.started += instance.OnQuitHapticChallenge;
             @QuitHapticChallenge.performed += instance.OnQuitHapticChallenge;
             @QuitHapticChallenge.canceled += instance.OnQuitHapticChallenge;
+            @SwitchClothes.started += instance.OnSwitchClothes;
+            @SwitchClothes.performed += instance.OnSwitchClothes;
+            @SwitchClothes.canceled += instance.OnSwitchClothes;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -2365,6 +2391,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @QuitHapticChallenge.started -= instance.OnQuitHapticChallenge;
             @QuitHapticChallenge.performed -= instance.OnQuitHapticChallenge;
             @QuitHapticChallenge.canceled -= instance.OnQuitHapticChallenge;
+            @SwitchClothes.started -= instance.OnSwitchClothes;
+            @SwitchClothes.performed -= instance.OnSwitchClothes;
+            @SwitchClothes.canceled -= instance.OnSwitchClothes;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -2584,6 +2613,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnPauseIn(InputAction.CallbackContext context);
         void OnPauseOut(InputAction.CallbackContext context);
         void OnQuitHapticChallenge(InputAction.CallbackContext context);
+        void OnSwitchClothes(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

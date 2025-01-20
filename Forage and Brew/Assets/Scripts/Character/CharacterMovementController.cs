@@ -14,6 +14,8 @@ public class CharacterMovementController : MonoBehaviour
     [SerializeField] private AudioResource walkHome;
     [SerializeField] private AudioResource walkForest;
     [SerializeField] private AudioResource walkSwamp;
+    [SerializeField] private GameObject classicClothes;
+    [SerializeField] private GameObject rainClothes;
     
     [Header("Movement Settings")]
     [SerializeField] private float walkSpeed = 5;
@@ -38,6 +40,8 @@ public class CharacterMovementController : MonoBehaviour
     
     private Vector3 angledVelocity;
     private float angle;
+
+    private bool clothesBool;
     
     // Animator Hashes
     private static readonly int IsWalking = Animator.StringToHash("isWalking");
@@ -198,4 +202,11 @@ public class CharacterMovementController : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position,0.4f);
     }
 #endif
+    public void SwitchClothes()
+    {
+        clothesBool = !clothesBool;
+
+        classicClothes.SetActive(!clothesBool);
+        rainClothes.SetActive(clothesBool);
+    }
 }
