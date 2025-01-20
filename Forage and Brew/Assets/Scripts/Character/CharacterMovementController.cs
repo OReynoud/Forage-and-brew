@@ -134,21 +134,25 @@ public class CharacterMovementController : MonoBehaviour
         {
             if (Mathf.Abs(angle) < maxAngle)
             {
+                //Debug.Log("climbing");
                 angledVelocity = Quaternion.AngleAxis(-angle,transform.right) * angledVelocity;
                 angledVelocity *= (isRunning ? runSpeed : walkSpeed) * accelerationCurve.Evaluate(accelerationCurveIndex) * playerDir.magnitude;
                 rb.linearVelocity = angledVelocity + Vector3.down * (9.81f * Time.deltaTime);
             }
             else
             {
+                //Debug.Log("not climbing");
                 angledVelocity = playerDir * ((isRunning ? runSpeed : walkSpeed) * accelerationCurve.Evaluate(accelerationCurveIndex) * playerDir.magnitude);
 
-                rb.linearVelocity = new Vector3(angledVelocity.x, rb.linearVelocity.y, angledVelocity.z);
+                rb.linearVelocity = new Vector3(angledVelocity.x, rb.linearVelocity.y - 1f, angledVelocity.z);
             }
             
             Debug.DrawRay(transform.position, angledVelocity * 5, Color.blue, 0);
         }
         else
         {
+            
+            //Debug.Log("falling");
             angledVelocity = playerDir * ((isRunning ? runSpeed : walkSpeed) * accelerationCurve.Evaluate(accelerationCurveIndex) * playerDir.magnitude);
 
             rb.linearVelocity = new Vector3(angledVelocity.x, rb.linearVelocity.y - 9.81f * Time.deltaTime, angledVelocity.z);
