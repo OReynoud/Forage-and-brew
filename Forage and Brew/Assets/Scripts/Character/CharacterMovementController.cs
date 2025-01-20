@@ -116,17 +116,17 @@ public class CharacterMovementController : MonoBehaviour
 
     private void PlayerMovement()
     {
-        
+        angle = maxAngle;
         animator.SetBool(IsRunning, isRunning);
         if (isRunning)
             playerDir.Normalize();
         
         angledVelocity = playerDir;
-        if (Physics.Raycast(transform.position , transform.forward, out RaycastHit hitForward, 0.7f, groundMask))
+        if (Physics.Raycast(transform.position + Vector3.up * 0.3f , transform.forward, out RaycastHit hitForward, 0.7f, groundMask))
         {
             angle = Vector3.Angle(hitForward.normal, transform.forward) - 90;
         }
-        else if (Physics.Raycast(transform.position , -transform.forward, out RaycastHit hitBack, 1f, groundMask))
+        else if (Physics.Raycast(transform.position + Vector3.up * 0.3f, -transform.forward, out RaycastHit hitBack, 1f, groundMask))
         {
             angle = Vector3.Angle(hitBack.normal, transform.forward) - 90;
         }
