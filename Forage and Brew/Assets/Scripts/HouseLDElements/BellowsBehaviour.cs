@@ -52,6 +52,10 @@ public class BellowsBehaviour : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
+        if (GameDontDestroyOnLoadManager.Instance.DayPassed == 0 ||
+            (GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay == TimeOfDay.Daytime &&
+             GameDontDestroyOnLoadManager.Instance.DayPassed == 1)) return;
+        
         if (other.TryGetComponent(out TemperatureHapticChallengeManager temperatureHapticChallengeManager))
         {
             temperatureHapticChallengeManager.CurrentBellows = this;
