@@ -144,7 +144,7 @@ public class CharacterMovementController : MonoBehaviour
                 //Debug.Log("not climbing");
                 angledVelocity = playerDir * ((isRunning ? runSpeed : walkSpeed) * accelerationCurve.Evaluate(accelerationCurveIndex) * playerDir.magnitude);
 
-                rb.linearVelocity = new Vector3(angledVelocity.x, rb.linearVelocity.y - 1f, angledVelocity.z);
+                rb.linearVelocity = new Vector3(angledVelocity.x, rb.linearVelocity.y, angledVelocity.z);
             }
             
             Debug.DrawRay(transform.position, angledVelocity * 5, Color.blue, 0);

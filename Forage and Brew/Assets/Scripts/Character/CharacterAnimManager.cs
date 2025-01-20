@@ -25,14 +25,7 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
 
     private void Update()
     {
-        timeForNextBlink -= Time.deltaTime;
         
-        if (timeForNextBlink < 0f)
-        {
-            animator.SetTrigger(DoBlink);
-            timeForNextBlink = Random.Range(minTimeBetweenBlinks, maxTimeBetweenBlinks);
-        }
-
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("A_Cat_Idle"))
         {
             _currentTimeBeforeAfk -= Time.deltaTime;
@@ -41,6 +34,14 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
             {
                 animator.SetTrigger(DoAfk);
                 _currentTimeBeforeAfk = timeBeforeAfk;
+            }
+            
+            timeForNextBlink -= Time.deltaTime;
+        
+            if (timeForNextBlink < 0f)
+            {
+                animator.SetTrigger(DoBlink);
+                timeForNextBlink = Random.Range(minTimeBetweenBlinks, maxTimeBetweenBlinks);
             }
         }
         else
