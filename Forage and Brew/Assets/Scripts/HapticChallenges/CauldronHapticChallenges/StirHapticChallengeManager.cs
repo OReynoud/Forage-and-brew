@@ -337,6 +337,8 @@ public class StirHapticChallengeManager : MonoBehaviour
     {
         if (!_currentChallenge) return;
         
+        if (_isObtainedPotionAnimationPlaying) return;
+        
         // float averageDifference = 0;
         
         // foreach (float difference in _joystickInputDifferences)
