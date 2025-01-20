@@ -99,6 +99,12 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.ToggleRun.performed += ToggleRunOnPerformed;
         _inputs.Player.PauseIn.performed += PauseInOnPerformed;
         _inputs.Player.PauseOut.performed += PauseOutOnPerformed;
+        _inputs.Player.SwitchClothes.performed += SwitchClothesOnPerformed;
+    }
+
+    private void SwitchClothesOnPerformed(InputAction.CallbackContext obj)
+    {
+        CharacterMovementController.Instance.SwitchClothes();
     }
 
     private void PauseOutOnPerformed(InputAction.CallbackContext obj)
