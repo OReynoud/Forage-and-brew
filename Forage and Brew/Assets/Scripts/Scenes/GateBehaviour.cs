@@ -4,16 +4,18 @@ public class GateBehaviour : MonoBehaviour
 {
     [SerializeField] private GameObject openedGateGameObject;
     [SerializeField] private GameObject closedGateGameObject;
+    [SerializeField] private bool doesLockOnDay6;
     
     private void Start()
     {
-        if (GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay == TimeOfDay.Daytime)
+        if (GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay == TimeOfDay.Nighttime ||
+            doesLockOnDay6 && GameDontDestroyOnLoadManager.Instance.DayPassed == 5)
         {
-            OpenGate();
+            CloseGate();
         }
         else
         {
-            CloseGate();
+            OpenGate();
         }
     }
 

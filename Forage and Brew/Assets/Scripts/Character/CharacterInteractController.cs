@@ -93,22 +93,22 @@ public class CharacterInteractController : MonoBehaviour
 
     public void Interact()
     {
-        if (CurrentStackableBehaviours.Count > 0)
+        if (CurrentNearCauldron && collectedStack.Count > 0 && collectedStack[0].stackable is CollectedIngredientBehaviour)
+        {
+            CurrentNearCauldron.DisableInteract(true);
+            ShoveStackInTarget(CurrentNearCauldron.transform, CurrentNearCauldron);
+        }
+        else if (CurrentStackableBehaviours.Count > 0)
         {
             AddToPile(CurrentStackableBehaviours[^1]);
         }
-        else if (CurrentNearPotionBaskets.Count > 0 && collectedStack.Count > 0 && (CollectedPotionBehaviour)collectedStack[0].stackable)
+        else if (CurrentNearPotionBaskets.Count > 0 && collectedStack.Count > 0 && collectedStack[0].stackable is CollectedPotionBehaviour)
         {
             ChoosePotionBasket();
         }
         else if (CurrentNearIngredientBaskets.Count > 0)
         {
             ChooseIngredientBasket();
-        }
-        else if (CurrentNearCauldron && collectedStack.Count > 0 && (CollectedIngredientBehaviour)collectedStack[0].stackable)
-        {
-            CurrentNearCauldron.DisableInteract(true);
-            ShoveStackInTarget(CurrentNearCauldron.transform, CurrentNearCauldron);
         }
         else if (CurrentNearBed && collectedStack.Count == 0)
         {
@@ -117,7 +117,7 @@ public class CharacterInteractController : MonoBehaviour
         else if (CurrentNearMailBoxBehaviour)
         {
             CurrentNearMailBoxBehaviour.ShowLetters();
-            Debug.Log("Check letters");
+            // Debug.Log("Check letters");
         }
     }
 
