@@ -165,6 +165,9 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         
             // VFX
             CurrentChoppingCountertopBehaviour.CountertopVfxManager.PlayChopVfx();
+            
+            // Sound
+            CurrentChoppingCountertopBehaviour.PlayChoppingSound();
         
             // Rumble
             RumbleManager.Instance.PlayRumble(choppingHapticChallengeListSo.CorrectInputVibrationDuration,

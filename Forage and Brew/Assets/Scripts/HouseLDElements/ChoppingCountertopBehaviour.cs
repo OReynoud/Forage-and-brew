@@ -5,6 +5,7 @@ public class ChoppingCountertopBehaviour : MonoBehaviour, IIngredientAddable
 {
     [field: SerializeField] public CountertopVfxManager CountertopVfxManager { get; private set; }
     [SerializeField] private GameObject interactInputCanvasGameObject;
+    [SerializeField] private AudioSource choppingAudioSource;
     
     private readonly List<CollectedIngredientBehaviour> _collectedIngredients = new();
 
@@ -41,6 +42,12 @@ public class ChoppingCountertopBehaviour : MonoBehaviour, IIngredientAddable
         {
             ChoppingHapticChallengeManager.Instance.StartChoppingChallenge();
         }
+    }
+    
+    
+    public void PlayChoppingSound()
+    {
+        choppingAudioSource.Play();
     }
     
     
