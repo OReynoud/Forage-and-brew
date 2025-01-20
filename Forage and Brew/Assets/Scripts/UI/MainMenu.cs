@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
@@ -6,6 +5,8 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
+    [SerializeField] private bool doesShowCursor;
+    
     public CanvasGroup background;
     private bool showBackground;
     private bool showOptions;
@@ -21,6 +22,7 @@ public class MainMenu : MonoBehaviour
 
     public float alphaLerp;
     public float posLerp;
+    
     public void StartGame()
     {
         SceneManager.LoadScene("SC_HouseTintin_Perso");
@@ -62,6 +64,12 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
+        if (!doesShowCursor)
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        
         float volume = PlayerPrefs.GetFloat(Ex.MusicVolume);
         float volumeFX = PlayerPrefs.GetFloat(Ex.SfxVolume);
         mixer.SetFloat(Ex.MusicVolume, volume == musicSlider.minValue ? -80 : volume);
