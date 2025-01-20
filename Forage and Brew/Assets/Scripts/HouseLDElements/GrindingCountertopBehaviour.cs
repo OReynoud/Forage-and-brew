@@ -49,7 +49,21 @@ public class GrindingCountertopBehaviour : MonoBehaviour, IIngredientAddable
     
     public void EnterGrindingChallenge()
     {
+        PlayGrindSound();
+    }
+    
+    public void PlayGrindSound()
+    {
+        if (grindingTrailAudioSource.isPlaying) return;
+        
         grindingTrailAudioSource.Play();
+    }
+    
+    public void PauseGrindSound()
+    {
+        if (!grindingTrailAudioSource.isPlaying) return;
+        
+        grindingTrailAudioSource.Pause();
     }
     
     public void ExitGrindingChallenge()

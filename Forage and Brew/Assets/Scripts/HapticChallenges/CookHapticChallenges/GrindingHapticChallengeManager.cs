@@ -218,8 +218,11 @@ public class GrindingHapticChallengeManager : MonoBehaviour
         if (JoystickInputValue == Vector2.zero)
         {
             characterAnimator.SetFloat(GrindSpeed, grindingHapticChallengeSo.GrindingAnimationMinSpeed);
+            CurrentGrindingCountertopBehaviour.PauseGrindSound();
             return false;
         }
+        
+        CurrentGrindingCountertopBehaviour.PlayGrindSound();
         
         characterAnimator.SetFloat(GrindSpeed, 1f);
         
