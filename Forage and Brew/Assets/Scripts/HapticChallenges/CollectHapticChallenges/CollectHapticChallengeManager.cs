@@ -24,6 +24,9 @@ public class CollectHapticChallengeManager : MonoBehaviour
     [SerializeField] private float characterScrapingDistance = 1f;
     [SerializeField] private float characterHarvestDistance = 1f;
     
+    [Header("Audio")]
+    [SerializeField] private AudioSource collectAudioSource;
+    
     // Global variables
     private bool _isCollectHapticChallengeActive;
     private bool _callCodexOnAnimationEnd;
@@ -338,6 +341,9 @@ public class CollectHapticChallengeManager : MonoBehaviour
 
     private void CollectIngredient()
     {
+        // Audio
+        collectAudioSource.Play();
+        
         _currentIngredientToCollectBehaviour.Collect();
         CurrentIngredientToCollectBehaviours.Remove(_currentIngredientToCollectBehaviour);
         _currentIngredientToCollectBehaviour = null;
