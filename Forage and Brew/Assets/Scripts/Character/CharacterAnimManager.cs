@@ -8,19 +8,44 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
 
     [BoxGroup("Blinking Animation")] [SerializeField] private float minTimeBetweenBlinks;
     [BoxGroup("Blinking Animation")] [SerializeField] private float maxTimeBetweenBlinks;
-    [BoxGroup("Blinking Animation")] private float timeForNextBlink;
+    private float timeForNextBlink;
+
+    [BoxGroup("AFK")] [SerializeField] private float timeBeforeAfk;
+    private float _currentTimeBeforeAfk;
     
     private static readonly int DoBlink = Animator.StringToHash("DoBlink");
     public static readonly int IsCarrying = Animator.StringToHash("IsCarrying");
+    private static readonly int DoAfk = Animator.StringToHash("DoAfk");
 
+
+    private void Start()
+    {
+        timeForNextBlink = Random.Range(minTimeBetweenBlinks, maxTimeBetweenBlinks);
+    }
 
     private void Update()
     {
         timeForNextBlink -= Time.deltaTime;
-        if (timeForNextBlink < 0)
+        
+        if (timeForNextBlink < 0f)
         {
             animator.SetTrigger(DoBlink);
             timeForNextBlink = Random.Range(minTimeBetweenBlinks, maxTimeBetweenBlinks);
+        }
+
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("A_Cat_Idle"))
+        {
+            _currentTimeBeforeAfk -= Time.deltaTime;
+        
+            if (_currentTimeBeforeAfk < 0f)
+            {
+                animator.SetTrigger(DoAfk);
+                _currentTimeBeforeAfk = timeBeforeAfk;
+            }
+        }
+        else
+        {
+            _currentTimeBeforeAfk = timeBeforeAfk;
         }
         
         animator.SetBool(IsCarrying, CharacterInteractController.Instance.AreHandsFull);
