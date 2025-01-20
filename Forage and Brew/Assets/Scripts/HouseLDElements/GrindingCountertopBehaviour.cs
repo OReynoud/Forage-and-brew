@@ -5,6 +5,9 @@ public class GrindingCountertopBehaviour : MonoBehaviour, IIngredientAddable
 {
     [field: SerializeField] public CountertopVfxManager CountertopVfxManager { get; private set; }
     [SerializeField] private GameObject interactInputCanvasGameObject;
+    [SerializeField] private AudioSource grindingCrushAudioSource;
+    [SerializeField] private AudioSource grindingEndAudioSource;
+    [SerializeField] private AudioSource grindingTrailAudioSource;
     
     private readonly List<CollectedIngredientBehaviour> _collectedIngredients = new();
 
@@ -41,6 +44,23 @@ public class GrindingCountertopBehaviour : MonoBehaviour, IIngredientAddable
         {
             GrindingHapticChallengeManager.Instance.StartGrindingChallenge();
         }
+    }
+    
+    
+    public void EnterGrindingChallenge()
+    {
+        grindingTrailAudioSource.Play();
+    }
+    
+    public void ExitGrindingChallenge()
+    {
+        grindingTrailAudioSource.Stop();
+        grindingEndAudioSource.Play();
+    }
+    
+    public void PlayCrushSound()
+    {
+        grindingCrushAudioSource.Play();
     }
     
     
