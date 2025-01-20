@@ -4,6 +4,7 @@ using UnityEngine;
 public class CharacterAnimManager : Singleton<CharacterAnimManager>
 {
     [SerializeField] public Animator animator;
+    [SerializeField] public AudioSource purrSound;
 
     [BoxGroup("Blinking Animation")] [SerializeField] private float minTimeBetweenBlinks;
     [BoxGroup("Blinking Animation")] [SerializeField] private float maxTimeBetweenBlinks;
@@ -11,14 +12,9 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
     
     private static readonly int DoBlink = Animator.StringToHash("DoBlink");
     public static readonly int IsCarrying = Animator.StringToHash("IsCarrying");
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+
+    private void Update()
     {
         timeForNextBlink -= Time.deltaTime;
         if (timeForNextBlink < 0)
@@ -28,5 +24,16 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
         }
         
         animator.SetBool(IsCarrying, CharacterInteractController.Instance.AreHandsFull);
+    }
+    
+    
+    public void PlayPurrSound()
+    {
+        purrSound.Play();
+    }
+    
+    public void StopPurrSound()
+    {
+        purrSound.Stop();
     }
 }

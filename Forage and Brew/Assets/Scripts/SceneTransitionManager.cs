@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class SceneTransitionManager : Singleton<SceneTransitionManager>
 {
+    private static readonly int DoSleep = Animator.StringToHash("DoSleep");
+    private static readonly int DoWakeUp = Animator.StringToHash("DoWakeUp");
     public float transitionTime;
     private float timer;
     public float sleepWaitTime;
@@ -76,7 +78,8 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         
         CharacterInteractController.Instance.transform.position = spawnPoint.position;
         CharacterInteractController.Instance.transform.rotation = spawnPoint.rotation;
-        CharacterAnimManager.instance.animator.SetTrigger("DoSleep");
+        CharacterAnimManager.instance.animator.SetTrigger(DoSleep);
+        CharacterAnimManager.instance.PlayPurrSound();
         CharacterAnimManager.instance.animator.transform.localPosition = sleepPos;
         CharacterAnimManager.instance.animator.transform.localRotation = Quaternion.Euler(sleepRotation);
         yield return new WaitForSecondsRealtime(0.1f);
@@ -152,7 +155,8 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         transitionElement.gameObject.SetActive(true);
         maskElement.sizeDelta = Vector2.zero;
         yield return new WaitForSecondsRealtime(0.5f);
-        CharacterAnimManager.instance.animator.SetTrigger("DoWakeUp");
+        CharacterAnimManager.instance.animator.SetTrigger(DoWakeUp);
+        CharacterAnimManager.instance.StopPurrSound();
         while (timer < transitionTime)
         {
             timer += Time.unscaledDeltaTime;
