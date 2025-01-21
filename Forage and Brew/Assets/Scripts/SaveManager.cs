@@ -130,7 +130,7 @@ public class SaveManager : MonoBehaviour
     public void LoadGame()
     {
         // Check if there is no save file
-        if (!File.Exists(FilePath))
+        if (!File.Exists(FilePath) || !isSaveEnabled)
         {
             foreach (NarrativeBlockOfLettersContentSo contentSo in gameDontDestroyOnLoadManager.AllNarrativeBlocksContentSo)
             {
