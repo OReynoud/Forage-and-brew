@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class LetterMailBoxDisplayBehaviour : MonoBehaviour
+public class LetterMailBoxDisplayBehaviour : PageBehavior
 {
     public TextMeshProUGUI clientNameText;
     public Image letterBackground;
@@ -33,7 +33,7 @@ public class LetterMailBoxDisplayBehaviour : MonoBehaviour
     public AnimationClip animClip;
 
     
-    public void InitLetter(LetterContentSo newLetterContent)
+    public void Init(LetterContentSo newLetterContent)
     {
         letterContent = newLetterContent;
         letterType = letterContent.LetterType;

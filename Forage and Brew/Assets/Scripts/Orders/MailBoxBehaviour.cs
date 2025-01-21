@@ -218,7 +218,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         {
             var current = Instantiate(letterPrefab, letterPile);
             GeneratedLetters.Insert(0, current);
-            current.InitLetter(GameDontDestroyOnLoadManager.Instance.MailBoxLetters[i].LetterContent);
+            current.Init(GameDontDestroyOnLoadManager.Instance.MailBoxLetters[i].LetterContent);
         }
     }
 

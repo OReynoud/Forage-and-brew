@@ -10,6 +10,6 @@ public class LetterLoader : MonoBehaviour
     [Button]
     public void LoadLetter()
     {
-        display.InitLetter(letterToLoad);
+        display.Init(letterToLoad);
     }
 }
