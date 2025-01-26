@@ -38,8 +38,11 @@ public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
         
         if (GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex].Potions[PotionBasketIndex] != null)
         {
-            Instantiate(GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex].Potions[PotionBasketIndex]
-                    .PotionDifficulty.MeshGameObjectLiquidColorManager, meshParentTransform);
+            PotionLiquidColorManager potionLiquidColorManager = Instantiate(GameDontDestroyOnLoadManager.Instance
+                .OrderPotions[OrderIndex].Potions[PotionBasketIndex].PotionDifficulty.MeshGameObjectLiquidColorManager,
+                meshParentTransform);
+            potionLiquidColorManager.SetLiquidColor(GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex]
+                .Potions[PotionBasketIndex]);
         }
     }
 
@@ -47,7 +50,9 @@ public class PotionBasketBehaviour : BasketBehaviour, IPotionAddable
     {
         GameDontDestroyOnLoadManager.Instance.OrderPotions[OrderIndex].Potions[PotionBasketIndex] = collectedPotionBehaviour.PotionValuesSo;
         GameDontDestroyOnLoadManager.Instance.OutCookedPotions.Remove(collectedPotionBehaviour);
-        Instantiate(collectedPotionBehaviour.PotionValuesSo.PotionDifficulty.MeshGameObjectLiquidColorManager, meshParentTransform);
+        PotionLiquidColorManager potionLiquidColorManager = Instantiate(collectedPotionBehaviour.PotionValuesSo
+            .PotionDifficulty.MeshGameObjectLiquidColorManager, meshParentTransform);
+        potionLiquidColorManager.SetLiquidColor(collectedPotionBehaviour.PotionValuesSo);
         Destroy(collectedPotionBehaviour.gameObject);
         PotionBasketManagerBehaviour.CheckCompletion();
     }
