@@ -99,15 +99,15 @@ public class JoystickAnimationManagerBehaviour : MonoBehaviour
         if (_isUpdatingDelay) return;
         if (!_isCircular) return;
         
-        _animationTime += Time.deltaTime;
+        _animationTime += Time.deltaTime / AnimationDuration;
         animatedJoystickRectTransform.anchoredPosition = _isClockwise ? new Vector2(
-            Mathf.Sin(_animationTime * Mathf.Deg2Rad * 180f + Mathf.Deg2Rad * 180f) *
+            Mathf.Sin(_animationTime * Mathf.Deg2Rad * 360f + Mathf.Deg2Rad * 180f) *
             joystickAnimationValuesSo.AnimationDistance,
-            Mathf.Cos(_animationTime * Mathf.Deg2Rad * 180f + Mathf.Deg2Rad * 180f) *
+            Mathf.Cos(_animationTime * Mathf.Deg2Rad * 360f + Mathf.Deg2Rad * 180f) *
             joystickAnimationValuesSo.AnimationDistance) : new Vector2(
-            Mathf.Cos(_animationTime * Mathf.Deg2Rad * 180f + Mathf.Deg2Rad * 90f) *
+            Mathf.Cos(_animationTime * Mathf.Deg2Rad * 360f + Mathf.Deg2Rad * -90f) *
             joystickAnimationValuesSo.AnimationDistance,
-            Mathf.Sin(_animationTime * Mathf.Deg2Rad * 180f + Mathf.Deg2Rad * 90f) *
+            Mathf.Sin(_animationTime * Mathf.Deg2Rad * 360f + Mathf.Deg2Rad * -90f) *
             joystickAnimationValuesSo.AnimationDistance);
         
         if (joystickAnimationValuesSo.IsDrivenExternally) return;
