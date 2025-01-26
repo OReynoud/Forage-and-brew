@@ -33,7 +33,7 @@ public class LetterMailBoxDisplayBehaviour : PageBehavior
     public AnimationClip animClip;
 
     
-    public void Init(LetterContentSo newLetterContent)
+    public override void InitLetter(LetterContentSo newLetterContent)
     {
         letterContent = newLetterContent;
         letterType = letterContent.LetterType;

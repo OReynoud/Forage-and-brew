@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RecipeCodexDisplay : MonoBehaviour
+public class RecipeCodexDisplay : PageBehavior
 {
     [BoxGroup("Refs")] public RectTransform leftPage;
     [BoxGroup("Refs")] public RectTransform rightPage;
@@ -41,6 +41,11 @@ public class RecipeCodexDisplay : MonoBehaviour
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
+    {
+        DisableAll();
+    }
+
+    public void DisableAll()
     {
         for (int i = 0; i < potionIngredientImage.Length; i++)
         {
@@ -109,7 +114,7 @@ public class RecipeCodexDisplay : MonoBehaviour
 
     private int ingredientsIndex = 0;
 
-    public void InitPage(Sprite[] PotionIngredientsLow, Sprite[] PotionIngredientsHigh, PotionValuesSo PotionSteps)
+    public override void InitRecipe(Sprite[] PotionIngredientsLow, Sprite[] PotionIngredientsHigh, PotionValuesSo PotionSteps, Sprite[] AllBrewingActionSprites)
     {
         storedPotion = PotionSteps;
         potionName.text = PotionSteps.Name;
@@ -191,16 +196,16 @@ public class RecipeCodexDisplay : MonoBehaviour
                 {
                     case null:
                         mainActionImage[writingIndex].gameObject.SetActive(true);
-                        mainActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[^1];
+                        mainActionImage[writingIndex].sprite = AllBrewingActionSprites[^1];
 
                         break;
                     case ChoppingHapticChallengeListSo:
                         mainActionImage[writingIndex].gameObject.SetActive(true);
-                        mainActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[1];
+                        mainActionImage[writingIndex].sprite = AllBrewingActionSprites[1];
                         break;
                     case GrindingHapticChallengeSo:
                         mainActionImage[writingIndex].gameObject.SetActive(true);
-                        mainActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[2];
+                        mainActionImage[writingIndex].sprite = AllBrewingActionSprites[2];
                         break;
                 }
 
@@ -220,13 +225,13 @@ public class RecipeCodexDisplay : MonoBehaviour
                     writingIndex--;
                     break;
                 case Temperature.LowHeat:
-                    singleActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[3];
+                    singleActionImage[writingIndex].sprite = AllBrewingActionSprites[3];
                     break;
                 case Temperature.MediumHeat:
-                    singleActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[4];
+                    singleActionImage[writingIndex].sprite = AllBrewingActionSprites[4];
                     break;
                 case Temperature.HighHeat:
-                    singleActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[5];
+                    singleActionImage[writingIndex].sprite = AllBrewingActionSprites[5];
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -238,7 +243,7 @@ public class RecipeCodexDisplay : MonoBehaviour
         singleActionImage[writingIndex].transform.parent.gameObject.SetActive(true);
 
         singleActionImage[writingIndex].gameObject.SetActive(true);
-        singleActionImage[writingIndex].sprite = CodexContentManager.instance.allBrewingActionSprites[0];
+        singleActionImage[writingIndex].sprite = AllBrewingActionSprites[0];
     }
 
     public void RemoveDissolve()

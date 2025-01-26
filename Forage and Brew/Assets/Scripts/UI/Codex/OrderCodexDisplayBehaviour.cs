@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OrderCodexDisplayBehaviour : MonoBehaviour
+public class OrderCodexDisplayBehaviour : PageBehavior
 {
     public TextMeshProUGUI clientNameText;
     public Image orderBackground;
@@ -29,17 +29,18 @@ public class OrderCodexDisplayBehaviour : MonoBehaviour
 
     private void UpdateDaysLeftToComplete()
     {
-        daysLeftToComplete--;
-        delayTimeText.text = daysLeftToComplete + " Days";
-        
         if (daysLeftToComplete <= 0)
         {
             outdatedStamp.enabled = true;
         }
-        
+        else
+        {
+            daysLeftToComplete--;
+            delayTimeText.text = daysLeftToComplete + " Days";
+        }
     }
 
-    public void InitializeOrder(ClientSo client,string description, PotionDemand[] Potions, int Reward, int TTC, int index)
+    public override void InitOrder(ClientSo client,string description, PotionDemand[] Potions, int Reward, int TTC, int index)
     {
         clientNameText.text = client.Name;
         descriptionText.text = description;

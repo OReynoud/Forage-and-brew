@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HistoricCodexDisplayBehavior : MonoBehaviour
+public class HistoricCodexDisplayBehavior : PageBehavior
 {
     
     public TextMeshProUGUI clientNameText;
@@ -13,7 +13,7 @@ public class HistoricCodexDisplayBehavior : MonoBehaviour
     public TextMeshProUGUI description2Text;
 
     
-    public void InitializeHistoricPage(LetterContentSo originLetter, LetterContentSo successLetter)
+    public override void InitHistoric(LetterContentSo originLetter, LetterContentSo successLetter)
     {
         clientNameText.text = originLetter.Client.Name;
         description1Text.text = originLetter.TextContent;

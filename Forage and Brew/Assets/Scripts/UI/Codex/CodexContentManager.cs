@@ -91,7 +91,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
             }
         }
 
-        newRecipe.InitPage(tempIngredientsLow.ToArray(), tempIngredientsHigh.ToArray() ,newRecipeValues);
+        newRecipe.InitRecipe(tempIngredientsLow.ToArray(), tempIngredientsHigh.ToArray() ,newRecipeValues, allBrewingActionSprites);
         tempIngredientsLow.Clear();
         tempIngredientsHigh.Clear();
         InsertRecipePages( newRecipeValues, newRecipe);
@@ -143,7 +143,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
             emptyOrderPageIndex = AutoFlip.instance.ControledBook.bookMarks[1].index + 1;
             _orderCodexDisplayBehaviours.Add(order);
-            order.InitializeOrder(client, orderDescription, potionsRequested, moneyReward, timeToComplete,
+            order.InitOrder(client, orderDescription, potionsRequested, moneyReward, timeToComplete,
                 AutoFlip.instance.ControledBook.bookMarks[1].index);
             
             for (var i = 0; i < pageIndexesToCheck.Count; i++)
@@ -168,7 +168,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
         {
             order = Instantiate(orderPrefabs[Random.Range(0, orderPrefabs.Length)], emptyOrderPage);
             _orderCodexDisplayBehaviours.Add(order);
-            order.InitializeOrder(client, orderDescription, potionsRequested, moneyReward, timeToComplete,
+            order.InitOrder(client, orderDescription, potionsRequested, moneyReward, timeToComplete,
                 AutoFlip.instance.ControledBook.bookMarks[1].index - 1);
             emptyOrderPage = null;
             pageIndexesToCheck.Insert(0, (AutoFlip.instance.ControledBook.bookMarks[1].index, null));
@@ -242,13 +242,13 @@ public class CodexContentManager : Singleton<CodexContentManager>
             
             
             historicPages.Add(historic);
-            historic.InitializeHistoricPage(originLetter, successLetter);
+            historic.InitHistoric(originLetter, successLetter);
         }
         else
         {
             var historic = Instantiate(historicDisplayPrefab, emptyHistoricPage);
             historicPages.Add(historic);
-            historic.InitializeHistoricPage(originLetter, successLetter);
+            historic.InitHistoric(originLetter, successLetter);
             emptyHistoricPage = null;
         }
 
