@@ -81,7 +81,7 @@ public class OrderManager : MonoBehaviour
     
     public void AddOrdersToValidate()
     {
-        for (int i = 0; i < CurrentOrders.Count; i++)
+        for (int i = CurrentOrders.Count - 1; i >= 0; i--)
         {
             TryAddOrderToValidate(i);
         }
