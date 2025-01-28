@@ -45,7 +45,7 @@ public class AutoFlip : Singleton<AutoFlip>
         var index = Array.IndexOf(ControledBook.bookPages.ToArray(), ControledBook.dummyOrderPage);
         ControledBook.bookMarks[0].index = index;
         ControledBook.bookMarks[1].index = index;
-        ControledBook.bookMarks[2].index = index + 1;
+        ControledBook.bookMarks[2].index = index;
 
         ControledBook.bookPages.RemoveAt(index);
         ControledBook.bookPages.RemoveAt(index);
@@ -67,7 +67,7 @@ public class AutoFlip : Singleton<AutoFlip>
 
 
         GameDontDestroyOnLoadManager.Instance.OnNewIngredientCollected.AddListener(ControledBook.StoreNewIngredient);
-        ControledBook.SetupIngredientDisplays();
+        //ControledBook.SetupIngredientDisplays();
     }
 
     private void Update()

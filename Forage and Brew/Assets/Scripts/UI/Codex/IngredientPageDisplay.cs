@@ -35,6 +35,10 @@ public class IngredientPageDisplay : PageBehavior
 
     public void StartDissolve()
     {
+        Material matInstance = Instantiate(dissolveImage.material);
+        dissolveImage.material = matInstance;
+        dissolveImage.material.SetFloat("_Cutoff_Height", 0);
+        
         animationTime = dissolveCurve.keys[^1].time;
         doDissolve = true;
         dissolveTimer = 0;
@@ -57,8 +61,9 @@ public class IngredientPageDisplay : PageBehavior
         }
     }
 
-    public void InitIngredient(IngredientValuesSo ingredientToDisplay)
+    public override void InitIngredient(IngredientValuesSo ingredientToDisplay)
     {
+        
         associatedIngredient = ingredientToDisplay;
         nameText.text = associatedIngredient.Name;
         descriptionText.text = associatedIngredient.Description;
@@ -81,5 +86,6 @@ public class IngredientPageDisplay : PageBehavior
         }
 
         typeImage.sprite = associatedIngredient.Type.IconHigh;
+        StartDissolve();
     }
 }

@@ -157,27 +157,25 @@ public class Book : MonoBehaviour
     }
     public void DisplayNewIngredient()
     {
-        for (var x = 0; x < IngredientPageDisplays.Count; x++)
-        {
-            if (IngredientPageDisplays[x].associatedIngredient != newIngredientToDisplay)
-                continue;
-            int pageIndex = bookMarks[2].index + x;
-            if (pageIndex % 2 == 1)
-                pageIndex--;
 
-            JumpToPage(pageIndex);
-
-            var display = IngredientPageDisplays[x];
-            CharacterInputManager.Instance.EnterCodexMethod();
-            
-            CharacterInputManager.Instance.DisableCodexInputs();
-            CharacterInputManager.Instance.DisableMoveInputs();
-            display.StartDissolve();
-            return;
-        }
         
-        Debug.Log("No Matches detected");
+        CodexContentManager.instance.AddIngredientPage(newIngredientToDisplay);
+        CharacterInputManager.Instance.EnterCodexMethod();
+        
+        CharacterInputManager.Instance.DisableCodexInputs();
+        CharacterInputManager.Instance.DisableMoveInputs();
+        
+        if (bookMarks[2].index % 2 == 1)
+        {
+            JumpToPage(bookMarks[2].index + 1);
+        }
+        else
+        {
+            JumpToPage(bookMarks[2].index);
+        }
     }
+    
+    //TO FIX
     public void DisplayNewIngredientFromSave()
     {
         for (var x = 0; x < IngredientPageDisplays.Count; x++)
@@ -196,17 +194,7 @@ public class Book : MonoBehaviour
 
 
 
-    public void SetupIngredientDisplays()
-    {
-        foreach (var display in IngredientPageDisplays)
-        {
-            Material matInstance = Instantiate(display.dissolveImage.material);
-            display.dissolveImage.material = matInstance;
-        
-            display.dissolveImage.material.SetFloat("_Cutoff_Height", 0);
-        }
-        
-    }
+
 
     private void CalcCurlCriticalPoints()
     {
@@ -585,7 +573,7 @@ public class Book : MonoBehaviour
             if (currentPage - 3 >= 1)
             {
                 bookPages[currentPage - 3].UIComponent.gameObject.SetActive(false);
-                //Debug.Log("Set false: " + bookPages[currentPage - 3].UIComponent.name,bookPages[currentPage].UIComponent);
+                //Debug.Log("Set false: " + bookPages[currentPage - 3].UIComponent.name,bookPages[currentPage - 3].UIComponent);
             }
         }
         else
@@ -599,17 +587,21 @@ public class Book : MonoBehaviour
             bookPages[currentPage].UIComponent.anchoredPosition = Vector2.zero;
             bookPages[currentPage].UIComponent.localRotation = Quaternion.identity;
             bookPages[currentPage].UIComponent.gameObject.SetActive(true);
+            Debug.Log("Set true: " + bookPages[currentPage].UIComponent.name,bookPages[currentPage].UIComponent);
         }
         else
+        {
             RightNext.sprite = rightBackground;
+            Debug.Log("Set right background");
+        }
 
         
         if (currentPage + 2 < bookPages.Count)
         {
             bookPages[currentPage + 1].UIComponent.gameObject.SetActive(false);
             bookPages[currentPage + 2].UIComponent.gameObject.SetActive(false);
-            //Debug.Log("Set false: " + bookPages[currentPage + 1].UIComponent.name,bookPages[currentPage].UIComponent);
-            //Debug.Log("Set false: " + bookPages[currentPage + 2].UIComponent.name,bookPages[currentPage].UIComponent);
+            //Debug.Log("Set false: " + bookPages[currentPage + 1].UIComponent.name,bookPages[currentPage + 1].UIComponent);
+            //Debug.Log("Set false: " + bookPages[currentPage + 2].UIComponent.name,bookPages[currentPage + 2].UIComponent);
         }
     }
 
@@ -686,6 +678,7 @@ public class Book : MonoBehaviour
     public void JumpToPage(int pageIndex)
     {
         bookPages[currentPage].UIComponent.gameObject.SetActive(false);
+        //Debug.Log(bookPages[currentPage].UIComponent.name);
         if (currentPage > 0)
         {
             bookPages[currentPage - 1].UIComponent.gameObject.SetActive(false);

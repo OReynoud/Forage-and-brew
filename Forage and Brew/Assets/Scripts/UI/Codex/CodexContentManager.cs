@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -9,12 +10,20 @@ public class CodexContentManager : Singleton<CodexContentManager>
 {
     [Foldout("References")] public OrderCodexDisplayBehaviour[] orderPrefabs;
     [Foldout("References")] public RecipeCodexDisplay recipeDisplayPrefab;
+    [Foldout("References")] public IngredientPageDisplay ingredientDisplayPrefabLeft;
+    [Foldout("References")] public IngredientPageDisplay ingredientDisplayPrefabRight;
     [Foldout("References")] public HistoricCodexDisplayBehavior historicDisplayPrefab;
     [Foldout("References")] public Image pinImage;
+    [Space]
     [Foldout("References")] public Sprite leftEmptyPage;
     [Foldout("References")] public Sprite rightEmptyPage;
+    [Space]
     [Foldout("References")] public Sprite leftRecipePage;
     [Foldout("References")] public Sprite rightRecipePage;
+    [Space]
+    [Foldout("References")] public Sprite leftIngredientPage;
+    [Foldout("References")] public Sprite rightIngredientPage;
+    [Space]
     [Foldout("References")] public RectTransform emptyPage;
     [Foldout("References")] public Sprite[] allBrewingActionSprites;
 
@@ -30,8 +39,15 @@ public class CodexContentManager : Singleton<CodexContentManager>
     [BoxGroup("Recipe display")] [ReadOnly]
     public List<RecipeCodexDisplay> recipes = new();
     
+    //Ingredients Management
+    [BoxGroup("Ingredient display")] [SerializeField]
+    private IngredientListSo ingredientList;
+    
+    [FormerlySerializedAs("ingredients")] [BoxGroup("Ingredient display")] [ReadOnly]
+    public List<IngredientPageDisplay> ingredientPages = new();
+    
     //Historic Management
-    [BoxGroup("Recipe display")] [ReadOnly]
+    [BoxGroup("Historic display")] [ReadOnly]
     public List<HistoricCodexDisplayBehavior> historicPages = new();
 
     [Foldout("Debug")] public PotionTag testTag;
@@ -254,8 +270,47 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
         AutoFlip.instance.ControledBook.UpdateSprites();
     }
+    
+    private RectTransform emptyIngredientPage;
+    public void AddIngredientPage(IngredientValuesSo ingredient)
+    {
+        if (!emptyIngredientPage)
+        {
+            var pageContainer = Instantiate(emptyPage, transform);
 
+            emptyIngredientPage = Instantiate(emptyPage, transform);
+            var ingredientPage = Instantiate(ingredientDisplayPrefabLeft, pageContainer);
+            pageContainer.anchoredPosition = new Vector2(1450, 0);
+            emptyIngredientPage.anchoredPosition = new Vector2(1450, 0);
+            
+            AutoFlip.instance.ControledBook.bookPages.Insert( AutoFlip.instance.ControledBook.bookMarks[2].index, new Book.BookPage(rightIngredientPage, emptyIngredientPage));
+            pageContainer.name = "Page " + AutoFlip.instance.ControledBook.bookMarks[2].index;
 
+            AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[2].index, new Book.BookPage(leftIngredientPage, pageContainer));
+            emptyIngredientPage.name = "Page " + (AutoFlip.instance.ControledBook.bookMarks[2].index + 1);
+            
+            
+            ingredientPages.Add(ingredientPage);
+            ingredientPage.InitIngredient(ingredient);
+            for (int i = 3; i < AutoFlip.instance.ControledBook.bookMarks.Length; i++)
+            {
+                AutoFlip.instance.ControledBook.bookMarks[i].index += 2;
+            }
+
+            if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[3].index)
+            {
+                AutoFlip.instance.ControledBook.currentPage += 2;
+            }
+        }
+        else
+        {
+            var ingredientPage = Instantiate(ingredientDisplayPrefabRight, emptyIngredientPage);
+            ingredientPages.Add(ingredientPage);
+            ingredientPage.InitIngredient(ingredient);
+            emptyIngredientPage = null;
+        }
+
+    }
     /// <summary>
     /// 
     /// </summary>
