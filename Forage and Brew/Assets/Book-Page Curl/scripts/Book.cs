@@ -582,12 +582,12 @@ public class Book : MonoBehaviour
             bookPages[currentPage].UIComponent.anchoredPosition = Vector2.zero;
             bookPages[currentPage].UIComponent.localRotation = Quaternion.identity;
             bookPages[currentPage].UIComponent.gameObject.SetActive(true);
-            Debug.Log("Set true: " + bookPages[currentPage].UIComponent.name,bookPages[currentPage].UIComponent);
+            //Debug.Log("Set true: " + bookPages[currentPage].UIComponent.name,bookPages[currentPage].UIComponent);
         }
         else
         {
             RightNext.sprite = rightBackground;
-            Debug.Log("Set right background");
+            //Debug.Log("Set right background");
         }
 
         

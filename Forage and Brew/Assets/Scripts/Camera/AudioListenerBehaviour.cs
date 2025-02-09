@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class AudioListenerBehaviour : MonoBehaviour
 {
-    [SerializeField] private CameraController cameraController;
+    [SerializeField] private SimpleCameraBehavior simpleCameraBehavior;
     [SerializeField] private Camera mainCamera;
     
 
     private void LateUpdate()
     {
-        transform.position = cameraController.player.transform.position;
+        transform.position = simpleCameraBehavior.player.transform.position;
         transform.rotation = mainCamera.transform.rotation;
     }
 }

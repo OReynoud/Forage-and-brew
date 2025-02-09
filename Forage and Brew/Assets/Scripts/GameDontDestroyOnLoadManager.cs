@@ -70,7 +70,7 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     
     private void Start()
     {
-        CameraController.instance.InstantCamUpdate();
+        SimpleCameraBehavior.instance.InstantCamUpdate();
         InfoDisplayManager.instance.DisplayDays();
     }
 }

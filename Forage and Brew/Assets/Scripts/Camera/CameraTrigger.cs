@@ -25,11 +25,11 @@ public class CameraTrigger : MonoBehaviour
     {
         if (instantTransition)
         {
-            CameraController.instance.ApplyScriptableCamSettings(camSettings, 0);
+            SimpleCameraBehavior.instance.ApplyScriptableCamSettings(camSettings, 0);
         }
         else
         {
-            CameraController.instance.ApplyScriptableCamSettings(camSettings, transitionTime);
+            SimpleCameraBehavior.instance.ApplyScriptableCamSettings(camSettings, transitionTime);
         }
         
     }
