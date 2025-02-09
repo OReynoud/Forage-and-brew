@@ -42,6 +42,7 @@ public class IngredientPageDisplay : PageBehavior
         animationTime = dissolveCurve.keys[^1].time;
         doDissolve = true;
         dissolveTimer = 0;
+        AutoFlip.instance.ControledBook.discoveryAudio.Play();
     }
     // Update is called once per frame
     void Update()

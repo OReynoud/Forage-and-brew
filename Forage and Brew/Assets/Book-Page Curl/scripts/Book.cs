@@ -7,10 +7,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
-using NUnit.Framework;
 using UnityEngine.UI;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 public enum FlipMode
 {
@@ -62,11 +60,6 @@ public class Book : MonoBehaviour
         get { return ebr; }
     }
 
-    public float Height
-    {
-        get { return BookPanel.rect.height; }
-    }
-
     [Foldout("Refs")] public Sprite leftBackground;
     [Foldout("Refs")] public Sprite rightBackground;
     [Foldout("Refs")] public Image ClippingPlane;
@@ -81,6 +74,8 @@ public class Book : MonoBehaviour
     [Foldout("Refs")] public BookPage dummyOrderPage;
     [Foldout("Refs")] public AudioSource codexShowAudio;
     [Foldout("Refs")] public AudioSource pageflipAudio;
+    [Foldout("Refs")] public AudioSource bookmarkAudio;
+    [Foldout("Refs")] public AudioSource discoveryAudio;
     public UnityEvent OnFlip;
     
 

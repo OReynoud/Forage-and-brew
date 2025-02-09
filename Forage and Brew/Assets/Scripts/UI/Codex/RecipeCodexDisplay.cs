@@ -85,6 +85,7 @@ public class RecipeCodexDisplay : PageBehavior
         rightPageDissolve.material = mat2;
 
         doDissolve = true;
+        AutoFlip.instance.ControledBook.discoveryAudio.Play();
     }
 
     private void Update()

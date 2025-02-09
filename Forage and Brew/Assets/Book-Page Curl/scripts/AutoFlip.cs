@@ -203,6 +203,7 @@ public class AutoFlip : Singleton<AutoFlip>
         var pageDiff = Mathf.Abs(index - ControledBook.currentPage);
 
         if (pageDiff == 0) return;
+        ControledBook.bookmarkAudio.Play();
         
         FlipXPages(Mathf.CeilToInt(pageDiff * 0.5f), index <= ControledBook.currentPage);
     }
