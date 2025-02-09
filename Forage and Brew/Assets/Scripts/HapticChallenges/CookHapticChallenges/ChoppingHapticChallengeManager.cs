@@ -85,8 +85,8 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         CharacterInputManager.Instance.EnableChoppingHapticChallengeInputs();
         
         // Camera
-        _previousCameraPreset = CameraController.instance.TargetCamSettings;
-        CameraController.instance.ApplyScriptableCamSettings(choppingChallengeCameraPreset, choppingCameraTransitionTime);
+        _previousCameraPreset = SimpleCameraBehavior.instance.TargetCamSettings;
+        SimpleCameraBehavior.instance.ApplyScriptableCamSettings(choppingChallengeCameraPreset, choppingCameraTransitionTime);
 
         // Character
         transform.position = CurrentChoppingCountertopBehaviour.transform.position + CurrentChoppingCountertopBehaviour.transform.rotation * characterChoppingPosition;
@@ -113,7 +113,7 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         _choppingInputBehaviours.Clear();
         choppingChallengeGameObject.SetActive(false);
         
-        CameraController.instance.ApplyScriptableCamSettings(_previousCameraPreset, choppingCameraTransitionTime);
+        SimpleCameraBehavior.instance.ApplyScriptableCamSettings(_previousCameraPreset, choppingCameraTransitionTime);
         CharacterInputManager.Instance.EnableInputs();
         // CurrentChoppingCountertopBehaviour.EnableInteract();
         characterAnimator.SetBool(IsChopping, false);

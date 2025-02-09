@@ -71,10 +71,10 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
             yield return new WaitForSecondsRealtime(Time.unscaledDeltaTime);
         }
 
-        var camSettings = CameraController.instance.TargetCamSettings;
+        var camSettings = SimpleCameraBehavior.instance.TargetCamSettings;
         
-        CameraController.instance.ApplyScriptableCamSettings(sleepCam,0);
-        CameraController.instance.InstantCamUpdate();
+        SimpleCameraBehavior.instance.ApplyScriptableCamSettings(sleepCam,0);
+        SimpleCameraBehavior.instance.InstantCamUpdate();
         
         CharacterInteractController.Instance.transform.position = spawnPoint.position;
         CharacterInteractController.Instance.transform.rotation = spawnPoint.rotation;
@@ -101,8 +101,8 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
             maskElement.sizeDelta = Vector2.Lerp(focusedDimensions, Vector2.zero, timer/transitionTime);
             yield return new WaitForSecondsRealtime(Time.unscaledDeltaTime);
         }
-        CameraController.instance.ApplyScriptableCamSettings(camSettings,0);
-        CameraController.instance.InstantCamUpdate();
+        SimpleCameraBehavior.instance.ApplyScriptableCamSettings(camSettings,0);
+        SimpleCameraBehavior.instance.InstantCamUpdate();
         CharacterAnimManager.instance.animator.transform.localPosition = Vector3.zero;
         CharacterAnimManager.instance.animator.transform.localRotation = Quaternion.identity;
         yield return new WaitForSecondsRealtime(0.5f);

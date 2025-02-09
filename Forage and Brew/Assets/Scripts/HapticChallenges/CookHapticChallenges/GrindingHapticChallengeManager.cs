@@ -156,8 +156,8 @@ public class GrindingHapticChallengeManager : MonoBehaviour
         CharacterInputManager.Instance.EnableGrindingHapticChallengeInputs();
         
         // Camera
-        _previousCameraPreset = CameraController.instance.TargetCamSettings;
-        CameraController.instance.ApplyScriptableCamSettings(grindingChallengeCameraPreset, grindingCameraTransitionTime);
+        _previousCameraPreset = SimpleCameraBehavior.instance.TargetCamSettings;
+        SimpleCameraBehavior.instance.ApplyScriptableCamSettings(grindingChallengeCameraPreset, grindingCameraTransitionTime);
 
         // Character
         transform.position = CurrentGrindingCountertopBehaviour.transform.position +
@@ -184,7 +184,7 @@ public class GrindingHapticChallengeManager : MonoBehaviour
         grindingHapticChallengeGameObject.SetActive(false);
         splinesGameObject.SetActive(false);
         
-        CameraController.instance.ApplyScriptableCamSettings(_previousCameraPreset, grindingCameraTransitionTime);
+        SimpleCameraBehavior.instance.ApplyScriptableCamSettings(_previousCameraPreset, grindingCameraTransitionTime);
         CharacterInputManager.Instance.EnableInputs();
         // CurrentGrindingCountertopBehaviour.EnableInteract();
         characterAnimator.SetBool(IsGrinding, false);

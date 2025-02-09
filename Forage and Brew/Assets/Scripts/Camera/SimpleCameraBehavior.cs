@@ -1,31 +1,31 @@
 using NaughtyAttributes;
 using UnityEngine;
 
-public class CameraController : Singleton<CameraController>
+public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
 {
     [HideInInspector] public Camera cam;
     public Transform player;
-    private CharacterMovementController movement;
+    protected CharacterMovementController movement;
 
     public Camera overlayUiCam;
     
-    [BoxGroup("Calculated at Start")] public float targetFocalLength;
-    [BoxGroup("Calculated at Start")] public Vector3 cameraRotation;
+    [Foldout("Calculated at Start")] public float targetFocalLength;
+    [Foldout("Calculated at Start")] public Vector3 cameraRotation;
 
-    [BoxGroup("Adjustable Variables")] public Vector3 cameraOffset;
-    [BoxGroup("Adjustable Variables")] public float distanceFromPlayer;
+    [Foldout("Adjustable Variables")] public Vector3 cameraOffset;
+    [Foldout("Adjustable Variables")] public float distanceFromPlayer;
 
-    [BoxGroup("Adjustable Variables")] [Range(0, 1)]
+    [Foldout("Adjustable Variables")] [Range(0, 1)]
     public float positionLerp = 0.07f;
 
-    [BoxGroup("Adjustable Variables")] [Range(0, 1)]
+    [Foldout("Adjustable Variables")] [Range(0, 1)]
     public float rotationLerp = 0.02f;
 
-    [BoxGroup("Adjustable Variables")] [Range(0, 1)]
+    [Foldout("Adjustable Variables")] [Range(0, 1)]
     public float focalLerp = 0.07f;
 
-    [BoxGroup("Adjustable Variables")] public Vector3 posMaxClamp;
-    [BoxGroup("Adjustable Variables")] public Vector3 posMinClamp;
+    [Foldout("Adjustable Variables")] public Vector3 posMaxClamp;
+    [Foldout("Adjustable Variables")] public Vector3 posMinClamp;
 
     [BoxGroup] [Expandable] public CameraPreset scriptableCamSettings;
     private CameraPreset previousCamSettings;
@@ -131,7 +131,7 @@ public class CameraController : Singleton<CameraController>
         scriptableCamSettings.focalLerp = focalLerp;
     }
 
-    public void ApplyScriptableCamSettings(CameraPreset preset, float TransitionTime)
+    public virtual void ApplyScriptableCamSettings(CameraPreset preset, float TransitionTime)
     {
         previousCamSettings = TargetCamSettings;
         TargetCamSettings = preset;
@@ -174,7 +174,7 @@ public class CameraController : Singleton<CameraController>
         }
     }
 
-    public void InstantCamUpdate()
+    public virtual void InstantCamUpdate()
     {
         transform.parent.position = player.position + TargetCamSettings.cameraOffset;
         transform.localRotation = Quaternion.Euler(TargetCamSettings.cameraRotation);
@@ -193,7 +193,7 @@ public class CameraController : Singleton<CameraController>
 
 
     // Update is called once per frame
-    void FixedUpdate()
+    public virtual void FixedUpdate()
     {
         if (!fixedPos)
         {
@@ -272,7 +272,7 @@ public class CameraController : Singleton<CameraController>
         }
     }
 
-    private void Update()
+    public virtual void Update()
     {
         if (counter < transitionTime)
         {

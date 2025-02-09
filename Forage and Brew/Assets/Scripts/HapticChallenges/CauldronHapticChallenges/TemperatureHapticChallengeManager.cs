@@ -81,8 +81,8 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
         if (!CurrentBellows) return;
         IsChallengeActive = true;
         characterAnimator.SetTrigger(DoEnterBellows);
-        _previousCameraPreset = CameraController.instance.TargetCamSettings;
-        CameraController.instance.ApplyScriptableCamSettings(stirChallengeCameraPreset, cauldronCameraTransitionTime);
+        _previousCameraPreset = SimpleCameraBehavior.instance.TargetCamSettings;
+        SimpleCameraBehavior.instance.ApplyScriptableCamSettings(stirChallengeCameraPreset, cauldronCameraTransitionTime);
 
         transform.position = CurrentBellows.transform.position + CurrentBellows.transform.rotation * characterBlowPosition;
         transform.rotation = CurrentBellows.transform.rotation * Quaternion.Euler(characterBlowRotation);
@@ -283,7 +283,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
         if (!IsChallengeActive) return;
         
         characterAnimator.SetTrigger(DoExitBellows);
-        CameraController.instance.ApplyScriptableCamSettings(_previousCameraPreset, cauldronCameraTransitionTime);
+        SimpleCameraBehavior.instance.ApplyScriptableCamSettings(_previousCameraPreset, cauldronCameraTransitionTime);
         CharacterInputManager.Instance.EnableInputs();
         CurrentBellows.EnableInteract();
         CurrentBellows.ExitTemperatureHapticChallenge();

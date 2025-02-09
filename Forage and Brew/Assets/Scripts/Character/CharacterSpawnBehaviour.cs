@@ -39,8 +39,8 @@ public class CharacterSpawnBehaviour : MonoBehaviour
             
             if (camSettings != null)
             {
-                CameraController.instance.ApplyScriptableCamSettings(camSettings, 0);
-                CameraController.instance.InstantCamUpdate();
+                SimpleCameraBehavior.instance.ApplyScriptableCamSettings(camSettings, 0);
+                SimpleCameraBehavior.instance.InstantCamUpdate();
             }
 
 

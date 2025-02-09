@@ -108,7 +108,7 @@ public class CharacterMovementController : MonoBehaviour
     
     public void Move(Vector2 inputDir)
     {
-        playerDir = Quaternion.AngleAxis(CameraController.instance.cameraRotation.y, Vector3.up) * new Vector3(inputDir.x,0,inputDir.y);
+        playerDir = Quaternion.AngleAxis(SimpleCameraBehavior.instance.cameraRotation.y, Vector3.up) * new Vector3(inputDir.x,0,inputDir.y);
     }
 
     private bool GroundCheck()

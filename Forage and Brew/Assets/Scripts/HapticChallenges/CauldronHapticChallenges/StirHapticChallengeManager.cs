@@ -188,7 +188,7 @@ public class StirHapticChallengeManager : MonoBehaviour
         if (!CurrentCauldron) return;
         
         // Camera
-        _previousCameraPreset = CameraController.instance.TargetCamSettings;
+        _previousCameraPreset = SimpleCameraBehavior.instance.TargetCamSettings;
 
         // Character
         transform.position = CurrentCauldron.transform.position + characterStirPosition;
@@ -235,7 +235,7 @@ public class StirHapticChallengeManager : MonoBehaviour
         rotationMarkerImage.color = new Color(rotationMarkerImage.color.r, rotationMarkerImage.color.g, rotationMarkerImage.color.b, 0.5f);
         joystickAnimationManagerBehaviour.AnimationDuration = _currentChallenge.StirCamerasAndDurations[_currentStirIndex].Duration;
         _confirmationCircles[_currentStirIndex].SetCurrentCircle();
-        CameraController.instance.ApplyScriptableCamSettings(_currentChallenge.StirCamerasAndDurations[_currentStirIndex].Camera,
+        SimpleCameraBehavior.instance.ApplyScriptableCamSettings(_currentChallenge.StirCamerasAndDurations[_currentStirIndex].Camera,
             cauldronCameraTransitionTime);
         CurrentCauldron.PlayBrewingSound(_currentStirIndex);
         StartStirTurn();
@@ -373,7 +373,7 @@ public class StirHapticChallengeManager : MonoBehaviour
         // Sound
         CurrentCauldron.StopBrewingSound();
         characterAnimator.SetBool(IsStirring, false);
-        CameraController.instance.ApplyScriptableCamSettings(_previousCameraPreset, cauldronCameraTransitionTime);
+        SimpleCameraBehavior.instance.ApplyScriptableCamSettings(_previousCameraPreset, cauldronCameraTransitionTime);
         CharacterInputManager.Instance.EnableInputs();
         CurrentCauldron.EnableInteract(false);        
         
