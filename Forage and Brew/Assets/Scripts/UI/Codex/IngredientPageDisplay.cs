@@ -86,7 +86,7 @@ public class IngredientPageDisplay : PageBehavior
             cyclesImages[i].color = associatedIngredient.LunarCycleStates.Contains(cycles[i]) ? cycles[i].Color : greyedColor;
         }
 
-        typeImage.sprite = associatedIngredient.Type.IconHigh;
+        typeImage.sprite = associatedIngredient.Type.IconLow;
         StartDissolve();
     }
 }
