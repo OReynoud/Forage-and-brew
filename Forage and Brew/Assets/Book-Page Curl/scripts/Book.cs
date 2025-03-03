@@ -108,7 +108,6 @@ public class Book : MonoBehaviour
     
 
 
-    [field: SerializeField] private List<IngredientPageDisplay> IngredientPageDisplays { get; set; } = new();
     void Start()
     {
         Left.gameObject.SetActive(false);
@@ -123,6 +122,7 @@ public class Book : MonoBehaviour
 
 
         ClippingPlane.rectTransform.sizeDelta = new Vector2(pageWidth * 2 + pageHeight, pageHeight + pageHeight * 2);
+        
 
         foreach (var bookMark in bookMarks)
         {
@@ -131,12 +131,13 @@ public class Book : MonoBehaviour
 
         if (!GameDontDestroyOnLoadManager.Instance) 
             return;
-        
-        foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.UnlockedIngredients)
+        if (CodexContentManager.instance.loadAllPages)
         {
-            StoreNewIngredient(ingredient);
-            DisplayNewIngredientFromSave();
+            GameDontDestroyOnLoadManager.Instance.UnlockedIngredients.Clear();
+            GameDontDestroyOnLoadManager.Instance.UnlockedIngredients.AddRange(CodexContentManager.instance.ingredientList.IngredientValues);
         }
+        
+        DisplayNewIngredientFromSave();
     }
 
     public void PlayCodexSound()
@@ -173,18 +174,20 @@ public class Book : MonoBehaviour
     //TO FIX
     public void DisplayNewIngredientFromSave()
     {
-        for (var x = 0; x < IngredientPageDisplays.Count; x++)
+        for (int i = 0; i < GameDontDestroyOnLoadManager.Instance.UnlockedIngredients.Count; i++)
         {
-            if (IngredientPageDisplays[x].associatedIngredient != newIngredientToDisplay)
+            CodexContentManager.instance.AddIngredientPage(GameDontDestroyOnLoadManager.Instance.UnlockedIngredients[i]);
+        }
+        for (var x = 0; x < CodexContentManager.instance.ingredientPages.Count; x++)
+        {
+            if (CodexContentManager.instance.ingredientPages[x].associatedIngredient != newIngredientToDisplay)
                 continue;
 
-            var display = IngredientPageDisplays[x];
+            var display = CodexContentManager.instance.ingredientPages[x];
 
             display.dissolveImage.material.SetFloat(Ex.CutoffHeight, 1);
             return;
         }
-        
-        Debug.Log("No Matches detected");
     }
 
 

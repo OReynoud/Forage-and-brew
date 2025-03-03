@@ -27,7 +27,7 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     public List<ClientOrderPotions> OrderPotions { get; private set; } = new();
     
     // Unlocked Ingredients and Recipes
-    public List<IngredientValuesSo> UnlockedIngredients { get; private set; } = new();
+    [SerializeField] public List<IngredientValuesSo> UnlockedIngredients = new();
     [SerializeField] public List<PotionValuesSo> UnlockedRecipes = new();
     public UnityEvent<IngredientValuesSo> OnNewIngredientCollected { get; private set; } = new();
     public UnityEvent<PotionValuesSo> OnNewRecipeReceived { get; private set; } = new();

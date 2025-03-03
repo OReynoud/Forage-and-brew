@@ -41,15 +41,19 @@ public class CodexContentManager : Singleton<CodexContentManager>
     
     //Ingredients Management
     [BoxGroup("Ingredient display")] [SerializeField]
-    private IngredientListSo ingredientList;
+    public IngredientListSo ingredientList;
     
-    [FormerlySerializedAs("ingredients")] [BoxGroup("Ingredient display")] [ReadOnly]
+    [BoxGroup("Ingredient display")] [ReadOnly]
     public List<IngredientPageDisplay> ingredientPages = new();
     
     //Historic Management
     [BoxGroup("Historic display")] [ReadOnly]
     public List<HistoricCodexDisplayBehavior> historicPages = new();
 
+    
+    [Foldout("Debug")] public bool loadAllPages;
+    [Foldout("Debug")][ShowIf("loadAllPages")] public List<LetterContentSo> OrdersToLoad;
+    [Foldout("Debug")][ShowIf("loadAllPages")] public List<LetterContentSo> HistoricToLoad;
     [Foldout("Debug")] public PotionTag testTag;
 
     [Foldout("Debug")] public PotionValuesSo testPotion;
@@ -73,6 +77,16 @@ public class CodexContentManager : Singleton<CodexContentManager>
             ticket.gameObject.SetActive(false);
         }
 
+
+        if (loadAllPages)
+        {
+            GameDontDestroyOnLoadManager.Instance.UnlockedRecipes.Clear();
+            GameDontDestroyOnLoadManager.Instance.UnlockedRecipes.AddRange(potionList.Potions);
+            foreach (var historic in HistoricToLoad)
+            {
+                AddHistoricPage(historic, historic.RelatedSuccessLetter);
+            }
+        }
 
         foreach (var recipes in GameDontDestroyOnLoadManager.Instance.UnlockedRecipes)
         {

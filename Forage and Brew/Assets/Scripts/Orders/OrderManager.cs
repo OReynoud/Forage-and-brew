@@ -28,6 +28,14 @@ public class OrderManager : MonoBehaviour
     private void Start()
     {
         CreateOrdersFromSave();
+        
+        if (CodexContentManager.instance.loadAllPages)
+        {
+            foreach (var orderSo in CodexContentManager.instance.OrdersToLoad)
+            {
+                CreateNewOrder(new Letter(orderSo,null));
+            }
+        }
     }
 
     public void CreateNewOrder(Letter letter)
