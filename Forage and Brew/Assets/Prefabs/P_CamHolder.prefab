@@ -53,7 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58e1d8227d5ccd54ebd420310a52793b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraController: {fileID: 9091164640611036879}
+  simpleCameraBehavior: {fileID: 9091164640611036879}
   mainCamera: {fileID: 3107649149454670002}
 --- !u!1 &3295390197538786708
 GameObject:
@@ -82,8 +82,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3295390197538786708}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.35965493, y: -0, z: -0, w: 0.9330854}
-  m_LocalPosition: {x: -0, y: 9.886444, z: -10.919299}
+  m_LocalRotation: {x: 0.4067366, y: -0, z: -0, w: 0.9135455}
+  m_LocalPosition: {x: -0, y: 10.7755995, z: -9.7023945}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -108,7 +108,7 @@ Camera:
   m_ShutterSpeed: 0.005
   m_Aperture: 16
   m_FocusDistance: 10
-  m_FocalLength: 18.48
+  m_FocalLength: 32.03
   m_BladeCount: 5
   m_Curvature: {x: 2, y: 11}
   m_BarrelClipping: 0.25
@@ -123,7 +123,7 @@ Camera:
     height: 1
   near clip plane: 0.27
   far clip plane: 1000
-  field of view: 65.995415
+  field of view: 41.0768
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -166,7 +166,7 @@ MonoBehaviour:
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
-  m_Antialiasing: 0
+  m_Antialiasing: 1
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -201,19 +201,20 @@ MonoBehaviour:
   cam: {fileID: 3107649149454670002}
   player: {fileID: 0}
   overlayUiCam: {fileID: 430158166487289154}
-  targetFocalLength: 18.48
-  cameraRotation: {x: 42.1578, y: 10.041409, z: 0.00000057586306}
-  cameraOffset: {x: 0, y: 2.06, z: 0}
-  distanceFromPlayer: 14.73
+  targetFocalLength: 32.03
+  cameraRotation: {x: 48, y: 0, z: 0}
+  cameraOffset: {x: 0, y: 1.8, z: 0}
+  distanceFromPlayer: 14.5
   positionLerp: 0.07
-  rotationLerp: 0.02
-  focalLerp: 0.07
+  rotationLerp: 0.04
+  focalLerp: 0.106
   posMaxClamp: {x: 0, y: 0, z: 0}
   posMinClamp: {x: 0, y: 0, z: 0}
   scriptableCamSettings: {fileID: 11400000, guid: 1c4ca42704d6f7f4091879f325288c5b, type: 2}
   codexCamSettings: {fileID: 11400000, guid: 8d137827b2affa54387911c8abf4cfd7, type: 2}
   codexEnterTime: 0.5
   codexExitTime: 0
+  counter: 0
   applyXYClamping: 0
   applyZClamping: 0
   fixedPos: 0
@@ -302,7 +303,7 @@ Camera:
   m_ShutterSpeed: 0.005
   m_Aperture: 16
   m_FocusDistance: 10
-  m_FocalLength: 18.48
+  m_FocalLength: 32.03
   m_BladeCount: 5
   m_Curvature: {x: 2, y: 11}
   m_BarrelClipping: 0.25
@@ -317,7 +318,7 @@ Camera:
     height: 1
   near clip plane: 0.27
   far clip plane: 1000
-  field of view: 65.995415
+  field of view: 41.0768
   orthographic: 0
   orthographic size: 5
   m_Depth: -1

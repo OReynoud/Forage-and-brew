@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using NaughtyAttributes;
 using NUnit.Framework;
 using UnityEngine;
@@ -102,8 +103,20 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
     private void CreateNewRecipePage(PotionValuesSo newRecipeValues)
     {            
+        
         var newRecipe = Instantiate(recipeDisplayPrefab, Vector3.down * 10000, Quaternion.identity, transform);
-        recipes.Insert(0, newRecipe);
+        int recipeIndex = potionList.Potions.IndexOf(newRecipeValues);
+        if (recipes.Count == 0)
+        {
+            recipeIndex = 0;
+        }
+        else if (recipeIndex >= recipes.Count)
+        {
+            recipeIndex = recipes.Count - 1;
+        }
+        recipes.Insert(recipeIndex, newRecipe);
+        recipeIndex += AutoFlip.instance.ControledBook.bookMarks[1].index;
+        
         foreach (TemperatureChallengeIngredients t in newRecipeValues.TemperatureChallengeIngredients)
         {
             foreach (CookedIngredientForm cookedIngredient in t.CookedIngredients)
@@ -120,18 +133,18 @@ public class CodexContentManager : Singleton<CodexContentManager>
                 }
             }
         }
-
+        
         newRecipe.InitRecipe(tempIngredientsLow.ToArray(), tempIngredientsHigh.ToArray() ,newRecipeValues, allBrewingActionSprites);
         tempIngredientsLow.Clear();
         tempIngredientsHigh.Clear();
-        InsertRecipePages( newRecipeValues, newRecipe);
+        InsertRecipePages(recipeIndex , newRecipe);
     }
 
-    public void InsertRecipePages(PotionValuesSo recipe, RecipeCodexDisplay recipeDisplay)
+    void InsertRecipePages(int index, RecipeCodexDisplay recipeDisplay)
     {
-        AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[1].index,
+        AutoFlip.instance.ControledBook.bookPages.Insert(index,
             new Book.BookPage(rightRecipePage, recipeDisplay.rightPage));
-        AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[1].index,
+        AutoFlip.instance.ControledBook.bookPages.Insert(index,
             new Book.BookPage(leftRecipePage, recipeDisplay.leftPage));
 
         for (var i = 0; i < pageIndexesToCheck.Count; i++)
@@ -286,8 +299,18 @@ public class CodexContentManager : Singleton<CodexContentManager>
     }
     
     private RectTransform emptyIngredientPage;
-    public void AddIngredientPage(IngredientValuesSo ingredient)
+    public int AddIngredientPage(IngredientValuesSo ingredient)
     {
+        int ingredientIndex = ingredientList.IngredientValues.IndexOf(ingredient);
+        Debug.Log("Raw index: " + ingredientIndex);
+        if (ingredientIndex >= ingredientPages.Count)
+        {
+            ingredientIndex = AutoFlip.instance.ControledBook.bookMarks[2].index + ingredientPages.Count;
+        }
+        else
+        {
+            ingredientIndex += AutoFlip.instance.ControledBook.bookMarks[2].index;
+        }
         if (!emptyIngredientPage)
         {
             var pageContainer = Instantiate(emptyPage, transform);
@@ -297,33 +320,41 @@ public class CodexContentManager : Singleton<CodexContentManager>
             pageContainer.anchoredPosition = new Vector2(1450, 0);
             emptyIngredientPage.anchoredPosition = new Vector2(1450, 0);
             
-            AutoFlip.instance.ControledBook.bookPages.Insert( AutoFlip.instance.ControledBook.bookMarks[2].index, new Book.BookPage(rightIngredientPage, emptyIngredientPage));
-            pageContainer.name = "Page " + AutoFlip.instance.ControledBook.bookMarks[2].index;
+            AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[2].index + ingredientPages.Count , new Book.BookPage(rightIngredientPage, emptyIngredientPage));
 
-            AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[2].index, new Book.BookPage(leftIngredientPage, pageContainer));
-            emptyIngredientPage.name = "Page " + (AutoFlip.instance.ControledBook.bookMarks[2].index + 1);
+            
+            AutoFlip.instance.ControledBook.bookPages.Insert(ingredientIndex , new Book.BookPage(leftIngredientPage, pageContainer));
+            pageContainer.name = ingredient.Name;
+            Debug.Log("Placed " + ingredient.Name + " at index " + ingredientIndex);
             
             
             ingredientPages.Add(ingredientPage);
             ingredientPage.InitIngredient(ingredient);
+            emptyIngredientPage.name = "Page " + (AutoFlip.instance.ControledBook.bookMarks[2].index + ingredientPages.Count);
             for (int i = 3; i < AutoFlip.instance.ControledBook.bookMarks.Length; i++)
             {
                 AutoFlip.instance.ControledBook.bookMarks[i].index += 2;
             }
 
-            if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[3].index)
+            if (AutoFlip.instance.ControledBook.currentPage >= ingredientIndex + 2)
             {
                 AutoFlip.instance.ControledBook.currentPage += 2;
             }
+            
         }
         else
         {
             var ingredientPage = Instantiate(ingredientDisplayPrefabRight, emptyIngredientPage);
+            var bookPage = AutoFlip.instance.ControledBook.bookPages.Find(x => x.UIComponent == emptyIngredientPage);
+            AutoFlip.instance.ControledBook.bookPages.Remove(bookPage);
+            AutoFlip.instance.ControledBook.bookPages.Insert(ingredientIndex ,bookPage);
             ingredientPages.Add(ingredientPage);
             ingredientPage.InitIngredient(ingredient);
+            emptyIngredientPage.name = ingredient.Name;
             emptyIngredientPage = null;
         }
 
+        return ingredientIndex;
     }
     /// <summary>
     /// 
