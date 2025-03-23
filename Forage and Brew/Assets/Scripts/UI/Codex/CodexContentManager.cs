@@ -103,8 +103,20 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
     private void CreateNewRecipePage(PotionValuesSo newRecipeValues)
     {            
+        
         var newRecipe = Instantiate(recipeDisplayPrefab, Vector3.down * 10000, Quaternion.identity, transform);
-        recipes.Insert(0, newRecipe);
+        int recipeIndex = potionList.Potions.IndexOf(newRecipeValues);
+        if (recipes.Count == 0)
+        {
+            recipeIndex = 0;
+        }
+        else if (recipeIndex >= recipes.Count)
+        {
+            recipeIndex = recipes.Count - 1;
+        }
+        recipes.Insert(recipeIndex, newRecipe);
+        recipeIndex += AutoFlip.instance.ControledBook.bookMarks[1].index;
+        
         foreach (TemperatureChallengeIngredients t in newRecipeValues.TemperatureChallengeIngredients)
         {
             foreach (CookedIngredientForm cookedIngredient in t.CookedIngredients)
@@ -121,18 +133,18 @@ public class CodexContentManager : Singleton<CodexContentManager>
                 }
             }
         }
-
+        
         newRecipe.InitRecipe(tempIngredientsLow.ToArray(), tempIngredientsHigh.ToArray() ,newRecipeValues, allBrewingActionSprites);
         tempIngredientsLow.Clear();
         tempIngredientsHigh.Clear();
-        InsertRecipePages( newRecipeValues, newRecipe);
+        InsertRecipePages(recipeIndex , newRecipe);
     }
 
-    public void InsertRecipePages(PotionValuesSo recipe, RecipeCodexDisplay recipeDisplay)
+    void InsertRecipePages(int index, RecipeCodexDisplay recipeDisplay)
     {
-        AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[1].index,
+        AutoFlip.instance.ControledBook.bookPages.Insert(index,
             new Book.BookPage(rightRecipePage, recipeDisplay.rightPage));
-        AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[1].index,
+        AutoFlip.instance.ControledBook.bookPages.Insert(index,
             new Book.BookPage(leftRecipePage, recipeDisplay.leftPage));
 
         for (var i = 0; i < pageIndexesToCheck.Count; i++)
