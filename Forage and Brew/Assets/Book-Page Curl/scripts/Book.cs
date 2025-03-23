@@ -155,19 +155,19 @@ public class Book : MonoBehaviour
     {
 
         
-        CodexContentManager.instance.AddIngredientPage(newIngredientToDisplay);
+        int index = CodexContentManager.instance.AddIngredientPage(newIngredientToDisplay);
         CharacterInputManager.Instance.EnterCodexMethod();
         
         CharacterInputManager.Instance.DisableCodexInputs();
         CharacterInputManager.Instance.DisableMoveInputs();
         
-        if (bookMarks[2].index % 2 == 1)
+        if (index % 2 == 1)
         {
-            JumpToPage(bookMarks[2].index + 1);
+            JumpToPage(index + 1);
         }
         else
         {
-            JumpToPage(bookMarks[2].index);
+            JumpToPage(index);
         }
     }
     
