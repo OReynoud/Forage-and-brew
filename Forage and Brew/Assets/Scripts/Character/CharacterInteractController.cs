@@ -27,6 +27,7 @@ public class CharacterInteractController : MonoBehaviour
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public BedBehaviour CurrentNearBed { get; set; }
     
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public MailBoxBehaviour CurrentNearMailBoxBehaviour { get; set; }
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public BinBehaviour CurrentNearBin { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public CauldronBehaviour CurrentNearCauldron { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public ChoppingCountertopBehaviour CurrentNearChoppingCountertop { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public GrindingCountertopBehaviour CurrentNearGrindingCountertop { get; set; }
@@ -97,6 +98,11 @@ public class CharacterInteractController : MonoBehaviour
         {
             CurrentNearCauldron.DisableInteract(true);
             ShoveStackInTarget(CurrentNearCauldron.transform, CurrentNearCauldron);
+        }
+        else if (CurrentNearBin && collectedStack.Count > 0 && collectedStack[0].stackable is CollectedPotionBehaviour)
+        {
+            CurrentNearBin.DisableInteract();
+            ShoveStackInTarget(CurrentNearBin.transform, CurrentNearBin);
         }
         else if (CurrentStackableBehaviours.Count > 0)
         {
