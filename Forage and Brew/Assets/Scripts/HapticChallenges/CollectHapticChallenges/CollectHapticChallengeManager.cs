@@ -155,7 +155,11 @@ public class CollectHapticChallengeManager : MonoBehaviour
         {
             _areBothUnearthingInputsPressed = true;
             _currentIngredientToCollectBehaviour.ReleaseUnearthing();
-            
+
+            float heightDifference = _currentIngredientToCollectBehaviour.transform.position.y - transform.position.y;
+            heightDifference = Mathf.Abs(heightDifference);
+            int index = characterAnimator.GetLayerIndex("Unearth_Spine");
+            characterAnimator.SetLayerWeight(index,1 - heightDifference);
             characterAnimator.SetTrigger(DoBuildUpUnearth);
             CharacterInputManager.Instance.DisableMoveInputs();
             CharacterInputManager.Instance.DisableCodexInputs();
