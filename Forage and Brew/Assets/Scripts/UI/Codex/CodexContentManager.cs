@@ -16,14 +16,14 @@ public class CodexContentManager : Singleton<CodexContentManager>
     [Foldout("References")] public HistoricCodexDisplayBehavior historicDisplayPrefab;
     [Foldout("References")] public Image pinImage;
     [Space]
-    [Foldout("References")] public Sprite leftEmptyPage;
-    [Foldout("References")] public Sprite rightEmptyPage;
+    [Foldout("References")] public Sprite[] leftEmptyPage;
+    [Foldout("References")] public Sprite[] rightEmptyPage;
     [Space]
-    [Foldout("References")] public Sprite leftRecipePage;
-    [Foldout("References")] public Sprite rightRecipePage;
+    [Foldout("References")] public Sprite[] leftRecipePage;
+    [Foldout("References")] public Sprite[] rightRecipePage;
     [Space]
-    [Foldout("References")] public Sprite leftIngredientPage;
-    [Foldout("References")] public Sprite rightIngredientPage;
+    [Foldout("References")] public Sprite[] leftIngredientPage;
+    [Foldout("References")] public Sprite[] rightIngredientPage;
     [Space]
     [Foldout("References")] public RectTransform emptyPage;
     [Foldout("References")] public Sprite[] allBrewingActionSprites;
@@ -63,6 +63,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
     [Foldout("Debug")] private List<Sprite> tempIngredientsHigh = new();
 
     public List<(int, RecipeCodexDisplay)> pageIndexesToCheck = new ();
+    private int pageChoser;
 
 
 
@@ -142,10 +143,12 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
     void InsertRecipePages(int index, RecipeCodexDisplay recipeDisplay)
     {
+        pageChoser = Random.Range(0, rightRecipePage.Length);
+        
         AutoFlip.instance.ControledBook.bookPages.Insert(index,
-            new Book.BookPage(rightRecipePage, recipeDisplay.rightPage));
+            new Book.BookPage(rightRecipePage[pageChoser], recipeDisplay.rightPage));
         AutoFlip.instance.ControledBook.bookPages.Insert(index,
-            new Book.BookPage(leftRecipePage, recipeDisplay.leftPage));
+            new Book.BookPage(leftRecipePage[pageChoser], recipeDisplay.leftPage));
 
         for (var i = 0; i < pageIndexesToCheck.Count; i++)
         {
@@ -167,6 +170,8 @@ public class CodexContentManager : Singleton<CodexContentManager>
     public void ReceiveNewOrder(ClientSo client, string orderDescription, PotionDemand[] potionsRequested,
         int moneyReward, int timeToComplete, out OrderCodexDisplayBehaviour order)
     {
+        pageChoser = Random.Range(0, rightEmptyPage.Length);
+        
         if (!emptyOrderPage)
         {
             var pageContainer = Instantiate(emptyPage, transform);
@@ -177,11 +182,11 @@ public class CodexContentManager : Singleton<CodexContentManager>
             emptyOrderPage.anchoredPosition = new Vector2(1500, 0);
 
             AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[1].index,
-                new Book.BookPage(rightEmptyPage, emptyOrderPage));
+                new Book.BookPage(rightEmptyPage[pageChoser], emptyOrderPage));
             emptyOrderPage.name = "Empty Order Page" + (AutoFlip.instance.ControledBook.bookMarks[1].index + 1);
 
             AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[1].index,
-                new Book.BookPage(leftEmptyPage, pageContainer));
+                new Book.BookPage(leftEmptyPage[pageChoser], pageContainer));
             pageContainer.name = "Order Page " + AutoFlip.instance.ControledBook.bookMarks[1].index;
 
             emptyOrderPageIndex = AutoFlip.instance.ControledBook.bookMarks[1].index + 1;
@@ -268,6 +273,8 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
     public void AddHistoricPage(LetterContentSo originLetter, LetterContentSo successLetter)
     {
+        pageChoser = Random.Range(0, rightEmptyPage.Length);
+        
         if (!emptyHistoricPage)
         {
             var pageContainer = Instantiate(emptyPage, transform);
@@ -277,10 +284,10 @@ public class CodexContentManager : Singleton<CodexContentManager>
             pageContainer.anchoredPosition = new Vector2(1500, 0);
             emptyHistoricPage.anchoredPosition = new Vector2(1500, 0);
             
-            AutoFlip.instance.ControledBook.bookPages.Add( new Book.BookPage(rightEmptyPage, pageContainer));
+            AutoFlip.instance.ControledBook.bookPages.Add( new Book.BookPage(rightEmptyPage[pageChoser], pageContainer));
             pageContainer.name = "Page " + AutoFlip.instance.ControledBook.bookMarks[0].index;
 
-            AutoFlip.instance.ControledBook.bookPages.Add(new Book.BookPage(leftEmptyPage, emptyHistoricPage));
+            AutoFlip.instance.ControledBook.bookPages.Add(new Book.BookPage(leftEmptyPage[pageChoser], emptyHistoricPage));
             emptyHistoricPage.name = "Page " + (AutoFlip.instance.ControledBook.bookMarks[0].index + 1);
             
             
@@ -301,6 +308,8 @@ public class CodexContentManager : Singleton<CodexContentManager>
     private RectTransform emptyIngredientPage;
     public int AddIngredientPage(IngredientValuesSo ingredient)
     {
+        pageChoser = Random.Range(0, rightIngredientPage.Length);
+        
         int ingredientIndex = ingredientList.IngredientValues.IndexOf(ingredient);
         Debug.Log("Raw index: " + ingredientIndex);
         if (ingredientIndex >= ingredientPages.Count)
@@ -320,10 +329,10 @@ public class CodexContentManager : Singleton<CodexContentManager>
             pageContainer.anchoredPosition = new Vector2(1450, 0);
             emptyIngredientPage.anchoredPosition = new Vector2(1450, 0);
             
-            AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[2].index + ingredientPages.Count , new Book.BookPage(rightIngredientPage, emptyIngredientPage));
+            AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[2].index + ingredientPages.Count , new Book.BookPage(rightIngredientPage[pageChoser], emptyIngredientPage));
 
             
-            AutoFlip.instance.ControledBook.bookPages.Insert(ingredientIndex , new Book.BookPage(leftIngredientPage, pageContainer));
+            AutoFlip.instance.ControledBook.bookPages.Insert(ingredientIndex , new Book.BookPage(leftIngredientPage[pageChoser], pageContainer));
             pageContainer.name = ingredient.Name;
             Debug.Log("Placed " + ingredient.Name + " at index " + ingredientIndex);
             
