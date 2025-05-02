@@ -27,11 +27,12 @@ public class Book : MonoBehaviour
     {
         public Sprite pageSprite;
         public RectTransform UIComponent;
-
-        public BookPage(Sprite PageSprite, RectTransform uiComponent)
+        public PageBehavior pageBehavior;
+        public BookPage(Sprite PageSprite, RectTransform uiComponent, PageBehavior PageBehavior)
         {
             pageSprite = PageSprite;
             UIComponent = uiComponent;
+            pageBehavior = PageBehavior;
         }
     }
 
@@ -140,6 +141,20 @@ public class Book : MonoBehaviour
         DisplayNewIngredientFromSave();
     }
 
+    public void UpdatePageNumbers()
+    {
+        for (int i = 0; i < bookPages.Count; i++)
+        {
+            if (!bookPages[i].pageBehavior)
+                continue;
+            bookPages[i].pageBehavior.PageNumber = i + 1;
+            if (bookPages[i].pageBehavior is RecipeCodexDisplay a)
+            {
+                i++;
+                a.SecondPageNumber = i + 1;
+            }
+        }
+    }
     public void PlayCodexSound()
     {
         codexShowAudio.Stop();

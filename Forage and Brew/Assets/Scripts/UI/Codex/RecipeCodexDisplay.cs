@@ -36,6 +36,8 @@ public class RecipeCodexDisplay : PageBehavior
     [BoxGroup("Brewing Steps")] public Image[] mainActionImage;
     [BoxGroup("Brewing Steps")] public Image[] singleActionImage;
 
+    public int SecondPageNumber;
+
     private bool doDissolve;
     private float dissolveTimer;
 
