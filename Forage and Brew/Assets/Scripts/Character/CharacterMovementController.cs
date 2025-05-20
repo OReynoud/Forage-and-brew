@@ -138,14 +138,12 @@ public class CharacterMovementController : MonoBehaviour
         {
             if (Mathf.Abs(angle) < maxAngle)
             {
-                //Debug.Log("climbing");
                 angledVelocity = Quaternion.AngleAxis(-angle,transform.right) * angledVelocity;
                 angledVelocity *= (isRunning ? runSpeed : walkSpeed) * accelerationCurve.Evaluate(accelerationCurveIndex) * playerDir.magnitude;
                 rb.linearVelocity = angledVelocity + Vector3.down * (9.81f * Time.deltaTime);
             }
             else
             {
-                //Debug.Log("not climbing");
                 angledVelocity = playerDir * ((isRunning ? runSpeed : walkSpeed) * accelerationCurve.Evaluate(accelerationCurveIndex) * playerDir.magnitude);
 
                 rb.linearVelocity = new Vector3(angledVelocity.x, rb.linearVelocity.y, angledVelocity.z);
@@ -162,6 +160,11 @@ public class CharacterMovementController : MonoBehaviour
             rb.linearVelocity = new Vector3(angledVelocity.x, rb.linearVelocity.y - 9.81f * Time.deltaTime, angledVelocity.z);
         }
 
+        if (transitionWalk)
+        {
+            WalkToLocation();
+        }
+        
         if (playerDir.magnitude > 0)
         {
             accelerationCurveIndex += Time.deltaTime;
@@ -193,6 +196,34 @@ public class CharacterMovementController : MonoBehaviour
         float finalAngle = Mathf.Atan2(playerDir.x, playerDir.z) * Mathf.Rad2Deg;
         
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, finalAngle, 0), rotationSpeed);
+    }
+
+    private bool transitionWalk = false;
+    private Vector3 aimedLocation;
+    private float timeToWalk;
+    public void TriggerWalkTransition(Vector3 locationToWalk)
+    {
+        aimedLocation = locationToWalk;
+        transitionWalk = true;
+        float walkDistance = Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(aimedLocation.x, aimedLocation.z)) - 0.2f;
+        timeToWalk = walkDistance / walkSpeed;
+    }
+
+    void WalkToLocation()
+    {
+        if ( timeToWalk > 0)
+        {
+            playerDir = transform.forward;
+            rb.linearVelocity = playerDir * walkSpeed;
+            timeToWalk -= Time.deltaTime;
+
+        }
+        else
+        {
+            playerDir *= 0;
+            rb.linearVelocity *= 0;
+            transitionWalk = false;
+        }
     }
 
 

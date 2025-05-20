@@ -155,7 +155,11 @@ public class CollectHapticChallengeManager : MonoBehaviour
         {
             _areBothUnearthingInputsPressed = true;
             _currentIngredientToCollectBehaviour.ReleaseUnearthing();
-            
+
+            float heightDifference = _currentIngredientToCollectBehaviour.transform.position.y - transform.position.y;
+            heightDifference = Mathf.Abs(heightDifference);
+            int index = characterAnimator.GetLayerIndex("Unearth_Spine");
+            characterAnimator.SetLayerWeight(index,1 - heightDifference);
             characterAnimator.SetTrigger(DoBuildUpUnearth);
             CharacterInputManager.Instance.DisableMoveInputs();
             CharacterInputManager.Instance.DisableCodexInputs();
@@ -336,7 +340,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
         Vector3 ingredientPosition = new(_currentIngredientToCollectBehaviour.transform.position.x,
             transform.position.y, _currentIngredientToCollectBehaviour.transform.position.z);
         transform.LookAt(ingredientPosition);
-        transform.position = ingredientPosition - transform.forward * characterDistance;
+        CharacterMovementController.Instance.TriggerWalkTransition(ingredientPosition - transform.forward * characterDistance);
     }
 
     private void CollectIngredient()

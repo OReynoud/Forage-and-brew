@@ -3,6 +3,7 @@ using UnityEngine.PlayerLoop;
 
 public abstract class PageBehavior : MonoBehaviour
 {
+    public int PageNumber;
     public virtual void InitOrder(ClientSo client,string description, PotionDemand[] Potions, int Reward, int TTC, int index) { }
     public virtual void InitLetter(LetterContentSo newLetterContent) {}
     public virtual void InitIngredient(IngredientValuesSo ingredientToDisplay) {}
