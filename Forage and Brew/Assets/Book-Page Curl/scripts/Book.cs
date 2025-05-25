@@ -152,7 +152,15 @@ public class Book : MonoBehaviour
             {
                 i++;
                 a.SecondPageNumber = i + 1;
+                a.PlacePageNumberText();
+                continue;
             }
+
+            if (i  > 0 && bookPages[i].pageBehavior == bookPages[i-1].pageBehavior)
+            {
+                continue;
+            }
+            bookPages[i].pageBehavior.PlacePageNumberText();
         }
     }
     public void PlayCodexSound()

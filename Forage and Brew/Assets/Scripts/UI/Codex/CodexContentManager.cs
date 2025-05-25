@@ -99,6 +99,8 @@ public class CodexContentManager : Singleton<CodexContentManager>
             display.RemoveDissolve();
         }
         pageIndexesToCheck.Clear();
+        
+        AutoFlip.instance.ControledBook.UpdatePageNumbers();
     }
 
     private void CreateNewRecipePage(PotionValuesSo newRecipeValues)
@@ -182,7 +184,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
             emptyOrderPage.anchoredPosition = new Vector2(1500, 0);
 
             AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[1].index,
-                new Book.BookPage(rightEmptyPage[pageChoser], emptyOrderPage,null));
+                new Book.BookPage(rightEmptyPage[pageChoser], emptyOrderPage,emptyOrderPage.GetComponent<PageBehavior>()));
             emptyOrderPage.name = "Empty Order Page" + (AutoFlip.instance.ControledBook.bookMarks[1].index + 1);
 
             AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[1].index,

@@ -9,6 +9,7 @@ public class RecipeCodexDisplay : PageBehavior
 {
     [BoxGroup("Refs")] public RectTransform leftPage;
     [BoxGroup("Refs")] public RectTransform rightPage;
+    [BoxGroup("Refs")] public TextMeshProUGUI secondPageNumberText;
     [BoxGroup("Refs")] public Image pinIcon;
     [BoxGroup("Refs")] public Image leftPageDissolve;
     [BoxGroup("Refs")] public Image rightPageDissolve;
@@ -253,5 +254,11 @@ public class RecipeCodexDisplay : PageBehavior
     {
         leftPageDissolve.material.SetFloat(Ex.CutoffHeight, 1);
         rightPageDissolve.material.SetFloat(Ex.CutoffHeight, 1);
+    }
+
+    public override void PlacePageNumberText()
+    {
+        pageNumberText.text = PageNumber.ToString();
+        secondPageNumberText.text = SecondPageNumber.ToString();
     }
 }
