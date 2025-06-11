@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class IngredientToCollectBehaviour : MonoBehaviour
@@ -55,6 +56,7 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     [SerializeField] private GameObject harvestReleaseRightGameObject;
     [SerializeField] private GameObject harvestGaugeRightGameObject;
     [SerializeField] private Slider harvestGaugeRightSlider;
+
     public bool DoesNeedToShowUi { get; set; } = true;
     private float _currentTriggerTime;
     

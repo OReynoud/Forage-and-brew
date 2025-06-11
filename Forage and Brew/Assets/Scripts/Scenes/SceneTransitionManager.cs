@@ -139,6 +139,13 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         {
             InfoDisplayManager.instance.DisplayWeather();
         }
+        
+        if (GameDontDestroyOnLoadManager.Instance.CurrentScene is Scene.Biome1 or Scene.Biome2)
+        {
+            AddListeners();
+        }
+        
+        
         CharacterMovementController.Instance.SetupAudio(GameDontDestroyOnLoadManager.Instance.CurrentScene);
         CharacterInputManager.Instance.EnableInputs();
     }
@@ -166,4 +173,23 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
 
         transitionElement.gameObject.SetActive(false);
     }
+    
+    void AddListeners()
+    {
+        Debug.Log("Adding Listeners");
+        foreach (var recipeDisplay in CodexContentManager.instance.recipes)
+        {
+            foreach (var container in recipeDisplay.ingredientDisplayContainers)
+            {
+                container.AddListener();
+            }
+        }
+
+        foreach (var ingredientDisplay in CodexContentManager.instance.ingredientPages)
+        {
+            ingredientDisplay.ingredientCounter.AddListener();
+        }
+        
+    }
+    
 }

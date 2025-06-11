@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class IngredientPageDisplay : PageBehavior
 {
+    public IngredientCounterContainer ingredientCounter;
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI descriptionText;
     public Image ingredientImage;
@@ -87,6 +88,10 @@ public class IngredientPageDisplay : PageBehavior
         }
 
         typeImage.sprite = associatedIngredient.Type.IconLow;
+        
+        ingredientCounter.trackedIngredient = ingredientToDisplay;
+        ingredientCounter.UpdateDisplay(ingredientToDisplay);
+        
         StartDissolve();
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CollectHapticChallengeManager : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class CollectHapticChallengeManager : MonoBehaviour
     
     [Header("Audio")]
     [SerializeField] private AudioSource collectAudioSource;
+    
+    [HideInInspector]public UnityEvent<IngredientValuesSo> UpdateCounters = new UnityEvent<IngredientValuesSo>();
     
     // Global variables
     private bool _isCollectHapticChallengeActive;
@@ -68,6 +71,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
     private void Start()
     {
         GameDontDestroyOnLoadManager.Instance.OnNewIngredientCollected.AddListener(CodexCall);
+
     }
 
     private void Update()
@@ -80,6 +84,8 @@ public class CollectHapticChallengeManager : MonoBehaviour
         
         UpdateHarvest();
     }
+
+
 
 
     #region Scything
@@ -350,6 +356,8 @@ public class CollectHapticChallengeManager : MonoBehaviour
         
         _currentIngredientToCollectBehaviour.Collect();
         CurrentIngredientToCollectBehaviours.Remove(_currentIngredientToCollectBehaviour);
+        
+        UpdateCounters.Invoke(_currentIngredientToCollectBehaviour.IngredientValuesSo);
         _currentIngredientToCollectBehaviour = null;
     }
 

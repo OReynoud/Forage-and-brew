@@ -17,16 +17,17 @@ public class RecipeIngredientDisplayContainer : MonoBehaviour
     public int ingredientUpperLimit = 2;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+
+    public void AddListener()
     {
-        
+        CollectHapticChallengeManager.Instance.UpdateCounters.AddListener(UpdateSelf);
     }
 
     // Update is called once per frame
     public void InitializeSelf(int ingredientAmount, IngredientValuesSo ingredient, bool ingredientDiscovered,
         Sprite ingredientBackgroundSprite)
     {
-        CollectHapticChallengeManager.Instance.UpdateCounters.AddListener(UpdateSelf);
         storedIngredient = ingredient;
         ingredientBackground.sprite = ingredientBackgroundSprite;
         if (ingredientDiscovered)
@@ -93,7 +94,6 @@ public class RecipeIngredientDisplayContainer : MonoBehaviour
     void UpdateSelf(IngredientValuesSo ingredientToUpdate)
     {
         if (ingredientToUpdate != storedIngredient) return;
-
         int counter = 0;
 
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.CollectedIngredients)

@@ -114,7 +114,7 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
 
     public float tutorialTimer { get; set; }
     private bool showBackground;
-    private bool showPause;
+    [ReadOnly]public bool showPause;
     private bool showOptions;
     private bool _canInputPause = true;
 
@@ -191,10 +191,10 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
         pauseBackground.alpha = Mathf.Lerp(pauseBackground.alpha, showPause ? 1 : 0, lerp);
 
         pauseMenu.anchoredPosition = Vector2.Lerp(pauseMenu.anchoredPosition,
-            showPause ? Vector2.zero : new Vector2(0, Screen.height), lerp);
+            showPause ? Vector2.zero : new Vector2(0, Screen.height * 2), lerp);
 
         optionsMenu.anchoredPosition = Vector2.Lerp(optionsMenu.anchoredPosition,
-            showOptions ? Vector2.zero : new Vector2(0, Screen.height), lerp);
+            showOptions ? Vector2.zero : new Vector2(0, Screen.height * 2), lerp);
     }
 
 
