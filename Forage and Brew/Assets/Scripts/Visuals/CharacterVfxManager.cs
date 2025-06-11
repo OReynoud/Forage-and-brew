@@ -25,11 +25,7 @@ public class CharacterVfxManager : MonoBehaviour
 
     public void CheckForRainVfx(Scene scene)
     {
-        if (scene == Scene.Biome1 && WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == rainWeatherState)
-        {
-            PlayRainVfx();
-        }
-        else if (scene == Scene.Biome2 && WeatherManager.Instance.CurrentWeatherStates[Biome.Swamp].WeatherStateSo == rainWeatherState)
+        if (WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == rainWeatherState)
         {
             PlayRainVfx();
         }

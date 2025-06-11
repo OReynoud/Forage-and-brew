@@ -112,8 +112,7 @@ public class SaveManager : MonoBehaviour
         data.CauldronTemperature = gameDontDestroyOnLoadManager.CauldronTemperature;
         
         // Cycles
-        data.CurrentWeatherStatesKeys = weatherManager.CurrentWeatherStates.Keys.ToList();
-        data.CurrentWeatherStatesValues = weatherManager.CurrentWeatherStates.Values.ToList();
+        data.CurrentWeatherState = weatherManager.CurrentWeatherState;
         data.CurrentLunarCycleStateIndex = lunarCycleManager.CurrentLunarCycleStateIndex;
         
         // Money
@@ -196,12 +195,7 @@ public class SaveManager : MonoBehaviour
         gameDontDestroyOnLoadManager.CauldronTemperature = data.CauldronTemperature;
         
         // Cycles
-        foreach (Biome key in data.CurrentWeatherStatesKeys)
-        {
-            weatherManager.CurrentWeatherStates.Add(key,
-                data.CurrentWeatherStatesValues[data.CurrentWeatherStatesKeys.IndexOf(key)]);
-        }
-        
+        weatherManager.CurrentWeatherState = data.CurrentWeatherState;
         lunarCycleManager.CurrentLunarCycleStateIndex = data.CurrentLunarCycleStateIndex;
         
         // Money
@@ -259,8 +253,7 @@ public class SaveManager : MonoBehaviour
         [field: SerializeField] public List<TemperatureChallengeIngredients> CauldronTemperatureAndIngredients { get; set; }
         [field: SerializeField] public Temperature CauldronTemperature { get; set; }
         
-        [field: SerializeField] public List<Biome> CurrentWeatherStatesKeys { get; set; }
-        [field: SerializeField] public List<WeatherSuccessiveDays> CurrentWeatherStatesValues { get; set; }
+        [field: SerializeField] public WeatherSuccessiveDays CurrentWeatherState { get; set; }
         [field: SerializeField] public int CurrentLunarCycleStateIndex { get; set; }
         
         [field: SerializeField] public int MoneyAmount { get; set; }

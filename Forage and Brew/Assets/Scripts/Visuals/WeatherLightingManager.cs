@@ -38,16 +38,16 @@ public class WeatherLightingManager : MonoBehaviour
     {
         switch (scene)
         {
-            case Scene.Biome1 when WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == cloudWeatherState:
-            case Scene.Biome2 when WeatherManager.Instance.CurrentWeatherStates[Biome.Swamp].WeatherStateSo == cloudWeatherState:
+            case Scene.Biome1 when WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == cloudWeatherState:
+            case Scene.Biome2 when WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == cloudWeatherState:
                 SetCloudLighting();
                 break;
-            case Scene.Biome1 when WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == rainWeatherState:
-            case Scene.Biome2 when WeatherManager.Instance.CurrentWeatherStates[Biome.Swamp].WeatherStateSo == rainWeatherState:
+            case Scene.Biome1 when WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == rainWeatherState:
+            case Scene.Biome2 when WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == rainWeatherState:
                 SetRainLighting();
                 break;
-            case Scene.Biome1 when WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == sunWeatherState:
-            case Scene.Biome2 when WeatherManager.Instance.CurrentWeatherStates[Biome.Swamp].WeatherStateSo == sunWeatherState:
+            case Scene.Biome1 when WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == sunWeatherState:
+            case Scene.Biome2 when WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == sunWeatherState:
                 SetSunLighting();
                 break;
         }

@@ -44,7 +44,7 @@ public class IngredientToCollectSpawnManager : MonoBehaviour
         foreach (IngredientValuesSo ingredientValues in ingredientListSo.IngredientValues)
         {
             if ((ingredientValues.Biomes & biome) != 0 &&
-                ingredientValues.WeatherStates.Contains(WeatherManager.Instance.CurrentWeatherStates[biome].WeatherStateSo) &&
+                ingredientValues.WeatherStates.Contains(WeatherManager.Instance.CurrentWeatherState.WeatherStateSo) &&
                 ingredientValues.LunarCycleStates.Contains(LunarCycleManager.Instance.CurrentLunarCycleState))
             {
                 ingredientValuesList.Add(ingredientValues);

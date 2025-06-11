@@ -222,29 +222,29 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
         {
             case Biome.None:
                 forestDisplay.SetActive(true);
-                DisplayBiomeWeather(Biome.Forest, forestWeather);
+                DisplayBiomeWeather(forestWeather);
 
                 swampDisplay.SetActive(true);
-                DisplayBiomeWeather(Biome.Swamp, swampWeather);
+                DisplayBiomeWeather(swampWeather);
                 weatherUIContainer.sizeDelta = new Vector2(Mathf.Abs(weatherUIContainer.rect.x), houseHeight);
                 break;
 
             case Biome.Forest:
                 forestDisplay.SetActive(true);
-                DisplayBiomeWeather(Biome.Forest, forestWeather);
+                DisplayBiomeWeather(forestWeather);
                 break;
 
             case Biome.Swamp:
                 swampDisplay.SetActive(true);
-                DisplayBiomeWeather(Biome.Swamp, swampWeather);
+                DisplayBiomeWeather(swampWeather);
                 break;
         }
     }
 
-    private void DisplayBiomeWeather(Biome biome, Image weatherDisplay)
+    private void DisplayBiomeWeather(Image weatherDisplay)
     {
-        weatherDisplay.sprite = WeatherManager.Instance.CurrentWeatherStates[biome].WeatherStateSo.Icon;
-        weatherDisplay.color = WeatherManager.Instance.CurrentWeatherStates[biome].WeatherStateSo.Color;
+        weatherDisplay.sprite = WeatherManager.Instance.CurrentWeatherState.WeatherStateSo.Icon;
+        weatherDisplay.color = WeatherManager.Instance.CurrentWeatherState.WeatherStateSo.Color;
     }
 
     public void DisplayDays()

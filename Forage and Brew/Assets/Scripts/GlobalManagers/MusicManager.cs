@@ -44,36 +44,36 @@ public class MusicManager : MonoBehaviour
                 musicSource.Play();
                 break;
             case Scene.Biome1:
-                if (WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == cloudyWeatherState)
+                if (WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == cloudyWeatherState)
                 {
                     musicSource.resource = musicForest[0];
                     musicSource.Play();
                     ambianceSource.resource = ambianceForest[0];
                     ambianceSource.Play();
                 }
-                else if (WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == sunnyWeatherState)
+                else if (WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == sunnyWeatherState)
                 {
                     musicSource.resource = musicForest[1];
                     musicSource.Play();
                 }
-                else if (WeatherManager.Instance.CurrentWeatherStates[Biome.Forest].WeatherStateSo == rainWeatherState)
+                else if (WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == rainWeatherState)
                 {
                     musicSource.resource = musicForest[2];
                     musicSource.Play();
                 }
                 break;
             case Scene.Biome2:
-                if (WeatherManager.Instance.CurrentWeatherStates[Biome.Swamp].WeatherStateSo == cloudyWeatherState)
+                if (WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == cloudyWeatherState)
                 {
                     musicSource.resource = musicSwamp[0];
                     musicSource.Play();
                 }
-                else if (WeatherManager.Instance.CurrentWeatherStates[Biome.Swamp].WeatherStateSo == sunnyWeatherState)
+                else if (WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == sunnyWeatherState)
                 {
                     musicSource.resource = musicSwamp[1];
                     musicSource.Play();
                 }
-                else if (WeatherManager.Instance.CurrentWeatherStates[Biome.Swamp].WeatherStateSo == rainWeatherState)
+                else if (WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == rainWeatherState)
                 {
                     musicSource.resource = musicSwamp[2];
                     musicSource.Play();

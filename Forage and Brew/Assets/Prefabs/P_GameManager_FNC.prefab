@@ -1411,6 +1411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <CurrentScene>k__BackingField: 0
+  UnlockedIngredients: []
   UnlockedRecipes: []
   <HasChosenLettersToday>k__BackingField: 0
   <QuestProgressionIndex>k__BackingField: 0
@@ -1468,8 +1469,9 @@ MonoBehaviour:
     <MailBoxLetters>k__BackingField: []
     <CauldronTemperatureAndIngredients>k__BackingField: []
     <CauldronTemperature>k__BackingField: 0
-    <CurrentWeatherStatesKeys>k__BackingField: 
-    <CurrentWeatherStatesValues>k__BackingField: []
+    <CurrentWeatherState>k__BackingField:
+      <WeatherStateSo>k__BackingField: {fileID: 0}
+      <SuccessiveDays>k__BackingField: 0
     <CurrentLunarCycleStateIndex>k__BackingField: 0
     <MoneyAmount>k__BackingField: 0
     <CurrentOrders>k__BackingField: []
@@ -1485,8 +1487,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a9b38c668e46241bfbce09f1e000e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forestStartingWeatherState: {fileID: 11400000, guid: 0cdfb10c8486d8b4fb199704c172f4e8, type: 2}
-  swampStartingWeatherState: {fileID: 11400000, guid: 661321d48d03fea4f86f528de00f7210, type: 2}
+  startingWeatherState: {fileID: 11400000, guid: 0cdfb10c8486d8b4fb199704c172f4e8, type: 2}
 --- !u!114 &3201330203133309056
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1572,6 +1573,7 @@ MonoBehaviour:
   bottomRightHiddenPos: {x: 120, y: 100}
   bottomLeftShownPos: {x: 100, y: 100}
   bottomLeftHiddenPos: {x: -100, y: 100}
+  showPause: 0
 --- !u!114 &2658286286589719046
 MonoBehaviour:
   m_ObjectHideFlags: 0
