@@ -4699,6 +4699,7 @@ GameObject:
   - component: {fileID: 7297164509645321647}
   - component: {fileID: 8878050061779580384}
   - component: {fileID: 7281466324469341009}
+  - component: {fileID: 719871899960714664}
   m_Layer: 6
   m_Name: P_Player
   m_TagString: Player
@@ -4833,6 +4834,7 @@ MonoBehaviour:
   collectedStack: []
   <CurrentNearBed>k__BackingField: {fileID: 0}
   <CurrentNearMailBoxBehaviour>k__BackingField: {fileID: 0}
+  <CurrentNearBin>k__BackingField: {fileID: 0}
   <CurrentNearCauldron>k__BackingField: {fileID: 0}
   <CurrentNearChoppingCountertop>k__BackingField: {fileID: 0}
   <CurrentNearGrindingCountertop>k__BackingField: {fileID: 0}
@@ -4872,6 +4874,9 @@ MonoBehaviour:
   characterScrapingDistance: 1
   characterHarvestDistance: 1
   collectAudioSource: {fileID: 6105756635019956844}
+  UpdateCounters:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &2905206397168394180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5037,25 +5042,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rainWeatherState: {fileID: 11400000, guid: 661321d48d03fea4f86f528de00f7210, type: 2}
-  cloudyWeatherState: {fileID: 11400000, guid: 0cdfb10c8486d8b4fb199704c172f4e8, type: 2}
-  sunnyWeatherState: {fileID: 11400000, guid: a00e85be8514d87449947c1a76125a1a, type: 2}
   rainVfxGameObject: {fileID: 4654998313608220977}
-  musicSource: {fileID: 8279311650586560801}
-  ambianceSource: {fileID: 3399050376964395716}
-  musicHouse:
-  - {fileID: 8300000, guid: 8c172b70bb7fdc843af094c945333a22, type: 3}
-  musicForest:
-  - {fileID: 8300000, guid: e600e8bbff31532489a755d11bc503df, type: 3}
-  - {fileID: 8300000, guid: 8f443958402574c4899550d806279fcb, type: 3}
-  - {fileID: 8300000, guid: 0e497260a392572499ed09cd0c893c44, type: 3}
-  ambianceForest:
-  - {fileID: 8300000, guid: f1117fc4ce0bba9468cad6a890318a49, type: 3}
-  musicSwamp:
-  - {fileID: 8300000, guid: 2152ccc1586bb764fafefcc6c92b746b, type: 3}
-  - {fileID: 8300000, guid: 0470d72f9cadc1042aabd58418edbdb5, type: 3}
-  - {fileID: 8300000, guid: e4d420e70cb32704791730724a58c930, type: 3}
-  musicOutdoor:
-  - {fileID: 8300000, guid: 22c169278d174124180eca09ae14c048, type: 3}
 --- !u!114 &7281466324469341009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5073,6 +5060,37 @@ MonoBehaviour:
   minTimeBetweenBlinks: 2
   maxTimeBetweenBlinks: 5
   timeBeforeAfk: 10
+--- !u!114 &719871899960714664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8201888323390173134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b760d1c318d487e46b279746490d5947, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rainWeatherState: {fileID: 11400000, guid: 661321d48d03fea4f86f528de00f7210, type: 2}
+  cloudyWeatherState: {fileID: 11400000, guid: 0cdfb10c8486d8b4fb199704c172f4e8, type: 2}
+  sunnyWeatherState: {fileID: 11400000, guid: a00e85be8514d87449947c1a76125a1a, type: 2}
+  musicSource: {fileID: 8279311650586560801}
+  ambianceSource: {fileID: 3399050376964395716}
+  musicHouse:
+  - {fileID: 8300000, guid: 8c172b70bb7fdc843af094c945333a22, type: 3}
+  musicForest:
+  - {fileID: 8300000, guid: e600e8bbff31532489a755d11bc503df, type: 3}
+  - {fileID: 8300000, guid: 8f443958402574c4899550d806279fcb, type: 3}
+  - {fileID: 8300000, guid: 0e497260a392572499ed09cd0c893c44, type: 3}
+  ambianceForest:
+  - {fileID: 8300000, guid: f1117fc4ce0bba9468cad6a890318a49, type: 3}
+  musicSwamp:
+  - {fileID: 8300000, guid: 2152ccc1586bb764fafefcc6c92b746b, type: 3}
+  - {fileID: 8300000, guid: 0470d72f9cadc1042aabd58418edbdb5, type: 3}
+  - {fileID: 8300000, guid: e4d420e70cb32704791730724a58c930, type: 3}
+  musicOutdoor:
+  - {fileID: 8300000, guid: 22c169278d174124180eca09ae14c048, type: 3}
 --- !u!1 &8254947934949457672
 GameObject:
   m_ObjectHideFlags: 0
