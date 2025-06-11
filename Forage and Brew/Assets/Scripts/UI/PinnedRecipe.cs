@@ -135,7 +135,8 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         }
 
         CurrentTemperatureAndIngredients = GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients;
-        if (GameDontDestroyOnLoadManager.Instance.CurrentScene == Scene.House)
+        // TODO: Trigger behaviour
+        if (GameDontDestroyOnLoadManager.Instance.CurrentScene == Scene.HouseOutdoor)
         {
             recipeStepsCanvas.alpha = 1;
             ShowRecipeSteps();
@@ -320,7 +321,8 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
     public void UpdateRecipeStepsCounter()
     {
-        if (!isPinned || GameDontDestroyOnLoadManager.Instance.CurrentScene != Scene.House) return;
+        // TODO: Trigger behaviour
+        if (!isPinned || GameDontDestroyOnLoadManager.Instance.CurrentScene != Scene.HouseOutdoor) return;
         writingIndex = 0;
 
         for (int i = 0; i < checkMarkImage.Length; i++)
@@ -486,7 +488,8 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
     public void UpdateIngredientCounter()
     {
-        if (!isPinned || GameDontDestroyOnLoadManager.Instance.CurrentScene == Scene.House) return;
+        // TODO: Trigger behaviour
+        if (!isPinned) return;
 
         writingIndex = 0;
         tempCollectedIngredientsList.Clear();

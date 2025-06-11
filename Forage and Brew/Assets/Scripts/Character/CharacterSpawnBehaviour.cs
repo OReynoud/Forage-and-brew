@@ -20,10 +20,11 @@ public class CharacterSpawnBehaviour : MonoBehaviour
             {
                 if (sceneName.Name == SceneManager.GetActiveScene().name)
                 {
+                    MusicManager.Instance.PlaySceneMucic(sceneName.Scene);
                     CharacterVfxManager.Instance.CheckForRainVfx(sceneName.Scene);
                     WeatherLightingManager.Instance?.SetRightLighting(sceneName.Scene);
                     
-                    if (sourceScene == Scene.House && sceneName.Scene == Scene.House)
+                    if (sourceScene == Scene.HouseOutdoor && sceneName.Scene == Scene.HouseOutdoor)
                     {
                         SceneTransitionManager.instance.Wake();
                     }

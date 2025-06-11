@@ -89,12 +89,7 @@ public class CharacterMovementController : MonoBehaviour
     {
         switch (scene)
         {
-            case Scene.House:
-                walkAudioSource.resource = walkHome;
-                break;
-            case Scene.Outdoor:
-                walkAudioSource.resource = walkForest;
-                break;
+            case Scene.HouseOutdoor:
             case Scene.Biome1:
                 walkAudioSource.resource = walkForest;
                 break;

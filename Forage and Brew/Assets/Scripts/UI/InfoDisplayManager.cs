@@ -208,8 +208,7 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
 
         switch (GameDontDestroyOnLoadManager.Instance.CurrentScene)
         {
-            case Scene.House:
-            case Scene.Outdoor:
+            case Scene.HouseOutdoor:
                 break;
             case Scene.Biome1:
                 currentBiome = Biome.Forest;

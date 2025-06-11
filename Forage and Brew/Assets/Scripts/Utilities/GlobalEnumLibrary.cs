@@ -1,9 +1,8 @@
 public enum Scene
 {
-    House,
-    Outdoor,
-    Biome1,
-    Biome2
+    HouseOutdoor = 1,
+    Biome1 = 2,
+    Biome2 = 3
 }
 
 public enum TimeOfDay
