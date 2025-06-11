@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
@@ -26,9 +28,7 @@ public class RecipeCodexDisplay : PageBehavior
 
 
     //Ingredients List
-    [BoxGroup("Recipe Ingredients")] public Image[] backGround;
-    [BoxGroup("Potion Description")] public Image[] potionIngredientImage;
-    [BoxGroup("Potion Description")] public TextMeshProUGUI[] potionIngredientNumber;
+    [BoxGroup("Recipe Ingredients")] public RecipeIngredientDisplayContainer[] ingredientDisplayContainers;
 
     //BrewingSteps
     private int writingIndex;
@@ -50,11 +50,9 @@ public class RecipeCodexDisplay : PageBehavior
 
     public void DisableAll()
     {
-        for (int i = 0; i < potionIngredientImage.Length; i++)
+        for (int i = 0; i < ingredientDisplayContainers.Length; i++)
         {
-            potionIngredientImage[i].enabled = false;
-            potionIngredientNumber[i].enabled = false;
-            potionIngredientImage[i].transform.parent.gameObject.SetActive(false);
+            ingredientDisplayContainers[i].gameObject.SetActive(false);
         }
 
         for (int i = 0; i < stepText.Length; i++)
@@ -73,9 +71,7 @@ public class RecipeCodexDisplay : PageBehavior
         }
     }
 
-    private void Start()
-    {
-    }
+
 
     public void StartDissolve()
     {
@@ -117,6 +113,9 @@ public class RecipeCodexDisplay : PageBehavior
     public Sprite[] potionIngredientsHigh { get; set; }
 
     private int ingredientsIndex = 0;
+    
+    private List<IngredientValuesSo> tempIngredient = new();
+    private List<IngredientTypeSo> tempIngredientType = new();
 
     public override void InitRecipe(Sprite[] PotionIngredientsLow, Sprite[] PotionIngredientsHigh, PotionValuesSo PotionSteps, Sprite[] AllBrewingActionSprites)
     {
@@ -139,27 +138,41 @@ public class RecipeCodexDisplay : PageBehavior
         //Ingredients List
         if (potionIngredientsLow.Length > 0)
         {
-            for (int i = 0; i < potionIngredientImage.Length; i++)
+            for (int i = 0; i < ingredientDisplayContainers.Length; i++)
             {
-                potionIngredientImage[i].transform.parent.gameObject.SetActive(true);
-                potionIngredientImage[i].enabled = true;
-                potionIngredientNumber[i].enabled = true;
-
-
-                potionIngredientImage[i].sprite = potionIngredientsLow[ingredientsIndex];
+                
+                ingredientDisplayContainers[i].gameObject.SetActive(true);
+                int ingredientAmount;
 
                 if (i + 1 < potionIngredientsLow.Length)
                 {
                     int numberOfIngredients = Ex.CheckForSameElementsSprite(ingredientsIndex, 0, potionIngredientsLow);
 
 
-                    potionIngredientNumber[i].text = (1 + numberOfIngredients).ToString();
+                    ingredientAmount = (1 + numberOfIngredients);
 
                     ingredientsIndex += numberOfIngredients;
                 }
                 else
                 {
-                    potionIngredientNumber[i].text = "1";
+                    ingredientAmount = 1;
+                }
+                
+                foreach (TemperatureChallengeIngredients t in PotionSteps.TemperatureChallengeIngredients)
+                {
+                    var cookedIngredient = t.CookedIngredients[i];
+                    if (cookedIngredient.IsAType)
+                    {
+                        ingredientDisplayContainers[i].InitializeSelf(ingredientAmount,
+                            cookedIngredient.IngredientType, ingredientTypeBackground);
+                    }
+                    else
+                    {
+                        ingredientDisplayContainers[i].InitializeSelf(ingredientAmount, cookedIngredient.Ingredient,
+                            GameDontDestroyOnLoadManager.Instance.UnlockedIngredients.Contains(cookedIngredient
+                                .Ingredient), ingredientBackground);
+                    }
+                    break;
                 }
 
                 ingredientsIndex++;
@@ -189,11 +202,11 @@ public class RecipeCodexDisplay : PageBehavior
 
                 if (cookedIngredient.IsAType)
                 {
-                    backGround[writingIndex].sprite = ingredientTypeBackground;
+                    //backGround[writingIndex].sprite = ingredientTypeBackground;
                 }
                 else
                 {
-                    backGround[writingIndex].sprite = ingredientBackground;
+                    //backGround[writingIndex].sprite = ingredientBackground;
                 }
 
                 switch (cookedIngredient.CookedForm)
