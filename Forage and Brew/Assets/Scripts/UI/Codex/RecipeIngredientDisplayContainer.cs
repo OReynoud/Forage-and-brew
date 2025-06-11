@@ -19,11 +19,14 @@ public class RecipeIngredientDisplayContainer : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        
     }
 
     // Update is called once per frame
-    public void InitializeSelf(int ingredientAmount, IngredientValuesSo ingredient, bool ingredientDiscovered, Sprite ingredientBackgroundSprite)
+    public void InitializeSelf(int ingredientAmount, IngredientValuesSo ingredient, bool ingredientDiscovered,
+        Sprite ingredientBackgroundSprite)
     {
+        CollectHapticChallengeManager.Instance.UpdateCounters.AddListener(UpdateSelf);
         storedIngredient = ingredient;
         ingredientBackground.sprite = ingredientBackgroundSprite;
         if (ingredientDiscovered)
@@ -87,7 +90,48 @@ public class RecipeIngredientDisplayContainer : MonoBehaviour
         numberRequiredText.text = ingredientAmount.ToString();
     }
 
-    void UpdateSelf()
+    void UpdateSelf(IngredientValuesSo ingredientToUpdate)
     {
+        if (ingredientToUpdate != storedIngredient) return;
+
+        int counter = 0;
+
+        foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.CollectedIngredients)
+        {
+            counter++;
+        }
+
+        foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients)
+        {
+            counter++;
+        }
+
+        foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.FloorCollectedIngredients)
+        {
+            counter++;
+        }
+
+        numberRequiredText.text = counter.ToString();
+        
+        ingredientRequiredSprite.enabled = true;
+        ingredientRequiredSprite.sprite = storedIngredient.iconLow;
+        if (counter == 0)
+        {
+            ingredientStateHighlight.sprite = ingredientStateSprites[2];
+            ingredientStateHighlight.color = Color.red;
+        }
+        else
+        {
+            if (counter > ingredientUpperLimit)
+            {
+                ingredientStateHighlight.sprite = ingredientStateSprites[0];
+                ingredientStateHighlight.color = Color.blue;
+            }
+            else
+            {
+                ingredientStateHighlight.sprite = ingredientStateSprites[1];
+                ingredientStateHighlight.color = Color.green;
+            }
+        }
     }
 }
