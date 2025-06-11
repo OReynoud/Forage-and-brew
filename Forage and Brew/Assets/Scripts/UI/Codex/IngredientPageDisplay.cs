@@ -65,7 +65,7 @@ public class IngredientPageDisplay : PageBehavior
 
     public override void InitIngredient(IngredientValuesSo ingredientToDisplay)
     {
-        
+        Debug.Log("Init Ingredient");
         associatedIngredient = ingredientToDisplay;
         nameText.text = associatedIngredient.Name;
         descriptionText.text = associatedIngredient.Description;
