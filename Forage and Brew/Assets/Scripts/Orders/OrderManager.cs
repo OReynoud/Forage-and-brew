@@ -160,7 +160,7 @@ public class OrderManager : MonoBehaviour
             if (isOrderCorrect)
             {
                 Debug.Log("Valid order");
-                GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters.Add(new Letter(
+                GameDontDestroyOnLoadManager.Instance. ThanksAndErrorLetters.Add(new Letter(
                     CurrentOrders[orderToValidateIndex].RelatedLetter,
                     CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock,  CurrentOrders[orderToValidateIndex].OrderDisplay.daysLeftToComplete >=  0));
                 
@@ -173,13 +173,6 @@ public class OrderManager : MonoBehaviour
                 {
                     GameDontDestroyOnLoadManager.Instance.QuestProgressionIndex++;
                 }
-            }
-            else
-            {
-                Debug.Log("Incorrect order");
-                GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters.Add(new Letter(
-                    CurrentOrders[orderToValidateIndex].RelatedLetter,
-                    CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock,CurrentOrders[orderToValidateIndex].OrderDisplay.daysLeftToComplete >=  0));
             }
 
             CurrentOrders.RemoveAt(orderToValidateIndex);

@@ -135,12 +135,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                 letter.LetterContent);
             letter.RelatedNarrativeBlock.InactiveLetters[index] = false;
             float percentPenalty = letter.LetterContent.OrderContent.LateMoneyPenaltyPercentage;
-
-            if (letter.RelatedNarrativeBlock.SelfProgressionIndex == 0)
-            {
-                GenerateFailureLetter(letter, percentPenalty);
-                continue;
-            }
+            
             if (letter.RelatedNarrativeBlock.SelfProgressionIndex == letter.RelatedNarrativeBlock.CompletedLetters.Length)
             {
                 GenerateSuccessLetter(letter, percentPenalty);
@@ -183,20 +178,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         //GameDontDestroyOnLoadManager.Instance.AllLetters.AddRange(_chosenLetters);
         GameDontDestroyOnLoadManager.Instance.HasChosenLettersToday = true;
     }
-
-    private void GenerateFailureLetter(Letter letter, float percentPenalty)
-    {
-        int moneyToEarn;
-        moneyToEarn = letter.DeliveredOnTime
-            ? letter.LetterContent.OrderContent.ErrorMoneyReward
-            : Mathf.RoundToInt(letter.LetterContent.OrderContent.ErrorMoneyReward * percentPenalty * 0.01f);
-        _moneyAmountsToEarn.Add((moneyToEarn, GameDontDestroyOnLoadManager.Instance.ChosenLetters.Count));
-        GameDontDestroyOnLoadManager.Instance.ChosenLetters.Add((new Letter(letter.LetterContent.RelatedFailureLetter, letter.RelatedNarrativeBlock),
-            letter.LetterContent));
-        letter.RelatedNarrativeBlock.NewLetterCountDown =
-            letter.RelatedNarrativeBlock.ContentSo.TimeForLetterAfterFailure;
-    }
-
+    
     private void GenerateSuccessLetter(Letter letter, float percentPenalty)
     {
         int moneyToEarn;
