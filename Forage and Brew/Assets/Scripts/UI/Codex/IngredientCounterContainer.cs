@@ -34,17 +34,26 @@ public class IngredientCounterContainer : MonoBehaviour
         counter = 0;
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.CollectedIngredients)
         {
-            counter++;
+            if (ingredient == ingredientToCheck)
+            {
+                counter++;
+            }
         }
 
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients)
         {
-            counter++;
+            if (ingredient.IngredientValuesSo == ingredientToCheck)
+            {
+                counter++;
+            }
         }
 
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.FloorCollectedIngredients)
         {
-            counter++;
+            if (ingredient.Ingredient == ingredientToCheck)
+            {
+                counter++;
+            }
         }
 
         ingredientAmountDisplay.text = counter.ToString();

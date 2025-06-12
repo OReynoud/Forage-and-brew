@@ -225,6 +225,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     public void ShowLetters()
     {
         if (GeneratedLetters.Count == 0) return;
+        Debug.Log("OpenMailbox");
 
         audio.Play();
         anim.SetBool("IsOpen", true);
@@ -244,6 +245,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     {
         if (_openedMailOnFrame) return;
 
+        Debug.Log("Pass to next letter");
         for (int i = 0; i < GeneratedLetters.Count; i++)
         {
             if (GeneratedLetters[i].IsMoving) return;
@@ -265,6 +267,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
             if (i != GeneratedLetters.Count - 1) return;
         }
 
+        Debug.Log("Read every letter");
         CharacterInputManager.Instance.EnableMoveInputs();
         CharacterInputManager.Instance.EnableInteractInputs();
         CharacterInputManager.Instance.DisableMailInputs();

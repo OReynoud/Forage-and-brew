@@ -98,19 +98,27 @@ public class RecipeIngredientDisplayContainer : MonoBehaviour
 
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.CollectedIngredients)
         {
-            counter++;
+            if (ingredient == ingredientToUpdate)
+            {
+                counter++;
+            }
         }
 
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients)
         {
-            counter++;
+            if (ingredient.IngredientValuesSo == ingredientToUpdate)
+            {
+                counter++;
+            }
         }
 
         foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.FloorCollectedIngredients)
         {
-            counter++;
+            if (ingredient.Ingredient == ingredientToUpdate)
+            {
+                counter++;
+            }
         }
-
         numberRequiredText.text = counter.ToString();
         
         ingredientRequiredSprite.enabled = true;

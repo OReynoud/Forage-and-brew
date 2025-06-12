@@ -527,7 +527,6 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.CodexLeave.Disable();
         _inputs.Player.CodexEnter.Enable();
         
-        EnableMailInputs();
         EnableInteractInputs();
         EnableHapticChallengeInputs();
     }

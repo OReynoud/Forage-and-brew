@@ -377,10 +377,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
             AutoFlip.instance.ControledBook.bookPages.Remove(bookPage);
 
             bookPage.pageBehavior = ingredientPage;
-            // if (!oui)
-            // {
-            //     Debug.LogError("Page not found");
-            // }
+            
             AutoFlip.instance.ControledBook.bookPages.Insert(ingredientIndex ,bookPage);
             ingredientPages.Add(ingredientPage);
             ingredientPage.InitIngredient(ingredient);
