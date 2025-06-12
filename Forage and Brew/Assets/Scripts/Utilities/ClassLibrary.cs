@@ -119,4 +119,13 @@ public class TutorialBlock
 
 }
 
+[Serializable]
+public class PurchaseTracker
+{
+    public string upgradeID;
+    public bool isPurchased;
+}
+
+
+
 

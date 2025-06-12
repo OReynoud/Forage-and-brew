@@ -255,8 +255,23 @@ public class CharacterInteractController : MonoBehaviour
             potionBasket.DoesNeedToCheckAvailability = true;
         }
     }
-    
-    
+
+    public void HandleInteractChoppingCounterTop()
+    {
+        if (!CurrentNearChoppingCountertop ) 
+            return;
+        if ( !CurrentNearChoppingCountertop.Unlocked && !CurrentNearChoppingCountertop.CanPurchase)
+            return;
+        
+        if (CurrentNearChoppingCountertop.Unlocked)
+        {
+            DropIngredientsInChoppingCountertop();
+        }
+        else
+        {
+            CurrentNearChoppingCountertop.PurchaseItem();
+        }
+    }
     public void DropIngredientsInChoppingCountertop()
     {
         if (!CurrentNearChoppingCountertop || collectedStack.Count == 0 ||
