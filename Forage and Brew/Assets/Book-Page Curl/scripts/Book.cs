@@ -208,7 +208,7 @@ public class Book : MonoBehaviour
 
             var display = CodexContentManager.instance.ingredientPages[x];
 
-            display.dissolveImage.material.SetFloat(Ex.CutoffHeight, 1);
+            display.disolveImage.material.SetFloat(Ex.CutoffHeight, 1);
             return;
         }
     }

@@ -13,9 +13,6 @@ public class OrderCodexDisplayBehaviour : PageBehavior
     public Image outdatedStamp;
 
     public List<PotionDemand> potionsDemanded = new();
-
-    public int pageNumber;
-    public int moneyReward;
     public int daysLeftToComplete;
 
     public OrderSpecificPotionDemand specificPotionPrefab;
@@ -44,11 +41,9 @@ public class OrderCodexDisplayBehaviour : PageBehavior
     {
         clientNameText.text = client.Name;
         descriptionText.text = description;
-        moneyReward = Reward;
         potionsDemanded.Clear();
         potionsDemanded.AddRange(Potions);
         daysLeftToComplete = TTC;
-        pageNumber = index;
         orderBackground.color = client.AssociatedColor;
 
         outdatedStamp.enabled = false;

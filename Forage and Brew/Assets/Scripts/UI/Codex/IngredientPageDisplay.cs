@@ -18,9 +18,7 @@ public class IngredientPageDisplay : PageBehavior
     public WeatherStateSo[] weathers;
     public LunarCycleStateSo[] cycles;
     
-    
-    
-    public Image dissolveImage;
+    public Image disolveImage;
     public AnimationCurve dissolveCurve;
 
     public IngredientValuesSo associatedIngredient;
@@ -36,14 +34,16 @@ public class IngredientPageDisplay : PageBehavior
 
     public void StartDissolve()
     {
-        Material matInstance = Instantiate(dissolveImage.material);
-        dissolveImage.material = matInstance;
-        dissolveImage.material.SetFloat("_Cutoff_Height", 0);
+        Material matInstance = Instantiate(disolveImage.material);
+        disolveImage.material = matInstance;
+        disolveImage.material.SetFloat("_Cutoff_Height", 0);
         
         animationTime = dissolveCurve.keys[^1].time;
         doDissolve = true;
         dissolveTimer = 0;
         AutoFlip.instance.ControledBook.discoveryAudio.Play();
+        
+        disolveImage.sprite = AutoFlip.instance.ControledBook.bookPages.Find(x => x.pageBehavior == this).pageSprite;
     }
     // Update is called once per frame
     void Update()
@@ -52,7 +52,7 @@ public class IngredientPageDisplay : PageBehavior
         
         dissolveTimer += Time.deltaTime;
             
-        dissolveImage.material.SetFloat(Ex.CutoffHeight, dissolveCurve.Evaluate(dissolveTimer));
+        disolveImage.material.SetFloat(Ex.CutoffHeight, dissolveCurve.Evaluate(dissolveTimer));
 
         if (dissolveTimer > animationTime)
         {

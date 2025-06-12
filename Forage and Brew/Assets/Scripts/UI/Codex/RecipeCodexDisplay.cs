@@ -78,12 +78,16 @@ public class RecipeCodexDisplay : PageBehavior
         Material mat = Instantiate(leftPageDissolve.material);
         leftPageDissolve.material.SetFloat(Ex.CutoffHeight, 0);
         leftPageDissolve.material = mat;
+        leftPageDissolve.sprite = AutoFlip.instance.ControledBook.bookPages.Find(x => x.pageBehavior == this).pageSprite;
 
         Material mat2 = Instantiate(rightPageDissolve.material);
         rightPageDissolve.material.SetFloat(Ex.CutoffHeight, 0);
         rightPageDissolve.material = mat2;
+        rightPageDissolve.sprite = AutoFlip.instance.ControledBook.bookPages.Find(x => x.pageBehavior == this).pageSprite;
 
         doDissolve = true;
+        
+        
         AutoFlip.instance.ControledBook.discoveryAudio.Play();
     }
 
