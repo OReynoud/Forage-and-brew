@@ -54,6 +54,9 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     // Haptic Challenges
     public bool IsInHapticChallenge { get; set; }
     
+    // Upgrades
+    public int PotionsUpgradeIndex { get; set; }
+    
     
     private void Awake()
     {
