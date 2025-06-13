@@ -287,7 +287,7 @@ public class RecipeCodexDisplay : PageBehavior
         pageNumberText.text = PageNumber.ToString();
         secondPageNumberText.text = SecondPageNumber.ToString();
         anchoredPosition = secondPageNumberText.rectTransform.anchoredPosition;
-        anchoredPosition = new Vector2(Mathf.Abs(anchoredPosition.x) * -1,
+        anchoredPosition = new Vector2(Mathf.Abs(anchoredPosition.x),
             anchoredPosition.y);
         secondPageNumberText.rectTransform.anchoredPosition = anchoredPosition;
     }
