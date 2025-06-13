@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -67,8 +68,8 @@ public class RecipeIngredientDisplayContainer : MonoBehaviour
     {
         storedIngredientType = ingredient;
         ingredientBackground.sprite = ingredientBackgroundSprite;
-
-        ingredientRequiredSprite.sprite = storedIngredient.iconLow;
+        ingredientRequiredSprite.sprite = storedIngredientType.IconLow;
+        
         if (ingredientAmount == 0)
         {
             ingredientStateHighlight.sprite = ingredientStateSprites[2];
