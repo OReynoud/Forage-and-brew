@@ -126,6 +126,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
         
         var newRecipe = Instantiate(recipeDisplayPrefab, Vector3.down * 10000, Quaternion.identity, transform);
         int recipeIndex = potionList.Potions.IndexOf(newRecipeValues);
+        pageChoser = Random.Range(0, rightRecipePage.Length);
         if (recipes.Count == 0)
         {
             recipeIndex = 0;
@@ -155,7 +156,8 @@ public class CodexContentManager : Singleton<CodexContentManager>
             }
         }
         
-        newRecipe.InitRecipe(tempIngredientsLow.ToArray(), tempIngredientsHigh.ToArray() ,newRecipeValues, allBrewingActionSprites);
+        newRecipe.InitRecipe(tempIngredientsLow.ToArray(), tempIngredientsHigh.ToArray() ,newRecipeValues, allBrewingActionSprites,
+            new []{leftRecipePage[pageChoser], rightRecipePage[pageChoser]});
         tempIngredientsLow.Clear();
         tempIngredientsHigh.Clear();
         //Debug.Log(recipeIndex);
@@ -164,7 +166,6 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
     void InsertRecipePages(int index, RecipeCodexDisplay recipeDisplay)
     {
-        pageChoser = Random.Range(0, rightRecipePage.Length);
         
         AutoFlip.instance.ControledBook.bookPages.Insert(index,
             new Book.BookPage(rightRecipePage[pageChoser], recipeDisplay.rightPage, recipeDisplay));

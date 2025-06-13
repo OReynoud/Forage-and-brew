@@ -284,12 +284,7 @@ public class AutoFlip : Singleton<AutoFlip>
     public PotionValuesSo recipeToPin { get; set; }
     public void HandleNewRecipes()
     {
-
-        foreach (var VARIABLE in CodexContentManager.instance.pageIndexesToCheck)
-        {
-            Debug.Log(VARIABLE.Item1);
-        }
-        Debug.Log(CodexContentManager.instance.pageIndexesToCheck.Count);
+        //Debug.Log(CodexContentManager.instance.pageIndexesToCheck.Count);
         if (CodexContentManager.instance.pageIndexesToCheck.Count == 0)
             return;
         TutorialManager.instance.NotifyFromRecipeReceived();
