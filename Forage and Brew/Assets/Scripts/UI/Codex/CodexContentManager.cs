@@ -132,7 +132,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
         }
         else if (recipeIndex > recipes.Count)
         {
-            recipeIndex = recipes.Count - 1;
+            recipeIndex = recipes.Count;
         }
         recipes.Insert(recipeIndex, newRecipe);
         recipeIndex *= 2;
@@ -158,7 +158,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
         newRecipe.InitRecipe(tempIngredientsLow.ToArray(), tempIngredientsHigh.ToArray() ,newRecipeValues, allBrewingActionSprites);
         tempIngredientsLow.Clear();
         tempIngredientsHigh.Clear();
-        Debug.Log(recipeIndex);
+        //Debug.Log(recipeIndex);
         InsertRecipePages(recipeIndex , newRecipe);
     }
 
@@ -171,12 +171,12 @@ public class CodexContentManager : Singleton<CodexContentManager>
         AutoFlip.instance.ControledBook.bookPages.Insert(index,
             new Book.BookPage(leftRecipePage[pageChoser], recipeDisplay.leftPage, recipeDisplay));
 
-        for (var i = 0; i < pageIndexesToCheck.Count; i++)
-        {
-            pageIndexesToCheck[i] = (pageIndexesToCheck[i].Item1 + 2, pageIndexesToCheck[i].Item2);
-        }
+        // for (var i = 0; i < pageIndexesToCheck.Count; i++)
+        // {
+        //     pageIndexesToCheck[i] = (pageIndexesToCheck[i].Item1 + 2, pageIndexesToCheck[i].Item2);
+        // }
 
-        pageIndexesToCheck.Insert(0, (AutoFlip.instance.ControledBook.bookMarks[1].index,recipeDisplay));
+        pageIndexesToCheck.Add( (index,recipeDisplay));
         
         for (int i = 2; i < AutoFlip.instance.ControledBook.bookMarks.Length; i++)
         {
@@ -216,12 +216,13 @@ public class CodexContentManager : Singleton<CodexContentManager>
             order.InitOrder(client, orderDescription, potionsRequested, moneyReward, timeToComplete,
                 AutoFlip.instance.ControledBook.bookMarks[1].index);
             
-            for (var i = 0; i < pageIndexesToCheck.Count; i++)
+            for (var i = pageIndexesToCheck.FindAll(x => x.Item2 == null).Count; 
+                 i < pageIndexesToCheck.Count; i++)
             {
                 pageIndexesToCheck[i] = (pageIndexesToCheck[i].Item1 + 2, pageIndexesToCheck[i].Item2);
             }
 
-            pageIndexesToCheck.Insert(0, (AutoFlip.instance.ControledBook.bookMarks[1].index, null));
+            pageIndexesToCheck.Insert(pageIndexesToCheck.FindAll(x => x.Item2 == null).Count, (AutoFlip.instance.ControledBook.bookMarks[1].index, null));
             
             for (int i = 1; i < AutoFlip.instance.ControledBook.bookMarks.Length; i++)
             {
@@ -241,9 +242,6 @@ public class CodexContentManager : Singleton<CodexContentManager>
             order.InitOrder(client, orderDescription, potionsRequested, moneyReward, timeToComplete,
                 AutoFlip.instance.ControledBook.bookMarks[1].index - 1);
             emptyOrderPage = null;
-            pageIndexesToCheck.Insert(0, (AutoFlip.instance.ControledBook.bookMarks[1].index, null));
-            
-            
         }
 
         AutoFlip.instance.ControledBook.UpdateSprites();

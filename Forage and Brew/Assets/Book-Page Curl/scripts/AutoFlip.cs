@@ -285,6 +285,11 @@ public class AutoFlip : Singleton<AutoFlip>
     public void HandleNewRecipes()
     {
 
+        foreach (var VARIABLE in CodexContentManager.instance.pageIndexesToCheck)
+        {
+            Debug.Log(VARIABLE.Item1);
+        }
+        Debug.Log(CodexContentManager.instance.pageIndexesToCheck.Count);
         if (CodexContentManager.instance.pageIndexesToCheck.Count == 0)
             return;
         TutorialManager.instance.NotifyFromRecipeReceived();

@@ -32,8 +32,7 @@ public enum TutorialTriggerConditions
 public enum LetterType
 {
     Orders,
-    Thanks,
-    ShippingError
+    Thanks
 }
 
 public enum JoystickDirection
