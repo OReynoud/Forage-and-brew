@@ -132,14 +132,10 @@ public class Book : MonoBehaviour
 
         if (!GameDontDestroyOnLoadManager.Instance) 
             return;
-        if (CodexContentManager.instance.loadAllPages)
-        {
-            GameDontDestroyOnLoadManager.Instance.UnlockedIngredients.Clear();
-            GameDontDestroyOnLoadManager.Instance.UnlockedIngredients.AddRange(CodexContentManager.instance.ingredientList.IngredientValues);
-        }
         
         DisplayNewIngredientFromSave();
     }
+    
 
     public void UpdatePageNumbers()
     {

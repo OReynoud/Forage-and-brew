@@ -72,22 +72,23 @@ public class RecipeCodexDisplay : PageBehavior
     }
 
 
-
     public void StartDissolve()
     {
         Material mat = Instantiate(leftPageDissolve.material);
         leftPageDissolve.material.SetFloat(Ex.CutoffHeight, 0);
         leftPageDissolve.material = mat;
-        leftPageDissolve.sprite = AutoFlip.instance.ControledBook.bookPages.Find(x => x.pageBehavior == this).pageSprite;
+        leftPageDissolve.sprite =
+            AutoFlip.instance.ControledBook.bookPages.Find(x => x.pageBehavior == this).pageSprite;
 
         Material mat2 = Instantiate(rightPageDissolve.material);
         rightPageDissolve.material.SetFloat(Ex.CutoffHeight, 0);
         rightPageDissolve.material = mat2;
-        rightPageDissolve.sprite = AutoFlip.instance.ControledBook.bookPages.Find(x => x.pageBehavior == this).pageSprite;
+        rightPageDissolve.sprite =
+            AutoFlip.instance.ControledBook.bookPages.Find(x => x.pageBehavior == this).pageSprite;
 
         doDissolve = true;
-        
-        
+
+
         AutoFlip.instance.ControledBook.discoveryAudio.Play();
     }
 
@@ -117,11 +118,12 @@ public class RecipeCodexDisplay : PageBehavior
     public Sprite[] potionIngredientsHigh { get; set; }
 
     private int ingredientsIndex = 0;
-    
+
     private List<IngredientValuesSo> tempIngredient = new();
     private List<IngredientTypeSo> tempIngredientType = new();
 
-    public override void InitRecipe(Sprite[] PotionIngredientsLow, Sprite[] PotionIngredientsHigh, PotionValuesSo PotionSteps, Sprite[] AllBrewingActionSprites)
+    public override void InitRecipe(Sprite[] PotionIngredientsLow, Sprite[] PotionIngredientsHigh,
+        PotionValuesSo PotionSteps, Sprite[] AllBrewingActionSprites)
     {
         storedPotion = PotionSteps;
         potionName.text = PotionSteps.Name;
@@ -144,7 +146,6 @@ public class RecipeCodexDisplay : PageBehavior
         {
             for (int i = 0; i < ingredientDisplayContainers.Length; i++)
             {
-                
                 ingredientDisplayContainers[i].gameObject.SetActive(true);
                 int ingredientAmount;
 
@@ -161,22 +162,34 @@ public class RecipeCodexDisplay : PageBehavior
                 {
                     ingredientAmount = 1;
                 }
-                
-                foreach (TemperatureChallengeIngredients t in PotionSteps.TemperatureChallengeIngredients)
+
+                CookedIngredientForm cookedIngredient = default;
+
+                for (var index = 0; index < PotionSteps.TemperatureChallengeIngredients.Length; index++)
                 {
-                    var cookedIngredient = t.CookedIngredients[i];
-                    if (cookedIngredient.IsAType)
+                    TemperatureChallengeIngredients t = PotionSteps.TemperatureChallengeIngredients[index];
+                    
+                    foreach (var cookedForm in t.CookedIngredients)
                     {
-                        ingredientDisplayContainers[i].InitializeSelf(ingredientAmount,
-                            cookedIngredient.IngredientType, ingredientTypeBackground);
+                        if (cookedForm.Ingredient.iconLow == potionIngredientsLow[i])
+                        {
+                            cookedIngredient = cookedForm;
+                            index = PotionSteps.TemperatureChallengeIngredients.Length;
+                            break;
+                        }
                     }
-                    else
-                    {
-                        ingredientDisplayContainers[i].InitializeSelf(ingredientAmount, cookedIngredient.Ingredient,
-                            GameDontDestroyOnLoadManager.Instance.UnlockedIngredients.Contains(cookedIngredient
-                                .Ingredient), ingredientBackground);
-                    }
-                    break;
+                }
+
+                if (cookedIngredient.IsAType)
+                {
+                    ingredientDisplayContainers[i].InitializeSelf(ingredientAmount,
+                        cookedIngredient.IngredientType, ingredientTypeBackground);
+                }
+                else
+                {
+                    ingredientDisplayContainers[i].InitializeSelf(ingredientAmount, cookedIngredient.Ingredient,
+                        GameDontDestroyOnLoadManager.Instance.UnlockedIngredients.Contains(cookedIngredient
+                            .Ingredient), ingredientBackground);
                 }
 
                 ingredientsIndex++;
@@ -277,5 +290,9 @@ public class RecipeCodexDisplay : PageBehavior
     {
         pageNumberText.text = PageNumber.ToString();
         secondPageNumberText.text = SecondPageNumber.ToString();
+        anchoredPosition = secondPageNumberText.rectTransform.anchoredPosition;
+        anchoredPosition = new Vector2(Mathf.Abs(anchoredPosition.x) * -1,
+            anchoredPosition.y);
+        secondPageNumberText.rectTransform.anchoredPosition = anchoredPosition;
     }
 }

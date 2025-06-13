@@ -53,12 +53,12 @@ public class CodexContentManager : Singleton<CodexContentManager>
     public List<HistoricCodexDisplayBehavior> historicPages = new();
 
     
-    [Foldout("Debug")] public bool loadAllPages;
-    [Foldout("Debug")][ShowIf("loadAllPages")] public List<LetterContentSo> OrdersToLoad;
-    [Foldout("Debug")][ShowIf("loadAllPages")] public List<LetterContentSo> HistoricToLoad;
-    [Foldout("Debug")] public PotionTag testTag;
-
-    [Foldout("Debug")] public PotionValuesSo testPotion;
+    [Foldout("Debug")] public bool loadOrders;
+    [Foldout("Debug")] public bool loadAllRecipes;
+    [Foldout("Debug")] public bool loadAllIngredients;
+    [Foldout("Debug")] public bool loadHistoric;
+    [Foldout("Debug")][ShowIf("loadOrders")] public List<LetterContentSo> OrdersToLoad;
+    [Foldout("Debug")][ShowIf("loadHistoric")] public List<LetterContentSo> HistoricToLoad;
 
     [Foldout("Debug")] private List<Sprite> tempIngredientsLow = new();
     [Foldout("Debug")] private List<Sprite> tempIngredientsHigh = new();
@@ -78,15 +78,17 @@ public class CodexContentManager : Singleton<CodexContentManager>
             ticket.gameObject.SetActive(false);
         }
 
-
-        if (loadAllPages)
+        if (loadOrders)
         {
-            GameDontDestroyOnLoadManager.Instance.UnlockedRecipes.Clear();
-            GameDontDestroyOnLoadManager.Instance.UnlockedRecipes.AddRange(potionList.Potions);
-            foreach (var historic in HistoricToLoad)
+            foreach (var orderSo in OrdersToLoad)
             {
-                AddHistoricPage(historic, historic.RelatedSuccessLetter);
+                OrderManager.Instance.CreateNewOrder(new Letter(orderSo,null));
             }
+        }
+
+        if (loadAllRecipes)
+        {
+            GameDontDestroyOnLoadManager.Instance.UnlockedRecipes.AddRange(potionList.Potions);
         }
 
         foreach (var recipes in GameDontDestroyOnLoadManager.Instance.UnlockedRecipes)
@@ -99,7 +101,23 @@ public class CodexContentManager : Singleton<CodexContentManager>
             display.RemoveDissolve();
         }
         pageIndexesToCheck.Clear();
-        
+
+
+        if (loadAllIngredients)
+        {
+            GameDontDestroyOnLoadManager.Instance.UnlockedIngredients.Clear();
+            GameDontDestroyOnLoadManager.Instance.UnlockedIngredients.AddRange(ingredientList.IngredientValues);
+            AutoFlip.instance.ControledBook.DisplayNewIngredientFromSave();
+        }
+        if (loadHistoric)
+        {
+            GameDontDestroyOnLoadManager.Instance.UnlockedRecipes.Clear();
+            GameDontDestroyOnLoadManager.Instance.UnlockedRecipes.AddRange(potionList.Potions);
+            foreach (var historic in HistoricToLoad)
+            {
+                AddHistoricPage(historic, historic.RelatedSuccessLetter);
+            }
+        }
         AutoFlip.instance.ControledBook.UpdatePageNumbers();
     }
 
@@ -112,11 +130,12 @@ public class CodexContentManager : Singleton<CodexContentManager>
         {
             recipeIndex = 0;
         }
-        else if (recipeIndex >= recipes.Count)
+        else if (recipeIndex > recipes.Count)
         {
             recipeIndex = recipes.Count - 1;
         }
         recipes.Insert(recipeIndex, newRecipe);
+        recipeIndex *= 2;
         recipeIndex += AutoFlip.instance.ControledBook.bookMarks[1].index;
         
         foreach (TemperatureChallengeIngredients t in newRecipeValues.TemperatureChallengeIngredients)
@@ -139,6 +158,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
         newRecipe.InitRecipe(tempIngredientsLow.ToArray(), tempIngredientsHigh.ToArray() ,newRecipeValues, allBrewingActionSprites);
         tempIngredientsLow.Clear();
         tempIngredientsHigh.Clear();
+        Debug.Log(recipeIndex);
         InsertRecipePages(recipeIndex , newRecipe);
     }
 
@@ -319,21 +339,21 @@ public class CodexContentManager : Singleton<CodexContentManager>
         pageChoser = Random.Range(0, rightIngredientPage.Length);
         
         int ingredientIndex = ingredientList.IngredientValues.IndexOf(ingredient);
-        Debug.Log("Raw index: " + ingredientIndex);
+        //Debug.Log("Raw index: " + ingredientIndex);
         if (ingredientPages.Count == 0)
         {
-            Debug.Log("First discovered ingredient");
+            //Debug.Log("First discovered ingredient");
             ingredientIndex = AutoFlip.instance.ControledBook.bookMarks[2].index;
         }
         else if (ingredientIndex >= ingredientList.IngredientValues.IndexOf(ingredientPages[^1].associatedIngredient))
         {
-            Debug.Log("Highest index yet");
+            //Debug.Log("Highest index yet");
             ingredientIndex = AutoFlip.instance.ControledBook.bookMarks[2].index + ingredientPages.Count;
         }
         else
         {
             
-            Debug.Log("Index can be fitted in book");
+            //Debug.Log("Index can be fitted in book");
             ingredientIndex += AutoFlip.instance.ControledBook.bookMarks[2].index - 1;
         }
         
