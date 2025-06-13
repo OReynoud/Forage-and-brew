@@ -207,7 +207,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     public void ShowLetters()
     {
         if (GeneratedLetters.Count == 0) return;
-        Debug.Log("OpenMailbox");
+        //Debug.Log("OpenMailbox");
 
         audio.Play();
         anim.SetBool("IsOpen", true);
@@ -227,7 +227,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     {
         if (_openedMailOnFrame) return;
 
-        Debug.Log("Pass to next letter");
+        //Debug.Log("Pass to next letter");
         for (int i = 0; i < GeneratedLetters.Count; i++)
         {
             if (GeneratedLetters[i].IsMoving) return;
@@ -279,8 +279,6 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                     break;
                 case LetterType.Thanks:
                     CodexContentManager.instance.AddHistoricPage(letter.Item2, letter.Item1.LetterContent);
-                    break;
-                case LetterType.ShippingError:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

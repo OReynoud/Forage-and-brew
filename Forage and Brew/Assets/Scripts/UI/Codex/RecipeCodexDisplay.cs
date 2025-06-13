@@ -77,14 +77,10 @@ public class RecipeCodexDisplay : PageBehavior
         Material mat = Instantiate(leftPageDissolve.material);
         leftPageDissolve.material.SetFloat(Ex.CutoffHeight, 0);
         leftPageDissolve.material = mat;
-        leftPageDissolve.sprite =
-            AutoFlip.instance.ControledBook.bookPages.Find(x => x.pageBehavior == this).pageSprite;
 
         Material mat2 = Instantiate(rightPageDissolve.material);
         rightPageDissolve.material.SetFloat(Ex.CutoffHeight, 0);
         rightPageDissolve.material = mat2;
-        rightPageDissolve.sprite =
-            AutoFlip.instance.ControledBook.bookPages.Find(x => x.pageBehavior == this).pageSprite;
 
         doDissolve = true;
 
@@ -123,8 +119,11 @@ public class RecipeCodexDisplay : PageBehavior
     private List<IngredientTypeSo> tempIngredientType = new();
 
     public override void InitRecipe(Sprite[] PotionIngredientsLow, Sprite[] PotionIngredientsHigh,
-        PotionValuesSo PotionSteps, Sprite[] AllBrewingActionSprites)
+        PotionValuesSo PotionSteps, Sprite[] AllBrewingActionSprites, Sprite[] PagesToUse)
     {
+        leftPageDissolve.sprite = PagesToUse[0];
+        rightPageDissolve.sprite = PagesToUse[1];
+        
         storedPotion = PotionSteps;
         potionName.text = PotionSteps.Name;
         potionFlavorText.text = PotionSteps.Description;

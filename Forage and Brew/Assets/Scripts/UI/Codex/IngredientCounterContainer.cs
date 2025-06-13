@@ -60,8 +60,7 @@ public class IngredientCounterContainer : MonoBehaviour
         
         if (counter == 0)
         {
-            ingredientBackground.sprite = ingredientStateSprites[2];
-            ingredientBackground.color = Color.red;
+            ingredientBackground.color = Color.clear;
         }
         else
         {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.UI;
 
 [ExecuteAlways]
 public class PageLoader : MonoBehaviour
@@ -57,7 +58,9 @@ public class PageLoader : MonoBehaviour
                         }
                     }
                 }
-                recipe.InitRecipe(tempIngredientsLow.ToArray(),tempIngredientsHigh.ToArray(),recipeToLoad, allBrewingActionSprites);
+                recipe.InitRecipe(tempIngredientsLow.ToArray(),tempIngredientsHigh.ToArray(),recipeToLoad, allBrewingActionSprites,
+                    new []{recipe.leftPage.GetComponent<Image>().sprite,recipe.rightPage.GetComponent<Image>().sprite});
+                
                 tempIngredientsLow.Clear();
                 tempIngredientsHigh.Clear();
                 recipe.leftPageDissolve.transform.SetParent(loadedPageBehavior.transform);
