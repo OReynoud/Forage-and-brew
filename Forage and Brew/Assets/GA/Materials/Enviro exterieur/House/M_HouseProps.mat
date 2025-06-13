@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_HouseProps
-  m_Shader: {fileID: -6465566751694194690, guid: 84c9e1639223c2f4d961b9d270bd16cd, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 50b25a2d002418a4dbe293ec1f26f3c1, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -30,6 +30,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _BC_2:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseColor:
+        m_Texture: {fileID: 2800000, guid: 7082b86cf328ca5458f0ac6fa03acfaf, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -80,6 +84,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: c30b047655fd1ac4a9e0d5f09e82394f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 2800000, guid: c30b047655fd1ac4a9e0d5f09e82394f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -89,6 +97,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RMA:
+        m_Texture: {fileID: 2800000, guid: e21a7e7720a390c4d9d03dc71e5c5895, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Rougness_AO:
         m_Texture: {fileID: 2800000, guid: e21a7e7720a390c4d9d03dc71e5c5895, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -137,7 +149,9 @@ Material:
     - _Gradient_size_1: -1.01
     - _Grass_spread: 0
     - _Mask: -0.04
+    - _MaxDistance: 6
     - _Metallic: 0
+    - _MinDistance: 0.5
     - _NormalMapFade: 0.52
     - _OcclusionStrength: 1
     - _Parallax: 0.005
