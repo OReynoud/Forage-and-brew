@@ -100,9 +100,6 @@ public class RecipeCodexDisplay : PageBehavior
         //Debug.Log(rightPageDissolve.material.GetFloat(Ex.CutoffHeight));
         if (dissolveTimer > animCurveDissolve.keys[^1].time)
         {
-            CharacterInputManager.Instance.EnableCodexInputs();
-            CharacterInputManager.Instance.EnableCodexExitInput();
-            CharacterInputManager.Instance.EnableMoveInputs();
             doDissolve = false;
             AutoFlip.instance.isDissolving = false;
         }
