@@ -249,7 +249,10 @@ public class CodexContentManager : Singleton<CodexContentManager>
             order = Instantiate(orderPrefabs[Random.Range(0, orderPrefabs.Length)], emptyOrderPage);
             _orderCodexDisplayBehaviours.Add(order);
             Book.BookPage bookPage = AutoFlip.instance.ControledBook.bookPages.Find(x => x.UIComponent == emptyOrderPage);
+            int index = AutoFlip.instance.ControledBook.bookPages.IndexOf(bookPage);
+            AutoFlip.instance.ControledBook.bookPages.RemoveAt(index);
             bookPage.pageBehavior = order;
+            AutoFlip.instance.ControledBook.bookPages.Insert(index, bookPage);
             
             
             order.InitOrder(client, orderDescription, potionsRequested, moneyReward, timeToComplete,
