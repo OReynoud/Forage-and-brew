@@ -25,10 +25,10 @@ public class LetterMailBoxDisplayBehaviour : PageBehavior
     public int moneyReward;
     public int daysLeftToComplete;
 
-    public bool IsPassed { get; private set; }
-    public bool IsMoving { get; private set; }
+    public bool IsPassed;
+    public bool IsMoving;
     public LetterType letterType;
-    [FormerlySerializedAs("animIndex")] public float animTime;
+    public float animTime;
 
     public AnimationClip animClip;
 
@@ -91,7 +91,7 @@ public class LetterMailBoxDisplayBehaviour : PageBehavior
     public void AnimateLetter(bool hasToPass)
     {
         IsPassed = hasToPass;
-        animTime = MailBoxBehaviour.instance.animCurve.length;
+        animTime = 1;
         IsMoving = true;
     }
     
@@ -103,7 +103,7 @@ public class LetterMailBoxDisplayBehaviour : PageBehavior
         {
             animTime -= Time.deltaTime * MailBoxBehaviour.instance.animSpeed;
             animClip.SampleAnimation(gameObject, MailBoxBehaviour.instance.animCurve.Evaluate(Mathf.Clamp(
-                MailBoxBehaviour.instance.animCurve.length - animTime, 0f, MailBoxBehaviour.instance.animCurve.length)));
+                1 - animTime, 0f, 1)));
 
             if (animTime <= 0f)
             {
