@@ -87,7 +87,12 @@ public class SaveManager : MonoBehaviour
             .Select(collectedPotion => new FloorCookedPotion(collectedPotion.PotionValuesSo,
                 collectedPotion.transform.position, collectedPotion.transform.rotation)));
         data.FloorCookedPotions.AddRange(gameDontDestroyOnLoadManager.FloorCookedPotions);
-        data.OrderPotions = gameDontDestroyOnLoadManager.OrderPotions;
+        data.OrderPotions = new List<ClientOrderPotions>();
+        data.OrderPotions.AddRange(PotionCrateManager.Instance.PotionCrates
+            .Select(potionCrate => new ClientOrderPotions(potionCrate.OrderContentSo, potionCrate.ClientSo,
+                potionCrate.ContainedPotions.Select(potion => new FloorCookedPotion(potion.PotionValuesSo,
+                    potion.transform.position, potion.transform.rotation)).ToList())));
+        data.OrderPotions.AddRange(gameDontDestroyOnLoadManager.OrderPotions);
         
         // Unlocked Ingredients and Recipes
         data.UnlockedIngredients = gameDontDestroyOnLoadManager.UnlockedIngredients;

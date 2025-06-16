@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -25,11 +26,12 @@ public class OutStackableManager : MonoBehaviour
     private void Start()
     {
         InstantiateOutCollectedIngredients();
-        InstantiateOutCookedPotions();
+        InstantiateOutCookedPotions(GameDontDestroyOnLoadManager.Instance.FloorCookedPotions,
+            GameDontDestroyOnLoadManager.Instance.OutCookedPotions);
     }
     
     
-    private void InstantiateOutCollectedIngredients()
+    public void InstantiateOutCollectedIngredients()
     {
         foreach (FloorIngredient floorCollectedIngredient in GameDontDestroyOnLoadManager.Instance.FloorCollectedIngredients.ToList())
         {
@@ -42,15 +44,15 @@ public class OutStackableManager : MonoBehaviour
         }
     }
     
-    private void InstantiateOutCookedPotions()
+    public void InstantiateOutCookedPotions(List<FloorCookedPotion> floorCookedPotions, List<CollectedPotionBehaviour> collectedPotions)
     {
-        foreach (FloorCookedPotion floorCookedPotion in GameDontDestroyOnLoadManager.Instance.FloorCookedPotions.ToList())
+        foreach (FloorCookedPotion floorCookedPotion in floorCookedPotions.ToList())
         {
             CollectedPotionBehaviour collectedPotion = Instantiate(collectedPotionPrefab, floorCookedPotion.Position,
                 floorCookedPotion.Rotation);
             collectedPotion.PotionValuesSo = floorCookedPotion.Potion;
-            GameDontDestroyOnLoadManager.Instance.OutCookedPotions.Add(collectedPotion);
-            GameDontDestroyOnLoadManager.Instance.FloorCookedPotions.Remove(floorCookedPotion);
+            collectedPotions.Add(collectedPotion);
+            floorCookedPotions.Remove(floorCookedPotion);
         }
     }
 
@@ -65,12 +67,12 @@ public class OutStackableManager : MonoBehaviour
         }
     }
 
-    public void StoreOutCookedPotions()
+    public void StoreOutCookedPotions(List<FloorCookedPotion> floorCookedPotions, List<CollectedPotionBehaviour> collectedPotions)
     {
-        foreach (CollectedPotionBehaviour collectedPotionBehaviour in GameDontDestroyOnLoadManager.Instance.OutCookedPotions.ToList())
+        foreach (CollectedPotionBehaviour collectedPotionBehaviour in collectedPotions.ToList())
         {
-            GameDontDestroyOnLoadManager.Instance.OutCookedPotions.Remove(collectedPotionBehaviour);
-            GameDontDestroyOnLoadManager.Instance.FloorCookedPotions.Add(new FloorCookedPotion(
+            collectedPotions.Remove(collectedPotionBehaviour);
+            floorCookedPotions.Add(new FloorCookedPotion(
                 collectedPotionBehaviour.PotionValuesSo, collectedPotionBehaviour.transform.position,
                 collectedPotionBehaviour.transform.rotation));
         }

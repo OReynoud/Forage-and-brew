@@ -87,8 +87,16 @@ public class NarrativeBlockOfLetters
 [Serializable]
 public class ClientOrderPotions
 {
+    public ClientOrderPotions(OrderContentSo orderSo, ClientSo clientSo, List<FloorCookedPotion> potions)
+    {
+        OrderSo = orderSo;
+        ClientSo = clientSo;
+        Potions = potions;
+    }
+
+    [field: SerializeField] public OrderContentSo OrderSo { get; set; }
     [field: SerializeField] public ClientSo ClientSo { get; set; }
-    [field: SerializeField] public List<PotionValuesSo> Potions { get; set; } = new();
+    [field: SerializeField] public List<FloorCookedPotion> Potions { get; set; } = new();
 }
 
 [Serializable]

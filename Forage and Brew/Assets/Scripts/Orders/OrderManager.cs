@@ -9,12 +9,11 @@ public class OrderManager : MonoBehaviour
     public static OrderManager Instance { get; private set; }
 
     [field: AllowNesting] [field: SerializeField] public List<Order> CurrentOrders { get; } = new();
-    [field: SerializeField] [field: ReadOnly] public List<int> OrderToValidateIndices { get; set; } = new();
 
 
     private void Awake()
     {
-        if (Instance == null)
+        if (!Instance)
         {
             Instance = this;
         }
@@ -24,15 +23,29 @@ public class OrderManager : MonoBehaviour
         }
     }
 
-
     private void Start()
     {
+        InitializeCurrentOrders();
+        
         CreateOrdersFromSave();
     }
+    
 
+    private void InitializeCurrentOrders()
+    {
+        if (GameDontDestroyOnLoadManager.Instance.IsFirstGameSession)
+        {
+            for (int i = 0; i < PotionCrateManager.Instance.PotionCrates.Count; i++)
+            {
+                CurrentOrders.Add(null);
+                GameDontDestroyOnLoadManager.Instance.OrderPotions.Add(null);
+                PotionCrateManager.Instance.PotionCrates[i].DisableCrate();
+            }
+        }
+    }
+    
     public void CreateNewOrder(Letter letter)
     {
-
         bool triggerAutoPin = CurrentOrders.Count == 0;
         CodexContentManager.instance.ReceiveNewOrder(
             letter.LetterContent.Client,
@@ -41,7 +54,9 @@ public class OrderManager : MonoBehaviour
             letter.LetterContent.OrderContent.MoneyReward,
             letter.LetterContent.OrderContent.TimeToFulfill, out OrderCodexDisplayBehaviour order);
 
-        CurrentOrders.Add(new Order(letter, order));
+        int newOrderIndex = CurrentOrders.FindIndex(x => x == null);
+        CurrentOrders[newOrderIndex] = new Order(letter, order);
+        
         if (triggerAutoPin)
         {
             if (CurrentOrders[0].OrderContent.RequestedPotions[0].IsSpecific)
@@ -49,129 +64,63 @@ public class OrderManager : MonoBehaviour
                 AutoFlip.instance.recipeToPin = CurrentOrders[0].OrderContent.RequestedPotions[0].Potion;
             }
         }
-        GameDontDestroyOnLoadManager.Instance.OrderPotions.Add(new ClientOrderPotions());
-        GameDontDestroyOnLoadManager.Instance.OrderPotions[^1].ClientSo = letter.LetterContent.Client;
-        for (int i = 0; i < letter.LetterContent.OrderContent.RequestedPotions.Length; i++)
-        {
-            GameDontDestroyOnLoadManager.Instance.OrderPotions[^1].Potions.Add(null);
-        }
+        
+        PotionCrateManager.Instance.ReactivateRightPotionCrates();
     }
+    
     public void CreateOrdersFromSave()
     {
-        foreach (var o in CurrentOrders)
+        foreach (Order o in CurrentOrders)
         {
+            if (o == null) continue;
+            
             CodexContentManager.instance.ReceiveNewOrder(
                 o.RelatedLetter.Client,
                 o.RelatedLetter.TextContent,
                 o.RelatedLetter.OrderContent.RequestedPotions,
                 o.RelatedLetter.OrderContent.MoneyReward,
                 o.RelatedLetter.OrderContent.TimeToFulfill, out OrderCodexDisplayBehaviour order);
-
-        
-            GameDontDestroyOnLoadManager.Instance.OrderPotions.Add(new ClientOrderPotions());
-            GameDontDestroyOnLoadManager.Instance.OrderPotions[^1].ClientSo = o.RelatedLetter.Client;
-            for (int i = 0; i < o.RelatedLetter.OrderContent.RequestedPotions.Length; i++)
-            {
-                GameDontDestroyOnLoadManager.Instance.OrderPotions[^1].Potions.Add(null);
-            }
         }
 
         CodexContentManager.instance.pageIndexesToCheck.Clear();
     }
-    
-    public void AddOrdersToValidate()
-    {
-        for (int i = CurrentOrders.Count - 1; i >= 0; i--)
-        {
-            TryAddOrderToValidate(i);
-        }
-    }
-
-    public void TryAddOrderToValidate(int orderIndex)
-    {
-        if (OrderToValidateIndices.Contains(orderIndex)) return;
-
-        if (GameDontDestroyOnLoadManager.Instance.OrderPotions[orderIndex].Potions.Any(x => x == null)) return;
-
-        OrderToValidateIndices.Add(orderIndex);
-    }
 
     public void CheckOrdersToValidate()
     {
-        foreach (int orderToValidateIndex in OrderToValidateIndices.ToList())
+        foreach (PotionCrateBehaviour potionCrate in PotionCrateManager.Instance.PotionCrates)
         {
-            bool isOrderCorrect = true;
-            List<PotionValuesSo> currentOrderPotions =
-                GameDontDestroyOnLoadManager.Instance.OrderPotions[orderToValidateIndex].Potions.ToList();
-
-            foreach (PotionDemand potionDemand in CurrentOrders[orderToValidateIndex].OrderContent.RequestedPotions
-                         .Where(x => x.IsSpecific))
+            if (!potionCrate.IsFulfilled) continue;
+            
+            int orderIndex = CurrentOrders.FindIndex(x => x != null && x.OrderContent == potionCrate.OrderContentSo);
+            
+            if (orderIndex < 0)
             {
-                if (!currentOrderPotions.Contains(potionDemand.Potion))
-                {
-                    isOrderCorrect = false;
-                    break;
-                }
-
-                currentOrderPotions.Remove(potionDemand.Potion);
-            }
-
-            //if (!isOrderCorrect) continue;
-
-            List<PotionDemand> notSpecificRequestedPotions = CurrentOrders[orderToValidateIndex].OrderContent
-                .RequestedPotions.Where(x => !x.IsSpecific).ToList();
-
-            if (notSpecificRequestedPotions.Count > 0)
-            {
-                // Sort by ascending order of currentOrderPotions valid tag count
-                notSpecificRequestedPotions.Sort((x, y) =>
-                    currentOrderPotions.Count(potion => (potion.tags & x.ValidTag) != 0).CompareTo(
-                        currentOrderPotions.Count(potion => (potion.tags & y.ValidTag) != 0)));
-
-                if (currentOrderPotions.All(potion => (potion.tags & notSpecificRequestedPotions[0].ValidTag) == 0))
-                {
-                    isOrderCorrect = false;
-                }
-                else
-                {
-                    foreach (PotionDemand potionDemand in notSpecificRequestedPotions)
-                    {
-                        currentOrderPotions.Remove(
-                            currentOrderPotions.First(x => (x.tags & potionDemand.ValidTag) != 0));
-                    }
-                }
-
-                //if (!isOrderCorrect) continue;
+                Debug.LogError("Order not found for the potion crate: " + potionCrate.name);
+                continue;
             }
 
             //Debug.Log("Order is " + (isOrderCorrect ? "correct" : "incorrect"));
             int index = Array.IndexOf(
-                CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock.ContentSo.Content,
-                CurrentOrders[orderToValidateIndex].RelatedLetter);
+                CurrentOrders[orderIndex].RelatedNarrativeBlock.ContentSo.Content,
+                CurrentOrders[orderIndex].RelatedLetter);
 
-            if (isOrderCorrect)
+            GameDontDestroyOnLoadManager.Instance. ThanksAndErrorLetters.Add(new Letter(
+                CurrentOrders[orderIndex].RelatedLetter,
+                CurrentOrders[orderIndex].RelatedNarrativeBlock, CurrentOrders[orderIndex].OrderDisplay.daysLeftToComplete >=  0));
+                
+            CurrentOrders[orderIndex].RelatedNarrativeBlock.CompletedLetters[index] = true;
+            CurrentOrders[orderIndex].RelatedNarrativeBlock.SelfProgressionIndex++;
+                
+            if (CurrentOrders[orderIndex].RelatedNarrativeBlock.SelfProgressionIndex >=
+                CurrentOrders[orderIndex].RelatedNarrativeBlock.CompletedLetters.Length &&
+                CurrentOrders[orderIndex].RelatedNarrativeBlock.ContentSo.CanAdvanceQuestProgressionIndex)
             {
-                Debug.Log("Valid order");
-                GameDontDestroyOnLoadManager.Instance. ThanksAndErrorLetters.Add(new Letter(
-                    CurrentOrders[orderToValidateIndex].RelatedLetter,
-                    CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock,  CurrentOrders[orderToValidateIndex].OrderDisplay.daysLeftToComplete >=  0));
-                
-                CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock.CompletedLetters[index] = true;
-                CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock.SelfProgressionIndex++;
-                
-                if (CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock.SelfProgressionIndex >=
-                    CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock.CompletedLetters.Length &&
-                    CurrentOrders[orderToValidateIndex].RelatedNarrativeBlock.ContentSo.CanAdvanceQuestProgressionIndex)
-                {
-                    GameDontDestroyOnLoadManager.Instance.QuestProgressionIndex++;
-                }
+                GameDontDestroyOnLoadManager.Instance.QuestProgressionIndex++;
             }
-
-            CurrentOrders.RemoveAt(orderToValidateIndex);
-            CodexContentManager.instance.TerminateOrder(orderToValidateIndex);
-            GameDontDestroyOnLoadManager.Instance.OrderPotions.RemoveAt(orderToValidateIndex);
+            
+            CurrentOrders[orderIndex] = null;
+            CodexContentManager.instance.TerminateOrder(orderIndex);
+            GameDontDestroyOnLoadManager.Instance.OrderPotions[orderIndex] = null;
         }
-
-        OrderToValidateIndices.Clear();
     }
 }

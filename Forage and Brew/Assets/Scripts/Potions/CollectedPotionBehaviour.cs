@@ -76,6 +76,19 @@ public class CollectedPotionBehaviour : MonoBehaviour, IStackable
         }
     }
 
+    public void EnablePhysics()
+    {
+        rb.isKinematic = false;
+        potionCollider.enabled = true;
+    }
+
+    public void DisableInteraction()
+    {
+        grabTrigger.enabled = false;
+        DisableGrab();
+    }
+
+    
     public void DropInTarget(Transform target, Vector3 offset = default)
     {
         _dropTarget = target;

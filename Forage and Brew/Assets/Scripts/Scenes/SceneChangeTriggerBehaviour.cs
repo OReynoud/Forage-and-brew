@@ -1,6 +1,5 @@
-using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class SceneChangeTriggerBehaviour : MonoBehaviour
 {
@@ -27,7 +26,23 @@ public class SceneChangeTriggerBehaviour : MonoBehaviour
             }
 
             OutStackableManager.Instance?.StoreOutCollectedIngredients();
-            OutStackableManager.Instance?.StoreOutCookedPotions();
+            OutStackableManager.Instance?.StoreOutCookedPotions(GameDontDestroyOnLoadManager.Instance.FloorCookedPotions,
+                GameDontDestroyOnLoadManager.Instance.OutCookedPotions);
+            if (PotionCrateManager.Instance)
+            {
+                for (int i = 0; i < PotionCrateManager.Instance.PotionCrates.Count; i++)
+                {
+                    if (OrderManager.Instance.CurrentOrders[i] == null) continue;
+                    
+                    GameDontDestroyOnLoadManager.Instance.OrderPotions[i] = new ClientOrderPotions(
+                        OrderManager.Instance.CurrentOrders[i].OrderContent,
+                        OrderManager.Instance.CurrentOrders[i].RelatedLetter.Client,
+                        new List<FloorCookedPotion>());
+                    OutStackableManager.Instance?.StoreOutCookedPotions(
+                        GameDontDestroyOnLoadManager.Instance.OrderPotions[i].Potions,
+                        PotionCrateManager.Instance.PotionCrates[i].ContainedPotions);
+                }
+            }
             
             if (doesMakeItNighttime)
             {

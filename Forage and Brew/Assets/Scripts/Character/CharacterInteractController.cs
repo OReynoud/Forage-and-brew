@@ -32,7 +32,7 @@ public class CharacterInteractController : MonoBehaviour
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public ChoppingCountertopBehaviour CurrentNearChoppingCountertop { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public GrindingCountertopBehaviour CurrentNearGrindingCountertop { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<IngredientBasketBehaviour> CurrentNearIngredientBaskets { get; set; } = new();
-    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<PotionBasketBehaviour> CurrentNearPotionBaskets { get; set; } = new();
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<PotionCrateBehaviour> CurrentNearPotionBaskets { get; set; } = new();
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public bool AreHandsFull { get; private set; }
 
     private Rigidbody rb { get; set; }
@@ -57,6 +57,7 @@ public class CharacterInteractController : MonoBehaviour
     
     [SerializeField] private Vector3 choppingOffset = new(0f, 1.3f, -0.05f);
     [SerializeField] private Vector3 grindingOffset = new(0f, 1.3f, 0.1f);
+    [SerializeField] private Vector3 potionBasketOffset = new(0f, 1.5f, 0f);
     
     
 
@@ -160,10 +161,6 @@ public class CharacterInteractController : MonoBehaviour
                 AreHandsFull = false;
             }
         }
-        else if (CurrentNearPotionBaskets.Count > 0 && collectedStack.Count == 0)
-        {
-            ChoosePotionBasket(true);
-        }
     }
 
     
@@ -219,17 +216,15 @@ public class CharacterInteractController : MonoBehaviour
         }
     }
     
-    private void ChoosePotionBasket(bool hasToGrab = false)
+    private void ChoosePotionBasket()
     {
         (int index, float distance) lowestDistance = (-1, float.MaxValue);
         
         for (int i = 0; i < CurrentNearPotionBaskets.Count; i++)
         {
-            if (hasToGrab && !GameDontDestroyOnLoadManager.Instance.OrderPotions[CurrentNearPotionBaskets[i].OrderIndex]
-                    .Potions[CurrentNearPotionBaskets[i].PotionBasketIndex]) continue;
-
-            if (!hasToGrab && GameDontDestroyOnLoadManager.Instance.OrderPotions[CurrentNearPotionBaskets[i].OrderIndex]
-                    .Potions[CurrentNearPotionBaskets[i].PotionBasketIndex]) continue;
+            if (CurrentNearPotionBaskets[i].IsFulfilled) continue;
+            
+            if (!CurrentNearPotionBaskets[i].CheckPotion(((CollectedPotionBehaviour)collectedStack[0].stackable).PotionValuesSo)) continue;
             
             float distance = Vector3.Distance(transform.position, CurrentNearPotionBaskets[i].transform.position);
             
@@ -241,16 +236,10 @@ public class CharacterInteractController : MonoBehaviour
         
         if (lowestDistance.index < 0) return;
 
-        if (hasToGrab)
-        {
-            AddToPile(CurrentNearPotionBaskets[lowestDistance.index].InstantiateCollectedPotion());
-        }
-        else
-        {
-            ShoveStackInTarget(CurrentNearPotionBaskets[lowestDistance.index].transform, CurrentNearPotionBaskets[lowestDistance.index]);
-        }
+        ShoveStackInTarget(CurrentNearPotionBaskets[lowestDistance.index].transform,
+            CurrentNearPotionBaskets[lowestDistance.index], potionBasketOffset);
 
-        foreach (PotionBasketBehaviour potionBasket in CurrentNearPotionBaskets)
+        foreach (PotionCrateBehaviour potionBasket in CurrentNearPotionBaskets)
         {
             potionBasket.DoesNeedToCheckAvailability = true;
         }

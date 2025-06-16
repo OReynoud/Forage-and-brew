@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BedBehaviour : MonoBehaviour
 {
-    [SerializeField] private PotionBasketManagerBehaviour[] potionBasketManagerBehaviours;
+    [SerializeField] private PotionCrateManager[] potionBasketManagerBehaviours;
     [SerializeField] private GameObject interactInputCanvasGameObject;
     [SerializeField] private Transform bedSpawnPoint;
 
@@ -36,11 +36,10 @@ public class BedBehaviour : MonoBehaviour
         GameDontDestroyOnLoadManager.Instance.HasChosenLettersToday = false;
         
         // Orders
-        OrderManager.Instance.AddOrdersToValidate();
         OrderManager.Instance.CheckOrdersToValidate();
-        foreach (PotionBasketManagerBehaviour potionBasketManagerBehaviour in potionBasketManagerBehaviours)
+        foreach (PotionCrateManager potionBasketManagerBehaviour in potionBasketManagerBehaviours)
         {
-            potionBasketManagerBehaviour.ReactivateRightPotionBaskets();
+            potionBasketManagerBehaviour.ReactivateRightPotionCrates();
         }
         
         CharacterInteractController.Instance.CurrentNearBed = null;
