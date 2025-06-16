@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using NaughtyAttributes;
 using UnityEngine.Events;
 
@@ -329,6 +330,8 @@ public class AutoFlip : Singleton<AutoFlip>
         {
             ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1].Item1);
         }
+        var oui = CodexContentManager.instance.pageIndexesToCheck.OrderBy(x => x.Item1);
+        //CodexContentManager.instance.pageIndexesToCheck = oui.ToList();
 
         
         CharacterInputManager.Instance.EnterCodexMethod();

@@ -152,10 +152,10 @@ public class Book : MonoBehaviour
                 continue;
             }
 
-            if (i  > 0 && bookPages[i].pageBehavior == bookPages[i-1].pageBehavior)
-            {
-                continue;
-            }
+            // if (i  > 0 && bookPages[i].pageBehavior == bookPages[i-1].pageBehavior)
+            // {
+            //     continue;
+            // }
             bookPages[i].pageBehavior.PlacePageNumberText();
         }
     }

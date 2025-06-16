@@ -240,9 +240,14 @@ public class CodexContentManager : Singleton<CodexContentManager>
         {
             order = Instantiate(orderPrefabs[Random.Range(0, orderPrefabs.Length)], emptyOrderPage);
             _orderCodexDisplayBehaviours.Add(order);
+            Book.BookPage bookPage = AutoFlip.instance.ControledBook.bookPages.Find(x => x.UIComponent == emptyOrderPage);
+            bookPage.pageBehavior = order;
+            
+            
             order.InitOrder(client, orderDescription, potionsRequested, moneyReward, timeToComplete,
                 AutoFlip.instance.ControledBook.bookMarks[1].index - 1);
             emptyOrderPage = null;
+            
         }
 
         AutoFlip.instance.ControledBook.UpdateSprites();
