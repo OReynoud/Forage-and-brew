@@ -9,6 +9,7 @@ public class OrderManager : MonoBehaviour
     public static OrderManager Instance { get; private set; }
 
     [field: AllowNesting] [field: SerializeField] public List<Order> CurrentOrders { get; } = new();
+    public bool isInitialized { get; set; }
 
 
     private void Awake()
@@ -21,6 +22,8 @@ public class OrderManager : MonoBehaviour
         {
             DestroyImmediate(gameObject);
         }
+
+        isInitialized = false;
     }
 
     private void Start()
@@ -35,6 +38,7 @@ public class OrderManager : MonoBehaviour
     {
         if (GameDontDestroyOnLoadManager.Instance.IsFirstGameSession)
         {
+            Debug.Log(PotionCrateManager.Instance.PotionCrates.Count);
             for (int i = 0; i < PotionCrateManager.Instance.PotionCrates.Count; i++)
             {
                 CurrentOrders.Add(null);
@@ -42,6 +46,8 @@ public class OrderManager : MonoBehaviour
                 PotionCrateManager.Instance.PotionCrates[i].DisableCrate();
             }
         }
+
+        isInitialized = true;
     }
     
     public void CreateNewOrder(Letter letter)
@@ -55,6 +61,8 @@ public class OrderManager : MonoBehaviour
             letter.LetterContent.OrderContent.TimeToFulfill, out OrderCodexDisplayBehaviour order);
 
         int newOrderIndex = CurrentOrders.FindIndex(x => x == null);
+        //Debug.Log(CurrentOrders.Count);
+        //Debug.Log(newOrderIndex);
         CurrentOrders[newOrderIndex] = new Order(letter, order);
         
         if (triggerAutoPin)
