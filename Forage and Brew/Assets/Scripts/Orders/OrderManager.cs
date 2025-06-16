@@ -118,6 +118,7 @@ public class OrderManager : MonoBehaviour
                 GameDontDestroyOnLoadManager.Instance.QuestProgressionIndex++;
             }
             
+            potionCrate.DisableCrate();
             CurrentOrders[orderIndex] = null;
             CodexContentManager.instance.TerminateOrder(orderIndex);
             GameDontDestroyOnLoadManager.Instance.OrderPotions[orderIndex] = null;
