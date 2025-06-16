@@ -285,9 +285,17 @@ public class AutoFlip : Singleton<AutoFlip>
     public PotionValuesSo recipeToPin { get; set; }
     public void HandleNewRecipes()
     {
-        //Debug.Log(CodexContentManager.instance.pageIndexesToCheck.Count);
+        foreach (var recipe in CodexContentManager.instance.recipes)
+        {
+            if (!recipe.isDissolved)
+            {
+                CodexContentManager.instance.pageIndexesToCheck.Add(recipe.PageNumber);
+            }
+        }
+        
         if (CodexContentManager.instance.pageIndexesToCheck.Count == 0)
             return;
+        
         TutorialManager.instance.NotifyFromRecipeReceived();
         if (recipeToPin)
         {
@@ -321,16 +329,17 @@ public class AutoFlip : Singleton<AutoFlip>
             recipeToPin = null;
             tempIngredientsHigh.Clear();
         }
-        
-        if (CodexContentManager.instance.pageIndexesToCheck[^1].Item1 % 2 == 1)
+
+
+        if (CodexContentManager.instance.pageIndexesToCheck[^1] % 2 == 1)
         {
-            ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1].Item1 + 1);
+            ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1] + 1);
         }
         else
         {
-            ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1].Item1);
+            ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1]);
         }
-        var oui = CodexContentManager.instance.pageIndexesToCheck.OrderBy(x => x.Item1);
+        //var oui = CodexContentManager.instance.pageIndexesToCheck.OrderBy(x => x);
         //CodexContentManager.instance.pageIndexesToCheck = oui.ToList();
 
         
@@ -347,17 +356,18 @@ public class AutoFlip : Singleton<AutoFlip>
         yield return new WaitForSeconds(0.1f);
         for (int i = CodexContentManager.instance.pageIndexesToCheck.Count - 1; i >= 0; i--)
         {
-            FlipToPageIndex(CodexContentManager.instance.pageIndexesToCheck[i].Item1);
+            FlipToPageIndex(CodexContentManager.instance.pageIndexesToCheck[i]);
             isDissolving = true;
             yield return new WaitWhile(() => isFlipping);
-            if (CodexContentManager.instance.pageIndexesToCheck[i].Item2 != null)
+            switch (ControledBook.bookPages[CodexContentManager.instance.pageIndexesToCheck[i]].pageBehavior)
             {
-                CodexContentManager.instance.pageIndexesToCheck[i].Item2.StartDissolve();
-                yield return new WaitWhile(() => isDissolving);
-            }
-            else
-            {
-                yield return new WaitForSeconds(0.2f);
+                case RecipeCodexDisplay recipeDisplay:
+                    recipeDisplay.StartDissolve();
+                    yield return new WaitWhile(() => isDissolving);
+                    break;
+                case OrderCodexDisplayBehaviour:
+                    yield return new WaitForSeconds(0.2f);
+                    break;
             }
         }
         

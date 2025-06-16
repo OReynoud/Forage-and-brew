@@ -39,6 +39,8 @@ public class RecipeCodexDisplay : PageBehavior
 
     public int SecondPageNumber;
 
+    public bool isDissolved { get; private set; } = false;
+
     private bool doDissolve;
     private float dissolveTimer;
 
@@ -46,6 +48,7 @@ public class RecipeCodexDisplay : PageBehavior
     void Awake()
     {
         DisableAll();
+        
     }
 
     public void DisableAll()
@@ -102,6 +105,7 @@ public class RecipeCodexDisplay : PageBehavior
         {
             doDissolve = false;
             AutoFlip.instance.isDissolving = false;
+            isDissolved = true;
         }
     }
 
