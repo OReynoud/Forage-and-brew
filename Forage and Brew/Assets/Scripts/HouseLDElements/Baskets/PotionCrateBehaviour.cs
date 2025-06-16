@@ -117,6 +117,7 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
         GameDontDestroyOnLoadManager.Instance.OutCookedPotions.Remove(collectedPotionBehaviour);
         
         collectedPotionBehaviour.EnablePhysics();
+        collectedPotionBehaviour.transform.SetParent(meshParentTransform);
         CloseCollider();
         
         CheckCompletion();
