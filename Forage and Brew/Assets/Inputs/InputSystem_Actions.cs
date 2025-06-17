@@ -368,6 +368,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DEBUG_SkipDiscoveryAnimation"",
+                    ""type"": ""Button"",
+                    ""id"": ""e8f735ef-8de6-4554-9836-f7db3c005d09"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press(pressPoint=1)"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1371,6 +1380,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""SwitchClothes"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8c16266d-c392-420d-857d-103431a78278"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DEBUG_SkipDiscoveryAnimation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1994,6 +2014,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_PauseOut = m_Player.FindAction("PauseOut", throwIfNotFound: true);
         m_Player_QuitHapticChallenge = m_Player.FindAction("QuitHapticChallenge", throwIfNotFound: true);
         m_Player_SwitchClothes = m_Player.FindAction("SwitchClothes", throwIfNotFound: true);
+        m_Player_DEBUG_SkipDiscoveryAnimation = m_Player.FindAction("DEBUG_SkipDiscoveryAnimation", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -2111,6 +2132,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_PauseOut;
     private readonly InputAction m_Player_QuitHapticChallenge;
     private readonly InputAction m_Player_SwitchClothes;
+    private readonly InputAction m_Player_DEBUG_SkipDiscoveryAnimation;
     public struct PlayerActions
     {
         private @InputSystem_Actions m_Wrapper;
@@ -2153,6 +2175,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @PauseOut => m_Wrapper.m_Player_PauseOut;
         public InputAction @QuitHapticChallenge => m_Wrapper.m_Player_QuitHapticChallenge;
         public InputAction @SwitchClothes => m_Wrapper.m_Player_SwitchClothes;
+        public InputAction @DEBUG_SkipDiscoveryAnimation => m_Wrapper.m_Player_DEBUG_SkipDiscoveryAnimation;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2276,6 +2299,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @SwitchClothes.started += instance.OnSwitchClothes;
             @SwitchClothes.performed += instance.OnSwitchClothes;
             @SwitchClothes.canceled += instance.OnSwitchClothes;
+            @DEBUG_SkipDiscoveryAnimation.started += instance.OnDEBUG_SkipDiscoveryAnimation;
+            @DEBUG_SkipDiscoveryAnimation.performed += instance.OnDEBUG_SkipDiscoveryAnimation;
+            @DEBUG_SkipDiscoveryAnimation.canceled += instance.OnDEBUG_SkipDiscoveryAnimation;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -2394,6 +2420,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @SwitchClothes.started -= instance.OnSwitchClothes;
             @SwitchClothes.performed -= instance.OnSwitchClothes;
             @SwitchClothes.canceled -= instance.OnSwitchClothes;
+            @DEBUG_SkipDiscoveryAnimation.started -= instance.OnDEBUG_SkipDiscoveryAnimation;
+            @DEBUG_SkipDiscoveryAnimation.performed -= instance.OnDEBUG_SkipDiscoveryAnimation;
+            @DEBUG_SkipDiscoveryAnimation.canceled -= instance.OnDEBUG_SkipDiscoveryAnimation;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -2614,6 +2643,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnPauseOut(InputAction.CallbackContext context);
         void OnQuitHapticChallenge(InputAction.CallbackContext context);
         void OnSwitchClothes(InputAction.CallbackContext context);
+        void OnDEBUG_SkipDiscoveryAnimation(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

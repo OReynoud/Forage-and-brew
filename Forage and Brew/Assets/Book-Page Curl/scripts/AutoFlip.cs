@@ -348,9 +348,10 @@ public class AutoFlip : Singleton<AutoFlip>
         CharacterInputManager.Instance.DisableCodexInputs();
         CharacterInputManager.Instance.DisableMoveInputs();
 
-        StartCoroutine(PresentNewCodexContent());
+        presentNewCodexContentContainer = StartCoroutine(PresentNewCodexContent());
     }
 
+    public Coroutine presentNewCodexContentContainer; 
     IEnumerator PresentNewCodexContent()
     {
         yield return new WaitForSeconds(0.1f);
