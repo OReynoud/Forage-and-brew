@@ -142,7 +142,7 @@ public class AutoFlip : Singleton<AutoFlip>
         {
             y = (-h / (xl * xl)) * (x - xc) * (x - xc);
             ControledBook.UpdateBookRTLToPoint(new Vector3(x, y, 0));
-            yield return new WaitForSeconds(frameTime);
+            yield return new WaitForSecondsRealtime(frameTime);
             x -= dx;
         }
 
@@ -159,7 +159,7 @@ public class AutoFlip : Singleton<AutoFlip>
         {
             y = (-h / (xl * xl)) * (x - xc) * (x - xc);
             ControledBook.UpdateBookLTRToPoint(new Vector3(x, y, 0));
-            yield return new WaitForSeconds(frameTime);
+            yield return new WaitForSecondsRealtime(frameTime);
             x += dx;
         }
 

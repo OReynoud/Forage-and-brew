@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NaughtyAttributes;
@@ -68,6 +69,11 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
     private void Start()
     {
+        StartCoroutine(StartingRoutine());
+    }
+
+    IEnumerator StartingRoutine()
+    {
         pinImage.enabled = false;
         recipes.Clear();
         historicPages.Clear();
@@ -78,6 +84,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
             ticket.gameObject.SetActive(false);
         }
 
+        yield return new WaitWhile(() => OrderManager.Instance.isInitialized = false);
         if (loadOrders)
         {
             foreach (var orderSo in OrdersToLoad)
@@ -120,7 +127,6 @@ public class CodexContentManager : Singleton<CodexContentManager>
         }
         AutoFlip.instance.ControledBook.UpdatePageNumbers();
     }
-
     private void CreateNewRecipePage(PotionValuesSo newRecipeValues)
     {            
         
