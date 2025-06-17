@@ -202,7 +202,7 @@ GameObject:
   - component: {fileID: 5922908981466457607}
   - component: {fileID: 8849310442405200353}
   - component: {fileID: 8927620014963207577}
-  - component: {fileID: 3029799656441094649}
+  - component: {fileID: 6821233451819743554}
   m_Layer: 0
   m_Name: P_Bed_FNC
   m_TagString: Untagged
@@ -262,8 +262,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   potionBasketManagerBehaviours: []
   interactInputCanvasGameObject: {fileID: 194505192868040899}
---- !u!135 &3029799656441094649
-SphereCollider:
+  bedSpawnPoint: {fileID: 0}
+--- !u!136 &6821233451819743554
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -280,9 +281,11 @@ SphereCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 2
   m_Radius: 2.18
-  m_Center: {x: -0.05, y: 0, z: -0.05}
+  m_Height: 8
+  m_Direction: 1
+  m_Center: {x: -0.05, y: 1.5, z: -0.05}
 --- !u!1001 &3276896453272361599
 PrefabInstance:
   m_ObjectHideFlags: 0
