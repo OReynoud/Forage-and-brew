@@ -58,6 +58,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
     [Foldout("Debug")] public bool loadAllRecipes;
     [Foldout("Debug")] public bool loadAllIngredients;
     [Foldout("Debug")] public bool loadHistoric;
+    [Foldout("Debug")] public bool debugCommands;
     [Foldout("Debug")][ShowIf("loadOrders")] public List<LetterContentSo> OrdersToLoad;
     [Foldout("Debug")][ShowIf("loadHistoric")] public List<LetterContentSo> HistoricToLoad;
 
@@ -216,7 +217,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
         
         if (!emptyOrderPage)
         {
-            Debug.Log(AutoFlip.instance.ControledBook.bookMarks[1].index);
+            //Debug.Log(AutoFlip.instance.ControledBook.bookMarks[1].index);
             var pageContainer = Instantiate(emptyPage, transform);
 
             emptyOrderPage = Instantiate(emptyPage, transform);

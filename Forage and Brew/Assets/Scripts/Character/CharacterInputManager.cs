@@ -30,6 +30,11 @@ public class CharacterInputManager : MonoBehaviour
     private void Start()
     {
         SetupInputs();
+
+        if (CodexContentManager.instance.debugCommands)
+        {
+            EnableDebugCommands();
+        }
         //EnableInputs();
     }
 
@@ -100,22 +105,15 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.PauseIn.performed += PauseInOnPerformed;
         _inputs.Player.PauseOut.performed += PauseOutOnPerformed;
         _inputs.Player.SwitchClothes.performed += SwitchClothesOnPerformed;
+        
     }
 
-    private void SwitchClothesOnPerformed(InputAction.CallbackContext obj)
+    public void EnableDebugCommands()
     {
-        CharacterMovementController.Instance.SwitchClothes();
+        _inputs.Player.DEBUG_SkipDiscoveryAnimation.performed += SkipDiscoveryAnimationOnPerformed;
     }
 
-    private void PauseOutOnPerformed(InputAction.CallbackContext obj)
-    {
-        InfoDisplayManager.instance.ShowPause();
-    }
 
-    private void PauseInOnPerformed(InputAction.CallbackContext obj)
-    {
-        InfoDisplayManager.instance.HidePause();
-    }
 
     #endregion
 
@@ -364,7 +362,17 @@ public class CharacterInputManager : MonoBehaviour
         
         BasketInputManager.Instance.NextBasketSet();
     }
+    
 
+    private void PauseOutOnPerformed(InputAction.CallbackContext obj)
+    {
+        InfoDisplayManager.instance.ShowPause();
+    }
+
+    private void PauseInOnPerformed(InputAction.CallbackContext obj)
+    {
+        InfoDisplayManager.instance.HidePause();
+    }
     #endregion
 
 
@@ -579,6 +587,30 @@ public class CharacterInputManager : MonoBehaviour
         if (!MailBoxBehaviour.instance || !CharacterInteractController.Instance.CurrentNearMailBoxBehaviour) 
             return;
         MailBoxBehaviour.instance.PassToNextLetter();
+    }
+
+    #endregion
+
+    #region Debug Input Callbacks
+
+        
+    private void SkipDiscoveryAnimationOnPerformed(InputAction.CallbackContext obj)
+    {
+        StopCoroutine(AutoFlip.instance.presentNewCodexContentContainer);
+        foreach (var display in CodexContentManager.instance.recipes)
+        {
+            display.RemoveDissolve();
+        }
+        
+        CodexContentManager.instance.pageIndexesToCheck.Clear();
+        EnableCodexInputs();
+        EnableCodexExitInput();
+        EnableMoveInputs();
+    }
+
+    private void SwitchClothesOnPerformed(InputAction.CallbackContext obj)
+    {
+        CharacterMovementController.Instance.SwitchClothes();
     }
 
     #endregion
