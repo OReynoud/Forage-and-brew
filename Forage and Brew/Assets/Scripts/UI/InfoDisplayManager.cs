@@ -141,9 +141,9 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
         sfxSlider.value = volumeFX;
     }
 
-    private void UpdateCodexSprite()
+    private void UpdateCodexSprite(bool state)
     {
-        crossImage.sprite = CharacterInputManager.Instance.showCodex ? downArrow : upArrow;
+        crossImage.sprite = state ? downArrow : upArrow;
     }
 
     private void UpdateUIVisibility(bool arg0)
