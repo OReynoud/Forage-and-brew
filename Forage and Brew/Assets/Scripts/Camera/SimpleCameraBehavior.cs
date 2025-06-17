@@ -42,6 +42,8 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
     [SerializeField] [ReadOnly] private bool fixedPos;
     [SerializeField] [ReadOnly] private bool fixedRotation;
 
+    private bool localCodexShow;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -160,17 +162,17 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
         counter = 0;
     }
 
-    private void UpdateCamWithCodex()
+    private void UpdateCamWithCodex(bool state)
     {
-        if (CharacterInputManager.Instance.showCodex)
+        if (state)
         {
             ApplyScriptableCamSettings(codexEnterTime);
-            InfoDisplayManager.instance.ShowBackground();
+            localCodexShow = true;
         }
         else
         {
             ApplyScriptableCamSettings(codexExitTime);
-            InfoDisplayManager.instance.HideBackground();
+            localCodexShow = false;
         }
     }
 
@@ -280,7 +282,7 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
         }
 
 
-        if (CharacterInputManager.Instance.showCodex)
+        if (localCodexShow)
         {
             targetFocalLength = Mathf.Lerp(TargetCamSettings.targetFocalLength,
                 TargetCamSettings.targetFocalLength - codexCamSettings.targetFocalLength, counter / transitionTime);

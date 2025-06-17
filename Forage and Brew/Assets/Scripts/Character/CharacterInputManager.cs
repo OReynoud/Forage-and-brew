@@ -9,14 +9,16 @@ public class CharacterInputManager : MonoBehaviour
     public static CharacterInputManager Instance { get; private set; }
 
     private InputSystem_Actions _inputs;
-    
 
-    public UnityEvent OnCodexUse { get; set; } = new();
+
+    public UnityEvent<bool> OnCodexUse { get; set; } = new();
     public UnityEvent<bool> OnNavigationChange { get; set; } = new();
     public UnityEvent<bool> OnSelectRecipe { get; set; } = new();
     public UnityEvent<bool> OnInputsEnabled { get; set; } = new();
+
+    [BoxGroup("Codex")][Range(0,1)] public float percentAnimDelayOpenCodex;
+    [BoxGroup("Codex")]public bool showCodex;
     
-    [BoxGroup("Debug")]public bool showCodex;
 
 
     #region Unity Callbacks
@@ -507,12 +509,10 @@ public class CharacterInputManager : MonoBehaviour
     public void EnterCodexMethod()
     {
         CharacterMovementController.Instance.Move(Vector2.zero);
-        showCodex = true;
+        //showCodex = true;
         
         if (OnCodexUse != null)
-            OnCodexUse.Invoke();
-        
-        EnableCodexExit();
+            OnCodexUse.Invoke(true);
 
         DisableMailInputs();
         DisableInteractInputs();
@@ -527,11 +527,9 @@ public class CharacterInputManager : MonoBehaviour
 
     private void CodexLeaveOnPerformed(InputAction.CallbackContext obj)
     {
-        showCodex = false;
-        
         OnNavigationChange.Invoke(false);
         if (OnCodexUse != null)
-            OnCodexUse.Invoke();
+            OnCodexUse.Invoke(false);
         _inputs.Player.CodexLeave.Disable();
         _inputs.Player.CodexEnter.Enable();
         

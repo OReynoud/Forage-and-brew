@@ -5,6 +5,7 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
 {
     [SerializeField] public Animator animator;
     [SerializeField] public AudioSource purrSound;
+    [SerializeField] public GameObject codexObject;
 
     [BoxGroup("Blinking Animation")] [SerializeField] private float minTimeBetweenBlinks;
     [BoxGroup("Blinking Animation")] [SerializeField] private float maxTimeBetweenBlinks;
@@ -16,11 +17,31 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
     private static readonly int DoBlink = Animator.StringToHash("DoBlink");
     public static readonly int IsCarrying = Animator.StringToHash("IsCarrying");
     private static readonly int DoAfk = Animator.StringToHash("DoAfk");
+    private static readonly int DoCodexOpen = Animator.StringToHash("DoCodexOpen");
+    private static readonly int DoCodexClose = Animator.StringToHash("DoCodexClose");
 
 
     private void Start()
     {
         timeForNextBlink = Random.Range(minTimeBetweenBlinks, maxTimeBetweenBlinks);
+        CharacterInputManager.Instance.OnCodexUse.AddListener(UseCodex);
+    }
+
+    private void UseCodex(bool state)
+    {
+
+        if (state)
+        {
+            animator.SetTrigger(DoCodexOpen);
+        }
+        else
+        {
+            CharacterInputManager.Instance.showCodex = false;
+            animator.SetTrigger(DoCodexClose);
+            InfoDisplayManager.instance.HideBackground();
+        }
+        
+
     }
 
     private void Update()

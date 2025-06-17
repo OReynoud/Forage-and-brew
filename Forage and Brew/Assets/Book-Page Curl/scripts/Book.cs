@@ -159,7 +159,7 @@ public class Book : MonoBehaviour
             bookPages[i].pageBehavior.PlacePageNumberText();
         }
     }
-    public void PlayCodexSound()
+    public void PlayCodexSound(bool oui)
     {
         codexShowAudio.Stop();
         codexShowAudio.Play();
