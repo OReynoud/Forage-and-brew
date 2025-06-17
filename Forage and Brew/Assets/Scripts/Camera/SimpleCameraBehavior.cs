@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.InputSystem.Controls;
 
 public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
 {
@@ -42,6 +44,7 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
     [SerializeField] [ReadOnly] private bool fixedPos;
     [SerializeField] [ReadOnly] private bool fixedRotation;
 
+    private Dictionary<string, bool> UsingCamPosToBlendClamps = new Dictionary<string, bool>();
     private bool localCodexShow;
 
 
@@ -86,9 +89,21 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
             ApplyScriptableCamSettings();
             //Debug.Log(transform.localRotation.eulerAngles);
         }
+        
+        SetupBlendClampBools();
+        
     }
 
 
+    void SetupBlendClampBools()
+    {
+        UsingCamPosToBlendClamps.Add("XMax", false);
+        UsingCamPosToBlendClamps.Add("YMax", false);
+        UsingCamPosToBlendClamps.Add("ZMax", false);
+        UsingCamPosToBlendClamps.Add("XMin", false);
+        UsingCamPosToBlendClamps.Add("YMin", false);
+        UsingCamPosToBlendClamps.Add("ZMin", false);
+    }
     [Button]
     public void ApplyScriptableCamSettings()
     {
@@ -154,6 +169,14 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
                          Mathf.Abs(TargetCamSettings.posMinClamp.z) >= 1;
 
         //Debug.Log("Cam Settings: " + preset.name);
+
+        UsingCamPosToBlendClamps["XMax"] = previousCamSettings.posMaxClamp.x != TargetCamSettings.posMaxClamp.x;
+        UsingCamPosToBlendClamps["YMax"] = previousCamSettings.posMaxClamp.y != TargetCamSettings.posMaxClamp.y;
+        UsingCamPosToBlendClamps["ZMax"] = previousCamSettings.posMaxClamp.z != TargetCamSettings.posMaxClamp.z;
+        UsingCamPosToBlendClamps["XMin"] = previousCamSettings.posMinClamp.x != TargetCamSettings.posMinClamp.x;
+        UsingCamPosToBlendClamps["YMin"] = previousCamSettings.posMinClamp.y != TargetCamSettings.posMinClamp.y;
+        UsingCamPosToBlendClamps["ZMin"] = previousCamSettings.posMinClamp.z != TargetCamSettings.posMinClamp.z;
+        
     }
 
     private void ApplyScriptableCamSettings(float TransitionTime)
@@ -183,7 +206,9 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
         transform.localPosition = -transform.forward * TargetCamSettings.distanceFromPlayer;
         cam.focalLength = TargetCamSettings.targetFocalLength;
         overlayUiCam.focalLength = TargetCamSettings.targetFocalLength;
-        ClampCamPos();
+        
+        transform.parent.position = ClampCamPos(transform.parent.position);
+        
         //Debug.Log("Instant Cam Settings: " + TargetCamSettings.name);
     }
 
@@ -197,13 +222,42 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
     // Update is called once per frame
     public virtual void FixedUpdate()
     {
+        var maxClampBlender = new Vector3(
+            UsingCamPosToBlendClamps["XMax"] ? transform.parent.position.x : previousCamSettings.posMaxClamp.x,
+            UsingCamPosToBlendClamps["YMax"] ? transform.parent.position.y : previousCamSettings.posMaxClamp.y,
+            UsingCamPosToBlendClamps["ZMax"] ? transform.parent.position.z : previousCamSettings.posMaxClamp.z);
+        
+        var minClampBlender = new Vector3(
+            UsingCamPosToBlendClamps["XMin"] ? transform.parent.position.x : previousCamSettings.posMinClamp.x,
+            UsingCamPosToBlendClamps["YMin"] ? transform.parent.position.y : previousCamSettings.posMinClamp.y,
+            UsingCamPosToBlendClamps["ZMin"] ? transform.parent.position.z : previousCamSettings.posMinClamp.z);
+        
+        posMaxClamp = Vector3.Lerp(maxClampBlender, TargetCamSettings.posMaxClamp,
+            counter / transitionTime);
+        posMinClamp = Vector3.Lerp(minClampBlender, TargetCamSettings.posMinClamp,
+            positionLerp);
+        
+        
         if (!fixedPos)
         {
-            transform.parent.position = Vector3.Lerp(transform.parent.position, player.position + cameraOffset,
-                movement.isRunning ? positionLerp * 2.5f : positionLerp);
-            transform.localPosition =
-                Vector3.Lerp(transform.localPosition, -transform.forward * distanceFromPlayer, positionLerp);
-            ClampCamPos();
+
+            
+            if (counter < transitionTime)
+            {
+                Vector3 aimedCamPos = player.position + cameraOffset;
+                aimedCamPos = ClampCamPos(aimedCamPos);
+                transform.parent.position = Vector3.Lerp(transform.parent.position, aimedCamPos, positionLerp);
+                transform.localPosition =
+                    Vector3.Lerp(transform.localPosition, -transform.forward * distanceFromPlayer, positionLerp);
+            }
+            else
+            {
+                transform.parent.position = Vector3.Lerp(transform.parent.position, player.position + cameraOffset,
+                    movement.isRunning ? positionLerp * 2.5f : positionLerp);
+                transform.localPosition =
+                    Vector3.Lerp(transform.localPosition, -transform.forward * distanceFromPlayer, positionLerp);
+                transform.parent.position = ClampCamPos(transform.parent.position);
+            }
         }
         else
         {
@@ -229,49 +283,50 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
 
     }
 
-    private void ClampCamPos()
+    private Vector3 ClampCamPos(Vector3 position)
     {
         if (!applyXYClamping || GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge)
-            return;
+            return position;
 
-        if (transform.parent.position.x > posMaxClamp.x)
+        if (position.x > posMaxClamp.x)
         {
-            transform.parent.position =
-                new Vector3(posMaxClamp.x, transform.parent.position.y, transform.parent.position.z);
+            position = new Vector3(posMaxClamp.x, position.y, position.z);
         }
 
-        if (transform.parent.position.x < posMinClamp.x)
+        if (position.x < posMinClamp.x)
         {
-            transform.parent.position =
-                new Vector3(posMinClamp.x, transform.parent.position.y, transform.parent.position.z);
+            position =
+                new Vector3(posMinClamp.x, position.y, position.z);
         }
 
-        if (transform.parent.position.z > posMaxClamp.y)
+        if (position.z > posMaxClamp.y)
         {
-            transform.parent.position =
-                new Vector3(transform.parent.position.x, transform.parent.position.y, posMaxClamp.y);
+            position =
+                new Vector3(position.x, position.y, posMaxClamp.y);
         }
 
-        if (transform.parent.position.z < posMinClamp.y)
+        if (position.z < posMinClamp.y)
         {
-            transform.parent.position =
-                new Vector3(transform.parent.position.x, transform.parent.position.y, posMinClamp.y);
+            position =
+                new Vector3(position.x, position.y, posMinClamp.y);
         }
 
         if (!applyZClamping)
-            return;
+            return position;
 
-        if (transform.parent.position.y > posMaxClamp.z)
+        if (position.y > posMaxClamp.z)
         {
-            transform.parent.position =
-                new Vector3(transform.parent.position.x, posMaxClamp.z, transform.parent.position.z);
+            position =
+                new Vector3(position.x, posMaxClamp.z, position.z);
         }
 
-        if (transform.parent.position.y < posMinClamp.z)
+        if (position.y < posMinClamp.z)
         {
-            transform.parent.position =
-                new Vector3(transform.parent.position.x, posMinClamp.z, transform.parent.position.z);
+            position =
+                new Vector3(position.x, posMinClamp.z, position.z);
         }
+
+        return position;
     }
 
     public virtual void Update()
@@ -310,9 +365,6 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
             counter / transitionTime);
         focalLerp = Mathf.Lerp(previousCamSettings.focalLerp, TargetCamSettings.focalLerp, counter / transitionTime);
 
-        posMaxClamp = Vector3.Lerp(previousCamSettings.posMaxClamp, TargetCamSettings.posMaxClamp,
-            counter / transitionTime);
-        posMinClamp = Vector3.Lerp(previousCamSettings.posMinClamp, TargetCamSettings.posMinClamp,
-            counter / transitionTime);
+
     }
 }
