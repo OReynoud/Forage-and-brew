@@ -58,6 +58,7 @@ public class CharacterInteractController : MonoBehaviour
     [SerializeField] private Vector3 choppingOffset = new(0f, 1.3f, -0.05f);
     [SerializeField] private Vector3 grindingOffset = new(0f, 1.3f, 0.1f);
     [SerializeField] private Vector3 potionBasketOffset = new(0f, 1.5f, 0f);
+    [SerializeField] private Vector3 binOffset = new(0f, 1f, 0f);
     
     
 
@@ -103,7 +104,7 @@ public class CharacterInteractController : MonoBehaviour
         else if (CurrentNearBin && collectedStack.Count > 0 && collectedStack[0].stackable is CollectedPotionBehaviour)
         {
             CurrentNearBin.DisableInteract();
-            ShoveStackInTarget(CurrentNearBin.transform, CurrentNearBin);
+            ShoveStackInTarget(CurrentNearBin.transform, CurrentNearBin, binOffset);
         }
         else if (CurrentStackableBehaviours.Count > 0)
         {

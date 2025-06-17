@@ -3,6 +3,9 @@ using UnityEngine;
 public class BinBehaviour : MonoBehaviour, IPotionAddable
 {
     [SerializeField] private GameObject interactInputCanvasGameObject;
+    [SerializeField] private Animator binAnimator;
+    
+    private static readonly int DoThrowAway = Animator.StringToHash("DoThrowAway");
     
     
     private void Start()
@@ -25,7 +28,13 @@ public class BinBehaviour : MonoBehaviour, IPotionAddable
     public void AddPotion(CollectedPotionBehaviour collectedPotionBehaviour)
     {
         GameDontDestroyOnLoadManager.Instance.OutCookedPotions.Remove(collectedPotionBehaviour);
+        collectedPotionBehaviour.OnPotionDropEnd.AddListener(DestroyPotion);
         
+        binAnimator.SetTrigger(DoThrowAway);
+    }
+    
+    private void DestroyPotion(CollectedPotionBehaviour collectedPotionBehaviour)
+    {
         Destroy(collectedPotionBehaviour.gameObject);
     }
     

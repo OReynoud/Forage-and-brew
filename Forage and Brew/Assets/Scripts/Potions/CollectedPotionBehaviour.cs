@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CollectedPotionBehaviour : MonoBehaviour, IStackable
 {
@@ -11,6 +12,7 @@ public class CollectedPotionBehaviour : MonoBehaviour, IStackable
     [SerializeField] private Transform meshParentTransform;
     
     public float StackHeight { get; private set; }
+    public UnityEvent<CollectedPotionBehaviour> OnPotionDropEnd { get; private set; } = new();
     
     private bool _isBeingDroppedInTarget;
     private Vector3 _startControl;
@@ -42,7 +44,17 @@ public class CollectedPotionBehaviour : MonoBehaviour, IStackable
 
     private void Update()
     {
-        if (!_isBeingDroppedInTarget || _lerp > 1) return;
+        if (!_isBeingDroppedInTarget) return;
+
+        if (_lerp >= 1f)
+        {
+            _isBeingDroppedInTarget = false;
+            _lerp = 0f;
+            OnPotionDropEnd.Invoke(this);
+            OnPotionDropEnd.RemoveAllListeners();
+            return;
+        }
+        
         _lerp += Time.deltaTime * _dropInTargetLerp;
         transform.position =
             Mathf.Pow(1 - _lerp, 3) * _originControl +
