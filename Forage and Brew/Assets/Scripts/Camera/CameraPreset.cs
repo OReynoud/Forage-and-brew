@@ -6,7 +6,6 @@ public class CameraPreset : ScriptableObject
 {
     public bool isFixedCameraPos;
     [ShowIf("isFixedCameraPos")] public bool isFixedCameraRotation = true;
-    [ShowIf("isFixedCameraPos")] public Vector3 fixedCameraPos;
     public Vector3 cameraOffset;
     public Vector3 cameraRotation;
     public float targetFocalLength;
@@ -18,4 +17,5 @@ public class CameraPreset : ScriptableObject
     
     [BoxGroup("Adjustable Variables")] public Vector3 posMaxClamp = new Vector3(0,0,100);
     [BoxGroup("Adjustable Variables")] public Vector3 posMinClamp = new Vector3(0,0,-100);
+    [BoxGroup("Adjustable Variables")] public AnimationCurve transitionCurve = AnimationCurve.EaseInOut(0,0,1,1);
 }
