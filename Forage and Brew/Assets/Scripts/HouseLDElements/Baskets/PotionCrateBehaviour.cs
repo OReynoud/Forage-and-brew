@@ -6,10 +6,14 @@ using UnityEngine;
 
 public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
 {
+    private static readonly int DoEnable = Animator.StringToHash("DoEnable");
+    private static readonly int DoComplete = Animator.StringToHash("DoComplete");
+
     [Header("Dependencies")]
     [SerializeField] private CollectedPotionBehaviour collectedPotionBehaviourPrefab;
     [SerializeField] private Transform meshParentTransform;
     [SerializeField] private GameObject closingColliderObject;
+    [SerializeField] private Animator potionCrateAnimator;
     
     public PotionCrateManager PotionCrateManager { get; set; }
     public OrderContentSo OrderContentSo { get; private set; }
@@ -27,6 +31,10 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
     
     [Header("UI")]
     [SerializeField] private GameObject interactInputCanvasGameObject;
+    
+    [SerializeField] private List<PotionCrateLidLayoutBehaviour> lidLayoutBehaviours;
+    private PotionCrateLidLayoutBehaviour _currentLidLayoutBehaviour;
+    
     [SerializeField] private GameObject clientCanvasGameObject;
     [SerializeField] private TMP_Text clientNameText;
     [SerializeField] private GameObject clientCheckmarkGameObject;
@@ -68,6 +76,14 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
         OrderContentSo = orderContentSo;
         ClientSo = clientSo;
         
+        foreach (PotionCrateLidLayoutBehaviour lidLayoutBehaviour in lidLayoutBehaviours)
+        {
+            lidLayoutBehaviour.gameObject.SetActive(false);
+        }
+        _currentLidLayoutBehaviour = lidLayoutBehaviours[orderContentSo.RequestedPotions.Length-1];
+        _currentLidLayoutBehaviour.gameObject.SetActive(true);
+        _currentLidLayoutBehaviour.SetLetterImageColor(clientSo.AssociatedColor);
+        
         int orderIndex = GameDontDestroyOnLoadManager.Instance.OrderPotions.FindIndex(x => x != null && x.OrderSo == OrderContentSo);
         if (orderIndex >= 0)
         {
@@ -79,12 +95,18 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
             foreach (CollectedPotionBehaviour potion in ContainedPotions)
             {
                 potion.DisableInteraction();
+                int potionIndex = orderContentSo.RequestedPotions.ToList().FindIndex(x => 
+                    (x.IsSpecific && x.Potion == potion.PotionValuesSo) ||
+                    (!x.IsSpecific && (x.ValidTag & potion.PotionValuesSo.effectiveTags) != 0));
+                _currentLidLayoutBehaviour.EnablePotionCheckMark(potionIndex);
             }
         }
         
         // clientNameText.text = ClientSo.Name;
         
         DoesNeedToCheckAvailability = true;
+        
+        potionCrateAnimator.SetTrigger(DoEnable);
         
         CheckCompletion();
     }
@@ -95,6 +117,10 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
         ResetCrateContent();
         DoesNeedToCheckAvailability = true;
         IsFulfilled = false;
+        foreach (PotionCrateLidLayoutBehaviour lidLayoutBehaviour in lidLayoutBehaviours)
+        {
+            lidLayoutBehaviour.DisablePotionCheckMarks();
+        }
         // clientCheckmarkGameObject.SetActive(false);
     }
 
@@ -119,6 +145,11 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
         collectedPotionBehaviour.EnablePhysics();
         collectedPotionBehaviour.transform.SetParent(meshParentTransform);
         CloseCollider();
+        
+        int potionIndex = OrderContentSo.RequestedPotions.ToList().FindIndex(x => 
+            (x.IsSpecific && x.Potion == collectedPotionBehaviour.PotionValuesSo) ||
+            (!x.IsSpecific && (x.ValidTag & collectedPotionBehaviour.PotionValuesSo.effectiveTags) != 0));
+        _currentLidLayoutBehaviour.EnablePotionCheckMark(potionIndex);
         
         CheckCompletion();
     }
@@ -181,6 +212,8 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
         {
             // clientCheckmarkGameObject.SetActive(true);
             IsFulfilled = true;
+        
+            potionCrateAnimator.SetTrigger(DoComplete);
         }
     }
     
