@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class IngredientPageDisplay : PageBehavior
@@ -84,24 +84,33 @@ public class IngredientPageDisplay : PageBehavior
             textLocation.enabled = false;
         }
 
-        // int textCounter =0;
-        // int maxValue = Enum.GetValues(typeof(SpawnLocation)).Cast<int>().Max();
-        // for (int mask = maxValue; mask > 0; mask >>= 1)
-        // {
-        //     SpawnLocation currentSpawnLocation = (SpawnLocation)mask;
-        //     if ((currentSpawnLocation & ingredientToDisplay.SpawnLocations) != 0)
-        //     {
-        //         textCounter++;
-        //         ingredientLocations[textCounter].enabled = true;
-        //         string spawnLocationText = currentSpawnLocation.ToString();
-        //         MatchCollection caps = Regex.Matches(spawnLocationText, "[A-Z]");
-        //         for (int i = caps.Count - 1; i >= 1; i++)
-        //         {
-        //             //spawnLocationText[caps[i].Index] = (caps[i].Value[0] - (char)32);
-        //         }
-        //         ingredientLocations[textCounter].text = currentSpawnLocation.ToString();
-        //     }
-        // }
+        int textCounter = 0;
+        int maxValue = Enum.GetValues(typeof(SpawnLocation)).Cast<int>().Max();
+        
+        for (int mask = maxValue; mask > 0; mask >>= 1)
+        {
+            SpawnLocation currentSpawnLocation = (SpawnLocation)mask;
+            
+            if ((currentSpawnLocation & ingredientToDisplay.SpawnLocations) != 0)
+            {
+                string spawnLocationText = currentSpawnLocation.ToString();
+                StringBuilder spawnLocationTextBuilder = new(spawnLocationText);
+                MatchCollection caps = Regex.Matches(spawnLocationText, "[A-Z]");
+                
+                for (int i = caps.Count - 1; i >= 1; i--)
+                {
+                    spawnLocationTextBuilder[caps[i].Index] = (char)(caps[i].Value[0] + 32); // Convert to lowercase
+                    spawnLocationTextBuilder.Insert(caps[i].Index, ' '); // Insert space before the lowercase letter
+                }
+                
+                spawnLocationTextBuilder.Insert(0, "- ");
+                
+                ingredientLocations[textCounter].text = spawnLocationTextBuilder.ToString();
+                ingredientLocations[textCounter].enabled = true;
+                textCounter++;
+            }
+        }
+        
         if ((associatedIngredient.Biomes & Biome.Forest) == Biome.Forest)
             biomeImages[0].enabled = true;
         if ((associatedIngredient.Biomes & Biome.Swamp) == Biome.Swamp)
