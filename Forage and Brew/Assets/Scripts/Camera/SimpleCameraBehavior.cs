@@ -196,6 +196,11 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
 
     private void ApplyScriptableCamSettings(float TransitionTime)
     {
+        transitionStartPos = transform.parent.position;
+        transitionStartZDist = transform.localPosition;
+        transitionStartRot = transform.localRotation;
+        
+        cameraTransitionCurve = codexCamSettings.transitionCurve;
         transitionTime = TransitionTime == 0 ? 0.001f : TransitionTime;
         counter = 0;
     }

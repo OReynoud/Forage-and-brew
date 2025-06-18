@@ -46,17 +46,9 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
     [BoxGroup("Top Right")] [SerializeField]
     private TextMeshProUGUI daysPassedText;
 
-    [BoxGroup("Top Right")] [SerializeField]
-    private GameObject forestDisplay;
 
     [BoxGroup("Top Right")] [SerializeField]
-    private Image forestWeather;
-
-    [BoxGroup("Top Right")] [SerializeField]
-    private GameObject swampDisplay;
-
-    [BoxGroup("Top Right")] [SerializeField]
-    private Image swampWeather;
+    private Image weather;
 
     [BoxGroup("Top Right")] [SerializeField]
     private Image moonCyclesDisplay;
@@ -200,52 +192,10 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
 
     public void DisplayWeather()
     {
-        weatherUIContainer.sizeDelta = new Vector2(Mathf.Abs(weatherUIContainer.rect.x), inBiomeHeight);
-        forestDisplay.SetActive(false);
-        swampDisplay.SetActive(false);
-
-        Biome currentBiome = Biome.None;
-
-        switch (GameDontDestroyOnLoadManager.Instance.CurrentScene)
-        {
-            case Scene.HouseOutdoor:
-                break;
-            case Scene.Biome1:
-                currentBiome = Biome.Forest;
-                break;
-            case Scene.Biome2:
-                currentBiome = Biome.Swamp;
-                break;
-        }
-
-        switch (currentBiome)
-        {
-            case Biome.None:
-                forestDisplay.SetActive(true);
-                DisplayBiomeWeather(forestWeather);
-
-                swampDisplay.SetActive(true);
-                DisplayBiomeWeather(swampWeather);
-                weatherUIContainer.sizeDelta = new Vector2(Mathf.Abs(weatherUIContainer.rect.x), houseHeight);
-                break;
-
-            case Biome.Forest:
-                forestDisplay.SetActive(true);
-                DisplayBiomeWeather(forestWeather);
-                break;
-
-            case Biome.Swamp:
-                swampDisplay.SetActive(true);
-                DisplayBiomeWeather(swampWeather);
-                break;
-        }
+        weather.sprite = WeatherManager.Instance.CurrentWeatherState.WeatherStateSo.Icon;
+        weather.color = WeatherManager.Instance.CurrentWeatherState.WeatherStateSo.Color;
     }
-
-    private void DisplayBiomeWeather(Image weatherDisplay)
-    {
-        weatherDisplay.sprite = WeatherManager.Instance.CurrentWeatherState.WeatherStateSo.Icon;
-        weatherDisplay.color = WeatherManager.Instance.CurrentWeatherState.WeatherStateSo.Color;
-    }
+    
 
     public void DisplayDays()
     {
