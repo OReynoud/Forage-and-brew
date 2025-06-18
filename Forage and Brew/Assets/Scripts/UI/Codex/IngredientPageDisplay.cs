@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -14,6 +16,7 @@ public class IngredientPageDisplay : PageBehavior
     public Image typeImage;
     public Image[] weatherImages;
     public Image[] cyclesImages;
+    public TextMeshProUGUI[] ingredientLocations;
     public Color greyedColor;
     public WeatherStateSo[] weathers;
     public LunarCycleStateSo[] cycles;
@@ -63,6 +66,7 @@ public class IngredientPageDisplay : PageBehavior
         }
     }
 
+    private string storedText;
     public override void InitIngredient(IngredientValuesSo ingredientToDisplay)
     {
         Debug.Log("Init Ingredient");
@@ -74,6 +78,30 @@ public class IngredientPageDisplay : PageBehavior
         {
             image.enabled = false;
         }
+
+        foreach (var textLocation in ingredientLocations)
+        {
+            textLocation.enabled = false;
+        }
+
+        // int textCounter =0;
+        // int maxValue = Enum.GetValues(typeof(SpawnLocation)).Cast<int>().Max();
+        // for (int mask = maxValue; mask > 0; mask >>= 1)
+        // {
+        //     SpawnLocation currentSpawnLocation = (SpawnLocation)mask;
+        //     if ((currentSpawnLocation & ingredientToDisplay.SpawnLocations) != 0)
+        //     {
+        //         textCounter++;
+        //         ingredientLocations[textCounter].enabled = true;
+        //         string spawnLocationText = currentSpawnLocation.ToString();
+        //         MatchCollection caps = Regex.Matches(spawnLocationText, "[A-Z]");
+        //         for (int i = caps.Count - 1; i >= 1; i++)
+        //         {
+        //             //spawnLocationText[caps[i].Index] = (caps[i].Value[0] - (char)32);
+        //         }
+        //         ingredientLocations[textCounter].text = currentSpawnLocation.ToString();
+        //     }
+        // }
         if ((associatedIngredient.Biomes & Biome.Forest) == Biome.Forest)
             biomeImages[0].enabled = true;
         if ((associatedIngredient.Biomes & Biome.Swamp) == Biome.Swamp)
