@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -19,9 +20,19 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
     public GameObject transitionElement;
 
     public RectTransform maskElement;
+
+    public bool debugSleep;
     public UnityEvent OnSleep { get; set; } = new();
     
     private Coroutine _coroutine;
+
+    private void Start()
+    {
+        if (debugSleep)
+        {
+            HandleGoingToSleepTransition(transform);
+        }
+    }
 
     public void HandleSceneChange(string SceneName)
     {
@@ -40,9 +51,16 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
 
     public void HandleGoingToSleepTransition(Transform spawnPoint)
     {
-        if (OnSleep != null)
-            OnSleep.Invoke();
-        StartCoroutine(HideScreen(spawnPoint));
+        if (!debugSleep)
+        {
+            if (OnSleep != null)
+                OnSleep.Invoke();
+            StartCoroutine(HideScreen(spawnPoint));
+        }
+        else
+        {
+            StartCoroutine(HideScreen(spawnPoint));
+        }
     }
 
     private IEnumerator ChangeScenes(string sceneName)
@@ -64,6 +82,10 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         CharacterInputManager.Instance.DisableInputs();
         timer = 0;
         transitionElement.gameObject.SetActive(true);
+        
+        CharacterMovementController.Instance.rb.constraints = RigidbodyConstraints.FreezeAll;
+        CharacterMovementController.Instance.transform.GetComponent<Collider>().enabled = false;
+        
         while (timer < transitionTime)
         {
             timer += Time.unscaledDeltaTime;
@@ -76,12 +98,10 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(sleepCam,0);
         SimpleCameraBehavior.instance.InstantCamUpdate();
         
-        CharacterInteractController.Instance.transform.position = spawnPoint.position;
-        CharacterInteractController.Instance.transform.rotation = spawnPoint.rotation;
         CharacterAnimManager.instance.animator.SetTrigger(DoSleep);
         CharacterAnimManager.instance.PlayPurrSound();
-        CharacterAnimManager.instance.animator.transform.localPosition = sleepPos;
-        CharacterAnimManager.instance.animator.transform.localRotation = Quaternion.Euler(sleepRotation);
+        CharacterAnimManager.instance.transform.position = sleepPos;
+        CharacterAnimManager.instance.transform.rotation = Quaternion.Euler(sleepRotation);
         yield return new WaitForSecondsRealtime(0.1f);
         timer = 0;
         while (timer < 0.2f)
@@ -103,8 +123,10 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         }
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(camSettings,0);
         SimpleCameraBehavior.instance.InstantCamUpdate();
-        CharacterAnimManager.instance.animator.transform.localPosition = Vector3.zero;
-        CharacterAnimManager.instance.animator.transform.localRotation = Quaternion.identity;
+        CharacterAnimManager.instance.transform.position = spawnPoint.position;
+        CharacterAnimManager.instance.transform.rotation = spawnPoint.rotation;
+        CharacterMovementController.Instance.rb.constraints = RigidbodyConstraints.FreezeRotation;
+        CharacterMovementController.Instance.transform.GetComponent<Collider>().enabled = true;
         yield return new WaitForSecondsRealtime(0.5f);
         
         
@@ -152,6 +174,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
 
     public void Wake()
     {
+
         StartCoroutine(WakeUp());
     }
     private IEnumerator WakeUp()

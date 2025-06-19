@@ -123,7 +123,6 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
         cam.focalLength = scriptableCamSettings.targetFocalLength;
         overlayUiCam.focalLength = scriptableCamSettings.targetFocalLength;
         targetFocalLength = scriptableCamSettings.targetFocalLength;
-        transform.rotation = Quaternion.Euler(scriptableCamSettings.cameraRotation);
         cameraRotation = scriptableCamSettings.cameraRotation;
         cameraOffset = scriptableCamSettings.cameraOffset;
 
@@ -134,7 +133,9 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
         cameraTransitionCurve = scriptableCamSettings.transitionCurve;
 
 
+        transform.parent.position = player.position + cameraOffset;
         transform.localPosition = -transform.forward * distanceFromPlayer;
+        transform.rotation = Quaternion.Euler(scriptableCamSettings.cameraRotation);
     }
 
     [Button]
