@@ -35,7 +35,7 @@ public class CharacterMovementController : MonoBehaviour
     [SerializeField] private float runFootStepInterval;
     [SerializeField] private float footStepTimer;
     
-    private Rigidbody rb;
+    [HideInInspector]public Rigidbody rb;
     private LayerMask groundMask;
     
     private Vector3 angledVelocity;
@@ -61,11 +61,11 @@ public class CharacterMovementController : MonoBehaviour
         {
             DestroyImmediate(this);
         }
+        rb = GetComponent<Rigidbody>();
     }
     
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
         groundMask = LayerMask.GetMask("Default");
     }
     

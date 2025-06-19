@@ -10,6 +10,7 @@ public class CharacterSpawnBehaviour : MonoBehaviour
 
     private void Start()
     {
+        if (SceneTransitionManager.instance.debugSleep) return;
         if (sourceScene == GameDontDestroyOnLoadManager.Instance.CurrentScene)
         {
             characterTransform.position = transform.position;
