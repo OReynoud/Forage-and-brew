@@ -97,7 +97,7 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
                 potion.DisableInteraction();
                 int potionIndex = orderContentSo.RequestedPotions.ToList().FindIndex(x => 
                     (x.IsSpecific && x.Potion == potion.PotionValuesSo) ||
-                    (!x.IsSpecific && (x.ValidTag & potion.PotionValuesSo.effectiveTags) != 0));
+                    (!x.IsSpecific && potion.PotionValuesSo.Tags.Any(t => t.InducedTags.Contains(x.ValidTag))));
                 _currentLidLayoutBehaviour.EnablePotionCheckMark(potionIndex);
             }
         }
@@ -148,7 +148,7 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
         
         int potionIndex = OrderContentSo.RequestedPotions.ToList().FindIndex(x => 
             (x.IsSpecific && x.Potion == collectedPotionBehaviour.PotionValuesSo) ||
-            (!x.IsSpecific && (x.ValidTag & collectedPotionBehaviour.PotionValuesSo.effectiveTags) != 0));
+            (!x.IsSpecific && collectedPotionBehaviour.PotionValuesSo.Tags.Any(t => t.InducedTags.Contains(x.ValidTag))));
         _currentLidLayoutBehaviour.EnablePotionCheckMark(potionIndex);
         
         CheckCompletion();
@@ -184,7 +184,7 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
             if (index < 0)
             {
                 index = remainingRequestedPotions.FindIndex(x => !x.IsSpecific &&
-                    (x.ValidTag & containedPotion.PotionValuesSo.effectiveTags) != 0);
+                    collectedPotionSo.Tags.Any(t => t.InducedTags.Contains(x.ValidTag)));
             }
             
             remainingRequestedPotions.RemoveAt(index);
@@ -197,7 +197,8 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
                 return true;
             }
             
-            if (!requestedPotion.IsSpecific && (requestedPotion.ValidTag & collectedPotionSo.effectiveTags) != 0)
+            if (!requestedPotion.IsSpecific &&
+                collectedPotionSo.Tags.Any(t => t.InducedTags.Contains(requestedPotion.ValidTag)))
             {
                 return true;
             }

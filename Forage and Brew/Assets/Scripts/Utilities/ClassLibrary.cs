@@ -49,7 +49,7 @@ public class PotionDemand
     [field: SerializeField] public bool IsSpecific { get; private set; }
     [field: AllowNesting] [field: ShowIf("IsSpecific")] [field: SerializeField] public PotionValuesSo Potion { get; private set; }
     [field: AllowNesting] [field: HideIf("IsSpecific")] [field: SerializeField] public string Keywords { get; private set; }
-    [field: AllowNesting] [field: HideIf("IsSpecific")] [field: SerializeField] public PotionTag ValidTag { get; private set; }
+    [field: AllowNesting] [field: HideIf("IsSpecific")] [field: SerializeField] public PotionTagSo ValidTag { get; private set; }
 
     public PotionDemand(bool newIsSpecific, PotionValuesSo newPotion)
     {
@@ -57,7 +57,7 @@ public class PotionDemand
         IsSpecific = newIsSpecific;
     }
     
-    public PotionDemand(bool newIsSpecific, PotionTag newTag, string newKeywords)
+    public PotionDemand(bool newIsSpecific, PotionTagSo newTag, string newKeywords)
     {
         ValidTag = newTag;
         IsSpecific = newIsSpecific;
