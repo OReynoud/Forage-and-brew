@@ -5,25 +5,24 @@ public class CodexOpexUpdateBehavior : StateMachineBehaviour
     private bool isCodexOpenTriggered;
     private bool isCodexActiveTriggered;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-    //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        CharacterInputManager.Instance.DisableMoveInputs();
+        
+    }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if (isCodexOpenTriggered) return;
 
-        
-        CharacterMovementController.Instance.Move(Vector2.zero);
-        
         if (stateInfo.normalizedTime / stateInfo.length > CharacterInputManager.Instance.percentAnimDelayOpenCodex)
         {
             isCodexOpenTriggered = true;
             CharacterInputManager.Instance.showCodex = true;
             
             InfoDisplayManager.instance.ShowBackground();        
+            CharacterInputManager.Instance.EnableMoveInputs();
             CharacterInputManager.Instance.EnableCodexExit();
 
         }

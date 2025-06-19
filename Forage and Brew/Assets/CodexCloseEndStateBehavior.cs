@@ -4,19 +4,25 @@ public class CodexCloseEndStateBehavior : StateMachineBehaviour
 {
     public bool isExitTriggered;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-    //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        animator.SetLayerWeight(animator.GetLayerIndex("Walk_LowerBody"),1f);
+        
+        animator.SetLayerWeight(animator.GetLayerIndex("Walk_FullBody"),0f);
+    }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        animator.SetLayerWeight(animator.GetLayerIndex("Walk_LowerBody"),1 - stateInfo.normalizedTime/1.2f);
+        
+        animator.SetLayerWeight(animator.GetLayerIndex("Walk_FullBody"),stateInfo.normalizedTime/1.2f);
         if (isExitTriggered) return;
         if (stateInfo.normalizedTime > 1.1f)
         {
             isExitTriggered = true;
-            CharacterAnimManager.instance.codexObject.SetActive(false);
+            CharacterAnimManager.instance.codexObject.SetActive(false);            
+
         }
     }
 
