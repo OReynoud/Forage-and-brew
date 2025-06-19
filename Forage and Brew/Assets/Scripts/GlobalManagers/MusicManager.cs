@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -14,11 +15,9 @@ public class MusicManager : MonoBehaviour
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource ambianceSource;
     
-    [SerializeField] private AudioResource[] musicHouse;
-    [SerializeField] private AudioResource[] musicForest;
     [SerializeField] private AudioResource[] ambianceForest;
-    [SerializeField] private AudioResource[] musicSwamp;
-    [SerializeField] private AudioResource[] musicOutdoor;
+    
+    [SerializeField] private List<MusicContainer> allMusics = new List<MusicContainer>();
 
     
     private void Awake()
@@ -38,49 +37,50 @@ public class MusicManager : MonoBehaviour
     {
         switch (scene)
         {
-            // TODO: Trigger behaviour
             case Scene.HouseOutdoor:
-                musicSource.resource = musicHouse[0];
+                if (PinnedRecipe.instance.isInHouse)
+                {
+                    musicSource.resource = allMusics.Find(x => x.playsInHouse).Music;
+                }
+                else
+                {
+                    musicSource.resource = allMusics.Find(x => x.playsInHouse == false && x.Scene == Scene.HouseOutdoor).Music;
+                }
                 musicSource.Play();
                 break;
             case Scene.Biome1:
                 if (WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == cloudyWeatherState)
                 {
-                    musicSource.resource = musicForest[0];
-                    musicSource.Play();
+                    musicSource.resource = allMusics.Find(x => x.Scene == Scene.Biome1 && x.Weather == cloudyWeatherState).Music;
                     ambianceSource.resource = ambianceForest[0];
                     ambianceSource.Play();
                 }
                 else if (WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == sunnyWeatherState)
                 {
-                    musicSource.resource = musicForest[1];
-                    musicSource.Play();
+                    musicSource.resource = allMusics.Find(x => x.Scene == Scene.Biome1 && x.Weather == sunnyWeatherState).Music;
                 }
                 else if (WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == rainWeatherState)
                 {
-                    musicSource.resource = musicForest[2];
-                    musicSource.Play();
+                    musicSource.resource = allMusics.Find(x => x.Scene == Scene.Biome1 && x.Weather == rainWeatherState).Music;
                 }
                 break;
             case Scene.Biome2:
                 if (WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == cloudyWeatherState)
                 {
-                    musicSource.resource = musicSwamp[0];
-                    musicSource.Play();
+                    musicSource.resource = allMusics.Find(x => x.Scene == Scene.Biome2 && x.Weather == cloudyWeatherState).Music;
                 }
                 else if (WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == sunnyWeatherState)
                 {
-                    musicSource.resource = musicSwamp[1];
-                    musicSource.Play();
+                    musicSource.resource = allMusics.Find(x => x.Scene == Scene.Biome2 && x.Weather == sunnyWeatherState).Music;
                 }
                 else if (WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == rainWeatherState)
                 {
-                    musicSource.resource = musicSwamp[2];
-                    musicSource.Play();
+                    musicSource.resource = allMusics.Find(x => x.Scene == Scene.Biome1 && x.Weather == rainWeatherState).Music;
                 }
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(scene), scene, null);
         }
+        musicSource.Play();
     }
 }

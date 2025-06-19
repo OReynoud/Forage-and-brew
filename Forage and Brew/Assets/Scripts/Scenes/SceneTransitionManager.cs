@@ -124,7 +124,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         timer = 0;
         transitionElement.gameObject.SetActive(true);
         maskElement.sizeDelta = Vector2.zero;
-        yield return new WaitForSecondsRealtime(0.5f);
+        yield return new WaitForSecondsRealtime(0.2f);
         while (timer < transitionTime)
         {
             timer += Time.unscaledDeltaTime;
