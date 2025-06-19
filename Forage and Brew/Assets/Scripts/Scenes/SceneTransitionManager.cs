@@ -9,7 +9,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
     private static readonly int DoSleep = Animator.StringToHash("DoSleep");
     private static readonly int DoWakeUp = Animator.StringToHash("DoWakeUp");
     public float transitionTime;
-    private float timer;
+    public float timer;
     public float sleepWaitTime;
     public Vector3 sleepPos;
     public Vector3 sleepRotation;
@@ -43,6 +43,10 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
 
     public void HandleLoadNewScene(Scene newScene)
     {
+        transitionElement.gameObject.SetActive(false);
+        timer = 0;
+        transitionElement.gameObject.SetActive(true);
+        maskElement.sizeDelta = Vector2.zero;
         if (_coroutine != null)
             StopCoroutine(_coroutine);
         _coroutine = StartCoroutine(ShowScreen(newScene));
@@ -142,11 +146,11 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
     }
     private IEnumerator ShowScreen(Scene newScene)
     {
-        transitionElement.gameObject.SetActive(false);
-        timer = 0;
-        transitionElement.gameObject.SetActive(true);
-        maskElement.sizeDelta = Vector2.zero;
-        yield return new WaitForSecondsRealtime(0.2f);
+        Debug.Log(timer);
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForFixedUpdate();
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForFixedUpdate();
         while (timer < transitionTime)
         {
             timer += Time.unscaledDeltaTime;

@@ -35,6 +35,7 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
     public CameraPreset TargetCamSettings { get; private set; }
 
     [BoxGroup("References")] public CameraPreset codexCamSettings;
+    [BoxGroup("References")] public AnimationCurve alternateTransitionCurve;
     public float codexEnterTime;
     public float codexExitTime;
 
@@ -164,16 +165,23 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
         previousCamSettings = TargetCamSettings;
         TargetCamSettings = preset;
 
+        
+        if (counter < transitionTime)
+        {
+            cameraTransitionCurve = alternateTransitionCurve;
+        }
+        else
+        {
+            cameraTransitionCurve = TargetCamSettings.transitionCurve;
+        }
+
         counter = 0;
-
-
         transitionTime = TransitionTime == 0 ? 0.001f : TransitionTime;
 
         transitionStartPos = transform.parent.position;
         transitionStartZDist = transform.localPosition;
         transitionStartRot = transform.localRotation;
         
-        cameraTransitionCurve = TargetCamSettings.transitionCurve;
 
 
         fixedPos = TargetCamSettings.isFixedCameraPos;
