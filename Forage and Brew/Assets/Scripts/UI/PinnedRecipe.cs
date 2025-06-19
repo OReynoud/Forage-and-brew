@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class PinnedRecipe : Singleton<PinnedRecipe>
 {
     private RectTransform ownTransform; //Behavior logic
-    private bool isPinned; //Behavior logic
+    public bool isPinned { get; private set; } //Behavior logic
     private bool canShow; //Behavior logic
     private int writingIndex; // Display logic
     private Sprite[] potionIngredients; // Display logic
@@ -44,6 +44,8 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
     [BoxGroup("Recipe Steps")] public Image[] singleActionImage;
     [BoxGroup("Recipe Steps")] public Image[] checkMarkImage;
     private List<Sprite> tempCollectedIngredientsList = new List<Sprite>();
+
+    public bool isInHouse { get; set; } = false;
 
 
     public void Start()
@@ -135,8 +137,8 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         }
 
         CurrentTemperatureAndIngredients = GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients;
-        // TODO: Trigger behaviour
-        if (GameDontDestroyOnLoadManager.Instance.CurrentScene == Scene.HouseOutdoor)
+        
+        if (isInHouse)
         {
             recipeStepsCanvas.alpha = 1;
             ShowRecipeSteps();
@@ -148,6 +150,15 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         }
 
         isPinned = true;
+    }
+
+    /// <summary>
+    /// Use only if recipe has already been pinned
+    /// </summary>
+    public void PinRecipe()
+    {
+        PinRecipe(pinnedRecipe, potionIngredients);
+
     }
 
     public List<TemperatureChallengeIngredients> CurrentTemperatureAndIngredients { get; private set; } = new();
@@ -321,8 +332,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
     public void UpdateRecipeStepsCounter()
     {
-        // TODO: Trigger behaviour
-        if (!isPinned || GameDontDestroyOnLoadManager.Instance.CurrentScene != Scene.HouseOutdoor) return;
+        if (!isInHouse) return;
         writingIndex = 0;
 
         for (int i = 0; i < checkMarkImage.Length; i++)
@@ -488,7 +498,6 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
     public void UpdateIngredientCounter()
     {
-        // TODO: Trigger behaviour
         if (!isPinned) return;
 
         writingIndex = 0;

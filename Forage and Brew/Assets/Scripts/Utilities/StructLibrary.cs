@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Audio;
 
 
 [Serializable]
@@ -9,6 +10,17 @@ public struct SceneName
 {
     [field: SerializeField] public Scene Scene { get; private set; }
     [field: SerializeField] public string Name { get; private set; }
+}
+
+[Serializable]
+public struct MusicContainer
+{
+    [field: SerializeField] public Scene Scene { get; private set; }
+    [field: SerializeField] public string Name { get; private set; }
+    [field: SerializeField] public bool playsInHouse { get; private set; }
+    [field: SerializeField] public WeatherStateSo Weather { get; private set; }
+    [field: SerializeField] public AudioResource Music { get; private set; }
+    [field: SerializeField] public bool NightTime { get; private set; }
 }
 
 [Serializable]
