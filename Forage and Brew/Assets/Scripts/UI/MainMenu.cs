@@ -25,7 +25,7 @@ public class MainMenu : MonoBehaviour
     
     public void StartGame()
     {
-        SceneManager.LoadScene("SC_HouseTintin_Perso");
+        SceneManager.LoadScene("SC_NewHouse");
     }
 
     public void ShowOptions()
