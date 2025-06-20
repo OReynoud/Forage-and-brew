@@ -2,6 +2,7 @@ using System;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Events;
 
 public class CharacterMovementController : MonoBehaviour
 {
@@ -103,6 +104,8 @@ public class CharacterMovementController : MonoBehaviour
     
     public void Move(Vector2 inputDir)
     {
+        if (transitionWalk)
+            return;
         playerDir = Quaternion.AngleAxis(SimpleCameraBehavior.instance.cameraRotation.y, Vector3.up) * new Vector3(inputDir.x,0,inputDir.y);
     }
 
@@ -198,17 +201,22 @@ public class CharacterMovementController : MonoBehaviour
     private float timeToWalk;
     public void TriggerWalkTransition(Vector3 locationToWalk)
     {
+        CharacterInputManager.Instance.DisableMoveInputs();
         aimedLocation = locationToWalk;
         transitionWalk = true;
         float walkDistance = Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(aimedLocation.x, aimedLocation.z)) - 0.2f;
+        transform.LookAt(locationToWalk);
+        playerDir = transform.forward;
         timeToWalk = walkDistance / walkSpeed;
+        Debug.DrawLine(transform.position, locationToWalk, Color.red, 5);
     }
+
+    public UnityEvent FinishWalkToLocation = new ();
 
     void WalkToLocation()
     {
         if ( timeToWalk > 0)
         {
-            playerDir = transform.forward;
             rb.linearVelocity = playerDir * walkSpeed;
             timeToWalk -= Time.deltaTime;
 
@@ -218,6 +226,9 @@ public class CharacterMovementController : MonoBehaviour
             playerDir *= 0;
             rb.linearVelocity *= 0;
             transitionWalk = false;
+            if (FinishWalkToLocation != null)
+                FinishWalkToLocation.Invoke();
+            CharacterInputManager.Instance.EnableMoveInputs();
         }
     }
 

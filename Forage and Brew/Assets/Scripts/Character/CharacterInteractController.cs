@@ -33,6 +33,9 @@ public class CharacterInteractController : MonoBehaviour
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public GrindingCountertopBehaviour CurrentNearGrindingCountertop { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<IngredientBasketBehaviour> CurrentNearIngredientBaskets { get; set; } = new();
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<PotionCrateBehaviour> CurrentNearPotionBaskets { get; set; } = new();
+    
+    
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public ICinematicInteraction CurrentNearCinematicInteraction { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public bool AreHandsFull { get; private set; }
 
     private Rigidbody rb { get; set; }
@@ -128,6 +131,15 @@ public class CharacterInteractController : MonoBehaviour
         {
             CurrentNearMailBoxBehaviour.ShowLetters();
             // Debug.Log("Check letters");
+        }
+        else if (CurrentNearCinematicInteraction != null)
+        {
+            switch (CurrentNearCinematicInteraction)
+            {
+                case CodexPickUp codex:
+                    codex.StartInteraction();
+                    break;
+            }
         }
     }
 
