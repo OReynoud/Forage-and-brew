@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class LetterMailBoxDisplayBehaviour : PageBehavior
@@ -59,7 +58,7 @@ public class LetterMailBoxDisplayBehaviour : PageBehavior
             return;
         }
 
-        bills.enabled = letterType == LetterType.Thanks;
+        bills.enabled = letterType is LetterType.Thanks or LetterType.Gift;
         moneyReward = letterContent.OrderContent.MoneyReward;
         moneyText.text = moneyReward.ToString();
         daysLeftToComplete = letterContent.OrderContent.TimeToFulfill;

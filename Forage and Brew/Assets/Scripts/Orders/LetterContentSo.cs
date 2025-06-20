@@ -21,4 +21,8 @@ public class LetterContentSo : ScriptableObject
     [field: ShowIf("LetterType", LetterType.Orders)]
     [field: SerializeField]
     public LetterContentSo RelatedSuccessLetter { get; private set; }
+
+    [field: ShowIf("LetterType", LetterType.Gift)]
+    [field: SerializeField]
+    public int MoneyAmount { get; private set; }
 }

@@ -280,6 +280,10 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                 case LetterType.Thanks:
                     CodexContentManager.instance.AddHistoricPage(letter.Item2, letter.Item1.LetterContent);
                     break;
+                case LetterType.Gift:
+                    CodexContentManager.instance.AddHistoricPage(letter.Item1.LetterContent, null);
+                    MoneyManager.Instance.AddMoney(letter.Item1.LetterContent.MoneyAmount);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

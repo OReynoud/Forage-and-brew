@@ -17,7 +17,7 @@ public class HistoricCodexDisplayBehavior : PageBehavior
     {
         clientNameText.text = originLetter.Client.Name;
         description1Text.text = originLetter.TextContent;
-        description2Text.text = successLetter.TextContent;
+        description2Text.text = successLetter ? successLetter.TextContent : "";
         backGround1.color = backGround2.color = originLetter.Client.AssociatedColor;
     }
 }
