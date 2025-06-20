@@ -32,17 +32,22 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
     [Header("UI")]
     [SerializeField] private GameObject interactInputCanvasGameObject;
     
+    [SerializeField] private GameObject lidCanvasGameObject;
     [SerializeField] private List<PotionCrateLidLayoutBehaviour> lidLayoutBehaviours;
     private PotionCrateLidLayoutBehaviour _currentLidLayoutBehaviour;
     
-    [SerializeField] private GameObject clientCanvasGameObject;
+    [SerializeField] private GameObject popupCanvasGameObject;
     [SerializeField] private TMP_Text clientNameText;
-    [SerializeField] private GameObject clientCheckmarkGameObject;
+    [SerializeField] private PotionDemandElementBehaviour potionElementPrefab;
+    [SerializeField] private Transform potionElementParentTransform;
+    private readonly List<PotionDemandElementBehaviour> _potionElements = new();
+    [SerializeField] private TMP_Text priceText;
     
     
     private void Start()
     {
         interactInputCanvasGameObject.SetActive(false);
+        DisablePopup();
         
         _closingColliderDefaultLocalPosition = closingColliderObject.transform.localPosition;
     }
@@ -67,15 +72,29 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
     {
         interactInputCanvasGameObject.SetActive(false);
     }
+    
+    
+    public void EnablePopup()
+    {
+        popupCanvasGameObject.SetActive(true);
+    }
+    
+    public void DisablePopup()
+    {
+        popupCanvasGameObject.SetActive(false);
+    }
 
 
     public void EnableCrate(OrderContentSo orderContentSo, ClientSo clientSo)
     {
+        if (gameObject.activeSelf) return;
+        
         gameObject.SetActive(true);
         
         OrderContentSo = orderContentSo;
         ClientSo = clientSo;
         
+        lidCanvasGameObject.SetActive(true);
         foreach (PotionCrateLidLayoutBehaviour lidLayoutBehaviour in lidLayoutBehaviours)
         {
             lidLayoutBehaviour.gameObject.SetActive(false);
@@ -83,6 +102,19 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
         _currentLidLayoutBehaviour = lidLayoutBehaviours[orderContentSo.RequestedPotions.Length-1];
         _currentLidLayoutBehaviour.gameObject.SetActive(true);
         _currentLidLayoutBehaviour.SetLetterImageColor(clientSo.AssociatedColor);
+        
+        clientNameText.text = ClientSo.Name;
+        
+        for (int i = 0; i < OrderContentSo.RequestedPotions.Length; i++)
+        {
+            PotionDemandElementBehaviour elementBehaviour = Instantiate(potionElementPrefab, potionElementParentTransform);
+            
+            elementBehaviour.SetImage(OrderContentSo.RequestedPotions[i]);
+            
+            _potionElements.Add(elementBehaviour);
+        }
+
+        priceText.text = OrderContentSo.MoneyReward.ToString();
         
         int orderIndex = GameDontDestroyOnLoadManager.Instance.OrderPotions.FindIndex(x => x != null && x.OrderSo == OrderContentSo);
         if (orderIndex >= 0)
@@ -99,10 +131,9 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
                     (x.IsSpecific && x.Potion == potion.PotionValuesSo) ||
                     (!x.IsSpecific && potion.PotionValuesSo.Tags.Any(t => t.InducedTags.Contains(x.ValidTag))));
                 _currentLidLayoutBehaviour.EnablePotionCheckMark(potionIndex);
+                _potionElements[potionIndex].EnableCheckMark();
             }
         }
-        
-        // clientNameText.text = ClientSo.Name;
         
         DoesNeedToCheckAvailability = true;
         
@@ -117,11 +148,17 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
         ResetCrateContent();
         DoesNeedToCheckAvailability = true;
         IsFulfilled = false;
+        
+        foreach (PotionDemandElementBehaviour potionElement in _potionElements)
+        {
+            Destroy(potionElement.gameObject);
+        }
+        _potionElements.Clear();
+        
         foreach (PotionCrateLidLayoutBehaviour lidLayoutBehaviour in lidLayoutBehaviours)
         {
             lidLayoutBehaviour.DisablePotionCheckMarks();
         }
-        // clientCheckmarkGameObject.SetActive(false);
     }
 
 
@@ -174,6 +211,8 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
     {
         if (OrderContentSo == null || IsFulfilled) return false;
 
+        return true;
+        
         List<PotionDemand> remainingRequestedPotions = OrderContentSo.RequestedPotions.ToList();
 
         foreach (CollectedPotionBehaviour containedPotion in ContainedPotions)
@@ -215,12 +254,15 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
             IsFulfilled = true;
         
             potionCrateAnimator.SetTrigger(DoComplete);
+            lidCanvasGameObject.SetActive(false);
         }
     }
     
     
     private void OnTriggerEnter(Collider other)
     {
+        PotionCrateManager.ManageTriggerEnter(this);
+        
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
             characterInteractController.CurrentNearPotionBaskets.Add(this);
@@ -230,7 +272,8 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
                 !IsFulfilled)
             {
                 EnableInteract();
-            } }
+            }
+        }
     }
 
     private void OnTriggerStay(Collider other)
@@ -256,6 +299,10 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
 
     private void OnTriggerExit(Collider other)
     {
+        PotionCrateManager.ManageTriggerExit(this);
+        
+        DisablePopup();
+        
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
             if (characterInteractController.CurrentNearPotionBaskets.Contains(this))
