@@ -59,6 +59,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
     [Foldout("Debug")] public bool loadAllIngredients;
     [Foldout("Debug")] public bool loadHistoric;
     [Foldout("Debug")] public bool debugCommands;
+    [Foldout("Debug")] public bool codexIsUnlocked;
     [Foldout("Debug")][ShowIf("loadOrders")] public List<LetterContentSo> OrdersToLoad;
     [Foldout("Debug")][ShowIf("loadHistoric")] public List<LetterContentSo> HistoricToLoad;
 

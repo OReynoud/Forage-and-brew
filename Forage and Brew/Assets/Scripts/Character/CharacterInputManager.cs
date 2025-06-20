@@ -37,6 +37,11 @@ public class CharacterInputManager : MonoBehaviour
         {
             EnableDebugCommands();
         }
+
+        if (!CodexContentManager.instance.codexIsUnlocked)
+        {
+            DisableCodexInputs();
+        }
         //EnableInputs();
     }
 
