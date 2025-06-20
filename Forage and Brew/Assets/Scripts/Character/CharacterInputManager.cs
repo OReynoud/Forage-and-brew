@@ -8,7 +8,7 @@ public class CharacterInputManager : MonoBehaviour
     // Singleton
     public static CharacterInputManager Instance { get; private set; }
 
-    private InputSystem_Actions _inputs;
+    [HideInInspector]public InputSystem_Actions _inputs;
 
 
     public UnityEvent<bool> OnCodexUse { get; set; } = new();
@@ -36,6 +36,11 @@ public class CharacterInputManager : MonoBehaviour
         if (CodexContentManager.instance.debugCommands)
         {
             EnableDebugCommands();
+        }
+
+        if (!CodexContentManager.instance.codexIsUnlocked)
+        {
+            DisableCodexInputs();
         }
         //EnableInputs();
     }

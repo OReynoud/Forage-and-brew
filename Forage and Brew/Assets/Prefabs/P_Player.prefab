@@ -4819,6 +4819,7 @@ MonoBehaviour:
   walkFootStepInterval: 0.39
   runFootStepInterval: 0.295
   footStepTimer: 0
+  rb: {fileID: 0}
 --- !u!114 &454307287895772554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4908,7 +4909,7 @@ MonoBehaviour:
   obtainedPotionImage: {fileID: 245865309489610941}
   obtainedPotionLiquidImage: {fileID: 2183737480128278876}
   cauldronCameraTransitionTime: 0.5
-  characterAnimator: {fileID: 0}
+  characterAnimator: {fileID: 6109746235251564882}
   characterStirPosition: {x: 0, y: 0, z: 2}
   characterStirRotation: {x: 0, y: 180, z: 0}
 --- !u!114 &716087170929209681
@@ -5062,6 +5063,10 @@ MonoBehaviour:
   codexObject: {fileID: 642994282701801207}
   minTimeBetweenBlinks: 2
   maxTimeBetweenBlinks: 5
+  minTimeBetweenTail: 7
+  maxTimeBetweenTail: 13
+  minTimeBetweenFlick: 1
+  maxTimeBetweenFlick: 10
   timeBeforeAfk: 10
 --- !u!114 &719871899960714664
 MonoBehaviour:
@@ -5080,20 +5085,8 @@ MonoBehaviour:
   sunnyWeatherState: {fileID: 11400000, guid: a00e85be8514d87449947c1a76125a1a, type: 2}
   musicSource: {fileID: 8279311650586560801}
   ambianceSource: {fileID: 3399050376964395716}
-  musicHouse:
-  - {fileID: 8300000, guid: 8c172b70bb7fdc843af094c945333a22, type: 3}
-  musicForest:
-  - {fileID: 8300000, guid: e600e8bbff31532489a755d11bc503df, type: 3}
-  - {fileID: 8300000, guid: 8f443958402574c4899550d806279fcb, type: 3}
-  - {fileID: 8300000, guid: 0e497260a392572499ed09cd0c893c44, type: 3}
   ambianceForest:
   - {fileID: 8300000, guid: f1117fc4ce0bba9468cad6a890318a49, type: 3}
-  musicSwamp:
-  - {fileID: 8300000, guid: 2152ccc1586bb764fafefcc6c92b746b, type: 3}
-  - {fileID: 8300000, guid: 0470d72f9cadc1042aabd58418edbdb5, type: 3}
-  - {fileID: 8300000, guid: e4d420e70cb32704791730724a58c930, type: 3}
-  musicOutdoor:
-  - {fileID: 8300000, guid: 22c169278d174124180eca09ae14c048, type: 3}
   allMusics:
   - <Scene>k__BackingField: 1
     <Name>k__BackingField: Indoor
