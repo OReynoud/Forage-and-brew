@@ -6,7 +6,8 @@ public class IngredientCounterContainer : MonoBehaviour
 {
     private int counter;
     public IngredientValuesSo trackedIngredient;
-    public Sprite[] ingredientStateSprites;    
+    public Sprite[] ingredientStateSprites;
+    public Color[] ingredientStateColors = new[] {Color.blue, Color.green,  };
     
     public TextMeshProUGUI ingredientAmountDisplay;
     public Image ingredientBackground;
@@ -67,12 +68,12 @@ public class IngredientCounterContainer : MonoBehaviour
             if (counter > ingredientUpperLimit)
             {
                 ingredientBackground.sprite = ingredientStateSprites[0];
-                ingredientBackground.color = Color.blue;
+                ingredientBackground.color = ingredientStateColors[0];
             }
             else
             {
                 ingredientBackground.sprite = ingredientStateSprites[1];
-                ingredientBackground.color = Color.green;
+                ingredientBackground.color = ingredientStateColors[1];
             }
         }
     }

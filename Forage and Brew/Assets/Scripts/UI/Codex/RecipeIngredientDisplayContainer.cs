@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class RecipeIngredientDisplayContainer : MonoBehaviour
 {
     public Sprite[] ingredientStateSprites;
+    public Color[] ingredientStateColors = new []{Color.blue, Color.green, Color.red, Color.black, };
     public IngredientValuesSo storedIngredient;
     public IngredientTypeSo storedIngredientType;
 
@@ -38,26 +39,26 @@ public class RecipeIngredientDisplayContainer : MonoBehaviour
             if (ingredientAmount == 0)
             {
                 ingredientStateHighlight.sprite = ingredientStateSprites[2];
-                ingredientStateHighlight.color = Color.red;
+                ingredientStateHighlight.color = ingredientStateColors[2];
             }
             else
             {
                 if (ingredientAmount > ingredientUpperLimit)
                 {
                     ingredientStateHighlight.sprite = ingredientStateSprites[0];
-                    ingredientStateHighlight.color = Color.blue;
+                    ingredientStateHighlight.color = ingredientStateColors[0];
                 }
                 else
                 {
                     ingredientStateHighlight.sprite = ingredientStateSprites[1];
-                    ingredientStateHighlight.color = Color.green;
+                    ingredientStateHighlight.color = ingredientStateColors[1];
                 }
             }
         }
         else
         {
             ingredientRequiredSprite.enabled = false;
-            ingredientStateHighlight.color = Color.black;
+            ingredientStateHighlight.color = ingredientStateColors[^1];
             ingredientStateHighlight.sprite = ingredientStateSprites[^1];
         }
 
@@ -73,19 +74,19 @@ public class RecipeIngredientDisplayContainer : MonoBehaviour
         if (ingredientAmount == 0)
         {
             ingredientStateHighlight.sprite = ingredientStateSprites[2];
-            ingredientStateHighlight.color = Color.red;
+            ingredientStateHighlight.color = ingredientStateColors[2];
         }
         else
         {
             if (ingredientAmount > ingredientUpperLimit)
             {
                 ingredientStateHighlight.sprite = ingredientStateSprites[0];
-                ingredientStateHighlight.color = Color.blue;
+                ingredientStateHighlight.color = ingredientStateColors[0];
             }
             else
             {
                 ingredientStateHighlight.sprite = ingredientStateSprites[1];
-                ingredientStateHighlight.color = Color.green;
+                ingredientStateHighlight.color = ingredientStateColors[1];
             }
         }
 
@@ -127,19 +128,19 @@ public class RecipeIngredientDisplayContainer : MonoBehaviour
         if (counter == 0)
         {
             ingredientStateHighlight.sprite = ingredientStateSprites[2];
-            ingredientStateHighlight.color = Color.red;
+            ingredientStateHighlight.color = ingredientStateColors[2];
         }
         else
         {
             if (counter > ingredientUpperLimit)
             {
                 ingredientStateHighlight.sprite = ingredientStateSprites[0];
-                ingredientStateHighlight.color = Color.blue;
+                ingredientStateHighlight.color = ingredientStateColors[0];
             }
             else
             {
                 ingredientStateHighlight.sprite = ingredientStateSprites[1];
-                ingredientStateHighlight.color = Color.green;
+                ingredientStateHighlight.color = ingredientStateColors[1];
             }
         }
     }
