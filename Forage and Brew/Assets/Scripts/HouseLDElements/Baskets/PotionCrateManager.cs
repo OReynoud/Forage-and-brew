@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -94,6 +93,12 @@ public class PotionCrateManager : MonoBehaviour
     
     public void ManageTriggerExit(PotionCrateBehaviour potionCrate)
     {
+        if (_currentPotionCrate == potionCrate)
+        {
+            _currentPotionCrate.DisablePopup();
+            _currentPotionCrate = null;
+        }
+        
         _triggeredPotionCrates.Remove(potionCrate);
     }
 }

@@ -299,8 +299,6 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
     {
         PotionCrateManager.ManageTriggerExit(this);
         
-        DisablePopup();
-        
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
             if (characterInteractController.CurrentNearPotionBaskets.Contains(this))
