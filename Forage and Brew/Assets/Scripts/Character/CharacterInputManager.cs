@@ -37,11 +37,6 @@ public class CharacterInputManager : MonoBehaviour
         {
             EnableDebugCommands();
         }
-
-        if (!CodexContentManager.instance.codexIsUnlocked)
-        {
-            DisableCodexInputs();
-        }
         //EnableInputs();
     }
 
@@ -513,6 +508,9 @@ public class CharacterInputManager : MonoBehaviour
 
     public void EnterCodexMethod()
     {
+        if (!CodexContentManager.instance.codexIsUnlocked)
+            return;
+        
         CharacterMovementController.Instance.Move(Vector2.zero);
         //showCodex = true;
         

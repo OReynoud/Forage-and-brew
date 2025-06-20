@@ -21,4 +21,9 @@ public interface IStackable
     float GetStackHeight();
 }
 
+public interface ICinematicInteraction
+{
+    void StartInteraction();
+}
+
 
