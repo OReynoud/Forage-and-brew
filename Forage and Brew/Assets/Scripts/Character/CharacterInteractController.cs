@@ -100,11 +100,13 @@ public class CharacterInteractController : MonoBehaviour
         {
             CurrentNearCauldron.DisableInteract(true);
             ShoveStackInTarget(CurrentNearCauldron.transform, CurrentNearCauldron);
+            CharacterAnimManager.instance.animator.SetTrigger("DoThrow");
         }
         else if (CurrentNearBin && collectedStack.Count > 0 && collectedStack[0].stackable is CollectedPotionBehaviour)
         {
             CurrentNearBin.DisableInteract();
             ShoveStackInTarget(CurrentNearBin.transform, CurrentNearBin, binOffset);
+            CharacterAnimManager.instance.animator.SetTrigger("DoThrow");
         }
         else if (CurrentStackableBehaviours.Count > 0)
         {
@@ -131,36 +133,35 @@ public class CharacterInteractController : MonoBehaviour
 
     public void Cancel()
     {
-        if (collectedStack.Count > 0)
+        if (collectedStack.Count <= 0) return;
+        CharacterAnimManager.instance.animator.SetTrigger("DoThrow");
+        if (CurrentNearIngredientBaskets.Count > 0)
         {
-            if (CurrentNearIngredientBaskets.Count > 0)
+            foreach (IngredientBasketBehaviour ingredientBasket in CurrentNearIngredientBaskets)
             {
-                foreach (IngredientBasketBehaviour ingredientBasket in CurrentNearIngredientBaskets)
-                {
-                    if (ingredientBasket.ingredient != ((CollectedIngredientBehaviour)collectedStack[0].stackable).IngredientValuesSo) continue;
+                if (ingredientBasket.ingredient != ((CollectedIngredientBehaviour)collectedStack[0].stackable).IngredientValuesSo) continue;
                     
-                    ShoveStackInTarget(ingredientBasket.transform, ingredientBasket);
-                    break;
-                }
+                ShoveStackInTarget(ingredientBasket.transform, ingredientBasket);
+                break;
+            }
                 
-                foreach (IngredientBasketBehaviour ingredientBasket in CurrentNearIngredientBaskets)
-                {
-                    ingredientBasket.DoesNeedToCheckAvailability = true;
-                }
-            }
-            else
+            foreach (IngredientBasketBehaviour ingredientBasket in CurrentNearIngredientBaskets)
             {
-                int length = collectedStack.Count;
-
-                for (int i = 0; i < length; i++)
-                {
-                    collectedStack[0].stackable.GrabMethod(false);
-                    collectedStack[0].stackable.GetTransform().SetParent(null);
-                    collectedStack.RemoveAt(0);
-                }
-
-                AreHandsFull = false;
+                ingredientBasket.DoesNeedToCheckAvailability = true;
             }
+        }
+        else
+        {
+            int length = collectedStack.Count;
+
+            for (int i = 0; i < length; i++)
+            {
+                collectedStack[0].stackable.GrabMethod(false);
+                collectedStack[0].stackable.GetTransform().SetParent(null);
+                collectedStack.RemoveAt(0);
+            }
+
+            AreHandsFull = false;
         }
     }
 
