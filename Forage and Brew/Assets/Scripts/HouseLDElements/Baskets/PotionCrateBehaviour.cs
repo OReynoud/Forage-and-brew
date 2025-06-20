@@ -210,8 +210,6 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
     public bool CheckPotion(PotionValuesSo collectedPotionSo)
     {
         if (OrderContentSo == null || IsFulfilled) return false;
-
-        return true;
         
         List<PotionDemand> remainingRequestedPotions = OrderContentSo.RequestedPotions.ToList();
 
