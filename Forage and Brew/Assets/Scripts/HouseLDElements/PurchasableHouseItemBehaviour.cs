@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class PurchasableHouseItem : MonoBehaviour
+public class PurchasableHouseItemBehaviour : MonoBehaviour
 {
     [field: SerializeField] public int SelfIndex { get; private set; }
     [field: SerializeField] public int PurchaseCost { get; private set; }

@@ -136,7 +136,7 @@ public class CharacterInteractController : MonoBehaviour
         {
             switch (CurrentNearCinematicInteraction)
             {
-                case CodexPickUp codex:
+                case CodexPickUpBehaviour codex:
                     codex.StartInteraction();
                     break;
             }

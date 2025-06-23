@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class CodexPickUp : MonoBehaviour, ICinematicInteraction
+public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public Animator animator;

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class WallBigNope : MonoBehaviour, ICinematicInteraction
+public class InvisibleWallTurnBackBehaviour : MonoBehaviour, ICinematicInteraction
 {
     public Animator animator;
     public Transform lookLocation;

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChoppingCountertopBehaviour : PurchasableHouseItem, IIngredientAddable
+public class ChoppingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngredientAddable
 {
     [field: SerializeField] public CountertopVfxManager CountertopVfxManager { get; private set; }
     [SerializeField] private AudioSource choppingAudioSource;
