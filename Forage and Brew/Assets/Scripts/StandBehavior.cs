@@ -18,6 +18,8 @@ public class StandBehavior : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         CharacterAnimManager.instance.RepositionPlayerAfterCouch();
+        if (CouchBehavior.onCouchExitEvent != null)
+            CouchBehavior.onCouchExitEvent.Invoke();
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
