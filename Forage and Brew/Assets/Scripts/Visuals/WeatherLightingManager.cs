@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -48,6 +49,13 @@ public class WeatherLightingManager : MonoBehaviour
     
     public void SetRightWeatherLighting()
     {
+        StartCoroutine(SetRightWeatherLightingCoroutine());
+    }
+    
+    private IEnumerator SetRightWeatherLightingCoroutine()
+    {
+        yield return new WaitUntil(() => WeatherManager.Instance);
+        
         if (WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == cloudWeatherState)
         {
             SetCloudLighting();
