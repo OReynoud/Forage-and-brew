@@ -75,7 +75,7 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
             timeForNextFlick = Random.Range(minTimeBetweenFlick, maxTimeBetweenFlick);
         }
         
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsTag("Sleep"))
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsTag("Sleep") || !animator.GetCurrentAnimatorStateInfo(0).IsName("Sit_AFK"))
         {
             timeForNextBlink -= Time.deltaTime;
             if (timeForNextBlink < 0f)
@@ -143,11 +143,9 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
 
     public void RepositionPlayerAfterCouch()
     {
-        CharacterInputManager.Instance.EnableInputs();
         transform.LookAt(transform.position -transform.forward);
         dropShadow.transform.localPosition = dropShadowOriginalPos;
         transform.position += couchPlayerOffset;
-        Debug.Log(transform.eulerAngles);
     }
 
     public void PlayPurrSound()
