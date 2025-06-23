@@ -50,6 +50,9 @@ public class CodexPickUp : MonoBehaviour, ICinematicInteraction
         CharacterMovementController.Instance.transform.rotation = LocationToWalk.rotation;
         CharacterInputManager.Instance.EnterCodexMethod();
         gameObject.SetActive(false);
+        CharacterInteractController.Instance.CurrentNearCinematicInteraction = null;
         
+        CharacterInputManager.Instance.EnableMoveInputs();
+
     }
 }
