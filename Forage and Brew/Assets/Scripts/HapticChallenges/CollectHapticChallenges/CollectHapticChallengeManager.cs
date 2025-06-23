@@ -348,6 +348,15 @@ public class CollectHapticChallengeManager : MonoBehaviour
         transform.LookAt(ingredientPosition);
         CharacterInputManager.Instance.DisableMoveInputs();
         CharacterMovementController.Instance.TriggerWalkTransition(ingredientPosition - transform.forward * characterDistance);
+        CharacterMovementController.Instance.FinishWalkToLocation.AddListener(LookAtIngredient);
+    }
+
+    void LookAtIngredient()
+    {
+        CharacterMovementController.Instance.FinishWalkToLocation.RemoveListener(LookAtIngredient);
+        Vector3 ingredientPosition = new(_currentIngredientToCollectBehaviour.transform.position.x,
+            transform.position.y, _currentIngredientToCollectBehaviour.transform.position.z);
+        transform.LookAt(ingredientPosition);
     }
 
     private void CollectIngredient()
