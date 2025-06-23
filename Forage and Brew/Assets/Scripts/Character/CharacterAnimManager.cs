@@ -6,6 +6,14 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
     [SerializeField] public Animator animator;
     [SerializeField] public AudioSource purrSound;
     [SerializeField] public GameObject codexObject;
+    [SerializeField] public GameObject dropShadow;
+    public bool isSitting;
+    private float sitTimer;
+    public AnimationCurve sitCurve;
+    public Vector3 couchPlayerOffset;
+    public Vector3 couchDropShadowOffset;
+    private Vector3 dropShadowOriginalPos;
+    [SerializeField] public GameObject catPelvis;
 
     [BoxGroup("Blinking Animation")] [SerializeField] private float minTimeBetweenBlinks;
     [BoxGroup("Blinking Animation")] [SerializeField] private float maxTimeBetweenBlinks;
@@ -38,6 +46,7 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
         timeForNextFlick = Random.Range(minTimeBetweenFlick, maxTimeBetweenFlick);
         _currentTimeBeforeAfk = timeBeforeAfk;
         CharacterInputManager.Instance.OnCodexUse.AddListener(UseCodex);
+        dropShadowOriginalPos = dropShadow.transform.localPosition;
     }
 
     private void UseCodex(bool state)
@@ -101,9 +110,46 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
         }
         
         animator.SetBool(IsCarrying, CharacterInteractController.Instance.AreHandsFull);
+
+        if (isSitting)
+        {
+            if (sitTimer < 1)
+            {
+                sitTimer += Time.deltaTime;        
+                dropShadow.transform.localPosition = Vector3.Lerp(dropShadowOriginalPos, dropShadowOriginalPos + Vector3.forward, sitCurve.Evaluate(sitTimer/1));
+            }
+        }
+        else
+        {
+            if (sitTimer > 0)
+            {
+                sitTimer -= Time.deltaTime;        
+                dropShadow.transform.localPosition = Vector3.Lerp(dropShadowOriginalPos + couchDropShadowOffset, dropShadowOriginalPos + Vector3.forward, sitCurve.Evaluate(sitTimer/1));
+            }
+        }
+
+        
     }
-    
-    
+
+
+    public void UseCouch()
+    {
+        isSitting = true;
+    }
+    public void LeaveCouch()
+    {
+        isSitting = false;
+    }
+
+    public void RepositionPlayerAfterCouch()
+    {
+        CharacterInputManager.Instance.EnableInputs();
+        transform.LookAt(transform.position -transform.forward);
+        dropShadow.transform.localPosition = dropShadowOriginalPos;
+        transform.position += couchPlayerOffset;
+        Debug.Log(transform.eulerAngles);
+    }
+
     public void PlayPurrSound()
     {
         purrSound.Play();

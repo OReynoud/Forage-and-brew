@@ -139,6 +139,9 @@ public class CharacterInteractController : MonoBehaviour
                 case CodexPickUpBehaviour codex:
                     codex.StartInteraction();
                     break;
+                case CouchBehavior couch:
+                    couch.StartInteraction();
+                    break;
             }
         }
     }
