@@ -1507,11 +1507,11 @@ RectTransform:
   m_Children:
   - {fileID: 2340984023812210159}
   - {fileID: 4617225306764632524}
-  m_Father: {fileID: 2221978204359131388}
+  m_Father: {fileID: 372747743928666445}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -20, y: 4.100006}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 209, y: -58}
   m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7896925899969302525
@@ -1570,6 +1570,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 068266caa08be5d4ea6c57964d00a074, type: 3}
   - {fileID: 21300000, guid: 68ae901075298024f866d350720fc670, type: 3}
   - {fileID: 21300000, guid: 83b1761465909574f9659b02833ca235, type: 3}
+  ingredientStateColors:
+  - {r: 0.41960788, g: 0.6666667, b: 0.32156864, a: 1}
+  - {r: 0.17254902, g: 0.43529415, b: 0.654902, a: 1}
+  - {r: 0.7686275, g: 0.20392159, b: 0.23529413, a: 1}
+  - {r: 0.26666668, g: 0.14117648, b: 0.08627451, a: 1}
   ingredientAmountDisplay: {fileID: 2662931903186603814}
   ingredientBackground: {fileID: 9020909986337058842}
   ingredientUpperLimit: 2
@@ -1914,7 +1919,7 @@ RectTransform:
   m_GameObject: {fileID: 4587147335795918491}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.99, y: 0.99, z: 0.99}
+  m_LocalScale: {x: 0.985, y: 0.985, z: 0.985}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 372747743928666445}
@@ -2186,6 +2191,7 @@ RectTransform:
   - {fileID: 2488450113176278767}
   - {fileID: 2708365412018459120}
   - {fileID: 7149281727397911099}
+  - {fileID: 3707871828371950541}
   - {fileID: 2221978204359131388}
   - {fileID: 4991673821693145875}
   - {fileID: 4122156598911795679}
@@ -2308,8 +2314,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3707871828371950541}
+  m_Children: []
   m_Father: {fileID: 372747743928666445}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -3021,8 +3026,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

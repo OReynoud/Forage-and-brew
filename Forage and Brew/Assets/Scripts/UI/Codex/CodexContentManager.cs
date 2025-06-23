@@ -370,13 +370,13 @@ public class CodexContentManager : Singleton<CodexContentManager>
         }
         else if (ingredientIndex >= ingredientList.IngredientValues.IndexOf(ingredientPages[^1].associatedIngredient))
         {
-            //Debug.Log("Highest index yet");
+            Debug.Log("Highest index yet");
             ingredientIndex = AutoFlip.instance.ControledBook.bookMarks[2].index + ingredientPages.Count;
         }
         else
         {
             
-            //Debug.Log("Index can be fitted in book");
+            Debug.Log("Index can be fitted in book");
             ingredientIndex += AutoFlip.instance.ControledBook.bookMarks[2].index - 1;
         }
         

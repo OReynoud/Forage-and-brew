@@ -51,7 +51,7 @@ public class OrderManager : MonoBehaviour
     
     public void CreateNewOrder(Letter letter)
     {
-        bool triggerAutoPin = CurrentOrders.Count == 0;
+        bool triggerAutoPin = CurrentOrders.Count != 0;
         CodexContentManager.instance.ReceiveNewOrder(
             letter.LetterContent.Client,
             letter.LetterContent.TextContent,
@@ -64,15 +64,23 @@ public class OrderManager : MonoBehaviour
         //Debug.Log(newOrderIndex);
         CurrentOrders[newOrderIndex] = new Order(letter, order);
         
+        PotionCrateManager.Instance.ReactivateRightPotionCrates();
         if (triggerAutoPin)
         {
-            if (CurrentOrders[0].OrderContent.RequestedPotions[0].IsSpecific)
+            for (int x = 0; x < CurrentOrders.Count; x++)
             {
-                AutoFlip.instance.recipeToPin = CurrentOrders[0].OrderContent.RequestedPotions[0].Potion;
+                for (int y = 0; y < CurrentOrders[x].OrderContent.RequestedPotions.Length; y++)
+                {
+                    if (CurrentOrders[x].OrderContent.RequestedPotions[y].IsSpecific)
+                    {
+                        AutoFlip.instance.recipeToPin = CurrentOrders[x].OrderContent.RequestedPotions[y].Potion;
+                        return;
+                    }
+                }
             }
+
         }
         
-        PotionCrateManager.Instance.ReactivateRightPotionCrates();
     }
     
     public void CreateOrdersFromSave()

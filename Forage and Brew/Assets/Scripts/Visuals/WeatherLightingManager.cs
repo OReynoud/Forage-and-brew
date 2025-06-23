@@ -1,23 +1,22 @@
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class WeatherLightingManager : MonoBehaviour
 {
     // Singleton
     public static WeatherLightingManager Instance { get; private set; }
+    
+    [SerializeField] private GameObject daytimeGameObject;
+    [SerializeField] private GameObject nighttimeGameObject;
 
-    [SerializeField] private Volume globalVolume;
     [SerializeField] private WeatherStateSo cloudWeatherState;
-    [SerializeField] private GameObject cloudLightingGameObject;
-    [SerializeField] private VolumeProfile cloudVolumeProfile;
+    [SerializeField] private List<GameObject> cloudLightingGameObjects;
     [SerializeField] private float cloudFogDensity = 0.08f;
     [SerializeField] private WeatherStateSo rainWeatherState;
-    [SerializeField] private GameObject rainLightingGameObject;
-    [SerializeField] private VolumeProfile rainVolumeProfile;
+    [SerializeField] private List<GameObject> rainLightingGameObjects;
     [SerializeField] private float rainFogDensity = 0.08f;
     [SerializeField] private WeatherStateSo sunWeatherState;
-    [SerializeField] private GameObject sunLightingGameObject;
-    [SerializeField] private VolumeProfile sunVolumeProfile;
+    [SerializeField] private List<GameObject> sunLightingGameObjects;
     [SerializeField] private float sunFogDensity;
     
 
@@ -33,52 +32,89 @@ public class WeatherLightingManager : MonoBehaviour
         }
     }
     
-    
-    public void SetRightLighting(Scene scene)
+
+    public void SetRightLighting()
     {
-        switch (scene)
+        SetRightDaytimeLighting(GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay);
+        SetRightWeatherLighting();
+    }
+    
+    public void SetRightDaytimeLighting(TimeOfDay timeOfDay)
+    {
+        daytimeGameObject.SetActive(timeOfDay == TimeOfDay.Daytime);
+        nighttimeGameObject.SetActive(timeOfDay == TimeOfDay.Nighttime);
+    }
+    
+    
+    public void SetRightWeatherLighting()
+    {
+        if (WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == cloudWeatherState)
         {
-            case Scene.Biome1 when WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == cloudWeatherState:
-            case Scene.Biome2 when WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == cloudWeatherState:
-                SetCloudLighting();
-                break;
-            case Scene.Biome1 when WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == rainWeatherState:
-            case Scene.Biome2 when WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == rainWeatherState:
-                SetRainLighting();
-                break;
-            case Scene.Biome1 when WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == sunWeatherState:
-            case Scene.Biome2 when WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == sunWeatherState:
-                SetSunLighting();
-                break;
+            SetCloudLighting();
+        }
+        else if (WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == rainWeatherState)
+        {
+            SetRainLighting();
+        }
+        else if (WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == sunWeatherState)
+        {
+            SetSunLighting();
         }
     }
     
     public void SetCloudLighting()
     {
-        cloudLightingGameObject.SetActive(true);
-        rainLightingGameObject.SetActive(false);
-        sunLightingGameObject.SetActive(false);
-        globalVolume.profile = cloudVolumeProfile;
+        foreach (GameObject lightingGameObject in cloudLightingGameObjects)
+        {
+            lightingGameObject.SetActive(true);
+        }
+        foreach (GameObject lightingGameObject in rainLightingGameObjects)
+        {
+            lightingGameObject.SetActive(false);
+        }
+        foreach (GameObject lightingGameObject in sunLightingGameObjects)
+        {
+            lightingGameObject.SetActive(false);
+        }
+        
         RenderSettings.fog = cloudFogDensity > 0f;
         RenderSettings.fogDensity = cloudFogDensity;
     }
     
     public void SetRainLighting()
     {
-        cloudLightingGameObject.SetActive(false);
-        rainLightingGameObject.SetActive(true);
-        sunLightingGameObject.SetActive(false);
-        globalVolume.profile = rainVolumeProfile;
+        foreach (GameObject lightingGameObject in cloudLightingGameObjects)
+        {
+            lightingGameObject.SetActive(false);
+        }
+        foreach (GameObject lightingGameObject in rainLightingGameObjects)
+        {
+            lightingGameObject.SetActive(true);
+        }
+        foreach (GameObject lightingGameObject in sunLightingGameObjects)
+        {
+            lightingGameObject.SetActive(false);
+        }
+        
         RenderSettings.fog = rainFogDensity > 0f;
         RenderSettings.fogDensity = rainFogDensity;
     }
     
     public void SetSunLighting()
     {
-        cloudLightingGameObject.SetActive(false);
-        rainLightingGameObject.SetActive(false);
-        sunLightingGameObject.SetActive(true);
-        globalVolume.profile = sunVolumeProfile;
+        foreach (GameObject lightingGameObject in cloudLightingGameObjects)
+        {
+            lightingGameObject.SetActive(false);
+        }
+        foreach (GameObject lightingGameObject in rainLightingGameObjects)
+        {
+            lightingGameObject.SetActive(false);
+        }
+        foreach (GameObject lightingGameObject in sunLightingGameObjects)
+        {
+            lightingGameObject.SetActive(true);
+        }
+        
         RenderSettings.fog = sunFogDensity > 0f;
         RenderSettings.fogDensity = sunFogDensity;
     }
