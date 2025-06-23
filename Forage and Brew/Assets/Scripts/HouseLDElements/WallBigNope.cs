@@ -41,7 +41,7 @@ public class WallBigNope : MonoBehaviour, ICinematicInteraction
 
     public void WalkToBook()
     {
-        CharacterMovementController.Instance.TriggerWalkTransition(walkLocation.position + Vector3.forward);
+        CharacterMovementController.Instance.TriggerWalkTransition(walkLocation.position);
         NoEndBehavior.OnFinish.RemoveListener(WalkToBook);
     }
 

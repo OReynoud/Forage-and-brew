@@ -21,8 +21,8 @@ public class CharacterSpawnBehaviour : MonoBehaviour
             {
                 if (sceneName.Name == SceneManager.GetActiveScene().name)
                 {
-                    CharacterVfxManager.Instance.CheckForRainVfx(sceneName.Scene);
-                    WeatherLightingManager.Instance?.SetRightLighting(sceneName.Scene);
+                    CharacterVfxManager.Instance.CheckForRainVfx();
+                    WeatherLightingManager.Instance?.SetRightLighting();
                     
                     if (sourceScene == Scene.HouseOutdoor && sceneName.Scene == Scene.HouseOutdoor)
                     {

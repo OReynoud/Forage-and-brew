@@ -228,7 +228,6 @@ public class CharacterMovementController : MonoBehaviour
             transitionWalk = false;
             if (FinishWalkToLocation != null)
                 FinishWalkToLocation.Invoke();
-            CharacterInputManager.Instance.EnableMoveInputs();
         }
     }
 

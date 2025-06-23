@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class CharacterVfxManager : MonoBehaviour
@@ -23,12 +24,19 @@ public class CharacterVfxManager : MonoBehaviour
     }
 
 
-    public void CheckForRainVfx(Scene scene)
+    public void CheckForRainVfx()
     {
-        // if (WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == rainWeatherState)
-        // {
-        //     PlayRainVfx();
-        // }
+        StartCoroutine(CheckForRainVfxCoroutine());
+    }
+
+    private IEnumerator CheckForRainVfxCoroutine()
+    {
+        yield return new WaitUntil(() => WeatherManager.Instance);
+        
+        if (WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == rainWeatherState)
+        {
+            PlayRainVfx();
+        }
     }
     
     public void PlayRainVfx()
