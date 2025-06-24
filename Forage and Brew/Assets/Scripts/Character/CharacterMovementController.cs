@@ -191,9 +191,11 @@ public class CharacterMovementController : MonoBehaviour
     
     private void RotatePlayer()
     {
+        if (playerDir.magnitude < 0.01f)
+            return;
+        playerDir.Normalize();
         float finalAngle = Mathf.Atan2(playerDir.x, playerDir.z) * Mathf.Rad2Deg;
         
-        Debug.Log("Rotate");
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, finalAngle, 0), rotationSpeed);
     }
 

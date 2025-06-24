@@ -28,7 +28,7 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
     [BoxGroup("Debug")] private float timeForNextFlick;
 
     [BoxGroup("AFK")] [SerializeField] private float timeBeforeAfk;
-    private float _currentTimeBeforeAfk;
+    [BoxGroup("Debug")] [SerializeField] private float _currentTimeBeforeAfk;
     
     private static readonly int DoBlink = Animator.StringToHash("DoBlink");
     private static readonly int DoWag = Animator.StringToHash("DoWag");
@@ -93,7 +93,7 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
                 timeForNextTail = Random.Range(minTimeBetweenTail, maxTimeBetweenTail);
             }
         }
-        if (animator.GetCurrentAnimatorStateInfo(2).IsName("A_Cat_Idle") && animator.GetCurrentAnimatorStateInfo(0).IsName("A_Cat_Idle"))
+        if (animator.GetCurrentAnimatorStateInfo(2).IsName("A_Cat_Idle") && animator.GetCurrentAnimatorStateInfo(0).IsName("A_Cat_Idle") && !CharacterInputManager.Instance.showCodex)
         {
             _currentTimeBeforeAfk -= Time.deltaTime;
             if (_currentTimeBeforeAfk < 0f)
