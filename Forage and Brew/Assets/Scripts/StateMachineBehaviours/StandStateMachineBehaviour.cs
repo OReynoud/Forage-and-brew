@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class StandBehavior : StateMachineBehaviour
+public class StandStateMachineBehaviour : StateMachineBehaviour
 {
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         CharacterAnimManager.instance.LeaveCouch();
     }
@@ -15,11 +15,11 @@ public class StandBehavior : StateMachineBehaviour
     //}
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         CharacterAnimManager.instance.RepositionPlayerAfterCouch();
-        if (CouchBehavior.onCouchExitEvent != null)
-            CouchBehavior.onCouchExitEvent.Invoke();
+        if (CouchBehaviour.OnCouchExitEvent != null)
+            CouchBehaviour.OnCouchExitEvent.Invoke();
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

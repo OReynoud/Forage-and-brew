@@ -1,15 +1,14 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class CouchBehavior : MonoBehaviour, ICinematicInteraction
+public class CouchBehaviour : MonoBehaviour, ICinematicInteraction
 {
     public Animator animator;
     public GameObject localCanvas;
-    private bool usingCouch;
+    private bool _usingCouch;
     public float afkTime;
-    private float afkTimer;
+    private float _afkTimer;
     public CameraPreset sitCam;
     public float sitCamTransitionTime;
     public CameraPreset standCam;
@@ -17,25 +16,31 @@ public class CouchBehavior : MonoBehaviour, ICinematicInteraction
 
     public Transform locationToWalk;
 
-    public static UnityEvent onCouchExitEvent = new ();
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public static readonly UnityEvent OnCouchExitEvent = new();
+    
+    private static readonly int DoSitAfk = Animator.StringToHash("DoSitAFK");
+    private static readonly int DoStand = Animator.StringToHash("DoStand");
+    private static readonly int DoSit = Animator.StringToHash("DoSit");
+
+
+    private void Start()
     {
-        onCouchExitEvent.AddListener(ReceiveExitCouchEvent);
+        OnCouchExitEvent.AddListener(ReceiveExitCouchEvent);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (!usingCouch)return;
-        afkTimer += Time.deltaTime;
-        if (afkTimer > afkTime)
+        if (!_usingCouch)return;
+        _afkTimer += Time.deltaTime;
+        if (_afkTimer > afkTime)
         {
-            animator.SetTrigger("DoSitAFK");
-            afkTimer = -afkTime;
+            animator.SetTrigger(DoSitAfk);
+            _afkTimer = -afkTime;
         }
 
-    }    
+    }
+    
+    
     private void OnTriggerEnter(Collider other)
     {
         CharacterInteractController.Instance.CurrentNearCinematicInteraction = this;
@@ -48,11 +53,12 @@ public class CouchBehavior : MonoBehaviour, ICinematicInteraction
         localCanvas.SetActive(true);
     }
 
+    
     public void StartInteraction()
     {
-        usingCouch = !usingCouch;
+        _usingCouch = !_usingCouch;
         CharacterInputManager.Instance.DisableInputs();
-        if (usingCouch)
+        if (_usingCouch)
         {
             CharacterMovementController.Instance.TriggerWalkTransition(locationToWalk.position);
             localCanvas.SetActive(false);
@@ -60,29 +66,30 @@ public class CouchBehavior : MonoBehaviour, ICinematicInteraction
         }
         else
         {
-            animator.SetTrigger("DoStand");
+            animator.SetTrigger(DoStand);
         }
     }
 
-    IEnumerator ToSitCam()
+    private IEnumerator ToSitCam()
     {
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(sitCam, sitCamTransitionTime);
         yield return new WaitForSeconds(sitCamTransitionTime);
         SitOnCouch();
     }
+    
     private void SitOnCouch()
     {
         CharacterAnimManager.instance.transform.LookAt(new Vector3(transform.position.x,CharacterAnimManager.instance.transform.position.y,transform.position.z));
-        CharacterAnimManager.instance.animator.SetTrigger("DoSit");
+        CharacterAnimManager.instance.animator.SetTrigger(DoSit);
         CharacterAnimManager.instance.UseCouch();
     }
 
-    void ReceiveExitCouchEvent()
+    private void ReceiveExitCouchEvent()
     {
         StartCoroutine(ToStandCam());
     }
 
-    IEnumerator ToStandCam()
+    private IEnumerator ToStandCam()
     {
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(standCam, standCamTransitionTime);
         yield return new WaitForSeconds(standCamTransitionTime);
