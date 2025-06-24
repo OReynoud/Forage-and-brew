@@ -333,6 +333,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
     public void UpdateRecipeStepsCounter()
     {
         if (!isInHouse) return;
+        if (!isPinned)return;
         writingIndex = 0;
 
         for (int i = 0; i < checkMarkImage.Length; i++)

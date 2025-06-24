@@ -31,7 +31,15 @@ public class PageLoader : MonoBehaviour
         switch (toDisplay)
         {
             case HistoricCodexDisplayBehavior historic:
-                historic.InitHistoric(historicLetterToLoad, historicLetterToLoad.RelatedSuccessLetter);
+                if (historicLetterToLoad.LetterType == LetterType.Gift)
+                {
+                    historic.InitHistoric(historicLetterToLoad);
+                }
+                else
+                {
+                    historic.InitHistoric(historicLetterToLoad, historicLetterToLoad.RelatedSuccessLetter);
+                }
+                
                 break;
             case LetterMailBoxDisplayBehaviour letter:
                 letter.InitLetter(letterToLoad);

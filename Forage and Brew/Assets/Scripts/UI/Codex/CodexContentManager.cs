@@ -340,7 +340,14 @@ public class CodexContentManager : Singleton<CodexContentManager>
             
             
             historicPages.Add(historic);
-            historic.InitHistoric(originLetter, successLetter);
+            if (successLetter)
+            {
+                historic.InitHistoric(originLetter, successLetter);
+            }
+            else
+            {
+                historic.InitHistoric(originLetter);
+            }
         }
         else
         {
@@ -348,7 +355,14 @@ public class CodexContentManager : Singleton<CodexContentManager>
             var bookPage = AutoFlip.instance.ControledBook.bookPages.Find(x => x.UIComponent == emptyHistoricPage);
             bookPage.pageBehavior = historic;
             historicPages.Add(historic);
-            historic.InitHistoric(originLetter, successLetter);
+            if (successLetter)
+            {
+                historic.InitHistoric(originLetter, successLetter);
+            }
+            else
+            {
+                historic.InitHistoric(originLetter);
+            }
             emptyHistoricPage = null;
         }
 
