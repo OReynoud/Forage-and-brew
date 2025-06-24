@@ -5,7 +5,7 @@ using UnityEngine.InputSystem.Controls;
 
 public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
 {
-    public Camera cam;
+    [HideInInspector] public Camera cam;
     public Transform player;
     protected CharacterMovementController movement;
 
