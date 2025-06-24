@@ -17,6 +17,8 @@ public class LetterMailBoxDisplayBehaviour : PageBehavior
     private LetterContentSo letterContent;
     public List<PotionDemand> potionsDemanded = new();
 
+    public LayoutGroup mainContentLayoutGroup;
+    public GridLayoutGroup potionsLayoutGroup;
     public Image[] liquidImages;
     public Image[] potionImages;
     public TextMeshProUGUI[] potionNames;
@@ -66,6 +68,10 @@ public class LetterMailBoxDisplayBehaviour : PageBehavior
         potionsDemanded.Clear();
         potionsDemanded.AddRange(letterContent.OrderContent.RequestedPotions);
 
+        if (potionsDemanded.Count == 4)
+        {
+            potionsLayoutGroup.constraintCount = 2;
+        }
         
         for (int i = 0; i < potionsDemanded.Count; i++)
         {
@@ -85,6 +91,8 @@ public class LetterMailBoxDisplayBehaviour : PageBehavior
         }
 
         letterType = letterContent.LetterType;
+        
+        LayoutRebuilder.ForceRebuildLayoutImmediate(mainContentLayoutGroup.transform as RectTransform);
     }
 
     public void AnimateLetter(bool hasToPass)

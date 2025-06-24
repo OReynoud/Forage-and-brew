@@ -12,12 +12,13 @@ public class OrderCodexDisplayBehaviour : PageBehavior
     public TextMeshProUGUI delayTimeText;
     public Image outdatedStamp;
 
+    public VerticalLayoutGroup mainContentLayoutGroup;
     public List<PotionDemand> potionsDemanded = new();
     public int daysLeftToComplete;
 
     public OrderSpecificPotionDemand specificPotionPrefab;
     public GameObject keywordPotionPrefab;
-    public Transform potionList;
+    public List<Transform> potionLists;
 
     private void Start()
     {
@@ -53,7 +54,7 @@ public class OrderCodexDisplayBehaviour : PageBehavior
         {
             if (potionsDemanded[i].IsSpecific)
             {
-                var specificPotion = Instantiate(specificPotionPrefab,potionList);
+                var specificPotion = Instantiate(specificPotionPrefab, potionLists[Mathf.FloorToInt(i / 2f)]);
                 specificPotion.potionIcon.sprite = potionsDemanded[i].Potion.PotionDifficulty.PotionSprite;
                 specificPotion.liquidIcon.sprite = potionsDemanded[i].Potion.PotionDifficulty.LiquidSprite;
                 specificPotion.liquidIcon.color = potionsDemanded[i].Potion.SpriteLiquidColor;
@@ -61,10 +62,12 @@ public class OrderCodexDisplayBehaviour : PageBehavior
             }
             else
             {
-                var keyword = Instantiate(keywordPotionPrefab,potionList).GetComponentInChildren<TextMeshProUGUI>();
+                var keyword = Instantiate(keywordPotionPrefab, potionLists[Mathf.CeilToInt(i / 2f)]).GetComponentInChildren<TextMeshProUGUI>();
                 
                 keyword.text = potionsDemanded[i].Keywords;
             }
         }
+        
+        LayoutRebuilder.ForceRebuildLayoutImmediate(mainContentLayoutGroup.transform as RectTransform);
     }
 }
