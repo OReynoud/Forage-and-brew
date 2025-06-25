@@ -41,10 +41,9 @@ public class HouseCameraBehavior : SimpleCameraBehavior
 
         totalWeight = 0;
         weightDivider = 0;
-        // cameraOffset = Vector3.zero;
-        // cameraRotation = Vector3.zero;
-        // distanceFromPlayer = 0;
-        ApplySettings();
+        cameraOffset = Vector3.zero;
+        cameraRotation = Vector3.zero;
+        distanceFromPlayer = 0;
         if (Vector3.Distance(mainCameraPreset.transform.position,player.position) < mainCameraPreset.settings.triggerDistance)
         {
             for (int i = 0; i < allHouseCameraSettings.Length; i++)
@@ -65,13 +64,14 @@ public class HouseCameraBehavior : SimpleCameraBehavior
         }
         else
         {
+            ApplySettings();
         }
     }
 
     HouseCameraSettingsBehavior ClosestCameraSettings()
     {
         HouseCameraSettingsBehavior closest = null;
-        for (int i = 1; i < allHouseCameraSettings.Length; i++)
+        for (int i = 0; i < allHouseCameraSettings.Length; i++)
         {
             if (Vector3.Distance(allHouseCameraSettings[i].transform.position, player.position) > allHouseCameraSettings[i].settings.triggerDistance)
             {
@@ -107,9 +107,9 @@ public class HouseCameraBehavior : SimpleCameraBehavior
 
     void ApplyWeightedSettings(int i)
     {
-        cameraOffset = Vector3.Lerp(cameraOffset,allHouseCameraSettings[i].settings.cameraPreset.cameraOffset,cameraSettingsWeights[i] / weightDivider);
-        distanceFromPlayer = Mathf.Lerp(distanceFromPlayer,allHouseCameraSettings[i].settings.cameraPreset.distanceFromPlayer,cameraSettingsWeights[i] / weightDivider);
-        cameraRotation = Vector3.Lerp(cameraRotation,allHouseCameraSettings[i].settings.cameraPreset.cameraRotation,cameraSettingsWeights[i] / weightDivider);
+        cameraOffset += allHouseCameraSettings[i].settings.cameraPreset.cameraOffset * cameraSettingsWeights[i] / totalWeight;
+        distanceFromPlayer += allHouseCameraSettings[i].settings.cameraPreset.distanceFromPlayer * cameraSettingsWeights[i] / totalWeight;
+        cameraRotation += allHouseCameraSettings[i].settings.cameraPreset.cameraRotation * cameraSettingsWeights[i] / totalWeight;
     }
 
     void ApplySettings()

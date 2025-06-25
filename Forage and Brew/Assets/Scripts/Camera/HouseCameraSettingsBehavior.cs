@@ -1,4 +1,5 @@
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class HouseCameraSettingsBehavior : MonoBehaviour
@@ -7,6 +8,7 @@ public class HouseCameraSettingsBehavior : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(transform.position, settings.triggerDistance);
+        Handles.DrawWireDisc(transform.position, Vector3.up, settings.triggerDistance);
+        //Gizmos.DrawWireSphere(transform.position, settings.triggerDistance);
     } 
 }
