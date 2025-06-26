@@ -213,6 +213,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
             var pageContainer = Instantiate(emptyPage, transform);
 
             emptyOrderPage = Instantiate(emptyPage, transform);
+            emptyOrderPage.gameObject.SetActive(false);
             order = Instantiate(orderPrefabs[Random.Range(0, orderPrefabs.Length)], pageContainer);
             pageContainer.anchoredPosition = new Vector2(1500, 0);
             emptyOrderPage.anchoredPosition = new Vector2(1500, 0);

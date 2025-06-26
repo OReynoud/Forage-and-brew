@@ -636,9 +636,11 @@ public class Book : MonoBehaviour
         {
             
             bookPages[currentPage].UIComponent.gameObject.SetActive(false);
+            bookPages[currentPage].UIComponent.transform.SetParent(GameDontDestroyOnLoadManager.Instance.transform);
             if (currentPage > 0)
             {
                 bookPages[currentPage - 1].UIComponent.gameObject.SetActive(false);
+                bookPages[currentPage - 1].UIComponent.transform.SetParent(GameDontDestroyOnLoadManager.Instance.transform);
                 
             }
             
@@ -650,8 +652,10 @@ public class Book : MonoBehaviour
             if (currentPage < bookPages.Count)
             {
                 bookPages[currentPage].UIComponent.gameObject.SetActive(false);
+                bookPages[currentPage].UIComponent.transform.SetParent(GameDontDestroyOnLoadManager.Instance.transform);
             }
-            bookPages[currentPage-1].UIComponent.gameObject.SetActive(false);
+            bookPages[currentPage - 1].UIComponent.gameObject.SetActive(false);
+            bookPages[currentPage - 1].UIComponent.transform.SetParent(GameDontDestroyOnLoadManager.Instance.transform);
             
             currentPage -= 2 * pageFlips;
             Right.rectTransform.pivot = Vector2.zero;
@@ -697,11 +701,13 @@ public class Book : MonoBehaviour
         if (currentPage != bookPages.Count)
         {
             bookPages[currentPage].UIComponent.gameObject.SetActive(false);
+            bookPages[currentPage].UIComponent.transform.SetParent(GameDontDestroyOnLoadManager.Instance.transform);
         }
         //Debug.Log(bookPages[currentPage].UIComponent.name);
         if (currentPage > 0)
         {
             bookPages[currentPage - 1].UIComponent.gameObject.SetActive(false);
+            bookPages[currentPage - 1].UIComponent.transform.SetParent(GameDontDestroyOnLoadManager.Instance.transform);
             //Debug.Log(bookPages[currentPage - 1].UIComponent.name);
         }
 

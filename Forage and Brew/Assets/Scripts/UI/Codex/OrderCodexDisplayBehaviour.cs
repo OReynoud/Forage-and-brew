@@ -70,5 +70,6 @@ public class OrderCodexDisplayBehaviour : PageBehavior
         }
         
         LayoutRebuilder.ForceRebuildLayoutImmediate(mainContentLayoutGroup.transform as RectTransform);
+        
     }
 }
