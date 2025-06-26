@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -35,8 +36,9 @@ public class IngredientPageDisplay : PageBehavior
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    public void StartDissolve()
+    IEnumerator StartDissolve()
     {
+        yield return new WaitForSeconds(0.3f);
         Material matInstance = Instantiate(disolveImage.material);
         disolveImage.material = matInstance;
         disolveImage.material.SetFloat("_Cutoff_Height", 0);
@@ -128,7 +130,8 @@ public class IngredientPageDisplay : PageBehavior
         
         ingredientCounter.trackedIngredient = ingredientToDisplay;
         ingredientCounter.UpdateDisplay(ingredientToDisplay);
-        
-        StartDissolve();
+
+        StartCoroutine(StartDissolve());
+
     }
 }
