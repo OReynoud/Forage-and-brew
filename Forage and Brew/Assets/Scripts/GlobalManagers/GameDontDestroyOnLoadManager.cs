@@ -59,13 +59,14 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     
     //Debug Options
     [Foldout("Debug")] public bool loadOrders;
+    [Foldout("Debug")][ShowIf("loadOrders")] public List<LetterContentSo> OrdersToLoad;
     [Foldout("Debug")] public bool loadAllRecipes;
     [Foldout("Debug")] public bool loadAllIngredients;
     [Foldout("Debug")] public bool loadHistoric;
+    [Foldout("Debug")][ShowIf("loadHistoric")] public List<LetterContentSo> HistoricToLoad;
     [Foldout("Debug")] public bool debugCommands;
     [Foldout("Debug")] public bool codexIsUnlocked;
-    [Foldout("Debug")][ShowIf("loadOrders")] public List<LetterContentSo> OrdersToLoad;
-    [Foldout("Debug")][ShowIf("loadHistoric")] public List<LetterContentSo> HistoricToLoad;
+    [Foldout("Debug")] public bool lockoutOnWakeUp;
     
     
     private void Awake()
