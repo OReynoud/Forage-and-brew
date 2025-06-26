@@ -176,12 +176,3 @@ public struct FloorCookedPotion : IEquatable<FloorCookedPotion>
         return HashCode.Combine(Potion, Position, Rotation);
     }
 }
-
-[Serializable]
-public class HouseCameraSetting
-{
-    public CameraPreset cameraPreset;
-    public float triggerDistance = 1;
-    public Color groupColor = Color.white;
-
-}

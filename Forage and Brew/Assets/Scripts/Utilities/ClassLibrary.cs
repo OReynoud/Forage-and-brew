@@ -134,6 +134,15 @@ public class PurchaseTracker
     public bool isPurchased;
 }
 
+[Serializable]
+public class HouseCameraSetting
+{
+    public CameraPreset cameraPreset;
+    public float triggerDistance = 1;
+    public Color groupColor = Color.white;
+
+}
+
 
 
 
