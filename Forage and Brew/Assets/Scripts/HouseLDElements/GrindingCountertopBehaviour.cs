@@ -91,7 +91,7 @@ public class GrindingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngre
             {
                 LastTriggeredCollider = other;
                 
-                ShowPrice();
+                pricePopUpBehaviour.ShowPrice(purchaseCost);
                 
                 characterInteractController.CurrentNearGrindingCountertop = this;
             }
@@ -131,6 +131,6 @@ public class GrindingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngre
         }
             
         DisableInteract();
-        HidePrice();
+        pricePopUpBehaviour.HidePrice();
     }
 }

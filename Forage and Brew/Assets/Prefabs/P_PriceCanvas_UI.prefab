@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6100747871180524837}
   - component: {fileID: 3284672755937006598}
   - component: {fileID: 7376905129956280606}
+  - component: {fileID: 9071321754419885360}
   m_Layer: 9
   m_Name: P_PriceCanvas_UI
   m_TagString: Untagged
@@ -86,7 +87,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &3284672755937006598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,6 +118,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasRectTransform: {fileID: 6201001809618624839}
+--- !u!114 &9071321754419885360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2621849014167887044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34012c83cd746714dba97e21210f7fbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pricePopUpCanvas: {fileID: 2621849014167887044}
+  backgroundImage: {fileID: 5347910055148543179}
+  enoughMoneyBackgroundSprite: {fileID: 21300000, guid: f7c335025ff6c4c4191f3efc24593787, type: 3}
+  notEnoughMoneyBackgroundSprite: {fileID: 21300000, guid: f7c335025ff6c4c4191f3efc24593787, type: 3}
+  priceText: {fileID: 6175414819706035011}
+  enoughMoneyColor: {r: 0, g: 1, b: 0, a: 1}
+  notEnoughMoneyColor: {r: 1, g: 0, b: 0, a: 1}
+  purchaseButtonGameObject: {fileID: 7531394680739617115}
 --- !u!1 &6266980996438388869
 GameObject:
   m_ObjectHideFlags: 0

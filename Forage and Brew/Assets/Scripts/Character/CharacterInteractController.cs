@@ -34,6 +34,7 @@ public class CharacterInteractController : MonoBehaviour
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public GrindingCountertopBehaviour CurrentNearGrindingCountertop { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<IngredientBasketBehaviour> CurrentNearIngredientBaskets { get; set; } = new();
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<PotionCrateBehaviour> CurrentNearPotionBaskets { get; set; } = new();
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public GateBehaviour CurrentNearChargedGate { get; set; } = new();
     
     
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public ICinematicInteraction CurrentNearCinematicInteraction { get; set; }
@@ -123,6 +124,10 @@ public class CharacterInteractController : MonoBehaviour
         else if (CurrentNearGrindingCountertop && !CurrentNearGrindingCountertop.Unlocked && CurrentNearGrindingCountertop.CanPurchase && collectedStack.Count == 0)
         {
             CurrentNearGrindingCountertop.PurchaseItem();
+        }
+        else if (CurrentNearChargedGate && !CurrentNearChargedGate.Unlocked && collectedStack.Count == 0)
+        {
+            CurrentNearChargedGate.Purchase();
         }
         else if (CurrentStackableBehaviours.Count > 0)
         {

@@ -64,7 +64,7 @@ public class ChoppingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngre
             {
                 LastTriggeredCollider = other;
                 
-                ShowPrice();
+                pricePopUpBehaviour.ShowPrice(purchaseCost);
                 
                 characterInteractController.CurrentNearChoppingCountertop = this;
             }
@@ -103,6 +103,6 @@ public class ChoppingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngre
         }
             
         DisableInteract();
-        HidePrice();
+        pricePopUpBehaviour.HidePrice();
     }
 }

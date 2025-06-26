@@ -54,8 +54,9 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     // Haptic Challenges
     public bool IsInHapticChallenge { get; set; }
     
-    // Upgrades
-    public int PotionsUpgradeIndex { get; set; }
+    // Progression
+    public int WorkshopProgressionIndex { get; set; }
+    public List<ChargedBiomeAreaSo> UnlockedChargedBiomeAreas { get; set; } = new();
     
     //Debug Options
     [Foldout("Debug")] public bool loadOrders;

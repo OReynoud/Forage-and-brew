@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PurchasableHouseItemManager : MonoBehaviour
+public class GateManager : MonoBehaviour
 {
-    public static PurchasableHouseItemManager Instance { get; private set; }
+    public static GateManager Instance { get; private set; }
     
-    public UnityEvent OnItemPurchased { get; private set; } = new();
+    public UnityEvent OnAreaPurchased { get; private set; } = new();
     
     
     private void Awake()

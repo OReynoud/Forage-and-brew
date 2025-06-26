@@ -78,7 +78,7 @@ public class BellowsBehaviour : PurchasableHouseItemBehaviour
             
             if (CanPurchase)
             {
-                ShowPrice();
+                pricePopUpBehaviour.ShowPrice(purchaseCost);
             }
             else if (Unlocked)
             {
@@ -108,6 +108,6 @@ public class BellowsBehaviour : PurchasableHouseItemBehaviour
         }
             
         DisableInteract();
-        HidePrice();
+        pricePopUpBehaviour.HidePrice();
     }
 }
