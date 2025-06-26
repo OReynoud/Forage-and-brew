@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class PinnedRecipe : Singleton<PinnedRecipe>
 {
     private RectTransform ownTransform; //Behavior logic
-    public bool isPinned { get; private set; } //Behavior logic
+    public bool isPinned { get; set; } //Behavior logic
     private bool canShow; //Behavior logic
     private int writingIndex; // Display logic
     private Sprite[] potionIngredients; // Display logic

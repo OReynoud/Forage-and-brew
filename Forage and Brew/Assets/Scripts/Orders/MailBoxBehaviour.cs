@@ -250,10 +250,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         }
 
         Debug.Log("Read every letter");
-        CharacterInputManager.Instance.EnableMoveInputs();
-        CharacterInputManager.Instance.EnableInteractInputs();
         CharacterInputManager.Instance.DisableMailInputs();
-        CharacterInputManager.Instance.EnableCodexInputs();
         DisableInteract();
 
         letterBoxTrigger.enabled = false;

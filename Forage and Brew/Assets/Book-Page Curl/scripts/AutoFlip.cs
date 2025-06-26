@@ -316,6 +316,7 @@ public class AutoFlip : Singleton<AutoFlip>
             
         CharacterInputManager.Instance.DisableCodexInputs();
         CharacterInputManager.Instance.DisableMoveInputs();
+        CharacterInputManager.Instance.DisableInputs();
 
         presentNewCodexContentContainer = StartCoroutine(PresentNewCodexContent());
     }

@@ -5,10 +5,6 @@ public class IndoorOutdoorTrigger : MonoBehaviour
 {
     //public float transitionTime = 1;
 
-    public AudioSource musicSource;
-
-    public AudioResource musicToPlay;
-
     public bool inHouse;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
