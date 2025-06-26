@@ -57,8 +57,10 @@ public class StirHapticChallengeManager : MonoBehaviour
     
     // Animator Hashes
     private static readonly int IsStirring = Animator.StringToHash("IsStirring");
-    
-    
+    private static readonly int PotionSuccess = Animator.StringToHash("PotionSuccess");
+    private static readonly int PotionFail = Animator.StringToHash("PotionFail");
+
+
     private void Awake()
     {
         Instance = this;
@@ -79,6 +81,8 @@ public class StirHapticChallengeManager : MonoBehaviour
 
             return;
         }
+        if (_currentStirIndex >= _currentChallenge.StirCamerasAndDurations.Length)
+            return;
         
         UpdateStirChallenge();
     }
@@ -324,7 +328,7 @@ public class StirHapticChallengeManager : MonoBehaviour
             
         if (_currentStirIndex >= _currentChallenge.StirCamerasAndDurations.Length)
         {
-            ObtainPotion();
+            ObtainPotion(false);
             return;
         }
         
@@ -360,12 +364,7 @@ public class StirHapticChallengeManager : MonoBehaviour
             GameDontDestroyOnLoadManager.Instance.OutCookedPotions.Add(collectedPotionBehaviour);
             GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients.Clear();
         }
-
-        foreach (ConfirmationCircleBehaviour confirmationCircle in _confirmationCircles)
-        {
-            Destroy(confirmationCircle.gameObject);
-        }
-        _confirmationCircles.Clear();
+        
         stirChallengeGameObject.SetActive(false);
         _currentPotion = null;
         _currentChallenge = null;
@@ -476,10 +475,32 @@ public class StirHapticChallengeManager : MonoBehaviour
         }
     }
 
-    private void ObtainPotion()
+    public void ObtainPotion(bool doCanvasAnim)
     {
+        if (!doCanvasAnim)
+        {
+            foreach (ConfirmationCircleBehaviour confirmationCircle in _confirmationCircles)
+            {
+                Destroy(confirmationCircle.gameObject);
+            }
+            _confirmationCircles.Clear();
+            visualIndicationGameObject.SetActive(false);
+            
+            CurrentCauldron.PlayCheckInputFinalSound();
+            characterAnimator.SetBool(IsStirring,false);
+            if (_currentPotion == potionListSo.DefaultPotion)
+            {
+                characterAnimator.SetTrigger(PotionFail);
+            }
+            else
+            {
+                characterAnimator.SetTrigger(PotionSuccess);
+            }
+            return;
+        }
+
         CauldronVfxManager.Instance.PlayObtainedPotionVfx();
-        CurrentCauldron.PlayCheckInputFinalSound();
+        
         obtainedPotionImage.sprite = _currentPotion.PotionDifficulty.PotionSprite;
         obtainedPotionLiquidImage.sprite = _currentPotion.PotionDifficulty.LiquidSprite;
         obtainedPotionLiquidImage.color = _currentPotion.SpriteLiquidColor;
@@ -490,8 +511,6 @@ public class StirHapticChallengeManager : MonoBehaviour
         obtainedPotionRectTransform.gameObject.SetActive(true);
         _isObtainedPotionAnimationPlaying = true;
         _currentObtainedPotionAnimationTime = 0f;
-        
-        TutorialManager.instance.NotifyFromCompletePotion();
     }
 
     #endregion
