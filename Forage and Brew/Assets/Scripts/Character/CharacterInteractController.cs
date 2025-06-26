@@ -29,6 +29,7 @@ public class CharacterInteractController : MonoBehaviour
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public MailBoxBehaviour CurrentNearMailBoxBehaviour { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public BinBehaviour CurrentNearBin { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public CauldronBehaviour CurrentNearCauldron { get; set; }
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public BellowsBehaviour CurrentNearBellows { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public ChoppingCountertopBehaviour CurrentNearChoppingCountertop { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public GrindingCountertopBehaviour CurrentNearGrindingCountertop { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<IngredientBasketBehaviour> CurrentNearIngredientBaskets { get; set; } = new();
@@ -110,6 +111,18 @@ public class CharacterInteractController : MonoBehaviour
             CurrentNearBin.DisableInteract();
             ShoveStackInTarget(CurrentNearBin.transform, CurrentNearBin, binOffset);
             CharacterAnimManager.instance.animator.SetTrigger("DoThrow");
+        }
+        else if (CurrentNearBellows && !CurrentNearBellows.Unlocked && CurrentNearBellows.CanPurchase && collectedStack.Count == 0)
+        {
+            CurrentNearBellows.PurchaseItem();
+        }
+        else if (CurrentNearChoppingCountertop && !CurrentNearChoppingCountertop.Unlocked && CurrentNearChoppingCountertop.CanPurchase && collectedStack.Count == 0)
+        {
+            CurrentNearChoppingCountertop.PurchaseItem();
+        }
+        else if (CurrentNearGrindingCountertop && !CurrentNearGrindingCountertop.Unlocked && CurrentNearGrindingCountertop.CanPurchase && collectedStack.Count == 0)
+        {
+            CurrentNearGrindingCountertop.PurchaseItem();
         }
         else if (CurrentStackableBehaviours.Count > 0)
         {
@@ -261,23 +274,7 @@ public class CharacterInteractController : MonoBehaviour
             potionBasket.DoesNeedToCheckAvailability = true;
         }
     }
-
-    public void HandleInteractChoppingCounterTop()
-    {
-        if (!CurrentNearChoppingCountertop ) 
-            return;
-        if ( !CurrentNearChoppingCountertop.Unlocked && !CurrentNearChoppingCountertop.CanPurchase)
-            return;
-        
-        if (CurrentNearChoppingCountertop.Unlocked)
-        {
-            DropIngredientsInChoppingCountertop();
-        }
-        else
-        {
-            CurrentNearChoppingCountertop.PurchaseItem();
-        }
-    }
+    
     public void DropIngredientsInChoppingCountertop()
     {
         if (!CurrentNearChoppingCountertop || collectedStack.Count == 0 ||

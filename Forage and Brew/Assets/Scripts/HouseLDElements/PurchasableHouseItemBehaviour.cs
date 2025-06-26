@@ -1,65 +1,113 @@
+using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class PurchasableHouseItemBehaviour : MonoBehaviour
+public abstract class PurchasableHouseItemBehaviour : MonoBehaviour
 {
-    [field: SerializeField] public int SelfIndex { get; private set; }
-    [field: SerializeField] public int PurchaseCost { get; private set; }
-    [field: SerializeField] public bool CanPurchase{ get; set; }
-    [field: SerializeField] public bool Unlocked{ get; set; }
-    [SerializeField] private GameObject PriceUI;
-    [SerializeField] private GameObject interactInputCanvasGameObject;
+    [Header("Purchasable House Item Values")]
+    [SerializeField] private int selfIndex;
+    [SerializeField] private int purchaseCost;
+    
+    public bool CanPurchase { get; private set; }
+    public bool Unlocked { get; private set; }
+    
+    [Header("Purchasable House Item Material")]
+    [SerializeField] private List<Renderer> purchasableItemMeshRenderers;
+    [SerializeField] private float unlockAnimationDuration = 0.5f;
+    [SerializeField] private AnimationCurve unlockAnimationCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+    
+    [Header("Purchasable House Item UI")]
+    [SerializeField] private GameObject priceUI;
+    [SerializeField] private Image backgroundImage;
+    [SerializeField] private Sprite enoughMoneyBackgroundSprite;
+    [SerializeField] private Sprite notEnoughMoneyBackgroundSprite;
     [SerializeField] private TextMeshProUGUI priceText;
+    [SerializeField] private Color enoughMoneyColor = Color.green;
+    [SerializeField] private Color notEnoughMoneyColor = Color.red;
+    [SerializeField] private GameObject purchaseButtonGameObject;
+    
+    protected Collider LastTriggeredCollider { get; set; }
+    
+    private static readonly int CutoffHeight = Shader.PropertyToID("_CutoffHeight");
     
     
-    private void Start()
+    protected virtual void Start()
     {
-        DisableInteract();
+        priceText.text = purchaseCost.ToString();
         HidePrice();
-        if (GameDontDestroyOnLoadManager.Instance.PotionsUpgradeIndex == SelfIndex)
+
+        foreach (Renderer purchasableItemMeshRenderer in purchasableItemMeshRenderers)
         {
-            priceText.text = PurchaseCost.ToString();
+            purchasableItemMeshRenderer.material.SetFloat(CutoffHeight,
+                GameDontDestroyOnLoadManager.Instance.PotionsUpgradeIndex > selfIndex ? 1f : 0f);
+        }
+
+        PurchasableHouseItemManager.Instance.OnItemPurchased.AddListener(InitPurchasableHouseItem);
+        InitPurchasableHouseItem();
+    }
+    
+
+    public void InitPurchasableHouseItem()
+    {
+        if (GameDontDestroyOnLoadManager.Instance.PotionsUpgradeIndex == selfIndex)
+        {
             CanPurchase = true;
         }
-        else if (GameDontDestroyOnLoadManager.Instance.PotionsUpgradeIndex > SelfIndex)
+        else if (GameDontDestroyOnLoadManager.Instance.PotionsUpgradeIndex > selfIndex)
         {
             Unlocked = true;
         }
     }
 
 
-    public void EnableInteract()
-    {
-        interactInputCanvasGameObject.SetActive(true);
-    }
-    
-    public void DisableInteract()
-    {
-        interactInputCanvasGameObject.SetActive(false);
-    }
-    
     public void ShowPrice()
     {
-        PriceUI.SetActive(true);
+        priceUI.SetActive(true);
+        backgroundImage.sprite = MoneyManager.Instance.MoneyAmount < purchaseCost ? notEnoughMoneyBackgroundSprite : enoughMoneyBackgroundSprite;
+        priceText.color = MoneyManager.Instance.MoneyAmount < purchaseCost ? notEnoughMoneyColor : enoughMoneyColor;
+        purchaseButtonGameObject.SetActive(MoneyManager.Instance.MoneyAmount >= purchaseCost);
     }
     
     public void HidePrice()
     {
-        PriceUI.SetActive(false);
+        priceUI.SetActive(false);
     }
+    
 
-    public void PurchaseItem()
+    public virtual void PurchaseItem()
     {
-        if (MoneyManager.Instance.MoneyAmount < PurchaseCost)
-            return;
+        if (MoneyManager.Instance.MoneyAmount < purchaseCost) return;
 
         Debug.Log("Bought an upgrade");
-        MoneyManager.Instance.SubtractMoney(PurchaseCost);
+        MoneyManager.Instance.SubtractMoney(purchaseCost);
         CanPurchase = false;
         Unlocked = true;
         GameDontDestroyOnLoadManager.Instance.PotionsUpgradeIndex++;
         HidePrice();
-
+        ManageCharacterNear(LastTriggeredCollider);
+        foreach (Renderer purchasableItemMeshRenderer in purchasableItemMeshRenderers)
+        {
+            purchasableItemMeshRenderer.material.DOFloat(1f, CutoffHeight, unlockAnimationDuration)
+                .SetEase(unlockAnimationCurve);
+        }
+        PurchasableHouseItemManager.Instance.OnItemPurchased.Invoke();
     }
+
+
+    protected abstract void ManageCharacterNear(Collider other);
+
+    protected abstract void ManageCharacterFar(Collider other);
     
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        ManageCharacterNear(other);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        ManageCharacterFar(other);
+    }
 }

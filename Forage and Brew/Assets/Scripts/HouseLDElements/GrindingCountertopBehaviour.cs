@@ -1,22 +1,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GrindingCountertopBehaviour : MonoBehaviour, IIngredientAddable
+public class GrindingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngredientAddable
 {
     [field: SerializeField] public CountertopVfxManager CountertopVfxManager { get; private set; }
-    [SerializeField] private GameObject interactInputCanvasGameObject;
+    
     [SerializeField] private AudioSource grindingCrushAudioSource;
     [SerializeField] private AudioSource grindingEndAudioSource;
     [SerializeField] private AudioSource grindingTrailAudioSource;
     
-    private readonly List<CollectedIngredientBehaviour> _collectedIngredients = new();
-
+    [SerializeField] private GameObject interactInputCanvasGameObject;
     
-    private void Start()
+    private readonly List<CollectedIngredientBehaviour> _collectedIngredients = new();
+    
+    
+    protected override void Start()
     {
-        interactInputCanvasGameObject.SetActive(false);
+        base.Start();
+        
+        DisableInteract();
     }
-
+    
 
     public void EnableInteract()
     {
@@ -78,29 +82,55 @@ public class GrindingCountertopBehaviour : MonoBehaviour, IIngredientAddable
     }
     
     
-    private void OnTriggerEnter(Collider other)
+    protected override void ManageCharacterNear(Collider other)
     {
-        if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
-            other.TryGetComponent(out GrindingHapticChallengeManager grindingHapticChallengeManager) &&
-            characterInteractController.collectedStack.Count > 0 &&
-            characterInteractController.collectedStack[0].stackable is CollectedIngredientBehaviour
-                { CookedForm: not GrindingHapticChallengeSo })
+        if (CanPurchase)
         {
-            characterInteractController.CurrentNearGrindingCountertop = this;
-            grindingHapticChallengeManager.CurrentGrindingCountertopBehaviour = this;
-            EnableInteract();
+            if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
+                characterInteractController.collectedStack.Count == 0)
+            {
+                LastTriggeredCollider = other;
+                
+                ShowPrice();
+                
+                characterInteractController.CurrentNearGrindingCountertop = this;
+            }
+        }
+        else if (Unlocked)
+        {
+            if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
+                other.TryGetComponent(out GrindingHapticChallengeManager grindingHapticChallengeManager) &&
+                characterInteractController.collectedStack.Count > 0 &&
+                characterInteractController.collectedStack[0].stackable is CollectedIngredientBehaviour
+                    { CookedForm: null })
+            {
+                LastTriggeredCollider = other;
+                
+                characterInteractController.CurrentNearGrindingCountertop = this;
+                grindingHapticChallengeManager.CurrentGrindingCountertopBehaviour = this;
+
+                EnableInteract();
+
+            }
         }
     }
     
-    private void OnTriggerExit(Collider other)
+    protected override void ManageCharacterFar(Collider other)
     {
+        if (LastTriggeredCollider == other)
+        {
+            LastTriggeredCollider = null;
+        }
+        
         if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
             other.TryGetComponent(out GrindingHapticChallengeManager grindingHapticChallengeManager) &&
             characterInteractController.CurrentNearGrindingCountertop == this)
         {
             characterInteractController.CurrentNearGrindingCountertop = null;
             grindingHapticChallengeManager.CurrentGrindingCountertopBehaviour = null;
-            DisableInteract();
         }
+            
+        DisableInteract();
+        HidePrice();
     }
 }

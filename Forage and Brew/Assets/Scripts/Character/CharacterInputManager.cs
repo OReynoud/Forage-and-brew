@@ -383,7 +383,7 @@ public class CharacterInputManager : MonoBehaviour
     private void HapticChallengeOnPerformed(InputAction.CallbackContext obj)
     {
         TemperatureHapticChallengeManager.Instance.StartTemperatureChallenge();
-        CharacterInteractController.Instance.HandleInteractChoppingCounterTop();
+        CharacterInteractController.Instance.DropIngredientsInChoppingCountertop();
     }
 
     private void HapticChallengeSecondOnPerformed(InputAction.CallbackContext obj)
