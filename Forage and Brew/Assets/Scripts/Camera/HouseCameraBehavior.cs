@@ -1,26 +1,34 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class HouseCameraBehavior : SimpleCameraBehavior
 {
     public HouseCameraSettingsBehavior mainCameraPreset;
-    public HouseCameraSettingsBehavior[] allHouseCameraSettings;
+    public List<HouseCameraSettingsBehavior> allHouseCameraSettings = new();
+    public static UnityEvent<bool, HouseCameraSettingsBehavior> cameraTriggerBehavior = new(); 
 
     public float[] cameraSettingsWeights;
 
     private float totalWeight;
+    public static bool overrideCameraLerp;
     
-    private int weightDivider;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public override void Awake()
     {
-        
+        base.Awake();
+        cameraTriggerBehavior.AddListener(UpdateUsingCamerasList);
     }
 
     private HouseCameraSettingsBehavior temp;
     // Update is called once per frame
     public override void FixedUpdate()
     {
-
+        if (localCodexShow || overrideCameraLerp)
+        {
+            base.FixedUpdate();
+            return;
+        }
         transform.parent.position = Vector3.Lerp(transform.parent.position, player.position + cameraOffset, positionLerp);
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(cameraRotation), rotationLerp);
         
@@ -30,35 +38,43 @@ public class HouseCameraBehavior : SimpleCameraBehavior
 
     public override void Update()
     {
-        temp = ClosestCameraSettings();
-        if (temp != null)
+
+        if (localCodexShow || overrideCameraLerp)
         {
-            if (temp != mainCameraPreset)
-            {
-                mainCameraPreset = ClosestCameraSettings();
-            }
+            base.Update();
+            return;
+        }
+        if (allHouseCameraSettings.Count > 0)
+        {
+            mainCameraPreset = ClosestCameraSettings();
+            previousCamSettings = mainCameraPreset.settings.cameraPreset;
+            TargetCamSettings = mainCameraPreset.settings.cameraPreset;
         }
 
+        if (!mainCameraPreset)
+            return;
+        
         totalWeight = 0;
-        weightDivider = 0;
         cameraOffset = Vector3.zero;
         cameraRotation = Vector3.zero;
         distanceFromPlayer = 0;
         if (Vector3.Distance(mainCameraPreset.transform.position,player.position) < mainCameraPreset.settings.triggerDistance)
         {
-            for (int i = 0; i < allHouseCameraSettings.Length; i++)
+            for (int i = 0; i < allHouseCameraSettings.Count; i++)
             {
                 CalculateWeight(i);
 
             }
 
-            for (int i = 0; i < allHouseCameraSettings.Length; i++)
+            for (int i = 0; i < allHouseCameraSettings.Count; i++)
             {
                 if (totalWeight > 0.1f)
                 {
                     ApplyWeightedSettings(i);
                     continue;
                 }
+                ApplySettings();
+                
                 break;
             }
         }
@@ -70,16 +86,12 @@ public class HouseCameraBehavior : SimpleCameraBehavior
 
     HouseCameraSettingsBehavior ClosestCameraSettings()
     {
-        HouseCameraSettingsBehavior closest = null;
-        for (int i = 0; i < allHouseCameraSettings.Length; i++)
+        HouseCameraSettingsBehavior closest = allHouseCameraSettings[0];
+        for (int i = 1; i < allHouseCameraSettings.Count; i++)
         {
             if (Vector3.Distance(allHouseCameraSettings[i].transform.position, player.position) > allHouseCameraSettings[i].settings.triggerDistance)
             {
                 continue;
-            }
-            if (closest == null)
-            {
-                closest = allHouseCameraSettings[i];
             }
             if (Vector3.Distance(player.position,closest.transform.position) > Vector3.Distance(player.position,allHouseCameraSettings[i].transform.position) )
             {
@@ -102,7 +114,6 @@ public class HouseCameraBehavior : SimpleCameraBehavior
         cameraSettingsWeights[i] =
             1 - Vector3.Distance(allHouseCameraSettings[i].transform.position, player.position) / allHouseCameraSettings[i].settings.triggerDistance;
         totalWeight += cameraSettingsWeights[i];
-        weightDivider++;
     }
 
     void ApplyWeightedSettings(int i)
@@ -117,5 +128,21 @@ public class HouseCameraBehavior : SimpleCameraBehavior
         cameraOffset = mainCameraPreset.settings.cameraPreset.cameraOffset;
         distanceFromPlayer = mainCameraPreset.settings.cameraPreset.distanceFromPlayer;
         cameraRotation = mainCameraPreset.settings.cameraPreset.cameraRotation;
+    }
+
+    void UpdateUsingCamerasList(bool doInsert, HouseCameraSettingsBehavior settingsBehavior)
+    {
+        if (doInsert)
+        {
+            allHouseCameraSettings.Add(settingsBehavior);
+        }
+        else
+        {
+            if (allHouseCameraSettings.Count == 1)
+            {
+                mainCameraPreset = settingsBehavior;
+            }
+            allHouseCameraSettings.Remove(settingsBehavior);
+        }
     }
 }

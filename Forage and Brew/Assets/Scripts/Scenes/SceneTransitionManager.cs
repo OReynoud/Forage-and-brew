@@ -98,7 +98,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         }
 
         var camSettings = SimpleCameraBehavior.instance.TargetCamSettings;
-        
+        HouseCameraBehavior.overrideCameraLerp = true;
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(sleepCam,0);
         SimpleCameraBehavior.instance.InstantCamUpdate();
         
@@ -106,7 +106,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         CharacterAnimManager.instance.PlayPurrSound();
         CharacterAnimManager.instance.transform.position = sleepPos;
         CharacterAnimManager.instance.transform.rotation = Quaternion.Euler(sleepRotation);
-        yield return new WaitForSecondsRealtime(0.1f);
+        yield return new WaitForSecondsRealtime(0.4f);
         timer = 0;
         while (timer < 0.2f)
         {
@@ -116,6 +116,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         }
         
         
+        HouseCameraBehavior.overrideCameraLerp = false;
         yield return new WaitForSecondsRealtime(sleepWaitTime);
         
         

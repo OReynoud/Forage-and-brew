@@ -72,6 +72,7 @@ public class CouchBehaviour : MonoBehaviour, ICinematicInteraction
 
     private IEnumerator ToSitCam()
     {
+        HouseCameraBehavior.overrideCameraLerp = true;
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(sitCam, sitCamTransitionTime);
         yield return new WaitForSeconds(sitCamTransitionTime);
         SitOnCouch();
@@ -95,6 +96,7 @@ public class CouchBehaviour : MonoBehaviour, ICinematicInteraction
         yield return new WaitForSeconds(standCamTransitionTime);
         
         localCanvas.SetActive(true);
+        HouseCameraBehavior.overrideCameraLerp = false;
         CharacterInputManager.Instance.EnableInputs();
     }
 }
