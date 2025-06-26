@@ -57,6 +57,16 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     // Upgrades
     public int PotionsUpgradeIndex { get; set; }
     
+    //Debug Options
+    [Foldout("Debug")] public bool loadOrders;
+    [Foldout("Debug")] public bool loadAllRecipes;
+    [Foldout("Debug")] public bool loadAllIngredients;
+    [Foldout("Debug")] public bool loadHistoric;
+    [Foldout("Debug")] public bool debugCommands;
+    [Foldout("Debug")] public bool codexIsUnlocked;
+    [Foldout("Debug")][ShowIf("loadOrders")] public List<LetterContentSo> OrdersToLoad;
+    [Foldout("Debug")][ShowIf("loadHistoric")] public List<LetterContentSo> HistoricToLoad;
+    
     
     private void Awake()
     {

@@ -51,14 +51,8 @@ public class CodexContentManager : Singleton<CodexContentManager>
     public List<HistoricCodexDisplayBehavior> historicPages = new();
 
     
-    [Foldout("Debug")] public bool loadOrders;
-    [Foldout("Debug")] public bool loadAllRecipes;
-    [Foldout("Debug")] public bool loadAllIngredients;
-    [Foldout("Debug")] public bool loadHistoric;
-    [Foldout("Debug")] public bool debugCommands;
-    [Foldout("Debug")] public bool codexIsUnlocked;
-    [Foldout("Debug")][ShowIf("loadOrders")] public List<LetterContentSo> OrdersToLoad;
-    [Foldout("Debug")][ShowIf("loadHistoric")] public List<LetterContentSo> HistoricToLoad;
+
+
 
     [Foldout("Debug")] private List<Sprite> tempIngredientsLow = new();
     [Foldout("Debug")] private List<Sprite> tempIngredientsHigh = new();
@@ -82,17 +76,17 @@ public class CodexContentManager : Singleton<CodexContentManager>
         {
             ticket.gameObject.SetActive(false);
         }
-
+        
         yield return new WaitWhile(() => OrderManager.Instance.isInitialized = false);
-        if (loadOrders)
+        if (GameDontDestroyOnLoadManager.Instance.loadOrders)
         {
-            foreach (var orderSo in OrdersToLoad)
+            foreach (var orderSo in GameDontDestroyOnLoadManager.Instance.OrdersToLoad)
             {
                 OrderManager.Instance.CreateNewOrder(new Letter(orderSo,null));
             }
         }
 
-        if (loadAllRecipes)
+        if (GameDontDestroyOnLoadManager.Instance.loadAllRecipes)
         {
             GameDontDestroyOnLoadManager.Instance.UnlockedRecipes.AddRange(potionList.Potions);
         }
@@ -109,17 +103,17 @@ public class CodexContentManager : Singleton<CodexContentManager>
         pageIndexesToCheck.Clear();
 
 
-        if (loadAllIngredients)
+        if (GameDontDestroyOnLoadManager.Instance.loadAllIngredients)
         {
             GameDontDestroyOnLoadManager.Instance.UnlockedIngredients.Clear();
             GameDontDestroyOnLoadManager.Instance.UnlockedIngredients.AddRange(ingredientList.IngredientValues);
             AutoFlip.instance.ControledBook.DisplayNewIngredientFromSave();
         }
-        if (loadHistoric)
+        if (GameDontDestroyOnLoadManager.Instance.loadHistoric)
         {
             GameDontDestroyOnLoadManager.Instance.UnlockedRecipes.Clear();
             GameDontDestroyOnLoadManager.Instance.UnlockedRecipes.AddRange(potionList.Potions);
-            foreach (var historic in HistoricToLoad)
+            foreach (var historic in GameDontDestroyOnLoadManager.Instance.HistoricToLoad)
             {
                 AddHistoricPage(historic, historic.RelatedSuccessLetter);
             }

@@ -26,6 +26,7 @@ public class CharacterSpawnBehaviour : MonoBehaviour
                     
                     if (sourceScene == Scene.HouseOutdoor && sceneName.Scene == Scene.HouseOutdoor)
                     {
+                        Debug.Log(gameObject,gameObject);
                         SceneTransitionManager.instance.Wake();
                         PinnedRecipe.instance.isInHouse = true;
                     }

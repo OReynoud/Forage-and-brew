@@ -10,7 +10,7 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
     
     void Start()
     {
-        if (CodexContentManager.instance.codexIsUnlocked)
+        if (GameDontDestroyOnLoadManager.Instance.codexIsUnlocked)
             gameObject.SetActive(false);
         
     }
@@ -44,7 +44,7 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
 
     private void PickupCodex()
     {
-        CodexContentManager.instance.codexIsUnlocked = true;
+        GameDontDestroyOnLoadManager.Instance.codexIsUnlocked = true;
         CharacterMovementController.Instance.FinishWalkToLocation.RemoveListener(PickupCodex);
         CharacterInputManager.Instance.EnableInputs();
         CharacterMovementController.Instance.transform.rotation = LocationToWalk.rotation;

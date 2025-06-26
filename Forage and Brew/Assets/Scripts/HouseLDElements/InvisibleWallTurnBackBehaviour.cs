@@ -10,7 +10,7 @@ public class InvisibleWallTurnBackBehaviour : MonoBehaviour, ICinematicInteracti
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (CodexContentManager.instance.codexIsUnlocked)
+        if (GameDontDestroyOnLoadManager.Instance.codexIsUnlocked)
         {
             gameObject.SetActive(false);
         }
@@ -24,7 +24,7 @@ public class InvisibleWallTurnBackBehaviour : MonoBehaviour, ICinematicInteracti
 
     private void OnTriggerEnter(Collider other)
     {
-        if (CodexContentManager.instance.codexIsUnlocked)
+        if (GameDontDestroyOnLoadManager.Instance.codexIsUnlocked)
             return;
         StartInteraction();
     }
