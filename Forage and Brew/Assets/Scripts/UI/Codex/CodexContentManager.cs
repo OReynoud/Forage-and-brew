@@ -44,6 +44,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
     
     [BoxGroup("Ingredient display")] [ReadOnly]
     public List<IngredientPageDisplay> ingredientPages = new();
+    [BoxGroup("Ingredient display")] public float ingredientDissolveDelay = 0.4f;
     
     //Historic Management
     [BoxGroup("Historic display")] [ReadOnly]

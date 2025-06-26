@@ -30,11 +30,12 @@ public class OrderCodexDisplayBehaviour : PageBehavior
         if (daysLeftToComplete <= 0)
         {
             outdatedStamp.enabled = true;
+            delayTimeText.text = "Overdue";
         }
         else
         {
             daysLeftToComplete--;
-            delayTimeText.text = daysLeftToComplete + " Days";
+            delayTimeText.text = daysLeftToComplete + daysLeftToComplete == 1 ? "Day remaining" : " Days remaining";
         }
     }
 
@@ -48,7 +49,7 @@ public class OrderCodexDisplayBehaviour : PageBehavior
         orderBackground.color = client.AssociatedColor;
 
         outdatedStamp.enabled = false;
-        delayTimeText.text = TTC + " Days";
+        delayTimeText.text = TTC + (TTC == 1 ? " Day remaining" : " Days remaining");
         
         for (int i = 0; i < potionsDemanded.Count; i++)
         {

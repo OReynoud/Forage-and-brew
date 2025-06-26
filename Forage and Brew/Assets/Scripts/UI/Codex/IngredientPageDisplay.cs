@@ -38,7 +38,7 @@ public class IngredientPageDisplay : PageBehavior
 
     IEnumerator StartDissolve()
     {
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(CodexContentManager.instance.ingredientDissolveDelay);
         Material matInstance = Instantiate(disolveImage.material);
         disolveImage.material = matInstance;
         disolveImage.material.SetFloat("_Cutoff_Height", 0);
