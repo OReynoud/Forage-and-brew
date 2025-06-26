@@ -297,38 +297,7 @@ public class AutoFlip : Singleton<AutoFlip>
             return;
         
         TutorialManager.instance.NotifyFromRecipeReceived();
-        if (recipeToPin)
-        {
-            foreach (TemperatureChallengeIngredients t in recipeToPin.TemperatureChallengeIngredients)
-            {
-                foreach (CookedIngredientForm cookedIngredient in t.CookedIngredients)
-                {
-                    if (cookedIngredient.IsAType)
-                    {
-                        tempIngredientsHigh.Add(cookedIngredient.IngredientType.IconHigh);
-                    }
-                    else
-                    {
-                        tempIngredientsHigh.Add(cookedIngredient.Ingredient.iconHigh);
-                    }
-                }
-            }
-            PinnedRecipe.instance.AutoPin(recipeToPin,tempIngredientsHigh.ToArray());
-            for (int i = 0; i < CodexContentManager.instance.recipes.Count; i++)
-            {
-                if (CodexContentManager.instance.recipes[i].storedPotion != recipeToPin)
-                {
-                    CodexContentManager.instance.recipes[i].pinIcon.enabled = false;
-                    continue;
-                }
 
-                CodexContentManager.instance.pinnedRecipe = CodexContentManager.instance.recipes[i];
-                CodexContentManager.instance.recipes[i].pinIcon.enabled = true;
-                CodexContentManager.instance.pinImage.enabled = true;
-            }
-            recipeToPin = null;
-            tempIngredientsHigh.Clear();
-        }
 
 
         if (CodexContentManager.instance.pageIndexesToCheck[^1] % 2 == 1)
@@ -371,7 +340,38 @@ public class AutoFlip : Singleton<AutoFlip>
                     break;
             }
         }
-        
+        if (recipeToPin)
+        {
+            foreach (TemperatureChallengeIngredients t in recipeToPin.TemperatureChallengeIngredients)
+            {
+                foreach (CookedIngredientForm cookedIngredient in t.CookedIngredients)
+                {
+                    if (cookedIngredient.IsAType)
+                    {
+                        tempIngredientsHigh.Add(cookedIngredient.IngredientType.IconHigh);
+                    }
+                    else
+                    {
+                        tempIngredientsHigh.Add(cookedIngredient.Ingredient.iconHigh);
+                    }
+                }
+            }
+            PinnedRecipe.instance.AutoPin(recipeToPin,tempIngredientsHigh.ToArray());
+            for (int i = 0; i < CodexContentManager.instance.recipes.Count; i++)
+            {
+                if (CodexContentManager.instance.recipes[i].storedPotion != recipeToPin)
+                {
+                    CodexContentManager.instance.recipes[i].pinIcon.enabled = false;
+                    continue;
+                }
+
+                CodexContentManager.instance.pinnedRecipe = CodexContentManager.instance.recipes[i];
+                CodexContentManager.instance.recipes[i].pinIcon.enabled = true;
+                CodexContentManager.instance.pinImage.enabled = true;
+            }
+            recipeToPin = null;
+            tempIngredientsHigh.Clear();
+        }
         CodexContentManager.instance.pageIndexesToCheck.Clear();
         CharacterInputManager.Instance.EnableCodexInputs();
         CharacterInputManager.Instance.EnableCodexExitInput();
