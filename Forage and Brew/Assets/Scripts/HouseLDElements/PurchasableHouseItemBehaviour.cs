@@ -16,6 +16,7 @@ public abstract class PurchasableHouseItemBehaviour : MonoBehaviour
     
     [Header("Purchasable House Item UI")]
     [SerializeField] protected PricePopUpBehaviour pricePopUpBehaviour;
+    [SerializeField] protected LockBehaviour lockBehaviour;
 
     protected Collider LastTriggeredCollider;
     
@@ -28,14 +29,18 @@ public abstract class PurchasableHouseItemBehaviour : MonoBehaviour
         pricePopUpBehaviour.SetPrice(purchaseCost);
         pricePopUpBehaviour.HidePrice();
 
-        foreach (Renderer purchasableItemMeshRenderer in purchasableItemMeshRenderers)
-        {
-            purchasableItemMeshRenderer.material.SetFloat(CutoffHeight,
-                GameDontDestroyOnLoadManager.Instance.WorkshopProgressionIndex > selfIndex ? 1f : 0f);
-        }
-
         PurchasableHouseItemManager.Instance.OnItemPurchased.AddListener(InitPurchasableHouseItem);
         InitPurchasableHouseItem();
+
+        if (Unlocked)
+        {
+            lockBehaviour.Disable();
+        }
+
+        foreach (Renderer purchasableItemMeshRenderer in purchasableItemMeshRenderers)
+        {
+            purchasableItemMeshRenderer.material.SetFloat(CutoffHeight, Unlocked ? 1f : 0f);
+        }
     }
     
 
@@ -62,6 +67,7 @@ public abstract class PurchasableHouseItemBehaviour : MonoBehaviour
         Unlocked = true;
         GameDontDestroyOnLoadManager.Instance.WorkshopProgressionIndex++;
         pricePopUpBehaviour.HidePrice();
+        lockBehaviour.Unlock();
         ManageCharacterNear(LastTriggeredCollider);
         foreach (Renderer purchasableItemMeshRenderer in purchasableItemMeshRenderers)
         {
