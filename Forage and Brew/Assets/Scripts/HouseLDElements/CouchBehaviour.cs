@@ -50,7 +50,7 @@ public class CouchBehaviour : MonoBehaviour, ICinematicInteraction
     private void OnTriggerExit(Collider other)
     {
         CharacterInteractController.Instance.CurrentNearCinematicInteraction = null;
-        localCanvas.SetActive(true);
+        localCanvas.SetActive(false);
     }
 
     

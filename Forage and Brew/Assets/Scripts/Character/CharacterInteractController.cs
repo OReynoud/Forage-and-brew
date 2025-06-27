@@ -166,7 +166,18 @@ public class CharacterInteractController : MonoBehaviour
 
     public void Cancel()
     {
-        if (collectedStack.Count <= 0) return;
+        if (collectedStack.Count <= 0)
+        {
+            if (CurrentNearCinematicInteraction != null)
+            {
+                switch (CurrentNearCinematicInteraction)
+                {
+                    case CouchBehaviour couch:
+                        couch.CancelCouch();
+                        return;
+                }
+            }
+        }
         CharacterAnimManager.instance.animator.SetTrigger("DoThrow");
         if (CurrentNearIngredientBaskets.Count > 0)
         {
@@ -181,15 +192,6 @@ public class CharacterInteractController : MonoBehaviour
             foreach (IngredientBasketBehaviour ingredientBasket in CurrentNearIngredientBaskets)
             {
                 ingredientBasket.DoesNeedToCheckAvailability = true;
-            }
-        }
-        else if (CurrentNearCinematicInteraction != null)
-        {
-            switch (CurrentNearCinematicInteraction)
-            {
-                case CouchBehaviour couch:
-                    couch.CancelCouch();
-                    break;
             }
         }
         else
