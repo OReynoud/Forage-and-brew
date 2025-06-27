@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class CharacterInteractController : MonoBehaviour
 {
+    private static readonly int DoThrow = Animator.StringToHash("DoThrow");
     public static CharacterInteractController Instance { get; private set; }
     
     [field:Foldout("Debug")] [ReadOnly] public List<CollectedStack> collectedStack = new();
@@ -105,13 +106,13 @@ public class CharacterInteractController : MonoBehaviour
         {
             CurrentNearCauldron.DisableInteract(true);
             ShoveStackInTarget(CurrentNearCauldron.transform, CurrentNearCauldron);
-            CharacterAnimManager.instance.animator.SetTrigger("DoThrow");
+            CharacterAnimManager.instance.animator.SetTrigger(DoThrow);
         }
         else if (CurrentNearBin && collectedStack.Count > 0 && collectedStack[0].stackable is CollectedPotionBehaviour)
         {
             CurrentNearBin.DisableInteract();
             ShoveStackInTarget(CurrentNearBin.transform, CurrentNearBin, binOffset);
-            CharacterAnimManager.instance.animator.SetTrigger("DoThrow");
+            CharacterAnimManager.instance.animator.SetTrigger(DoThrow);
         }
         else if (CurrentNearBellows && !CurrentNearBellows.Unlocked && CurrentNearBellows.CanPurchase && collectedStack.Count == 0)
         {
@@ -178,7 +179,10 @@ public class CharacterInteractController : MonoBehaviour
                 }
             }
         }
-        CharacterAnimManager.instance.animator.SetTrigger("DoThrow");
+        else
+        {
+            CharacterAnimManager.instance.animator.SetTrigger(DoThrow);
+        }
         if (CurrentNearIngredientBaskets.Count > 0)
         {
             foreach (IngredientBasketBehaviour ingredientBasket in CurrentNearIngredientBaskets)
