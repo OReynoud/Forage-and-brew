@@ -58,6 +58,8 @@ public class HouseCameraBehavior : SimpleCameraBehavior
         cameraOffset = Vector3.zero;
         cameraRotation = Vector3.zero;
         distanceFromPlayer = 0;
+        posMinClamp = Vector3.zero;
+        posMaxClamp = Vector3.zero;
         if (Vector3.Distance(mainCameraPreset.transform.position,player.position) < mainCameraPreset.settings.triggerDistance)
         {
             for (int i = 0; i < allHouseCameraSettings.Count; i++)
@@ -121,6 +123,8 @@ public class HouseCameraBehavior : SimpleCameraBehavior
         cameraOffset += allHouseCameraSettings[i].settings.cameraPreset.cameraOffset * cameraSettingsWeights[i] / totalWeight;
         distanceFromPlayer += allHouseCameraSettings[i].settings.cameraPreset.distanceFromPlayer * cameraSettingsWeights[i] / totalWeight;
         cameraRotation += allHouseCameraSettings[i].settings.cameraPreset.cameraRotation * cameraSettingsWeights[i] / totalWeight;
+        posMaxClamp += allHouseCameraSettings[i].settings.cameraPreset.posMaxClamp * cameraSettingsWeights[i] / totalWeight;
+        posMinClamp += allHouseCameraSettings[i].settings.cameraPreset.posMinClamp * cameraSettingsWeights[i] / totalWeight;
     }
 
     void ApplySettings()
@@ -128,6 +132,8 @@ public class HouseCameraBehavior : SimpleCameraBehavior
         cameraOffset = mainCameraPreset.settings.cameraPreset.cameraOffset;
         distanceFromPlayer = mainCameraPreset.settings.cameraPreset.distanceFromPlayer;
         cameraRotation = mainCameraPreset.settings.cameraPreset.cameraRotation;
+        posMaxClamp = mainCameraPreset.settings.cameraPreset.posMaxClamp;
+        posMinClamp = mainCameraPreset.settings.cameraPreset.posMinClamp;
     }
 
     void UpdateUsingCamerasList(bool doInsert, HouseCameraSettingsBehavior settingsBehavior)
