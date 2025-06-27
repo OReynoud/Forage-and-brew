@@ -208,7 +208,7 @@ public class CharacterInputManager : MonoBehaviour
 
     public void EnableCodexExitInput()
     {
-        
+        Debug.Log("Enable codex Leave");
         _inputs.Player.CodexEnter.Disable();
         _inputs.Player.CodexLeave.Enable();
     }
@@ -523,6 +523,7 @@ public class CharacterInputManager : MonoBehaviour
 
     public void EnableCodexExit()
     {
+        Debug.Log("Enable codex Leave");
         _inputs.Player.CodexLeave.Enable();
         _inputs.Player.CodexEnter.Disable();
     }

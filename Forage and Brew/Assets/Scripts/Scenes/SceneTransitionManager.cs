@@ -188,8 +188,11 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         timer = 0;
         if (GameDontDestroyOnLoadManager.Instance.lockoutOnWakeUp)
         {
-            CharacterInputManager.Instance.DisableInputs();
             GameDontDestroyOnLoadManager.Instance.lockoutOnWakeUp = false;
+        }
+        else
+        {
+            CharacterInputManager.Instance.EnableInputs();
         }
         transitionElement.gameObject.SetActive(true);
         maskElement.sizeDelta = Vector2.zero;

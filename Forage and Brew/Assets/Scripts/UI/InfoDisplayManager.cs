@@ -109,6 +109,7 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
     [ReadOnly]public bool showPause;
     private bool showOptions;
     private bool _canInputPause = true;
+    public bool canShowCodex { get; set; }
 
 
     public void DisplayAll()
@@ -140,12 +141,18 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
 
     private void UpdateUIVisibility(bool arg0)
     {
+        if (!GameDontDestroyOnLoadManager.Instance.codexIsUnlocked)
+            return;
         canShow = arg0;
+        canShowCodex = false;
     }
 
     private void UpdateUIVisibilityReverse(bool arg0)
-    {
+    {        
+        if (!GameDontDestroyOnLoadManager.Instance.codexIsUnlocked)
+            return;
         canShow = !arg0;
+        canShowCodex = false;
     }
 
     private void Update()
@@ -165,7 +172,16 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
                 Vector2.Lerp(weatherUIContainer.anchoredPosition, topRightHiddenPos, lerp);
             moneyUIContainer.anchoredPosition =
                 Vector2.Lerp(moneyUIContainer.anchoredPosition, bottomRightHiddenPos, lerp);
-            codexIcon.anchoredPosition = Vector2.Lerp(codexIcon.anchoredPosition, bottomLeftHiddenPos, lerp);
+            if (!canShowCodex)
+            {
+                codexIcon.anchoredPosition = Vector2.Lerp(codexIcon.anchoredPosition, bottomLeftHiddenPos, lerp);
+                
+            }
+            else
+            {
+                codexIcon.anchoredPosition = 
+                    Vector2.Lerp(codexIcon.anchoredPosition, bottomLeftShownPos, lerp);
+            }
         }
 
         if (tutorialTimer > 0)

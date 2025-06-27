@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
 {
@@ -9,6 +10,8 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
     [SerializeField] private List<ParticleSystem> sparkleEffects;
     [SerializeField] private AudioSource audio;
     [SerializeField] private AudioSource audioPages;
+    public static bool doTutorialPages = true;
+    public static UnityEvent codexTutorialEvent;
     
     private static readonly int IsOpen = Animator.StringToHash("IsOpen");
 
@@ -17,7 +20,12 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
     {
         if (GameDontDestroyOnLoadManager.Instance.codexIsUnlocked)
         {
+            doTutorialPages = false;
             gameObject.SetActive(false);
+        }
+        else
+        {
+            AutoFlip.instance.ControledBook.OnFlip.AddListener(FlipListener);
         }
     }
     
@@ -38,7 +46,17 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
         gameObject.SetActive(false);
         CharacterInteractController.Instance.CurrentNearCinematicInteraction = null;
         CharacterInputManager.Instance.DisableInputs();
-        //CharacterInputManager.Instance.EnableMoveInputs();
+    }
+
+    void FlipListener()
+    {
+        if (AutoFlip.instance.ControledBook.currentPage == AutoFlip.instance.ControledBook.bookPages.Count)
+        {
+            doTutorialPages = false;
+            InfoDisplayManager.instance.canShowCodex = true;
+            CharacterInputManager.Instance.EnableCodexInputs();
+            CharacterInputManager.Instance.EnableCodexExit();
+        }
     }
     
 

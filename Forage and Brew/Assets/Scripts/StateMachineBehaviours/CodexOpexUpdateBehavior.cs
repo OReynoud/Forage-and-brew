@@ -21,10 +21,14 @@ public class CodexOpexUpdateBehavior : StateMachineBehaviour
             isCodexOpenTriggered = true;
             CharacterInputManager.Instance.showCodex = true;
             
-            InfoDisplayManager.instance.ShowBackground();        
+            InfoDisplayManager.instance.ShowBackground();
+            
             CharacterInputManager.Instance.EnableMoveInputs();
-            CharacterInputManager.Instance.EnableCodexExit();
-
+            if (!CodexPickUpBehaviour.doTutorialPages)
+            {
+                CharacterInputManager.Instance.EnableCodexInputs();
+                CharacterInputManager.Instance.EnableCodexExit();
+            }
         }
 
         if (isCodexActiveTriggered) return;
