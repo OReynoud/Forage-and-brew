@@ -51,8 +51,11 @@ public class GateBehaviour : MonoBehaviour
 
     public void Purchase()
     {
-        CharacterAnimManager.instance.animator.SetTrigger(CatNo);
-        if (MoneyManager.Instance.MoneyAmount < chargedBiomeAreaSos[0].PurchaseCost) return;
+        if (MoneyManager.Instance.MoneyAmount < chargedBiomeAreaSos[0].PurchaseCost)
+        {
+            CharacterAnimManager.instance.animator.SetTrigger(CatNo);
+            return;
+        }
 
         MoneyManager.Instance.SubtractMoney(chargedBiomeAreaSos[0].PurchaseCost);
         Unlocked = true;

@@ -59,8 +59,11 @@ public abstract class PurchasableHouseItemBehaviour : MonoBehaviour
 
     public virtual void PurchaseItem()
     {
-        CharacterAnimManager.instance.animator.SetTrigger(CatNo);
-        if (MoneyManager.Instance.MoneyAmount < purchaseCost) return;
+        if (MoneyManager.Instance.MoneyAmount < purchaseCost)
+        {
+            CharacterAnimManager.instance.animator.SetTrigger(CatNo);
+            return;
+        }
 
         MoneyManager.Instance.SubtractMoney(purchaseCost);
         CanPurchase = false;
