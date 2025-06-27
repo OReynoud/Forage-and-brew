@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,9 +16,7 @@ public class RecipeIngredientDisplayContainer : MonoBehaviour
     public Image ingredientStateHighlight;
 
     public int ingredientUpperLimit = 2;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
+    
 
     public void AddListener()
     {
@@ -32,34 +29,25 @@ public class RecipeIngredientDisplayContainer : MonoBehaviour
     {
         storedIngredient = ingredient;
         ingredientBackground.sprite = ingredientBackgroundSprite;
-        if (ingredientDiscovered)
+        ingredientRequiredSprite.enabled = true;
+        ingredientRequiredSprite.sprite = storedIngredient.iconLow;
+        if (ingredientAmount == 0)
         {
-            ingredientRequiredSprite.enabled = true;
-            ingredientRequiredSprite.sprite = storedIngredient.iconLow;
-            if (ingredientAmount == 0)
-            {
-                ingredientStateHighlight.sprite = ingredientStateSprites[2];
-                ingredientStateHighlight.color = ingredientStateColors[2];
-            }
-            else
-            {
-                if (ingredientAmount > ingredientUpperLimit)
-                {
-                    ingredientStateHighlight.sprite = ingredientStateSprites[0];
-                    ingredientStateHighlight.color = ingredientStateColors[0];
-                }
-                else
-                {
-                    ingredientStateHighlight.sprite = ingredientStateSprites[1];
-                    ingredientStateHighlight.color = ingredientStateColors[1];
-                }
-            }
+            ingredientStateHighlight.sprite = ingredientStateSprites[2];
+            ingredientStateHighlight.color = ingredientStateColors[2];
         }
         else
         {
-            ingredientRequiredSprite.enabled = false;
-            ingredientStateHighlight.color = ingredientStateColors[^1];
-            ingredientStateHighlight.sprite = ingredientStateSprites[^1];
+            if (ingredientAmount > ingredientUpperLimit)
+            {
+                ingredientStateHighlight.sprite = ingredientStateSprites[0];
+                ingredientStateHighlight.color = ingredientStateColors[0];
+            }
+            else
+            {
+                ingredientStateHighlight.sprite = ingredientStateSprites[1];
+                ingredientStateHighlight.color = ingredientStateColors[1];
+            }
         }
 
         numberRequiredText.text = ingredientAmount.ToString();
