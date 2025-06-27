@@ -70,6 +70,14 @@ public class CouchBehaviour : MonoBehaviour, ICinematicInteraction
         }
     }
 
+    public void CancelCouch()
+    {
+        if (!_usingCouch)
+            return;
+        _usingCouch = false;
+        animator.SetTrigger(DoStand);
+    }
+
     private IEnumerator ToSitCam()
     {
         HouseCameraBehavior.overrideCameraLerp = true;

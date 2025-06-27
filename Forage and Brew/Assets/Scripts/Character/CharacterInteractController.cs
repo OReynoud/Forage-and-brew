@@ -183,6 +183,15 @@ public class CharacterInteractController : MonoBehaviour
                 ingredientBasket.DoesNeedToCheckAvailability = true;
             }
         }
+        else if (CurrentNearCinematicInteraction != null)
+        {
+            switch (CurrentNearCinematicInteraction)
+            {
+                case CouchBehaviour couch:
+                    couch.CancelCouch();
+                    break;
+            }
+        }
         else
         {
             int length = collectedStack.Count;
