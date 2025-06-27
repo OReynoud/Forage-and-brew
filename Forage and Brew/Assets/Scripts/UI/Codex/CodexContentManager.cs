@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -368,7 +369,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
         pageChoser = Random.Range(0, rightIngredientPage.Length);
         
         int ingredientIndex = ingredientList.IngredientValues.IndexOf(ingredient);
-        //Debug.Log("Raw index: " + ingredientIndex);
+        Debug.Log("Raw index: " + ingredientIndex);
         if (ingredientPages.Count == 0)
         {
             //Debug.Log("First discovered ingredient");
@@ -376,14 +377,29 @@ public class CodexContentManager : Singleton<CodexContentManager>
         }
         else if (ingredientIndex >= ingredientList.IngredientValues.IndexOf(ingredientPages[^1].associatedIngredient))
         {
-            Debug.Log("Highest index yet");
+            //Debug.Log("Highest index yet");
             ingredientIndex = AutoFlip.instance.ControledBook.bookMarks[2].index + ingredientPages.Count;
         }
         else
         {
-            
-            Debug.Log("Index can be fitted in book");
-            ingredientIndex += AutoFlip.instance.ControledBook.bookMarks[2].index - 1;
+            if (ingredientPages.Count == 1)
+            {
+                ingredientIndex = AutoFlip.instance.ControledBook.bookMarks[2].index;
+                
+            }
+            else
+            {
+                for (int i = 0; i < ingredientPages.Count; i++)
+                {
+                    if (ingredientIndex < ingredientList.IngredientValues.IndexOf(ingredientPages[i].associatedIngredient))
+                    {
+                        ingredientIndex = AutoFlip.instance.ControledBook.bookMarks[2].index + i;
+                        break;
+                    }
+                }
+            }
+            //Debug.Log("Index can be fitted in book: " + ingredientIndex);
+
         }
         
         
