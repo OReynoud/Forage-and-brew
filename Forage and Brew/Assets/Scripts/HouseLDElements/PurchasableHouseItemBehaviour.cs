@@ -7,7 +7,6 @@ public abstract class PurchasableHouseItemBehaviour : MonoBehaviour
     [Header("Purchasable House Item Values")]
     [SerializeField] private int selfIndex;
     [SerializeField] protected int purchaseCost;
-    
     public bool CanPurchase { get; private set; }
     public bool Unlocked { get; private set; }
     
@@ -21,6 +20,7 @@ public abstract class PurchasableHouseItemBehaviour : MonoBehaviour
     protected Collider LastTriggeredCollider;
     
     private static readonly int CutoffHeight = Shader.PropertyToID("_CutoffHeight");
+    private static readonly int CatNo = Animator.StringToHash("DoNo");
     
     
     protected virtual void Start()
@@ -54,6 +54,7 @@ public abstract class PurchasableHouseItemBehaviour : MonoBehaviour
 
     public virtual void PurchaseItem()
     {
+        CharacterAnimManager.instance.animator.SetTrigger(CatNo);
         if (MoneyManager.Instance.MoneyAmount < purchaseCost) return;
 
         MoneyManager.Instance.SubtractMoney(purchaseCost);

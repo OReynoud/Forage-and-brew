@@ -206,6 +206,7 @@ public class StirHapticChallengeManager : MonoBehaviour
         
         // Cauldron
         CurrentCauldron.DisableInteract();
+        visualIndicationGameObject.SetActive(true);
         
         // Challenge
         GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge = true;
@@ -370,6 +371,7 @@ public class StirHapticChallengeManager : MonoBehaviour
         _currentChallenge = null;
         
         // Sound
+        
         CurrentCauldron.StopBrewingSound();
         characterAnimator.SetBool(IsStirring, false);
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(_previousCameraPreset, cauldronCameraTransitionTime);
@@ -499,8 +501,8 @@ public class StirHapticChallengeManager : MonoBehaviour
             return;
         }
 
-        CauldronVfxManager.Instance.PlayObtainedPotionVfx();
         
+        CauldronVfxManager.Instance.PlayObtainedPotionVfx();
         obtainedPotionImage.sprite = _currentPotion.PotionDifficulty.PotionSprite;
         obtainedPotionLiquidImage.sprite = _currentPotion.PotionDifficulty.LiquidSprite;
         obtainedPotionLiquidImage.color = _currentPotion.SpriteLiquidColor;

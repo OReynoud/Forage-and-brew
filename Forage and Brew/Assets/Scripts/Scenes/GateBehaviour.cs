@@ -13,6 +13,7 @@ public class GateBehaviour : MonoBehaviour
     public bool Unlocked { get; private set; }
     
     private static readonly int CutoffHeight = Shader.PropertyToID("_CutoffHeight");
+    private static readonly int CatNo = Animator.StringToHash("DoNo");
     
     
     private void Start()
@@ -50,6 +51,7 @@ public class GateBehaviour : MonoBehaviour
 
     public void Purchase()
     {
+        CharacterAnimManager.instance.animator.SetTrigger(CatNo);
         if (MoneyManager.Instance.MoneyAmount < chargedBiomeAreaSos[0].PurchaseCost) return;
 
         MoneyManager.Instance.SubtractMoney(chargedBiomeAreaSos[0].PurchaseCost);

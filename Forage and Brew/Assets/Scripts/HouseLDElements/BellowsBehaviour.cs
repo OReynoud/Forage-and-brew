@@ -45,6 +45,8 @@ public class BellowsBehaviour : PurchasableHouseItemBehaviour
     {
         base.PurchaseItem();
         
+        if (MoneyManager.Instance.MoneyAmount < purchaseCost) return;
+        
         bellowsAnimator.SetBool(IsInTemperatureChallenge, false);
     }
 
