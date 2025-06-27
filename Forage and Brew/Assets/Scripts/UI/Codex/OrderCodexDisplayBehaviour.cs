@@ -35,7 +35,7 @@ public class OrderCodexDisplayBehaviour : PageBehavior
         else
         {
             daysLeftToComplete--;
-            delayTimeText.text = daysLeftToComplete + daysLeftToComplete == 1 ? "Day remaining" : " Days remaining";
+            delayTimeText.text = daysLeftToComplete == 1 ? "Must be shipped today!" : daysLeftToComplete + " Days remaining";
         }
     }
 
@@ -49,7 +49,7 @@ public class OrderCodexDisplayBehaviour : PageBehavior
         orderBackground.color = client.AssociatedColor;
 
         outdatedStamp.enabled = false;
-        delayTimeText.text = TTC + (TTC == 1 ? " Day remaining" : " Days remaining");
+        delayTimeText.text = TTC == 1 ? "Must be shipped today!" : TTC + " Days remaining";
         
         for (int i = 0; i < potionsDemanded.Count; i++)
         {

@@ -33,13 +33,12 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
     {
         GameDontDestroyOnLoadManager.Instance.codexIsUnlocked = true;
         CharacterMovementController.Instance.FinishWalkToLocation.RemoveListener(PickupCodex);
-        CharacterInputManager.Instance.EnableInputs();
         CharacterMovementController.Instance.transform.rotation = locationToWalk.rotation;
         CharacterInputManager.Instance.EnterCodexMethod();
         gameObject.SetActive(false);
         CharacterInteractController.Instance.CurrentNearCinematicInteraction = null;
-        
-        CharacterInputManager.Instance.EnableMoveInputs();
+        CharacterInputManager.Instance.DisableInputs();
+        //CharacterInputManager.Instance.EnableMoveInputs();
     }
     
 

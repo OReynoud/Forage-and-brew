@@ -37,16 +37,6 @@ public class CharacterInputManager : MonoBehaviour
         {
             EnableDebugCommands();
         }
-
-        if (!GameDontDestroyOnLoadManager.Instance.lockoutOnWakeUp)
-        {
-            EnableInputs();
-        }
-        else
-        {
-            GameDontDestroyOnLoadManager.Instance.lockoutOnWakeUp = false;
-        }
-        
     }
 
     private void Update()

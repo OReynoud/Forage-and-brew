@@ -186,7 +186,11 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
     {
         transitionElement.gameObject.SetActive(false);
         timer = 0;
-        CharacterInputManager.Instance.DisableInputs();
+        if (GameDontDestroyOnLoadManager.Instance.lockoutOnWakeUp)
+        {
+            CharacterInputManager.Instance.DisableInputs();
+            GameDontDestroyOnLoadManager.Instance.lockoutOnWakeUp = false;
+        }
         transitionElement.gameObject.SetActive(true);
         maskElement.sizeDelta = Vector2.zero;
         yield return new WaitForSecondsRealtime(0.5f);
