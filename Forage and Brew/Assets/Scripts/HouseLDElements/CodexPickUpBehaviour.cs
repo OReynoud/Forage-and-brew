@@ -7,6 +7,8 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
     [SerializeField] private Transform locationToWalk;
     [SerializeField] private GameObject localCanvas;
     [SerializeField] private List<ParticleSystem> sparkleEffects;
+    [SerializeField] private AudioSource audio;
+    [SerializeField] private AudioSource audioPages;
     
     private static readonly int IsOpen = Animator.StringToHash("IsOpen");
 
@@ -51,6 +53,10 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
         {
             sparkleEffect.Play();
         }
+        audio.Stop();
+        audio.Play();
+        audioPages.Stop();
+        audioPages.PlayDelayed(0.4f);
     }
 
     private void OnTriggerExit(Collider other)
@@ -63,5 +69,9 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
         {
             sparkleEffect.Stop();
         }
+        audio.Stop();
+        audio.PlayDelayed(0.8f);
+        audioPages.Stop();
+        audioPages.PlayDelayed(0.6f);
     }
 }
