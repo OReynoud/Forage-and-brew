@@ -35,6 +35,7 @@ public class RecipeIngredientDisplayContainer : MonoBehaviour
         {
             ingredientStateHighlight.sprite = ingredientStateSprites[2];
             ingredientStateHighlight.color = ingredientStateColors[2];
+            numberRequiredText.color = ingredientStateColors[2];
         }
         else
         {
@@ -42,11 +43,13 @@ public class RecipeIngredientDisplayContainer : MonoBehaviour
             {
                 ingredientStateHighlight.sprite = ingredientStateSprites[0];
                 ingredientStateHighlight.color = ingredientStateColors[0];
+                numberRequiredText.color = ingredientStateColors[0];
             }
             else
             {
                 ingredientStateHighlight.sprite = ingredientStateSprites[1];
                 ingredientStateHighlight.color = ingredientStateColors[1];
+                numberRequiredText.color = ingredientStateColors[1];
             }
         }
 
@@ -63,6 +66,7 @@ public class RecipeIngredientDisplayContainer : MonoBehaviour
         {
             ingredientStateHighlight.sprite = ingredientStateSprites[2];
             ingredientStateHighlight.color = ingredientStateColors[2];
+            numberRequiredText.color = ingredientStateColors[2];
         }
         else
         {
@@ -70,11 +74,13 @@ public class RecipeIngredientDisplayContainer : MonoBehaviour
             {
                 ingredientStateHighlight.sprite = ingredientStateSprites[0];
                 ingredientStateHighlight.color = ingredientStateColors[0];
+                numberRequiredText.color = ingredientStateColors[0];
             }
             else
             {
                 ingredientStateHighlight.sprite = ingredientStateSprites[1];
                 ingredientStateHighlight.color = ingredientStateColors[1];
+                numberRequiredText.color = ingredientStateColors[1];
             }
         }
 
@@ -109,6 +115,7 @@ public class RecipeIngredientDisplayContainer : MonoBehaviour
                 counter++;
             }
         }
+
         numberRequiredText.text = counter.ToString();
         
         ingredientRequiredSprite.enabled = true;
@@ -117,6 +124,7 @@ public class RecipeIngredientDisplayContainer : MonoBehaviour
         {
             ingredientStateHighlight.sprite = ingredientStateSprites[2];
             ingredientStateHighlight.color = ingredientStateColors[2];
+            numberRequiredText.color = ingredientStateColors[2];
         }
         else
         {
@@ -124,11 +132,13 @@ public class RecipeIngredientDisplayContainer : MonoBehaviour
             {
                 ingredientStateHighlight.sprite = ingredientStateSprites[0];
                 ingredientStateHighlight.color = ingredientStateColors[0];
+                numberRequiredText.color = ingredientStateColors[0];
             }
             else
             {
                 ingredientStateHighlight.sprite = ingredientStateSprites[1];
                 ingredientStateHighlight.color = ingredientStateColors[1];
+                numberRequiredText.color = ingredientStateColors[1];
             }
         }
     }
