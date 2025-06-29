@@ -153,12 +153,12 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
     
     private void OnTriggerEnter(Collider other)
     {
-        /*if (GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay == TimeOfDay.Daytime &&
-            GameDontDestroyOnLoadManager.Instance.DayPassed == 0) return;*/
-        
         if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
             other.TryGetComponent(out StirHapticChallengeManager stirHapticChallengeManager))
         {
+            if (GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients.Count == 0 &&
+                !characterInteractController.AreHandsFull) return;
+            
             characterInteractController.CurrentNearCauldron = this;
             stirHapticChallengeManager.CurrentCauldron = this;
             EnableInteract(characterInteractController.AreHandsFull);
