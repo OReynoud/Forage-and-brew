@@ -366,6 +366,12 @@ public class StirHapticChallengeManager : MonoBehaviour
             GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients.Clear();
         }
         
+        foreach (ConfirmationCircleBehaviour confirmationCircle in _confirmationCircles)
+        {
+            Destroy(confirmationCircle.gameObject);
+        }
+        _confirmationCircles.Clear();
+        
         stirChallengeGameObject.SetActive(false);
         _currentPotion = null;
         _currentChallenge = null;
