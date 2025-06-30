@@ -369,7 +369,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
         pageChoser = Random.Range(0, rightIngredientPage.Length);
         
         int ingredientIndex = ingredientList.IngredientValues.IndexOf(ingredient);
-        Debug.Log("Raw index: " + ingredientIndex);
+        //Debug.Log("Raw index: " + ingredientIndex);
         if (ingredientPages.Count == 0)
         {
             //Debug.Log("First discovered ingredient");
@@ -409,11 +409,10 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
             emptyIngredientPage = Instantiate(emptyPage, transform);
             var ingredientPage = Instantiate(ingredientDisplayPrefabLeft, pageContainer);
-            var dummy = ingredientPage;
             pageContainer.anchoredPosition = new Vector2(1450, 0);
             emptyIngredientPage.anchoredPosition = new Vector2(1450, 0);
             
-            AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[2].index + ingredientPages.Count , new Book.BookPage(rightIngredientPage[pageChoser], emptyIngredientPage, dummy));
+            AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[2].index + ingredientPages.Count , new Book.BookPage(rightIngredientPage[pageChoser], emptyIngredientPage, emptyIngredientPage.GetComponent<PageBehavior>()));
 
             
             AutoFlip.instance.ControledBook.bookPages.Insert(ingredientIndex , new Book.BookPage(leftIngredientPage[pageChoser], pageContainer, ingredientPage));
@@ -450,7 +449,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
             emptyIngredientPage = null;
         }
 
-        Debug.Log("Placed " + ingredient.Name + " at index " + ingredientIndex);
+        //Debug.Log("Placed " + ingredient.Name + " at index " + ingredientIndex);
         AutoFlip.instance.ControledBook.UpdatePageNumbers();
         return ingredientIndex;
     }

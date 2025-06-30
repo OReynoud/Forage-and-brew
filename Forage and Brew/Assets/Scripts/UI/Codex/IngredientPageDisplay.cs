@@ -27,6 +27,8 @@ public class IngredientPageDisplay : PageBehavior
 
     public IngredientValuesSo associatedIngredient;
 
+    private float delayTime;
+    private float delayTimer;
     public float dissolveTimer;
 
     public float animationTime;
@@ -34,26 +36,37 @@ public class IngredientPageDisplay : PageBehavior
     public bool doDissolve;
 
 
+    private void OnDisable()
+    {
+        Debug.Log("Disabled", gameObject);
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    IEnumerator StartDissolve()
+    void StartDissolve()
     {
-        yield return new WaitForSeconds(CodexContentManager.instance.ingredientDissolveDelay);
+        Debug.Log(CodexContentManager.instance.ingredientDissolveDelay);
         Material matInstance = Instantiate(disolveImage.material);
         disolveImage.material = matInstance;
         disolveImage.material.SetFloat("_Cutoff_Height", 0);
-        
+        delayTime = CodexContentManager.instance.ingredientDissolveDelay;
         animationTime = dissolveCurve.keys[^1].time;
         doDissolve = true;
         dissolveTimer = 0;
         AutoFlip.instance.ControledBook.discoveryAudio.Play();
         
         disolveImage.sprite = AutoFlip.instance.ControledBook.bookPages.Find(x => x.pageBehavior == this).pageSprite;
+        Debug.Log("Init Dissolve");
     }
     // Update is called once per frame
     void Update()
     {
         if (!doDissolve) return;
+        if (delayTimer < delayTime)
+        {
+            delayTimer += Time.deltaTime;
+            return;
+        }
         
         dissolveTimer += Time.deltaTime;
             
@@ -71,7 +84,6 @@ public class IngredientPageDisplay : PageBehavior
     private string storedText;
     public override void InitIngredient(IngredientValuesSo ingredientToDisplay)
     {
-        Debug.Log("Init Ingredient");
         associatedIngredient = ingredientToDisplay;
         nameText.text = associatedIngredient.Name;
         descriptionText.text = associatedIngredient.Description;
@@ -131,7 +143,8 @@ public class IngredientPageDisplay : PageBehavior
         ingredientCounter.trackedIngredient = ingredientToDisplay;
         ingredientCounter.UpdateDisplay(ingredientToDisplay);
 
-        StartCoroutine(StartDissolve());
+        Debug.Log("Init ingredient");
+        StartDissolve();
 
     }
 }
