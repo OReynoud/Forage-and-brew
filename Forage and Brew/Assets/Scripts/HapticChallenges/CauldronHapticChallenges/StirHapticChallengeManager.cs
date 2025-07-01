@@ -377,12 +377,16 @@ public class StirHapticChallengeManager : MonoBehaviour
         _currentChallenge = null;
         
         // Sound
-        
         CurrentCauldron.StopBrewingSound();
         characterAnimator.SetBool(IsStirring, false);
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(_previousCameraPreset, cauldronCameraTransitionTime);
         CharacterInputManager.Instance.EnableInputs();
-        CurrentCauldron.EnableInteract(false);        
+        CurrentCauldron.EnableInteract(false);
+        
+        if (isSuccessful)
+        {
+            CurrentCauldron.LockCauldron();
+        }
         
         GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge = false;
     }

@@ -107,6 +107,13 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
         return temperatureAndIngredientsList;
     }
     
+    public void LockCauldron()
+    {
+        CharacterInteractController.Instance.CurrentNearCauldron = null;
+        StirHapticChallengeManager.Instance.CurrentCauldron = null;
+        DisableInteract();
+    }
+    
     
     public void StopFireAmbiance()
     {
@@ -157,7 +164,8 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
             other.TryGetComponent(out StirHapticChallengeManager stirHapticChallengeManager))
         {
             if (GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients.Count == 0 &&
-                !characterInteractController.AreHandsFull) return;
+                (!characterInteractController.AreHandsFull ||
+                 characterInteractController.collectedStack[0].stackable is CollectedPotionBehaviour)) return;
             
             characterInteractController.CurrentNearCauldron = this;
             stirHapticChallengeManager.CurrentCauldron = this;
