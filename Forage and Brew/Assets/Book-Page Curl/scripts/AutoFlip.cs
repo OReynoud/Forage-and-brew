@@ -316,7 +316,6 @@ public class AutoFlip : Singleton<AutoFlip>
         }
         //var oui = CodexContentManager.instance.pageIndexesToCheck.OrderBy(x => x);
         //CodexContentManager.instance.pageIndexesToCheck = oui.ToList();
-
         
         CharacterInputManager.Instance.EnterCodexMethod();
             

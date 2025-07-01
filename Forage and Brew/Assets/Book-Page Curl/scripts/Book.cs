@@ -173,7 +173,7 @@ public class Book : MonoBehaviour
     public void DisplayNewIngredient()
     {
 
-        
+        CodexContentManager.instance.isDiscoveringNewIngredient = true;
         int index = CodexContentManager.instance.AddIngredientPage(newIngredientToDisplay);
         CharacterInputManager.Instance.EnterCodexMethod();
         

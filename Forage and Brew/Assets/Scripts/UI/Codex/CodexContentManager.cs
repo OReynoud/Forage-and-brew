@@ -60,6 +60,8 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
     public List<int> pageIndexesToCheck = new ();
     private int pageChoser;
+    
+    public bool isDiscoveringNewIngredient { get; set; }
 
     private void Start()
     {

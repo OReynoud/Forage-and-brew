@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CodexOpexUpdateBehavior : StateMachineBehaviour
 {
-    private bool isCodexOpenTriggered;
+    public static bool isCodexOpenTriggered;
     private bool isCodexActiveTriggered;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -22,8 +22,10 @@ public class CodexOpexUpdateBehavior : StateMachineBehaviour
             CharacterInputManager.Instance.showCodex = true;
             
             InfoDisplayManager.instance.ShowBackground();
-            
+            if (CodexContentManager.instance.pageIndexesToCheck.Count > 0 || CodexContentManager.instance.isDiscoveringNewIngredient)
+                return;
             CharacterInputManager.Instance.EnableMoveInputs();
+            
             if (!CodexPickUpBehaviour.doTutorialPages)
             {
                 CharacterInputManager.Instance.EnableCodexInputs();
@@ -44,8 +46,10 @@ public class CodexOpexUpdateBehavior : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+
         isCodexOpenTriggered = false;
         isCodexActiveTriggered = false;
+        CodexContentManager.instance.isDiscoveringNewIngredient = false;
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
