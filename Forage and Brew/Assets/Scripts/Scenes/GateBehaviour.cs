@@ -13,6 +13,7 @@ public class GateBehaviour : MonoBehaviour
     public bool Unlocked { get; private set; }
     
     private static readonly int CutoffHeight = Shader.PropertyToID("_CutoffHeight");
+    private static readonly int CutoffHeight2 = Shader.PropertyToID("_Cutoff_Height");
     private static readonly int CatNo = Animator.StringToHash("DoNo");
     
     
@@ -66,8 +67,10 @@ public class GateBehaviour : MonoBehaviour
         
         foreach (Renderer gateMeshRenderer in gateMeshRenderers)
         {
-            gateMeshRenderer.material.DOFloat(0f, CutoffHeight, unlockDissolveSettingsSo.AnimationDuration)
-                .SetEase(unlockDissolveSettingsSo.AnimationCurve).OnComplete(() => gameObject.SetActive(false));
+            gateMeshRenderer.material.DOFloat(gateMeshRenderer is MeshRenderer ? 0f : 1f,
+                    gateMeshRenderer is MeshRenderer ? CutoffHeight : CutoffHeight2, 
+                    unlockDissolveSettingsSo.AnimationDuration).SetEase(unlockDissolveSettingsSo.AnimationCurve)
+                .OnComplete(() => gameObject.SetActive(false));
         }
     }
     
