@@ -8,6 +8,7 @@ public class CodexOpexUpdateBehavior : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         CharacterInputManager.Instance.DisableMoveInputs();
+        CharacterInputManager.Instance.DisableCodexInputs();
         
     }
 
