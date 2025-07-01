@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
@@ -35,6 +36,8 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
     [SerializeField] private GameObject lidCanvasGameObject;
     [SerializeField] private List<PotionCrateLidLayoutBehaviour> lidLayoutBehaviours;
     private PotionCrateLidLayoutBehaviour _currentLidLayoutBehaviour;
+    [SerializeField] private float lidCompleteAnimationDelay = 1f;
+    [SerializeField] private float lidCanvasDisableDelay = 1f;
     
     [SerializeField] private GameObject popupCanvasGameObject;
     [SerializeField] private TMP_Text clientNameText;
@@ -187,6 +190,7 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
             (x.IsSpecific && x.Potion == collectedPotionBehaviour.PotionValuesSo) ||
             (!x.IsSpecific && collectedPotionBehaviour.PotionValuesSo.Tags.Any(t => t.InducedTags.Contains(x.ValidTag))));
         _currentLidLayoutBehaviour.EnablePotionCheckMark(potionIndex);
+        _potionElements[potionIndex].EnableCheckMark();
         
         CheckCompletion();
     }
@@ -248,21 +252,35 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
     {
         if (ContainedPotions.Count == OrderContentSo.RequestedPotions.Length)
         {
-            // clientCheckmarkGameObject.SetActive(true);
             IsFulfilled = true;
         
-            potionCrateAnimator.SetTrigger(DoComplete);
-            lidCanvasGameObject.SetActive(false);
+            StartCoroutine(WaitForLidCompleteAnimation());
+        }
+    }
+    
+    private IEnumerator WaitForLidCompleteAnimation()
+    {
+        yield return new WaitForSeconds(lidCompleteAnimationDelay);
+        
+        potionCrateAnimator.SetTrigger(DoComplete);
+        
+        yield return new WaitForSeconds(lidCanvasDisableDelay);
+        
+        lidCanvasGameObject.SetActive(false);
+
+        foreach (CollectedPotionBehaviour potion in ContainedPotions)
+        {
+            potion.gameObject.SetActive(false);
         }
     }
     
     
     private void OnTriggerEnter(Collider other)
     {
-        PotionCrateManager.ManageTriggerEnter(this);
-        
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
+            PotionCrateManager.ManageTriggerEnter(this);
+            
             characterInteractController.CurrentNearPotionBaskets.Add(this);
             
             if (characterInteractController.collectedStack.Count > 0 &&
@@ -297,10 +315,9 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
 
     private void OnTriggerExit(Collider other)
     {
-        PotionCrateManager.ManageTriggerExit(this);
-        
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
+            PotionCrateManager.ManageTriggerExit(this);
             if (characterInteractController.CurrentNearPotionBaskets.Contains(this))
             {
                 characterInteractController.CurrentNearPotionBaskets.Remove(this);
