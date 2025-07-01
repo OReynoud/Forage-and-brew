@@ -318,6 +318,7 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
             PotionCrateManager.ManageTriggerExit(this);
+            
             if (characterInteractController.CurrentNearPotionBaskets.Contains(this))
             {
                 characterInteractController.CurrentNearPotionBaskets.Remove(this);
