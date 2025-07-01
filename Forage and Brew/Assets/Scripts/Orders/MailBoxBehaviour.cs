@@ -55,11 +55,22 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 
 
     private void Start()
-    {
+    {        
         interactInputCanvasGameObject.SetActive(false);
         CharacterInputManager.Instance.DisableMailInputs();
 
         moneyDisplayGameObject.SetActive(false);
+        if (GeneratedLetters.Count == 0)
+        {
+            letterBoxTrigger.enabled = false;
+            anim.SetBool("IsOpen", true);
+            blink.SetActive(false);
+        }
+    }
+
+    public void MailNewDayMethod()
+    {
+
         _letterPileTargetPosition = letterPileHiddenPosition;
         letterPile.anchoredPosition = letterPileHiddenPosition;
         _backgroundTargetFadeValue = backgroundHiddenFadeValue;
@@ -81,6 +92,12 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
             letterBoxTrigger.enabled = false;
             anim.SetBool("IsOpen", true);
             blink.SetActive(false);
+        }
+        else
+        {
+            letterBoxTrigger.enabled = true;
+            anim.SetBool("IsOpen", false);
+            blink.SetActive(true);
         }
     }
 
@@ -164,7 +181,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                 continue;
             }
 
-            //Debug.Log("Generated a letter");
+            Debug.Log("Generated a letter");
             GameDontDestroyOnLoadManager.Instance.ChosenLetters.Add((new Letter(t.ContentSo.Content[t.SelfProgressionIndex], t), null));
             t.InactiveLetters[t.SelfProgressionIndex] = true;
         }

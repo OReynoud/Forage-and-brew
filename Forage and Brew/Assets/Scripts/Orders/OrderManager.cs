@@ -121,7 +121,7 @@ public class OrderManager : MonoBehaviour
 
             GameDontDestroyOnLoadManager.Instance. ThanksAndErrorLetters.Add(new Letter(
                 CurrentOrders[orderIndex].RelatedLetter,
-                CurrentOrders[orderIndex].RelatedNarrativeBlock, CurrentOrders[orderIndex].OrderDisplay.daysLeftToComplete >=  0));
+                CurrentOrders[orderIndex].RelatedNarrativeBlock, true));
                 
             CurrentOrders[orderIndex].RelatedNarrativeBlock.CompletedLetters[index] = true;
             CurrentOrders[orderIndex].RelatedNarrativeBlock.SelfProgressionIndex++;

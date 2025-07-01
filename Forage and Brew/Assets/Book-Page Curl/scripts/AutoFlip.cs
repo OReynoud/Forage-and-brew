@@ -292,9 +292,15 @@ public class AutoFlip : Singleton<AutoFlip>
                 CodexContentManager.instance.pageIndexesToCheck.Add(recipe.PageNumber);
             }
         }
-        
+
         if (CodexContentManager.instance.pageIndexesToCheck.Count == 0)
+        {
+            CharacterInputManager.Instance.EnableMoveInputs();
+            CharacterInputManager.Instance.EnableInteractInputs();
+            CharacterInputManager.Instance.DisableMailInputs();
+            CharacterInputManager.Instance.EnableCodexInputs();
             return;
+        }
         
         TutorialManager.instance.NotifyFromRecipeReceived();
 

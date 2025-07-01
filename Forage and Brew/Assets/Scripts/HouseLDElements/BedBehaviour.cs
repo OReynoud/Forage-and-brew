@@ -43,6 +43,7 @@ public class BedBehaviour : MonoBehaviour
         }
         
         CharacterInteractController.Instance.CurrentNearBed = null;
+        MailBoxBehaviour.instance.MailNewDayMethod();
         DisableInteract();
     }
     

@@ -87,5 +87,6 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     {
         SimpleCameraBehavior.instance.InstantCamUpdate();
         InfoDisplayManager.instance.DisplayDays();
+        MailBoxBehaviour.instance.MailNewDayMethod();
     }
 }
