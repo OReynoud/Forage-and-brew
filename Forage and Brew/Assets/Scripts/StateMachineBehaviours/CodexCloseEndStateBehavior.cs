@@ -9,6 +9,8 @@ public class CodexCloseEndStateBehavior : StateMachineBehaviour
         animator.SetLayerWeight(animator.GetLayerIndex("Walk_LowerBody"),1f);
         
         animator.SetLayerWeight(animator.GetLayerIndex("Walk_FullBody"),0f);
+        
+        CharacterInputManager.Instance.DisableCodexInputs();
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -21,7 +23,8 @@ public class CodexCloseEndStateBehavior : StateMachineBehaviour
         if (stateInfo.normalizedTime > 1.1f)
         {
             isExitTriggered = true;
-            CharacterAnimManager.instance.codexObject.SetActive(false);            
+            CharacterAnimManager.instance.codexObject.SetActive(false);
+            CharacterInputManager.Instance.EnableCodexInputs();
 
         }
     }
