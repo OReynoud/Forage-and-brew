@@ -137,6 +137,7 @@ public class CharacterInteractController : MonoBehaviour
         else if (CurrentNearPotionBaskets.Count > 0 && collectedStack.Count > 0 && collectedStack[0].stackable is CollectedPotionBehaviour)
         {
             ChoosePotionBasket();
+            CharacterAnimManager.instance.animator.SetTrigger(DoThrow);
         }
         else if (CurrentNearIngredientBaskets.Count > 0)
         {
