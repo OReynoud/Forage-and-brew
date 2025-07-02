@@ -7,4 +7,5 @@ public class OrderSpecificPotionDemand : MonoBehaviour
     public Image liquidIcon;
     public Image potionIcon;
     public TextMeshProUGUI potionName;
+    public Image checkMark;
 }

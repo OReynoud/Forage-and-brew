@@ -19,6 +19,7 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
     public PotionCrateManager PotionCrateManager { get; set; }
     public OrderContentSo OrderContentSo { get; private set; }
     public ClientSo ClientSo { get; private set; }
+    public OrderCodexDisplayBehaviour AssociatedCodexDisplay { get; private set; }
     
     [Header("Closing Collider")]
     [SerializeField] private float closingColliderOffset = 2f;
@@ -88,7 +89,7 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
     }
 
 
-    public void EnableCrate(OrderContentSo orderContentSo, ClientSo clientSo)
+    public void EnableCrate(OrderContentSo orderContentSo, ClientSo clientSo, OrderCodexDisplayBehaviour associatedCodexDisplayBehaviour)
     {
         if (gameObject.activeSelf) return;
         
@@ -96,6 +97,7 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
         
         OrderContentSo = orderContentSo;
         ClientSo = clientSo;
+        AssociatedCodexDisplay = associatedCodexDisplayBehaviour;
         
         lidCanvasGameObject.SetActive(true);
         foreach (PotionCrateLidLayoutBehaviour lidLayoutBehaviour in lidLayoutBehaviours)
@@ -134,6 +136,8 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
                     (x.IsSpecific && x.Potion == potion.PotionValuesSo) ||
                     (!x.IsSpecific && potion.PotionValuesSo.Tags.Any(t => t.InducedTags.Contains(x.ValidTag))));
                 _currentLidLayoutBehaviour.EnablePotionCheckMark(potionIndex);
+                AssociatedCodexDisplay.demandedPotionsList[potionIndex].checkMark.enabled = true;
+                
                 _potionElements[potionIndex].EnableCheckMark();
             }
         }
@@ -190,6 +194,8 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
             (x.IsSpecific && x.Potion == collectedPotionBehaviour.PotionValuesSo) ||
             (!x.IsSpecific && collectedPotionBehaviour.PotionValuesSo.Tags.Any(t => t.InducedTags.Contains(x.ValidTag))));
         _currentLidLayoutBehaviour.EnablePotionCheckMark(potionIndex);
+        AssociatedCodexDisplay.demandedPotionsList[potionIndex].checkMark.enabled = true;
+        
         _potionElements[potionIndex].EnableCheckMark();
         
         CheckCompletion();

@@ -76,7 +76,8 @@ public class PotionCrateManager : MonoBehaviour
             {
                 PotionCrates[i].EnableCrate(
                     OrderManager.Instance.CurrentOrders[i].OrderContent,
-                    OrderManager.Instance.CurrentOrders[i].RelatedLetter.Client);
+                    OrderManager.Instance.CurrentOrders[i].RelatedLetter.Client, 
+                    OrderManager.Instance.CurrentOrders[i].OrderDisplay);
             }
             else
             {

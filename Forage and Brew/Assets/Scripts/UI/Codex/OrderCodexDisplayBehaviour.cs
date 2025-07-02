@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NUnit.Framework;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,8 +16,9 @@ public class OrderCodexDisplayBehaviour : PageBehavior
     public List<PotionDemand> potionsDemanded = new();
 
     public OrderSpecificPotionDemand specificPotionPrefab;
-    public GameObject keywordPotionPrefab;
-    public List<Transform> potionLists;
+    public OrderSpecificPotionDemand keywordPotionPrefab;
+    public List<Transform> potionLists = new List<Transform>();
+    public List<OrderSpecificPotionDemand> demandedPotionsList = new();
 
 
 
@@ -40,12 +42,16 @@ public class OrderCodexDisplayBehaviour : PageBehavior
                 specificPotion.liquidIcon.sprite = potionsDemanded[i].Potion.PotionDifficulty.LiquidSprite;
                 specificPotion.liquidIcon.color = potionsDemanded[i].Potion.SpriteLiquidColor;
                 specificPotion.potionName.text = potionsDemanded[i].Potion.Name;
+                specificPotion.checkMark.enabled = false;
+                demandedPotionsList.Add(specificPotion);
             }
             else
             {
-                var keyword = Instantiate(keywordPotionPrefab, potionLists[Mathf.CeilToInt(i / 2f)]).GetComponentInChildren<TextMeshProUGUI>();
+                var keyword = Instantiate(keywordPotionPrefab, potionLists[Mathf.CeilToInt(i / 2f)]);
                 
-                keyword.text = potionsDemanded[i].Keywords;
+                keyword.potionName.text = potionsDemanded[i].Keywords;
+                keyword.checkMark.enabled = false;
+                demandedPotionsList.Add(keyword);
             }
         }
         
