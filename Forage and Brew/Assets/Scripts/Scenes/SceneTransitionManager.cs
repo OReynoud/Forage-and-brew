@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -141,7 +140,9 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         // Cycles
         WeatherManager.Instance.PassToNextWeatherState();
         LunarCycleManager.Instance.PassToNextLunarCycleState();
-
+        
+        WeatherLightingManager.Instance.SetRightLighting();
+        CharacterVfxManager.Instance.CheckForRainVfx();
         
         StartCoroutine(WakeUp());
     }
