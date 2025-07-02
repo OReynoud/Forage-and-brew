@@ -46,7 +46,7 @@ public class PageLoader : MonoBehaviour
                 break;
             case OrderCodexDisplayBehaviour order:
                 order.InitOrder(orderToLoad.Client, orderToLoad.TextContent, orderToLoad.OrderContent.RequestedPotions,
-                    orderToLoad.OrderContent.MoneyReward, orderToLoad.OrderContent.TimeToFulfill, 0);
+                    orderToLoad.OrderContent.MoneyReward, 0);
                 break;
             case RecipeCodexDisplay recipe:
                 recipe.DisableAll();

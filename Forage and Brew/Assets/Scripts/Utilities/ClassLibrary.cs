@@ -29,7 +29,6 @@ public class Order
 {
     [field: SerializeField] public OrderContentSo OrderContent { get; set; }
     public OrderCodexDisplayBehaviour OrderDisplay { get; set; }
-    [field: SerializeField] public int Days { get; set; }
     [field: SerializeField] public NarrativeBlockOfLetters RelatedNarrativeBlock { get; private set; }
     [field: SerializeField] public LetterContentSo RelatedLetter { get; private set; }
 
@@ -37,7 +36,6 @@ public class Order
     {
         OrderDisplay = orderDisplay;
         OrderContent = LetterToOrder.LetterContent.OrderContent;
-        Days = OrderContent.TimeToFulfill;
         RelatedLetter = LetterToOrder.LetterContent;
         RelatedNarrativeBlock = LetterToOrder.RelatedNarrativeBlock;
     }

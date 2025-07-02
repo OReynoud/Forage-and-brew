@@ -9,47 +9,27 @@ public class OrderCodexDisplayBehaviour : PageBehavior
     public Image orderBackground;
     
     public TextMeshProUGUI descriptionText;
-    public TextMeshProUGUI delayTimeText;
     public Image outdatedStamp;
 
     public VerticalLayoutGroup mainContentLayoutGroup;
     public List<PotionDemand> potionsDemanded = new();
-    public int daysLeftToComplete;
 
     public OrderSpecificPotionDemand specificPotionPrefab;
     public GameObject keywordPotionPrefab;
     public List<Transform> potionLists;
 
-    private void Start()
-    {
-        SceneTransitionManager.instance.OnSleep.AddListener(UpdateDaysLeftToComplete);
-    }
 
-    private void UpdateDaysLeftToComplete()
-    {
-        if (daysLeftToComplete <= 0)
-        {
-            outdatedStamp.enabled = true;
-            delayTimeText.text = "Overdue";
-        }
-        else
-        {
-            daysLeftToComplete--;
-            delayTimeText.text = daysLeftToComplete == 1 ? "Must be shipped today!" : daysLeftToComplete + " Days remaining";
-        }
-    }
 
-    public override void InitOrder(ClientSo client,string description, PotionDemand[] Potions, int Reward, int TTC, int index)
+
+    public override void InitOrder(ClientSo client,string description, PotionDemand[] Potions, int Reward, int index)
     {
         clientNameText.text = client.Name;
         descriptionText.text = description;
         potionsDemanded.Clear();
         potionsDemanded.AddRange(Potions);
-        daysLeftToComplete = TTC;
         orderBackground.color = client.AssociatedColor;
 
         outdatedStamp.enabled = false;
-        delayTimeText.text = TTC == 1 ? "Must be shipped today!" : TTC + " Days remaining";
         
         for (int i = 0; i < potionsDemanded.Count; i++)
         {

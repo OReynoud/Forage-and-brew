@@ -12,7 +12,6 @@ public class LetterMailBoxDisplayBehaviour : PageBehavior
     public TextMeshProUGUI descriptionText;
     
     public TextMeshProUGUI moneyText;
-    public TextMeshProUGUI timeText;
 
     private LetterContentSo letterContent;
     public List<PotionDemand> potionsDemanded = new();
@@ -24,7 +23,6 @@ public class LetterMailBoxDisplayBehaviour : PageBehavior
     public TextMeshProUGUI[] potionNames;
     public TextMeshProUGUI[] potionKeywords;
     public int moneyReward;
-    public int daysLeftToComplete;
 
     public bool IsPassed;
     public bool IsMoving;
@@ -55,7 +53,6 @@ public class LetterMailBoxDisplayBehaviour : PageBehavior
         
         if (letterType != LetterType.Orders)
         {
-            timeText.enabled = false;
             moneyText.transform.parent.gameObject.SetActive(false);
             return;
         }
@@ -63,8 +60,6 @@ public class LetterMailBoxDisplayBehaviour : PageBehavior
         bills.enabled = letterType is LetterType.Thanks or LetterType.Gift;
         moneyReward = letterContent.OrderContent.MoneyReward;
         moneyText.text = moneyReward.ToString();
-        daysLeftToComplete = letterContent.OrderContent.TimeToFulfill;
-        timeText.text = daysLeftToComplete.ToString();
         potionsDemanded.Clear();
         potionsDemanded.AddRange(letterContent.OrderContent.RequestedPotions);
 

@@ -57,7 +57,7 @@ public class OrderManager : MonoBehaviour
             letter.LetterContent.TextContent,
             letter.LetterContent.OrderContent.RequestedPotions,
             letter.LetterContent.OrderContent.MoneyReward,
-            letter.LetterContent.OrderContent.TimeToFulfill, out OrderCodexDisplayBehaviour order);
+            out OrderCodexDisplayBehaviour order);
 
         int newOrderIndex = CurrentOrders.FindIndex(x => x == null);
         //Debug.Log(CurrentOrders.Count);
@@ -93,8 +93,8 @@ public class OrderManager : MonoBehaviour
                 o.RelatedLetter.Client,
                 o.RelatedLetter.TextContent,
                 o.RelatedLetter.OrderContent.RequestedPotions,
-                o.RelatedLetter.OrderContent.MoneyReward,
-                o.RelatedLetter.OrderContent.TimeToFulfill, out OrderCodexDisplayBehaviour order);
+                o.RelatedLetter.OrderContent.MoneyReward
+                , out OrderCodexDisplayBehaviour order);
         }
 
         CodexContentManager.instance.pageIndexesToCheck.Clear();
