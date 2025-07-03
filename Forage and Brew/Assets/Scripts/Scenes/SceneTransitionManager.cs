@@ -25,12 +25,45 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
     
     private Coroutine _coroutine;
 
+    private bool showScreenBehavior;
+    private Scene NewScene;
+
     private void Start()
     {
         if (debugSleep)
         {
             HandleGoingToSleepTransition(transform);
         }
+    }
+
+    public void Update()
+    {
+        if (!showScreenBehavior) return;
+        timer += Time.unscaledDeltaTime;
+        maskElement.sizeDelta = Vector2.Lerp(Vector2.zero, fullyExtendedDimensions, timer/transitionTime);
+        if (timer > transitionTime)
+        {
+            showScreenBehavior = false;
+            timer = 0;        
+            transitionElement.gameObject.SetActive(false);
+        
+            GameDontDestroyOnLoadManager.Instance.CurrentScene = NewScene;
+            if (WeatherManager.Instance.CurrentWeatherState != null)
+            {
+                InfoDisplayManager.instance.DisplayWeather();
+            }
+        
+            if (GameDontDestroyOnLoadManager.Instance.CurrentScene is Scene.Biome1 or Scene.Biome2)
+            {
+                AddListeners();
+            }
+        
+        
+            CharacterMovementController.Instance.SetupAudio(GameDontDestroyOnLoadManager.Instance.CurrentScene);
+            CharacterInputManager.Instance.EnableInputs();
+            
+        }
+
     }
 
     public void HandleSceneChange(string SceneName)
@@ -46,10 +79,12 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         timer = 0;
         transitionElement.gameObject.SetActive(true);
         maskElement.sizeDelta = Vector2.zero;
-        if (_coroutine != null)
-            StopCoroutine(_coroutine);
-        _coroutine = StartCoroutine(ShowScreen(newScene));
-        
+        // if (_coroutine != null)
+        //     StopCoroutine(_coroutine);
+        // _coroutine = StartCoroutine(ShowScreen(newScene));
+        showScreenBehavior = true;
+        NewScene = newScene;
+
     }
 
     public void HandleGoingToSleepTransition(Transform spawnPoint)
@@ -146,37 +181,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         
         StartCoroutine(WakeUp());
     }
-    private IEnumerator ShowScreen(Scene newScene)
-    {
-        Debug.Log(timer);
-        yield return new WaitForEndOfFrame();
-        yield return new WaitForFixedUpdate();
-        yield return new WaitForEndOfFrame();
-        yield return new WaitForFixedUpdate();
-        while (timer < transitionTime)
-        {
-            timer += Time.unscaledDeltaTime;
-            maskElement.sizeDelta = Vector2.Lerp(Vector2.zero, fullyExtendedDimensions, timer/transitionTime);
-            yield return new WaitForSecondsRealtime(Time.unscaledDeltaTime);
-        }
 
-        transitionElement.gameObject.SetActive(false);
-        
-        GameDontDestroyOnLoadManager.Instance.CurrentScene = newScene;
-        if (WeatherManager.Instance.CurrentWeatherState != null)
-        {
-            InfoDisplayManager.instance.DisplayWeather();
-        }
-        
-        if (GameDontDestroyOnLoadManager.Instance.CurrentScene is Scene.Biome1 or Scene.Biome2)
-        {
-            AddListeners();
-        }
-        
-        
-        CharacterMovementController.Instance.SetupAudio(GameDontDestroyOnLoadManager.Instance.CurrentScene);
-        CharacterInputManager.Instance.EnableInputs();
-    }
 
     public void Wake()
     {
