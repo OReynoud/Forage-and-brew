@@ -9,6 +9,8 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
     private static readonly int DoWakeUp = Animator.StringToHash("DoWakeUp");
     public float transitionTime;
     public float timer;
+    public float transitionFrameCount;
+    public float frameCounter;
     public float sleepWaitTime;
     public Vector3 sleepPos;
     public Vector3 sleepRotation;
@@ -34,17 +36,31 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         {
             HandleGoingToSleepTransition(transform);
         }
+        
+        SceneManager.sceneUnloaded += SceneManagerOnsceneLoaded;
+        //SceneManager.sceneUnloaded += SceneManagerOnsceneUnloaded;
     }
 
-    public void Update()
+    // private void SceneManagerOnsceneUnloaded(UnityEngine.SceneManagement.Scene arg0)
+    // {
+    //     Debug.Log("Unloaded a scene");
+    // }
+
+    private void SceneManagerOnsceneLoaded(UnityEngine.SceneManagement.Scene arg0)
+    {
+        Debug.Log("Loaded a scene");
+        showScreenBehavior = true;
+    }
+
+    public void FixedUpdate()
     {
         if (!showScreenBehavior) return;
-        timer += Time.unscaledDeltaTime;
-        maskElement.sizeDelta = Vector2.Lerp(Vector2.zero, fullyExtendedDimensions, timer/transitionTime);
-        if (timer > transitionTime)
+        frameCounter++;
+        maskElement.sizeDelta = Vector2.Lerp(Vector2.zero, fullyExtendedDimensions, frameCounter/transitionFrameCount);
+        if (frameCounter > transitionFrameCount)
         {
             showScreenBehavior = false;
-            timer = 0;        
+            frameCounter = 0;        
             transitionElement.gameObject.SetActive(false);
         
             GameDontDestroyOnLoadManager.Instance.CurrentScene = NewScene;
@@ -82,7 +98,6 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         // if (_coroutine != null)
         //     StopCoroutine(_coroutine);
         // _coroutine = StartCoroutine(ShowScreen(newScene));
-        showScreenBehavior = true;
         NewScene = newScene;
 
     }
