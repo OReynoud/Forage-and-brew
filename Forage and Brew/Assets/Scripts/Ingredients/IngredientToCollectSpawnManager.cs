@@ -7,7 +7,9 @@ public class IngredientToCollectSpawnManager : MonoBehaviour
     // Singleton
     public static IngredientToCollectSpawnManager Instance { get; private set; }
     
-    public List<IngredientToCollectBehaviour> IngredientToCollectBehaviours { get; } = new();
+    [SerializeField] private List<Transform> spawnGroupParentTransforms;
+    [SerializeField] private int spawnProbabilityBase = 3;
+    private readonly List<IngredientToCollectBehaviour> _ingredientToCollectBehaviours = new();
     
     [SerializeField] private IngredientListSo ingredientListSo;
     [SerializeField] private Biome biome;
@@ -20,9 +22,46 @@ public class IngredientToCollectSpawnManager : MonoBehaviour
     
     private void Start()
     {
+        ChooseSpawnPlaces();
+        ChooseIngredientsToSpawn();
+    }
+
+    
+    private void ChooseSpawnPlaces()
+    {
+        if (GameDontDestroyOnLoadManager.Instance.HasChosenIngredientsToday) return;
+        
+        _ingredientToCollectBehaviours.Clear();
+        
+        foreach (Transform spawnGroupParentTransform in spawnGroupParentTransforms)
+        {
+            int randomIndex = Random.Range(0, spawnProbabilityBase);
+
+            for (int i = 0; i < spawnGroupParentTransform.childCount; i++)
+            {
+                Transform childTransform = spawnGroupParentTransform.GetChild(i);
+                
+                if (childTransform.TryGetComponent(out IngredientToCollectBehaviour ingredientToCollectBehaviour))
+                {
+                    if (i == randomIndex)
+                    {
+                        _ingredientToCollectBehaviours.Add(ingredientToCollectBehaviour);
+                        ingredientToCollectBehaviour.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        ingredientToCollectBehaviour.gameObject.SetActive(false);
+                    }
+                }
+            }
+        }
+    }
+    
+    private void ChooseIngredientsToSpawn()
+    {
         if (GameDontDestroyOnLoadManager.Instance.HasChosenIngredientsToday)
         {
-            foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in IngredientToCollectBehaviours)
+            foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in _ingredientToCollectBehaviours)
             {
                 if (GameDontDestroyOnLoadManager.Instance.RemainingIngredientToCollectBehaviours
                     .TryGetValue(ingredientToCollectBehaviour.SpawnIndex, out IngredientValuesSo ingredientValuesSo))
@@ -35,7 +74,7 @@ public class IngredientToCollectSpawnManager : MonoBehaviour
                     ingredientToCollectBehaviour.gameObject.SetActive(false);
                 }
             }
-            
+
             return;
         }
         
@@ -52,14 +91,14 @@ public class IngredientToCollectSpawnManager : MonoBehaviour
         }
 
 #if UNITY_EDITOR
-        if (IngredientToCollectBehaviours.Select(ingredientToCollectBehaviour => ingredientToCollectBehaviour
-                .SpawnIndex).Distinct().Count() != IngredientToCollectBehaviours.Count)
+        if (_ingredientToCollectBehaviours.Select(ingredientToCollectBehaviour => ingredientToCollectBehaviour
+                .SpawnIndex).Distinct().Count() != _ingredientToCollectBehaviours.Count)
         {
             Debug.LogError("Spawn Indexes are not unique. You need to reassign them.");
         }
 #endif
 
-        foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in IngredientToCollectBehaviours)
+        foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in _ingredientToCollectBehaviours)
         {
             List<IngredientValuesSo> localIngredientValuesList = new();
             

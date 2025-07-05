@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class IngredientToCollectBehaviour : MonoBehaviour
@@ -7,7 +6,6 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] private IngredientToCollectGlobalValuesSo ingredientToCollectGlobalValuesSo;
     [field: SerializeField] public IngredientToCollectVfxManagerBehaviour IngredientToCollectVfxManagerBehaviour { get; private set; }
-    [SerializeField] private IngredientToCollectSpawnManager ingredientToCollectSpawnManager;
     [SerializeField] private SphereCollider collectTrigger;
     [SerializeField] private Transform meshParentTransform;
     [field: SerializeField] public IngredientValuesSo IngredientValuesSo { get; set; }
@@ -59,21 +57,8 @@ public class IngredientToCollectBehaviour : MonoBehaviour
 
     public bool DoesNeedToShowUi { get; set; } = true;
     private float _currentTriggerTime;
+
     
-
-    private void Awake()
-    {
-        if (ingredientToCollectSpawnManager)
-        {
-            ingredientToCollectSpawnManager.IngredientToCollectBehaviours.Add(this);
-        }
-        else
-        {
-            Debug.LogWarning("IngredientToCollectSpawnManager is not assigned in " + name + ".\n" +
-                             "The ingredient won't spawn according to the cycles and the spawn locations.");
-        }
-    }
-
     private void Start()
     {
         // UI
@@ -81,7 +66,7 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         obtainingFeedbackRectTransform.gameObject.SetActive(false);
         _obtainingFeedbackStartPosition = obtainingFeedbackRectTransform.anchoredPosition;
 
-        if (!ingredientToCollectSpawnManager && IngredientValuesSo)
+        if (IngredientValuesSo)
         {
             SpawnMesh();
         }
