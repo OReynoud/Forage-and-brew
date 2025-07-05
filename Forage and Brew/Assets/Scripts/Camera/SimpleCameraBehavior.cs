@@ -39,7 +39,7 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
     public float codexEnterTime;
     public float codexExitTime;
 
-    private float transitionTime = 0.001f;
+    public float transitionTime = 0.001f;
     [SerializeField] [ReadOnly] private float counter;
     [SerializeField] [ReadOnly] private bool applyXYClamping;
     [SerializeField] [ReadOnly] private bool applyZClamping;
@@ -48,9 +48,9 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
     protected bool localCodexShow;
 
 
-    private Vector3 transitionStartPos;
-    private Vector3 transitionStartZDist;
-    private Quaternion transitionStartRot;
+    [SerializeField] private Vector3 transitionStartPos;
+    [SerializeField] private Vector3 transitionStartZDist;
+    [SerializeField] private Quaternion transitionStartRot;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -80,8 +80,7 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
         applyZClamping = Mathf.Abs(posMaxClamp.z) >= 1 || Mathf.Abs(posMinClamp.z) >= 1;
 
         cam = Camera.main;
-        targetFocalLength = cam.focalLength;
-        cameraRotation = transform.localRotation.eulerAngles;
+        
         previousCamSettings = scriptableCamSettings;
         TargetCamSettings = scriptableCamSettings;
 
@@ -135,6 +134,10 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
         transform.parent.position = player.position + cameraOffset;
         transform.localPosition = -transform.forward * distanceFromPlayer;
         transform.rotation = Quaternion.Euler(scriptableCamSettings.cameraRotation);
+        
+        transitionStartPos = transform.parent.position;
+        transitionStartZDist = transform.localPosition;
+        transitionStartRot = transform.localRotation;
     }
 
     [Button]
@@ -158,6 +161,7 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
 
     public virtual void ApplyScriptableCamSettings(CameraPreset preset, float TransitionTime)
     {
+        
         if (TargetCamSettings == preset) return;
         
         previousCamSettings = TargetCamSettings;
@@ -181,16 +185,12 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
         transitionStartRot = transform.localRotation;
         
 
-
-
-
         applyXYClamping = Mathf.Abs(TargetCamSettings.posMaxClamp.x + TargetCamSettings.posMaxClamp.y) >= 1 ||
                           Mathf.Abs(TargetCamSettings.posMinClamp.x + TargetCamSettings.posMinClamp.y) >= 1;
         applyZClamping = Mathf.Abs(TargetCamSettings.posMaxClamp.z) >= 1 ||
                          Mathf.Abs(TargetCamSettings.posMinClamp.z) >= 1;
-
-        //Debug.Log("Cam Settings: " + preset.name);
-
+        
+        Debug.Log("Cam Settings: " + preset.name);
         // UsingCamPosToBlendClamps["XMax"] = previousCamSettings.posMaxClamp.x != TargetCamSettings.posMaxClamp.x;
         // UsingCamPosToBlendClamps["YMax"] = previousCamSettings.posMaxClamp.y != TargetCamSettings.posMaxClamp.y;
         // UsingCamPosToBlendClamps["ZMax"] = previousCamSettings.posMaxClamp.z != TargetCamSettings.posMaxClamp.z;
@@ -224,17 +224,32 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
         }
     }
 
-    public virtual void InstantCamUpdate()
+    public virtual void InstantCamUpdate(CameraPreset preset)
     {
+        previousCamSettings = TargetCamSettings;
+        TargetCamSettings = preset;
+        
+        transitionTime = 0.001f;
+        counter = 0.1f;
+        
+        cameraOffset = TargetCamSettings.cameraOffset;
+        distanceFromPlayer = TargetCamSettings.distanceFromPlayer;
+        cameraRotation = TargetCamSettings.cameraRotation;
+        targetFocalLength = TargetCamSettings.targetFocalLength;        
+        
+        
         transform.parent.position = player.position + TargetCamSettings.cameraOffset;
-        transform.localRotation = Quaternion.Euler(TargetCamSettings.cameraRotation);
         transform.localPosition = -transform.forward * TargetCamSettings.distanceFromPlayer;
+        transform.parent.position = ClampCamPos(transform.parent.position);
+        transform.localRotation = Quaternion.Euler(TargetCamSettings.cameraRotation);
         cam.focalLength = TargetCamSettings.targetFocalLength;
         overlayUiCam.focalLength = TargetCamSettings.targetFocalLength;
 
-        transform.parent.position = ClampCamPos(transform.parent.position);
+        transitionStartPos = transform.parent.position;
+        transitionStartZDist = transform.localPosition;
+        transitionStartRot = transform.localRotation;
 
-        //Debug.Log("Instant Cam Settings: " + TargetCamSettings.name);
+        Debug.Log("Instant Cam Settings: " + TargetCamSettings.name);
     }
 
     private void Start()
@@ -250,33 +265,26 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
         posMaxClamp = TargetCamSettings.posMaxClamp;
         posMinClamp = TargetCamSettings.posMinClamp;
 
-
         if (counter < transitionTime)
         {
 
         }
         else
         {
-            transform.parent.position = Vector3.Lerp(transform.parent.position, player.position + cameraOffset,
-                movement.isRunning ? positionLerp * 2.5f : positionLerp);
-            transform.localPosition =
-                Vector3.Lerp(transform.localPosition, -transform.forward * distanceFromPlayer, positionLerp);
-            transform.parent.position = ClampCamPos(transform.parent.position);
+             transform.parent.position = Vector3.Lerp(transform.parent.position, player.position + cameraOffset,
+                 movement.isRunning ? positionLerp * 2.5f : positionLerp);
+             transform.localPosition =
+                 Vector3.Lerp(transform.localPosition, -transform.forward * distanceFromPlayer, positionLerp);
+             transform.parent.position = ClampCamPos(transform.parent.position);
+            // transform.localRotation =
+            //     Quaternion.Lerp(transform.localRotation, Quaternion.Euler(cameraRotation), rotationLerp);
+            //
+            // cam.focalLength = Mathf.Lerp(cam.focalLength, targetFocalLength, focalLerp);
+            // overlayUiCam.focalLength = Mathf.Lerp(overlayUiCam.focalLength, targetFocalLength, focalLerp);
         }
 
 
-        if (counter < transitionTime)
-        {
 
-        }
-        else
-        {
-            transform.localRotation =
-                Quaternion.Lerp(transform.localRotation, Quaternion.Euler(cameraRotation), rotationLerp);
-        }
-
-        cam.focalLength = Mathf.Lerp(cam.focalLength, targetFocalLength, focalLerp);
-        overlayUiCam.focalLength = Mathf.Lerp(overlayUiCam.focalLength, targetFocalLength, focalLerp);
     }
 
     private Vector3 ClampCamPos(Vector3 position)
@@ -327,7 +335,7 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
 
     public virtual void Update()
     {
-        if (counter < transitionTime)
+        if (counter < transitionTime && transitionTime != 0)
         {
             counter += Time.deltaTime;
             

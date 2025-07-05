@@ -54,7 +54,7 @@ public class IndoorsCameraBehavior : SimpleCameraBehavior
 
     }
 
-    public override void InstantCamUpdate()
+    public override void InstantCamUpdate(CameraPreset preset)
     {
         
     }

@@ -88,8 +88,11 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     
     private void Start()
     {
-        SimpleCameraBehavior.instance.InstantCamUpdate();
+        //SimpleCameraBehavior.instance.InstantCamUpdate();
         InfoDisplayManager.instance.DisplayDays();
-        MailBoxBehaviour.instance.MailNewDayMethod();
+        if (MailBoxBehaviour.instance != null)
+        {
+            MailBoxBehaviour.instance.MailNewDayMethod();
+        }
     }
 }

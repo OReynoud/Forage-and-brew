@@ -9,11 +9,14 @@ public class HouseCameraSettingsBehavior : MonoBehaviour
     public SphereCollider collider;
     
 
+    #if UNITY_EDITOR
     void OnDrawGizmos()
     {
         Handles.color = settings.groupColor;
         Handles.DrawWireDisc(transform.position, Vector3.up, settings.triggerDistance);
     }
+    
+    #endif
 
     void OnDrawGizmosSelected()
     {

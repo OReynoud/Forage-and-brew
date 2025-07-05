@@ -1,4 +1,5 @@
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -48,16 +49,9 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
 
     private void SceneManagerOnsceneLoaded(UnityEngine.SceneManagement.Scene arg0)
     {
-        Debug.Log("Loaded a scene");
-        showScreenBehavior = true;
-    }
-
-    public void FixedUpdate()
-    {
-        if (!showScreenBehavior) return;
-        frameCounter++;
-        maskElement.sizeDelta = Vector2.Lerp(Vector2.zero, fullyExtendedDimensions, frameCounter/transitionFrameCount);
-        if (frameCounter > transitionFrameCount)
+        //showScreenBehavior = true;
+        DOTween.To(() => maskElement.sizeDelta, x => maskElement.sizeDelta = x, fullyExtendedDimensions,
+            transitionTime).OnComplete((() =>
         {
             showScreenBehavior = false;
             frameCounter = 0;        
@@ -77,7 +71,19 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         
             CharacterMovementController.Instance.SetupAudio(GameDontDestroyOnLoadManager.Instance.CurrentScene);
             CharacterInputManager.Instance.EnableInputs();
-            
+        }));
+    }
+
+    public void FixedUpdate()
+    {
+        if (!showScreenBehavior) return;
+        frameCounter++;
+        maskElement.sizeDelta = Vector2.Lerp(Vector2.zero, fullyExtendedDimensions, frameCounter/transitionFrameCount);
+        if (frameCounter > transitionFrameCount)
+        {
+            frameCounter = 0;
+            showScreenBehavior = false;
+            transitionElement.gameObject.SetActive(false);
         }
 
     }
@@ -98,6 +104,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         // if (_coroutine != null)
         //     StopCoroutine(_coroutine);
         // _coroutine = StartCoroutine(ShowScreen(newScene));
+        
         NewScene = newScene;
 
     }
@@ -149,7 +156,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         var camSettings = SimpleCameraBehavior.instance.TargetCamSettings;
         HouseCameraBehavior.overrideCameraLerp = true;
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(sleepCam,0);
-        SimpleCameraBehavior.instance.InstantCamUpdate();
+        SimpleCameraBehavior.instance.InstantCamUpdate(sleepCam);
         
         CharacterAnimManager.instance.animator.SetTrigger(DoSleep);
         CharacterAnimManager.instance.PlayPurrSound();
@@ -176,7 +183,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
             yield return new WaitForSecondsRealtime(Time.unscaledDeltaTime);
         }
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(camSettings,0);
-        SimpleCameraBehavior.instance.InstantCamUpdate();
+        SimpleCameraBehavior.instance.InstantCamUpdate(camSettings);
         CharacterAnimManager.instance.transform.position = spawnPoint.position;
         CharacterAnimManager.instance.transform.rotation = spawnPoint.rotation;
         CharacterMovementController.Instance.rb.constraints = RigidbodyConstraints.FreezeRotation;
@@ -194,19 +201,22 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         WeatherLightingManager.Instance.SetRightLighting();
         CharacterVfxManager.Instance.CheckForRainVfx();
         
-        StartCoroutine(WakeUp());
+        //StartCoroutine(WakeUp());
+
+        Wake();
+        
     }
 
 
     public void Wake()
     {
-
-        StartCoroutine(WakeUp());
-    }
-    private IEnumerator WakeUp()
-    {
-        transitionElement.gameObject.SetActive(false);
-        timer = 0;
+        //StartCoroutine(WakeUp());
+        showScreenBehavior = true;
+        frameCounter = 0;
+        transitionElement.gameObject.SetActive(true);
+        maskElement.sizeDelta = Vector2.zero;
+        CharacterAnimManager.instance.animator.SetTrigger(DoWakeUp);
+        CharacterAnimManager.instance.StopPurrSound();
         if (GameDontDestroyOnLoadManager.Instance.lockoutOnWakeUp)
         {
             GameDontDestroyOnLoadManager.Instance.lockoutOnWakeUp = false;
@@ -215,20 +225,8 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         {
             CharacterInputManager.Instance.EnableInputs();
         }
-        transitionElement.gameObject.SetActive(true);
-        maskElement.sizeDelta = Vector2.zero;
-        yield return new WaitForSecondsRealtime(0.5f);
-        CharacterAnimManager.instance.animator.SetTrigger(DoWakeUp);
-        CharacterAnimManager.instance.StopPurrSound();
-        while (timer < transitionTime)
-        {
-            timer += Time.unscaledDeltaTime;
-            maskElement.sizeDelta = Vector2.Lerp(Vector2.zero, fullyExtendedDimensions, timer/transitionTime);
-            yield return new WaitForSecondsRealtime(Time.unscaledDeltaTime);
-        }
-
-        transitionElement.gameObject.SetActive(false);
     }
+
     
     void AddListeners()
     {
