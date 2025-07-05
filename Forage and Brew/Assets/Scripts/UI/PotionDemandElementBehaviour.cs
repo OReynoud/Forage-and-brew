@@ -21,6 +21,13 @@ public class PotionDemandElementBehaviour : MonoBehaviour
         }
     }
     
+    public void SetImage(PotionValuesSo potionValuesSo)
+    {
+        SetPotionImage(potionValuesSo.PotionDifficulty.PotionSprite,
+            potionValuesSo.PotionDifficulty.LiquidSprite, 
+            potionValuesSo.SpriteLiquidColor);
+    }
+    
     public void SetPotionImage(Sprite potionSprite, Sprite liquidSprite, Color liquidColor)
     {
         mainImage.sprite = potionSprite;

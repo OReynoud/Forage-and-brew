@@ -7,9 +7,6 @@ using UnityEngine;
 
 public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
 {
-    private static readonly int DoEnable = Animator.StringToHash("DoEnable");
-    private static readonly int DoComplete = Animator.StringToHash("DoComplete");
-
     [Header("Dependencies")]
     [SerializeField] private CollectedPotionBehaviour collectedPotionBehaviourPrefab;
     [SerializeField] private Transform meshParentTransform;
@@ -46,6 +43,10 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
     [SerializeField] private Transform potionElementParentTransform;
     private readonly List<PotionDemandElementBehaviour> _potionElements = new();
     [SerializeField] private TMP_Text priceText;
+    
+    // Hashes
+    private static readonly int DoEnable = Animator.StringToHash("DoEnable");
+    private static readonly int DoComplete = Animator.StringToHash("DoComplete");
     
     
     private void Start()

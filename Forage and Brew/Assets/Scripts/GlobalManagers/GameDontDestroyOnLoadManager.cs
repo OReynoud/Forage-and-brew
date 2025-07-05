@@ -26,6 +26,9 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     public List<FloorCookedPotion> FloorCookedPotions { get; private set; } = new();
     public List<ClientOrderPotions> OrderPotions { get; private set; } = new();
     
+    // Potion Ensembles
+    public Dictionary<PotionEnsembleSo, int> UnlockedPotionEnsembles { get; private set; } = new();
+    
     // Unlocked Ingredients and Recipes
     [SerializeField] public List<IngredientValuesSo> UnlockedIngredients = new();
     [SerializeField] public List<PotionValuesSo> UnlockedRecipes = new();

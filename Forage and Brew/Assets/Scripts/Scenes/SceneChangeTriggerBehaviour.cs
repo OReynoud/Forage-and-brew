@@ -28,6 +28,7 @@ public class SceneChangeTriggerBehaviour : MonoBehaviour
             OutStackableManager.Instance?.StoreOutCollectedIngredients();
             OutStackableManager.Instance?.StoreOutCookedPotions(GameDontDestroyOnLoadManager.Instance.FloorCookedPotions,
                 GameDontDestroyOnLoadManager.Instance.OutCookedPotions);
+            
             if (PotionCrateManager.Instance)
             {
                 for (int i = 0; i < PotionCrateManager.Instance.PotionCrates.Count; i++)
@@ -43,6 +44,8 @@ public class SceneChangeTriggerBehaviour : MonoBehaviour
                         PotionCrateManager.Instance.PotionCrates[i].ContainedPotions);
                 }
             }
+
+            PotionEnsembleManager.Instance?.StorePotionEnsembles();
             
             if (doesMakeItNighttime)
             {

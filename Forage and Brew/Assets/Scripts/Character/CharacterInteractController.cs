@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class CharacterInteractController : MonoBehaviour
 {
-    private static readonly int DoThrow = Animator.StringToHash("DoThrow");
     public static CharacterInteractController Instance { get; private set; }
     
     [field:Foldout("Debug")] [ReadOnly] public List<CollectedStack> collectedStack = new();
@@ -35,7 +34,8 @@ public class CharacterInteractController : MonoBehaviour
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public GrindingCountertopBehaviour CurrentNearGrindingCountertop { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<IngredientBasketBehaviour> CurrentNearIngredientBaskets { get; set; } = new();
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<PotionCrateBehaviour> CurrentNearPotionBaskets { get; set; } = new();
-    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public GateBehaviour CurrentNearChargedGate { get; set; } = new();
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public PotionEnsembleBehaviour CurrentNearPotionEnsemble { get; set; } = new();
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public GateBehaviour CurrentNearChargedGate { get; set; }
     
     
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public ICinematicInteraction CurrentNearCinematicInteraction { get; set; }
@@ -66,8 +66,10 @@ public class CharacterInteractController : MonoBehaviour
     [SerializeField] private Vector3 potionBasketOffset = new(0f, 1.5f, 0f);
     [SerializeField] private Vector3 binOffset = new(0f, 1f, 0f);
     
+    // Animator Hashes
+    private static readonly int DoThrow = Animator.StringToHash("DoThrow");
+    private static readonly int DoNo = Animator.StringToHash("DoNo");
     
-
 
     private void Awake()
     {
@@ -79,6 +81,7 @@ public class CharacterInteractController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
+    
     public void AddNewCollectedStackable(IStackable newStackable)
     {
         if (CurrentStackableBehaviours.Count > 0)
@@ -114,6 +117,10 @@ public class CharacterInteractController : MonoBehaviour
             ShoveStackInTarget(CurrentNearBin.transform, CurrentNearBin, binOffset);
             CharacterAnimManager.instance.animator.SetTrigger(DoThrow);
         }
+        else if (CurrentStackableBehaviours.Count > 0)
+        {
+            AddToPile(CurrentStackableBehaviours[^1]);
+        }
         else if (CurrentNearBellows && !CurrentNearBellows.Unlocked && CurrentNearBellows.CanPurchase && collectedStack.Count == 0)
         {
             CurrentNearBellows.PurchaseItem();
@@ -130,9 +137,9 @@ public class CharacterInteractController : MonoBehaviour
         {
             CurrentNearChargedGate.Purchase();
         }
-        else if (CurrentStackableBehaviours.Count > 0)
+        else if (CurrentNearPotionEnsemble && collectedStack.Count > 0 && collectedStack[0].stackable is CollectedPotionBehaviour)
         {
-            AddToPile(CurrentStackableBehaviours[^1]);
+            ManagePotionEnsemble();
         }
         else if (CurrentNearPotionBaskets.Count > 0 && collectedStack.Count > 0 && collectedStack[0].stackable is CollectedPotionBehaviour)
         {
@@ -214,6 +221,24 @@ public class CharacterInteractController : MonoBehaviour
         }
     }
 
+
+    private void ManagePotionEnsemble()
+    {
+        PotionValuesSo potion = ((CollectedPotionBehaviour)collectedStack[0].stackable).PotionValuesSo;
+
+        if (CurrentNearPotionEnsemble.CheckPotion(potion))
+        {
+            CurrentNearPotionEnsemble.DisableInteract();
+            ShoveStackInTarget(CurrentNearPotionEnsemble.transform, CurrentNearPotionEnsemble,
+                CurrentNearPotionEnsemble.GetRightTransformLocalPosition(potion));
+            CharacterAnimManager.instance.animator.SetTrigger(DoThrow);
+        }
+        else
+        {
+            CharacterAnimManager.instance.animator.SetTrigger(DoNo);
+        }
+    }
+    
     
     private void ChooseIngredientBasket()
     {
