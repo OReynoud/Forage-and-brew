@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
@@ -8,6 +9,8 @@ public class GateBehaviour : MonoBehaviour
     [SerializeField] private List<ChargedBiomeAreaSo> chargedBiomeAreaSos;
     [SerializeField] private PricePopUpBehaviour pricePopUpBehaviour;
     [SerializeField] private List<Renderer> gateMeshRenderers;
+    [SerializeField] private List<Collider> gateColliders;
+    [SerializeField] private float disableCollidersDelay = 1.5f;
     [SerializeField] private DissolveSettingsSo unlockDissolveSettingsSo;
     
     public bool Unlocked { get; private set; }
@@ -71,6 +74,18 @@ public class GateBehaviour : MonoBehaviour
                     gateMeshRenderer is MeshRenderer ? CutoffHeight : CutoffHeight2, 
                     unlockDissolveSettingsSo.AnimationDuration).SetEase(unlockDissolveSettingsSo.AnimationCurve)
                 .OnComplete(() => gameObject.SetActive(false));
+        }
+        
+        StartCoroutine(DisableColliders());
+    }
+    
+    private IEnumerator DisableColliders()
+    {
+        yield return new WaitForSeconds(disableCollidersDelay);
+        
+        foreach (Collider gateCollider in gateColliders)
+        {
+            gateCollider.enabled = false;
         }
     }
     
