@@ -37,7 +37,9 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     
     // Ingredients to Collect
     public bool HasChosenIngredientsToday { get; set; }
+    public List<int> TomorrowPlacesToSpawn { get; private set; } = new();
     public Dictionary<int, IngredientValuesSo> RemainingIngredientToCollectBehaviours { get; private set; } = new();
+    public List<int> RemainingWeeds { get; private set; } = new();
     
     // Letters
     [field: SerializeField] public bool HasChosenLettersToday { get; set; }

@@ -79,6 +79,8 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.Unearth2.canceled += Unearth2OnCanceled;
         _inputs.Player.Harvest.performed += HarvestOnPerformed;
         _inputs.Player.Harvest.canceled += HarvestOnCanceled;
+        _inputs.Player.Weeding.performed += WeedingOnPerformed;
+        _inputs.Player.Weeding.canceled += WeedingOnCanceled;
         _inputs.Player.ChoppingHapticChallenge1.performed += ChoppingHapticChallenge1OnPerformed;
         _inputs.Player.ChoppingHapticChallenge2.performed += ChoppingHapticChallenge2OnPerformed;
         _inputs.Player.ChoppingHapticChallenge3.performed += ChoppingHapticChallenge3OnPerformed;
@@ -430,6 +432,16 @@ public class CharacterInputManager : MonoBehaviour
     private void HarvestOnCanceled(InputAction.CallbackContext obj)
     {
         CollectHapticChallengeManager.Instance.CheckHarvestInputReleased();
+    }
+    
+    private void WeedingOnPerformed(InputAction.CallbackContext obj)
+    {
+        CollectHapticChallengeManager.Instance.CheckWeedingInputPressed();
+    }
+    
+    private void WeedingOnCanceled(InputAction.CallbackContext obj)
+    {
+        CollectHapticChallengeManager.Instance.CheckWeedingInputReleased();
     }
     
     private void ChoppingHapticChallenge1OnPerformed(InputAction.CallbackContext obj)

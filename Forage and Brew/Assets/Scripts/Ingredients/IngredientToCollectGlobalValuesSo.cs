@@ -6,6 +6,8 @@ public class IngredientToCollectGlobalValuesSo : ScriptableObject
     [field: SerializeField] [field: Min(0f)] public float CollectRadius { get; private set; } = 2f;
     [field: SerializeField] [field: Min(0f)] public float AfkTriggerTime { get; private set; } = 5f;
     
+    [field: Header("Weed")]
+    
     [field: Header("Obtaining Feedback")]
     [field: SerializeField] public float ObtainingFeedbackDuration { get; private set; } = 2f;
     [field: SerializeField] public float ObtainingFeedbackDistance { get; private set; } = 256f;

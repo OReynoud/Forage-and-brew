@@ -289,6 +289,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Weeding"",
+                    ""type"": ""Button"",
+                    ""id"": ""58e2d3bf-7a2f-4649-bb62-899f0f19469d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""PushBellows"",
                     ""type"": ""Button"",
                     ""id"": ""4c6ea8b3-1ad6-4ed4-a35d-2f87f1510db3"",
@@ -1262,6 +1271,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""2b52eb90-5ebc-448f-9b4c-d106510d237e"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Weeding"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bc23bf28-0b9c-4cf8-98c8-565edb1558b5"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Weeding"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""6bf68a35-2618-4d2c-a2e7-b74e602061f0"",
                     ""path"": ""<Gamepad>/rightStick/down"",
                     ""interactions"": """",
@@ -2005,6 +2036,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Unearth1 = m_Player.FindAction("Unearth1", throwIfNotFound: true);
         m_Player_Unearth2 = m_Player.FindAction("Unearth2", throwIfNotFound: true);
         m_Player_Harvest = m_Player.FindAction("Harvest", throwIfNotFound: true);
+        m_Player_Weeding = m_Player.FindAction("Weeding", throwIfNotFound: true);
         m_Player_PushBellows = m_Player.FindAction("PushBellows", throwIfNotFound: true);
         m_Player_ChoppingHapticChallenge4 = m_Player.FindAction("ChoppingHapticChallenge4", throwIfNotFound: true);
         m_Player_ChoppingHapticChallenge5 = m_Player.FindAction("ChoppingHapticChallenge5", throwIfNotFound: true);
@@ -2123,6 +2155,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Unearth1;
     private readonly InputAction m_Player_Unearth2;
     private readonly InputAction m_Player_Harvest;
+    private readonly InputAction m_Player_Weeding;
     private readonly InputAction m_Player_PushBellows;
     private readonly InputAction m_Player_ChoppingHapticChallenge4;
     private readonly InputAction m_Player_ChoppingHapticChallenge5;
@@ -2166,6 +2199,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @Unearth1 => m_Wrapper.m_Player_Unearth1;
         public InputAction @Unearth2 => m_Wrapper.m_Player_Unearth2;
         public InputAction @Harvest => m_Wrapper.m_Player_Harvest;
+        public InputAction @Weeding => m_Wrapper.m_Player_Weeding;
         public InputAction @PushBellows => m_Wrapper.m_Player_PushBellows;
         public InputAction @ChoppingHapticChallenge4 => m_Wrapper.m_Player_ChoppingHapticChallenge4;
         public InputAction @ChoppingHapticChallenge5 => m_Wrapper.m_Player_ChoppingHapticChallenge5;
@@ -2272,6 +2306,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Harvest.started += instance.OnHarvest;
             @Harvest.performed += instance.OnHarvest;
             @Harvest.canceled += instance.OnHarvest;
+            @Weeding.started += instance.OnWeeding;
+            @Weeding.performed += instance.OnWeeding;
+            @Weeding.canceled += instance.OnWeeding;
             @PushBellows.started += instance.OnPushBellows;
             @PushBellows.performed += instance.OnPushBellows;
             @PushBellows.canceled += instance.OnPushBellows;
@@ -2393,6 +2430,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Harvest.started -= instance.OnHarvest;
             @Harvest.performed -= instance.OnHarvest;
             @Harvest.canceled -= instance.OnHarvest;
+            @Weeding.started -= instance.OnWeeding;
+            @Weeding.performed -= instance.OnWeeding;
+            @Weeding.canceled -= instance.OnWeeding;
             @PushBellows.started -= instance.OnPushBellows;
             @PushBellows.performed -= instance.OnPushBellows;
             @PushBellows.canceled -= instance.OnPushBellows;
@@ -2634,6 +2674,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnUnearth1(InputAction.CallbackContext context);
         void OnUnearth2(InputAction.CallbackContext context);
         void OnHarvest(InputAction.CallbackContext context);
+        void OnWeeding(InputAction.CallbackContext context);
         void OnPushBellows(InputAction.CallbackContext context);
         void OnChoppingHapticChallenge4(InputAction.CallbackContext context);
         void OnChoppingHapticChallenge5(InputAction.CallbackContext context);

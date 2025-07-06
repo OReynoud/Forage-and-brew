@@ -20,6 +20,9 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     [SerializeField] private IngredientTypeSo scrapingIngredientType;
     [SerializeField] private IngredientTypeSo harvestIngredientType;
     
+    [Header("Weed")]
+    [SerializeField] private WeedBehaviour weedBehaviour;
+    
     [Header("Obtaining Feedback")]
     [SerializeField] private RectTransform obtainingFeedbackRectTransform;
     [SerializeField] private Image obtainingFeedbackImage;
@@ -55,6 +58,7 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     [SerializeField] private GameObject harvestGaugeRightGameObject;
     [SerializeField] private Slider harvestGaugeRightSlider;
 
+    public bool IsWeed { get; set; }
     public bool DoesNeedToShowUi { get; set; } = true;
     private float _currentTriggerTime;
 
@@ -80,6 +84,8 @@ public class IngredientToCollectBehaviour : MonoBehaviour
 
     public void SpawnMesh()
     {
+        weedBehaviour.DisableWeed();
+        
         for (int i = 0; i < meshParentTransform.childCount; i++)
         {
             Destroy(meshParentTransform.GetChild(i).gameObject);
@@ -93,10 +99,30 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         // }
     }
 
+    
+    public void EnableWeed()
+    {
+        for (int i = 0; i < meshParentTransform.childCount; i++)
+        {
+            Destroy(meshParentTransform.GetChild(i).gameObject);
+        }
+        
+        weedBehaviour.EnableWeed();
+        
+        IsWeed = true;
+    }
+
 
     private void EnableCollect()
     {
         collectInputCanvasGameObject.SetActive(true);
+        
+        if (IsWeed)
+        {
+            weedBehaviour.EnableCollect(isUiRight);
+            
+            return;
+        }
         
         if (IngredientValuesSo.Type == scythingIngredientType)
         {
@@ -185,6 +211,7 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         harvestInputRightGameObject.SetActive(false);
         harvestReleaseRightGameObject.SetActive(false);
         harvestGaugeRightGameObject.SetActive(false);
+        weedBehaviour.DisableUI();
     }
 
     public void PressUnearthing()
@@ -247,6 +274,16 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         }
     }
     
+    public void SetWeedingValue(float value)
+    {
+        weedBehaviour.SetWeedingValue(value, isUiRight);
+    }
+    
+    public void ReleaseWeeding()
+    {
+        weedBehaviour.ReleaseWeeding(isUiRight);
+    }
+    
     
     public void PlayObtainingFeedback()
     {
@@ -298,6 +335,17 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         PlayObtainingFeedback();
         
         meshParentTransform.gameObject.SetActive(false);
+        IngredientToCollectVfxManagerBehaviour.StopAllLunarCycleVfx();
+        collectTrigger.enabled = false;
+    }
+
+    public void RemoveWeed()
+    {
+        GameDontDestroyOnLoadManager.Instance.RemainingWeeds.Remove(SpawnIndex);
+        
+        DisableCollect();
+        
+        weedBehaviour.DisableWeed();
         IngredientToCollectVfxManagerBehaviour.StopAllLunarCycleVfx();
         collectTrigger.enabled = false;
     }
