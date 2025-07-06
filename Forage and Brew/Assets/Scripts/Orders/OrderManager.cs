@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using NaughtyAttributes;
 using UnityEngine;
 
@@ -9,7 +8,7 @@ public class OrderManager : MonoBehaviour
     public static OrderManager Instance { get; private set; }
 
     [field: AllowNesting] [field: SerializeField] public List<Order> CurrentOrders { get; } = new();
-    public bool isInitialized { get; set; }
+    public bool IsInitialized { get; private set; }
 
 
     private void Awake()
@@ -23,7 +22,7 @@ public class OrderManager : MonoBehaviour
             DestroyImmediate(gameObject);
         }
 
-        isInitialized = false;
+        IsInitialized = false;
     }
 
     private void Start()
@@ -46,7 +45,7 @@ public class OrderManager : MonoBehaviour
             }
         }
 
-        isInitialized = true;
+        IsInitialized = true;
     }
     
     public void CreateNewOrder(Letter letter)

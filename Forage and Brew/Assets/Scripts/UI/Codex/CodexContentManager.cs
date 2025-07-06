@@ -80,7 +80,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
             ticket.gameObject.SetActive(false);
         }
         
-        yield return new WaitWhile(() => OrderManager.Instance.isInitialized = false);
+        yield return new WaitWhile(() => !OrderManager.Instance.IsInitialized);
         if (GameDontDestroyOnLoadManager.Instance.loadOrders)
         {
             foreach (var orderSo in GameDontDestroyOnLoadManager.Instance.OrdersToLoad)

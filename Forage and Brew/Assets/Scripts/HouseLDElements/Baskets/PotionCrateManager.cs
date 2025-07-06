@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,6 +33,13 @@ public class PotionCrateManager : MonoBehaviour
     private void Start()
     {
         _playerTransform = CharacterMovementController.Instance.transform;
+
+        StartCoroutine(StartingCoroutine());
+    }
+
+    private IEnumerator StartingCoroutine()
+    {
+        yield return new WaitUntil(() => OrderManager.Instance.IsInitialized);
         
         ReactivateRightPotionCrates();
     }
