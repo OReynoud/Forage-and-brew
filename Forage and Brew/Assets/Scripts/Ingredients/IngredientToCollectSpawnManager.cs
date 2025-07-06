@@ -7,8 +7,7 @@ public class IngredientToCollectSpawnManager : MonoBehaviour
     // Singleton
     public static IngredientToCollectSpawnManager Instance { get; private set; }
     
-    [SerializeField] private List<Transform> spawnGroupParentTransforms;
-    [SerializeField] private int spawnProbabilityBase = 3;
+    [SerializeField] private List<SpawnGroupCount> spawnGroupCounts;
     private readonly List<IngredientToCollectBehaviour> _activatedIngredientToCollectBehaviours = new();
     private readonly List<IngredientToCollectBehaviour> _deactivatedIngredientToCollectBehaviours = new();
     [SerializeField] private int weedSpawnMinCount = 3;
@@ -43,17 +42,34 @@ public class IngredientToCollectSpawnManager : MonoBehaviour
         if (GameDontDestroyOnLoadManager.Instance.DayPassed == 0)
         {
             // For the first day, pick places for the day then activate them
-            foreach (Transform spawnGroupParentTransform in spawnGroupParentTransforms) // Iterate through each spawn group
+            foreach (SpawnGroupCount spawnGroupParentTransform in spawnGroupCounts) // Iterate through each spawn group
             {
-                int randomIndex = Random.Range(0, spawnProbabilityBase); // Randomly select an index based on the spawn probability base
-
-                for (int i = 0; i < spawnGroupParentTransform.childCount; i++) // Iterate through each child of the spawn group
+                // Create a list to store unique random indices
+                List<int> randomIndices = new();
+                
+                // Ensure the number of unique random indices matches the spawn count
+                for (int i = 0; i < spawnGroupParentTransform.SpawnCount; i++)
                 {
-                    Transform childTransform = spawnGroupParentTransform.GetChild(i);
+                    // Randomly select an index from the spawn group
+                    int randomIndex = Random.Range(0, spawnGroupParentTransform.SpawnGroupTransform.childCount);
+                    
+                    // Ensure the random index is unique
+                    while (randomIndices.Contains(randomIndex))
+                    {
+                        randomIndex = (randomIndex + 1) % spawnGroupParentTransform.SpawnGroupTransform.childCount;
+                    }
+                    
+                    // Add the unique random index to the list
+                    randomIndices.Add(randomIndex);
+                }
+
+                for (int i = 0; i < spawnGroupParentTransform.SpawnGroupTransform.childCount; i++) // Iterate through each child of the spawn group
+                {
+                    Transform childTransform = spawnGroupParentTransform.SpawnGroupTransform.GetChild(i);
 
                     if (childTransform.TryGetComponent(out IngredientToCollectBehaviour ingredientToCollectBehaviour))
                     {
-                        if (i == randomIndex) // If the index matches the random index, activate the ingredient to collect behaviour
+                        if (randomIndices.Contains(i)) // If the index matches a random index, activate the ingredient to collect behaviour
                         {
                             _activatedIngredientToCollectBehaviours.Add(ingredientToCollectBehaviour);
                             ingredientToCollectBehaviour.gameObject.SetActive(true);
@@ -71,8 +87,8 @@ public class IngredientToCollectSpawnManager : MonoBehaviour
         {
             // For subsequent days, activate places based on tomorrow's spawn index
             // Iterate through all IngredientToCollectBehaviours in the spawn groups
-            foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in spawnGroupParentTransforms
-                         .SelectMany(x => x.GetComponentsInChildren<IngredientToCollectBehaviour>(true)))
+            foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in spawnGroupCounts
+                         .SelectMany(x => x.SpawnGroupTransform.GetComponentsInChildren<IngredientToCollectBehaviour>(true)))
             {
                 // Check if the spawn index is in tomorrow's places to spawn
                 if (GameDontDestroyOnLoadManager.Instance.TomorrowPlacesToSpawn.Contains(ingredientToCollectBehaviour.SpawnIndex))
@@ -94,17 +110,34 @@ public class IngredientToCollectSpawnManager : MonoBehaviour
         GameDontDestroyOnLoadManager.Instance.TomorrowPlacesToSpawn.Clear();
         
         // Randomly select spawn places for tomorrow
-        foreach (Transform spawnGroupParentTransform in spawnGroupParentTransforms) // Iterate through each spawn group
+        foreach (SpawnGroupCount spawnGroupParentTransform in spawnGroupCounts) // Iterate through each spawn group
         {
-            int randomIndex = Random.Range(0, spawnProbabilityBase); // Randomly select an index based on the spawn probability base
-
-            for (int i = 0; i < spawnGroupParentTransform.childCount; i++) // Iterate through each child of the spawn group
+            // Create a list to store unique random indices
+            List<int> randomIndices = new();
+                
+            // Ensure the number of unique random indices matches the spawn count
+            for (int i = 0; i < spawnGroupParentTransform.SpawnCount; i++)
             {
-                Transform childTransform = spawnGroupParentTransform.GetChild(i);
+                // Randomly select an index from the spawn group
+                int randomIndex = Random.Range(0, spawnGroupParentTransform.SpawnGroupTransform.childCount);
+                    
+                // Ensure the random index is unique
+                while (randomIndices.Contains(randomIndex))
+                {
+                    randomIndex = (randomIndex + 1) % spawnGroupParentTransform.SpawnGroupTransform.childCount;
+                }
+                    
+                // Add the unique random index to the list
+                randomIndices.Add(randomIndex);
+            }
+
+            for (int i = 0; i < spawnGroupParentTransform.SpawnGroupTransform.childCount; i++) // Iterate through each child of the spawn group
+            {
+                Transform childTransform = spawnGroupParentTransform.SpawnGroupTransform.GetChild(i);
                 
                 if (childTransform.TryGetComponent(out IngredientToCollectBehaviour ingredientToCollectBehaviour))
                 {
-                    if (i == randomIndex) // If the index matches the random index, add it to tomorrow's places to spawn
+                    if (randomIndices.Contains(i)) // If the index matches a random index, add it to tomorrow's places to spawn
                     {
                         GameDontDestroyOnLoadManager.Instance.TomorrowPlacesToSpawn
                             .Add(ingredientToCollectBehaviour.SpawnIndex);
@@ -120,8 +153,8 @@ public class IngredientToCollectSpawnManager : MonoBehaviour
         if (GameDontDestroyOnLoadManager.Instance.HasChosenIngredientsToday)
         {
             // Iterate through all IngredientToCollectBehaviours in the spawn groups
-            foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in spawnGroupParentTransforms
-                      .SelectMany(x => x.GetComponentsInChildren<IngredientToCollectBehaviour>(true)))
+            foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in spawnGroupCounts
+                      .SelectMany(x => x.SpawnGroupTransform.GetComponentsInChildren<IngredientToCollectBehaviour>(true)))
             {
                 // Check if the spawn index is in remaining weeds
                 if (GameDontDestroyOnLoadManager.Instance.RemainingWeeds.Contains(ingredientToCollectBehaviour.SpawnIndex))
@@ -161,7 +194,7 @@ public class IngredientToCollectSpawnManager : MonoBehaviour
         weedCount = Mathf.Min(weedCount, _deactivatedIngredientToCollectBehaviours.Count);
         
         // Randomly activate the weeds from the deactivated ingredient to collect behaviours
-        for (int i = 0; i < Mathf.Min(weedCount, _deactivatedIngredientToCollectBehaviours.Count); i++)
+        for (int i = 0; i < weedCount; i++)
         {
             // Randomly select an index from the deactivated ingredient to collect behaviours
             int randomIndex = Random.Range(0, _deactivatedIngredientToCollectBehaviours.Count);
@@ -183,8 +216,8 @@ public class IngredientToCollectSpawnManager : MonoBehaviour
         if (GameDontDestroyOnLoadManager.Instance.HasChosenIngredientsToday)
         {
             // Iterate through all IngredientToCollectBehaviours in the spawn groups
-            foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in spawnGroupParentTransforms
-                         .SelectMany(x => x.GetComponentsInChildren<IngredientToCollectBehaviour>(true)))
+            foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in spawnGroupCounts
+                         .SelectMany(x => x.SpawnGroupTransform.GetComponentsInChildren<IngredientToCollectBehaviour>(true)))
             {
                 // Check if the spawn index is in remaining ingredients
                 if (GameDontDestroyOnLoadManager.Instance.RemainingIngredientToCollectBehaviours

@@ -17,6 +17,7 @@ public class Letter
         RelatedNarrativeBlock = nBlock;
         DeliveredOnTime = deliveredOnTime;
     }
+    
     public Letter(LetterContentSo content, NarrativeBlockOfLetters nBlock)
     {
         LetterContent = content;
@@ -126,21 +127,16 @@ public class TutorialBlock
 }
 
 [Serializable]
-public class PurchaseTracker
-{
-    public string upgradeID;
-    public bool isPurchased;
-}
-
-[Serializable]
 public class HouseCameraSetting
 {
     public CameraPreset cameraPreset;
     public float triggerDistance = 1;
     public Color groupColor = Color.white;
-
 }
 
-
-
-
+[Serializable]
+public class SpawnGroupCount
+{
+    [field: SerializeField] public Transform SpawnGroupTransform { get; set; }
+    [field: SerializeField] public int SpawnCount { get; set; }
+}
