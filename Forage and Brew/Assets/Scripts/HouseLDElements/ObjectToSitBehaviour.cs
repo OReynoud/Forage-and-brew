@@ -1,20 +1,27 @@
+using System;
 using System.Collections;
+using NaughtyAttributes;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class CouchBehaviour : MonoBehaviour, ICinematicInteraction
+public class ObjectToSitBehaviour : MonoBehaviour, ICinematicInteraction
 {
     public Animator animator;
     public GameObject localCanvas;
     private bool _usingCouch;
     public float afkTime;
     private float _afkTimer;
-    public CameraPreset sitCam;
-    public float sitCamTransitionTime;
-    public CameraPreset standCam;
-    public float standCamTransitionTime;
+    public bool overrideCam;
+    [ShowIf("overrideCam")] public CameraPreset sitCam;
+    [ShowIf("overrideCam")] public float sitCamTransitionTime;
+    [ShowIf("overrideCam")] public CameraPreset standCam;
+    [ShowIf("overrideCam")] public float standCamTransitionTime;
+    [Space]
+    public bool specificSitLocation;
+    [ShowIf("specificSitLocation")] public Transform locationToWalk;
+    [HideIf("specificSitLocation")] public float distanceToSit;
 
-    public Transform locationToWalk;
 
     public static readonly UnityEvent OnCouchExitEvent = new();
     
@@ -22,6 +29,15 @@ public class CouchBehaviour : MonoBehaviour, ICinematicInteraction
     private static readonly int DoStand = Animator.StringToHash("DoStand");
     private static readonly int DoSit = Animator.StringToHash("DoSit");
 
+#if UNITY_EDITOR
+
+    private void OnDrawGizmosSelected()
+    {
+        if (specificSitLocation) return;
+        
+        Handles.DrawWireDisc(transform.position,Vector3.up, distanceToSit);
+    }
+#endif
 
     private void Start()
     {
@@ -60,7 +76,17 @@ public class CouchBehaviour : MonoBehaviour, ICinematicInteraction
         CharacterInputManager.Instance.DisableInputs();
         if (_usingCouch)
         {
-            CharacterMovementController.Instance.TriggerWalkTransition(locationToWalk.position);
+            if (!specificSitLocation)
+            {
+                Vector3 posToLook = new Vector3(transform.position.x,
+                    CharacterAnimManager.instance.transform.position.y, transform.position.z);
+                CharacterAnimManager.instance.transform.LookAt(posToLook);
+                CharacterMovementController.Instance.TriggerWalkTransition(posToLook - CharacterAnimManager.instance.transform.forward * distanceToSit);
+            }
+            else
+            {
+                CharacterMovementController.Instance.TriggerWalkTransition(locationToWalk.position);
+            }
             localCanvas.SetActive(false);
             StartCoroutine(ToSitCam());
         }
@@ -80,8 +106,12 @@ public class CouchBehaviour : MonoBehaviour, ICinematicInteraction
 
     private IEnumerator ToSitCam()
     {
-        HouseCameraBehavior.overrideCameraLerp = true;
-        SimpleCameraBehavior.instance.ApplyScriptableCamSettings(sitCam, sitCamTransitionTime);
+        if (overrideCam)
+        {
+            
+            HouseCameraBehavior.overrideCameraLerp = true;
+            SimpleCameraBehavior.instance.ApplyScriptableCamSettings(sitCam, sitCamTransitionTime);
+        }
         yield return new WaitForSeconds(sitCamTransitionTime);
         SitOnCouch();
     }
@@ -100,7 +130,10 @@ public class CouchBehaviour : MonoBehaviour, ICinematicInteraction
 
     private IEnumerator ToStandCam()
     {
-        SimpleCameraBehavior.instance.ApplyScriptableCamSettings(standCam, standCamTransitionTime);
+        if (overrideCam)
+        {
+            SimpleCameraBehavior.instance.ApplyScriptableCamSettings(standCam, standCamTransitionTime);
+        }
         yield return new WaitForSeconds(standCamTransitionTime);
         
         localCanvas.SetActive(true);

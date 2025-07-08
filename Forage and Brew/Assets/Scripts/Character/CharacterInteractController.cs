@@ -166,7 +166,7 @@ public class CharacterInteractController : MonoBehaviour
                 case CodexPickUpBehaviour codex:
                     codex.StartInteraction();
                     break;
-                case CouchBehaviour couch:
+                case ObjectToSitBehaviour couch:
                     couch.StartInteraction();
                     break;
             }
@@ -181,7 +181,7 @@ public class CharacterInteractController : MonoBehaviour
             {
                 switch (CurrentNearCinematicInteraction)
                 {
-                    case CouchBehaviour couch:
+                    case ObjectToSitBehaviour couch:
                         couch.CancelCouch();
                         return;
                 }
