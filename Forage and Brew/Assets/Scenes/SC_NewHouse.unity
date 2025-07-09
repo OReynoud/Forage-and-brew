@@ -240,6 +240,11 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!20 &112816576 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 7245308495839365403, guid: 4c5d0d08bae1cd64c9f99e542c59e920, type: 3}
+  m_PrefabInstance: {fileID: 6727537467933644907}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &126863755
 GameObject:
   m_ObjectHideFlags: 0
@@ -2106,10 +2111,6 @@ PrefabInstance:
       propertyPath: mainCameraPreset
       value: 
       objectReference: {fileID: 752501689}
-    - target: {fileID: 999744217145196279, guid: 58614c5d4362f9746a483555c8098421, type: 3}
-      propertyPath: TargetCamSettings
-      value: 
-      objectReference: {fileID: 11400000, guid: c25eef444ac2f93458269c02d0cf695a, type: 2}
     - target: {fileID: 1874713167007346306, guid: 58614c5d4362f9746a483555c8098421, type: 3}
       propertyPath: m_LocalPosition.x
       value: -13.1
@@ -2150,6 +2151,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2857800261848591667, guid: 58614c5d4362f9746a483555c8098421, type: 3}
+      propertyPath: m_Cameras.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2857800261848591667, guid: 58614c5d4362f9746a483555c8098421, type: 3}
+      propertyPath: 'm_Cameras.Array.data[2]'
+      value: 
+      objectReference: {fileID: 112816576}
     - target: {fileID: 8862485668332859633, guid: 58614c5d4362f9746a483555c8098421, type: 3}
       propertyPath: m_Name
       value: P_CamLerpHolder

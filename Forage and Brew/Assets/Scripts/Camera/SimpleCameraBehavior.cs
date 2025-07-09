@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.InputSystem.Controls;
 
 public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
 {
@@ -9,6 +8,7 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
     public Transform player;
     protected CharacterMovementController movement;
 
+    public Camera worldUiCam;
     public Camera overlayUiCam;
 
     [Foldout("Calculated at Start")] public float targetFocalLength;
@@ -119,6 +119,7 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
         }
 
         cam.focalLength = scriptableCamSettings.targetFocalLength;
+        worldUiCam.focalLength = scriptableCamSettings.targetFocalLength;
         overlayUiCam.focalLength = scriptableCamSettings.targetFocalLength;
         targetFocalLength = scriptableCamSettings.targetFocalLength;
         cameraRotation = scriptableCamSettings.cameraRotation;
@@ -243,6 +244,7 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
         transform.parent.position = ClampCamPos(transform.parent.position);
         transform.localRotation = Quaternion.Euler(TargetCamSettings.cameraRotation);
         cam.focalLength = TargetCamSettings.targetFocalLength;
+        worldUiCam.focalLength = TargetCamSettings.targetFocalLength;
         overlayUiCam.focalLength = TargetCamSettings.targetFocalLength;
 
         transitionStartPos = transform.parent.position;
