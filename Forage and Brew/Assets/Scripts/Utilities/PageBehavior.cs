@@ -10,6 +10,7 @@ public class PageBehavior : MonoBehaviour
     public virtual void InitIngredient(IngredientValuesSo ingredientToDisplay) {}
     public virtual void InitHistoric(LetterContentSo originLetter, LetterContentSo successLetter) {}
     public virtual void InitRecipe(Sprite[] PotionIngredientsLow, Sprite[] PotionIngredientsHigh, PotionValuesSo PotionSteps, Sprite[] AllBrewingActionSprites, Sprite[] PagesToUse) {}
+    public virtual void InitBundlesPage(PotionEnsembleSo bundleToDisplay) {}
 
     protected Vector2 anchoredPosition;
     public virtual void PlacePageNumberText()
