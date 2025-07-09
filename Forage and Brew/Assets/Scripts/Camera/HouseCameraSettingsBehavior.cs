@@ -1,5 +1,3 @@
-using System;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,7 +10,7 @@ public class HouseCameraSettingsBehavior : MonoBehaviour
     #if UNITY_EDITOR
     void OnDrawGizmos()
     {
-        Handles.color = settings.groupColor;
+        Handles.color = settings.cameraPreset.groupColor;
         Handles.DrawWireDisc(transform.position, Vector3.up, settings.triggerDistance);
     }
     

@@ -131,7 +131,6 @@ public class HouseCameraSetting
 {
     public CameraPreset cameraPreset;
     public float triggerDistance = 1;
-    public Color groupColor = Color.white;
 }
 
 [Serializable]

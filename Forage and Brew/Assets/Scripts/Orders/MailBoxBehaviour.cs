@@ -206,7 +206,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         GameDontDestroyOnLoadManager.Instance.ChosenLetters.Add((new Letter(letter.LetterContent.RelatedSuccessLetter, letter.RelatedNarrativeBlock),
             letter.LetterContent));
         letter.RelatedNarrativeBlock.NewLetterCountDown =
-            letter.RelatedNarrativeBlock.ContentSo.TimeForLetterAfterSuccess;
+            letter.LetterContent.TimeForLetterAfterSuccess;
     }
 
     public void GenerateLetters()
