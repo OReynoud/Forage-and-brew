@@ -116,6 +116,7 @@ public class PotionEnsembleBehaviour : MonoBehaviour, IPotionAddable
         _potionElements[potionIndex].EnableCheckMark();
         // TODO: Add new checkmark in codex here
         
+        
         CheckCompletion();
         
         DisableInteract();

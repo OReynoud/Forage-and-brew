@@ -14,6 +14,8 @@ public class BundleContainerCodexDisplay : MonoBehaviour
     public TextMeshProUGUI rewardMoneyText;
 
     public PotionEnsembleSo displayedBundle;
+
+    public bool isInitialized = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
 
@@ -37,10 +39,12 @@ public class BundleContainerCodexDisplay : MonoBehaviour
         }
 
         rewardMoneyText.text = displayedBundle.MoneyReward.ToString();
+        isInitialized = true;
     }
 
     public void UpdateCheckmarks(int index)
     {
         checkmarkImages[index].enabled = true;
+        
     }
 }
