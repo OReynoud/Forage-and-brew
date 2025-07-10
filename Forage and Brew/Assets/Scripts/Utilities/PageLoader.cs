@@ -67,7 +67,7 @@ public class PageLoader : MonoBehaviour
                     }
                 }
                 recipe.InitRecipe(tempIngredientsLow.ToArray(),tempIngredientsHigh.ToArray(),recipeToLoad, allBrewingActionSprites,
-                    new []{recipe.leftPage.GetComponent<Image>().sprite,recipe.rightPage.GetComponent<Image>().sprite});
+                    new []{recipe.leftPage.GetComponentInChildren<Image>(true).sprite,recipe.rightPage.GetComponentInChildren<Image>(true).sprite});
                 
                 tempIngredientsLow.Clear();
                 tempIngredientsHigh.Clear();

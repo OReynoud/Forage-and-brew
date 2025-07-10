@@ -187,9 +187,7 @@ public class RecipeCodexDisplay : PageBehavior
                 }
                 else
                 {
-                    ingredientDisplayContainers[i].InitializeSelf(ingredientAmount, cookedIngredient.Ingredient,
-                        GameDontDestroyOnLoadManager.Instance.UnlockedIngredients.Contains(cookedIngredient
-                            .Ingredient), ingredientBackground);
+                    ingredientDisplayContainers[i].InitializeSelf(ingredientAmount, cookedIngredient.Ingredient, ingredientBackground);
                 }
 
                 ingredientsIndex++;

@@ -24,7 +24,7 @@ public class RecipeIngredientDisplayContainer : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void InitializeSelf(int ingredientAmount, IngredientValuesSo ingredient, bool ingredientDiscovered,
+    public void InitializeSelf(int ingredientAmount, IngredientValuesSo ingredient,
         Sprite ingredientBackgroundSprite)
     {
         storedIngredient = ingredient;
