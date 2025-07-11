@@ -105,9 +105,25 @@ namespace proTools.proFolder
                 {
                     float size = isColumnView ? rect.height * 0.5f : rect.height * 0.35f;
 
-                    float offsetX = isColumnView ? rect.x + rect.height - size + rect.height * 0.1f : rect.xMax - size;
-                    float offsetY = isColumnView ? rect.y + rect.height - size : rect.y + rect.height * 0.65f - size * 0.5f;
-
+                    float offsetX = isColumnView ? rect.x + rect.height * 0.5f - size * 0.4f : rect.xMax - size;
+                    float offsetY = isColumnView ? rect.y + rect.height * 0.5f - size * 0.4f : rect.y + rect.height * 0.65f - size * 0.5f;
+                    
+                    Color shadowColor = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                    
+                    for (int i = 0; i < 4; i++)
+                    {
+                        float horizontalDirection = i % 2 == 0 ? -1 : 1;
+                        float verticalDirection = i < 2 ? -1 : 1;
+                        
+                        Rect shadowIconRect = new(
+                            offsetX + horizontalDirection * size * 0.05f,
+                            offsetY + verticalDirection * size * 0.05f,
+                            size, size
+                        );
+                        
+                        GUI.DrawTexture(shadowIconRect, icon, ScaleMode.ScaleToFit, true, 0f, shadowColor, 0f, 0f);
+                    }
+                    
                     Rect iconRect = new Rect(offsetX, offsetY, size, size);
 
                     GUI.DrawTexture(iconRect, icon, ScaleMode.ScaleToFit);
