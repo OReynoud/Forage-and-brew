@@ -37,6 +37,18 @@ namespace proTools.proFolder
                 });
             }
 
+            foreach (var kvp in folderMarkers)
+            {
+                if (dataList.folders.Select(folder => folder.path).Contains(kvp.Key)) continue;
+                
+                dataList.folders.Add(new FolderData
+                {
+                    path = kvp.Key,
+                    color = Color.clear,
+                    markerIndex = kvp.Value
+                });
+            }
+
             string json = JsonUtility.ToJson(dataList, true);
             File.WriteAllText(GetDataPath(), json);
             AssetDatabase.Refresh();
@@ -55,7 +67,10 @@ namespace proTools.proFolder
 
             foreach (var data in dataList.folders)
             {
-                folderColors[data.path] = data.color;
+                if (data.color != Color.clear)
+                {
+                    folderColors[data.path] = data.color;
+                }
                 folderMarkers[data.path] = data.markerIndex;
             }
         }
