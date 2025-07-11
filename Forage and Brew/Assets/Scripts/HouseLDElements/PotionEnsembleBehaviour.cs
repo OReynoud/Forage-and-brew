@@ -115,6 +115,19 @@ public class PotionEnsembleBehaviour : MonoBehaviour, IPotionAddable
         potionLiquidColorManager.SetLiquidColor(PotionEnsembleSo.Potions[potionIndex]);
         _potionElements[potionIndex].EnableCheckMark();
         // TODO: Add new checkmark in codex here
+
+        foreach (var bundlePage in CodexContentManager.instance.bundlesPages)
+        {
+            foreach (var bundle in bundlePage.allContainers)
+            {
+                if (!bundle.isInitialized)continue;
+                if (bundle.displayedBundle == PotionEnsembleSo)
+                {
+                    bundle.UpdateCheckmarks(potionIndex);
+                    break;
+                }
+            }
+        }
         
         
         CheckCompletion();
@@ -188,6 +201,7 @@ public class PotionEnsembleBehaviour : MonoBehaviour, IPotionAddable
             
             IsDiscovered = true;
             // TODO: Add discover behaviour here
+            CodexContentManager.instance.AddNewBundleToCodex(PotionEnsembleSo);
             
             if (characterInteractController.collectedStack.Count > 0 &&
                 characterInteractController.collectedStack[0].stackable is CollectedPotionBehaviour)

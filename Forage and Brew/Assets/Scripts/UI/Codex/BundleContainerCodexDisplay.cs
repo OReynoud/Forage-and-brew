@@ -1,15 +1,13 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class BundleContainerCodexDisplay : MonoBehaviour
 {
 
-    public Image[] potionRequirementImages;
-    public Image[] potionLiquidImages;
-
-    public Image[] checkmarkImages;
+    public BundleElementContainerDisplay[] potionRequirementElements;
 
     public TextMeshProUGUI rewardMoneyText;
 
@@ -23,19 +21,16 @@ public class BundleContainerCodexDisplay : MonoBehaviour
     {
         displayedBundle = bundleToDisplay;
 
-        for (int i = 0; i < potionRequirementImages.Length; i++)
+        for (int i = 0; i < potionRequirementElements.Length; i++)
         {
-            potionRequirementImages[i].enabled = false;
-            checkmarkImages[i].enabled = false;
-            potionLiquidImages[i].enabled = false;
+            potionRequirementElements[i].gameObject.SetActive(false);
         }
         for (int i = 0; i < displayedBundle.Potions.Count; i++)
         {
-            potionRequirementImages[i].enabled = true;
-            potionLiquidImages[i].enabled = true;
-
-            potionRequirementImages[i].sprite = displayedBundle.Potions[i].PotionDifficulty.PotionSprite;
-            potionLiquidImages[i].color = displayedBundle.Potions[i].SpriteLiquidColor;
+            potionRequirementElements[i].gameObject.SetActive(true);
+            
+            
+            potionRequirementElements[i].InitSelf(bundleToDisplay.Potions[i].SpriteLiquidColor,bundleToDisplay.Potions[i].PotionDifficulty.PotionSprite);
         }
 
         rewardMoneyText.text = displayedBundle.MoneyReward.ToString();
@@ -44,7 +39,7 @@ public class BundleContainerCodexDisplay : MonoBehaviour
 
     public void UpdateCheckmarks(int index)
     {
-        checkmarkImages[index].enabled = true;
+        potionRequirementElements[index].checkmarkImage.enabled = true;
         
     }
 }
