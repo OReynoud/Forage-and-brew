@@ -250,7 +250,7 @@ public class CharacterInteractController : MonoBehaviour
             
             for (index = 0; index < CurrentNearIngredientBaskets.Count; index++)
             {
-                if (CurrentNearIngredientBaskets[index].IngredientCount == 0) return;
+                if (CurrentNearIngredientBaskets[index].IngredientCount == 0) continue;
                 
                 if ((CollectedIngredientBehaviour)collectedStack[0].stackable &&
                     ((CollectedIngredientBehaviour)collectedStack[0].stackable).IngredientValuesSo == CurrentNearIngredientBaskets[index].ingredient)
