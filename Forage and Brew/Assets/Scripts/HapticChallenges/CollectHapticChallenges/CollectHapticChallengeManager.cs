@@ -55,6 +55,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
     private bool _canValidateHarvest;
     
     // Weeding
+    private int _currentWeedingInputIndex;
     private float _currentWeedingTime;
     private bool _canValidateWeeding;
     
@@ -350,7 +351,8 @@ public class CollectHapticChallengeManager : MonoBehaviour
         if (_currentWeedingTime <= 0f) return;
         
         _currentWeedingTime -= Time.deltaTime;
-        _currentIngredientToCollectBehaviour.SetWeedingValue(1f - _currentWeedingTime / weedingHapticChallengeSo.InputReleaseDelayTolerance);
+        _currentIngredientToCollectBehaviour.SetWeedingValue(1f - _currentWeedingTime /
+            weedingHapticChallengeSo.InputReleaseDelayTolerances[_currentWeedingInputIndex]);
         
         if (_currentWeedingTime <= 0f)
         {
@@ -365,23 +367,31 @@ public class CollectHapticChallengeManager : MonoBehaviour
     
     public void CheckWeedingInputPressed()
     {
-        SortIngredientsByDistance();
-        
-        foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
+        if (!_isCollectHapticChallengeActive)
         {
-            if (!ingredientToCollectBehaviour.IsWeed) continue;
+            SortIngredientsByDistance();
+        
+            foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
+            {
+                if (!ingredientToCollectBehaviour.IsWeed) continue;
+                
+                _isCollectHapticChallengeActive = true;
             
-            _currentIngredientToCollectBehaviour = ingredientToCollectBehaviour;
-            _currentWeedingTime = weedingHapticChallengeSo.InputReleaseDelayTolerance;
+                _currentIngredientToCollectBehaviour = ingredientToCollectBehaviour;
             
-            characterAnimator.SetTrigger(DoBuildUpHarvest);
-            CharacterInputManager.Instance.DisableMoveInputs();
-            CharacterInputManager.Instance.DisableCodexInputs();
+                FaceIngredient(characterWeedingDistance);
             
-            FaceIngredient(characterWeedingDistance);
+                break;
+            }
             
-            break;
+            if (!_isCollectHapticChallengeActive) return;
         }
+        
+        _currentWeedingTime = weedingHapticChallengeSo.InputReleaseDelayTolerances[_currentWeedingInputIndex];
+        
+        CharacterInputManager.Instance.DisableMoveInputs();
+        CharacterInputManager.Instance.DisableCodexInputs();
+        characterAnimator.SetTrigger(DoBuildUpHarvest);
     }
     
     public void CheckWeedingInputReleased()
@@ -404,9 +414,18 @@ public class CollectHapticChallengeManager : MonoBehaviour
         _canValidateWeeding = false;
         
         characterAnimator.SetTrigger(DoHarvest);
-        _currentIngredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayWeedingVfx();
         
-        CollectIngredient(true);
+        _currentWeedingInputIndex++;
+        
+        if (_currentWeedingInputIndex >= weedingHapticChallengeSo.InputReleaseDelayTolerances.Count)
+        {
+            _currentWeedingInputIndex = 0;
+            _isCollectHapticChallengeActive = false;
+            
+            _currentIngredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayWeedingVfx();
+        
+            CollectIngredient(true);
+        }
     }
     
     #endregion

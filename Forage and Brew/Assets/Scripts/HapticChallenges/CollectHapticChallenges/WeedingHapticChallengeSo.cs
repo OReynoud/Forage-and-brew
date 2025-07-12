@@ -1,10 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "D_WeedingHapticChallenge", menuName = "Haptic Challenges/WeedingHapticChallengeSo")]
 public class WeedingHapticChallengeSo : CollectHapticChallengeSo
 {
     [field: SerializeField] [field: Tooltip("The delay tolerance between input press and release.")] [field: Min(0f)]
-    public float InputReleaseDelayTolerance { get; private set; }
+    public List<float> InputReleaseDelayTolerances { get; private set; }
     
     
     [field: Header("Vibration Settings")]
