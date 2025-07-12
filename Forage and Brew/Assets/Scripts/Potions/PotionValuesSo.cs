@@ -20,5 +20,5 @@ public class PotionValuesSo : StackableValuesSo
     [field: SerializeField] [field: ColorUsage(true, true)] public Color MeshLiquidMainColor { get; private set; } = Color.white;
     [field: SerializeField] [field: ColorUsage(true, true)] public Color MeshLiquidTopColor { get; private set; } = Color.white;
     [field: SerializeField] [field: ColorUsage(true, true)] public Color MeshLiquidFoamColor { get; private set; } = Color.white;
-    [field: SerializeField] [field: ColorUsage(true, true)] public Color MeshLiquidRimColor { get; private set; } = Color.white;
+    [field: SerializeField] public Color MeshLiquidRimColor { get; private set; } = Color.white;
 }
