@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class ChoppingHapticChallengeManager : MonoBehaviour
@@ -86,6 +87,7 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         
         // Camera
         _previousCameraPreset = SimpleCameraBehavior.instance.TargetCamSettings;
+        HouseCameraBehavior.overrideCameraLerp = true;
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(choppingChallengeCameraPreset, choppingCameraTransitionTime);
 
         // Character
@@ -112,7 +114,6 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         }
         _choppingInputBehaviours.Clear();
         choppingChallengeGameObject.SetActive(false);
-        
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(_previousCameraPreset, choppingCameraTransitionTime);
         CharacterInputManager.Instance.EnableInputs();
         // CurrentChoppingCountertopBehaviour.EnableInteract();
@@ -121,6 +122,13 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         CurrentChoppingCountertopBehaviour.ChopIngredient(choppingHapticChallengeListSo);
         
         GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge = false;
+        
+        DOTween.To(() => transform.position, x => transform.position = x, transform.position,
+            choppingCameraTransitionTime).OnComplete(
+            () =>
+            {
+                HouseCameraBehavior.overrideCameraLerp = false;
+            });
     }
     
     private void UpdateChoppingChallenge()

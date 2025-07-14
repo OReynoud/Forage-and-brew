@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Splines;
 using UnityEngine.UI;
@@ -156,6 +157,7 @@ public class GrindingHapticChallengeManager : MonoBehaviour
         CharacterInputManager.Instance.EnableGrindingHapticChallengeInputs();
         
         // Camera
+        HouseCameraBehavior.overrideCameraLerp = true;
         _previousCameraPreset = SimpleCameraBehavior.instance.TargetCamSettings;
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(grindingChallengeCameraPreset, grindingCameraTransitionTime);
 
@@ -193,6 +195,13 @@ public class GrindingHapticChallengeManager : MonoBehaviour
         CurrentGrindingCountertopBehaviour.GrindIngredient(grindingHapticChallengeSo);    
         
         GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge = false;
+        
+        DOTween.To(() => transform.position, x => transform.position = x, transform.position,
+            grindingCameraTransitionTime).OnComplete(
+            () =>
+            {
+                HouseCameraBehavior.overrideCameraLerp = false;
+            });
     }
     
     private void UpdateGrindingChallenge()

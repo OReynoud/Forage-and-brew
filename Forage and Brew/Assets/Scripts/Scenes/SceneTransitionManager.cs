@@ -172,7 +172,6 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         }
         
         
-        HouseCameraBehavior.overrideCameraLerp = false;
         yield return new WaitForSecondsRealtime(sleepWaitTime);
         
         
@@ -184,6 +183,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         }
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(camSettings,0);
         SimpleCameraBehavior.instance.InstantCamUpdate(camSettings);
+        HouseCameraBehavior.overrideCameraLerp = false;
         CharacterAnimManager.instance.transform.position = spawnPoint.position;
         CharacterAnimManager.instance.transform.rotation = spawnPoint.rotation;
         CharacterMovementController.Instance.rb.constraints = RigidbodyConstraints.FreezeRotation;

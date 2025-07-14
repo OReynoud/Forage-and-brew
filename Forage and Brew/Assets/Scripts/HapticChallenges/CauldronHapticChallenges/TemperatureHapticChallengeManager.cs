@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -81,6 +82,8 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
         if (!CurrentBellows) return;
         IsChallengeActive = true;
         characterAnimator.SetTrigger(DoEnterBellows);
+
+        HouseCameraBehavior.overrideCameraLerp = true;
         _previousCameraPreset = SimpleCameraBehavior.instance.TargetCamSettings;
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(stirChallengeCameraPreset, cauldronCameraTransitionTime);
 
@@ -299,6 +302,13 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
         temperatureChallengeGameObject.SetActive(false);        
         
         GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge = false;
+        
+        DOTween.To(() => transform.position, x => transform.position = x, transform.position,
+            cauldronCameraTransitionTime).OnComplete(
+            () =>
+            {
+                HouseCameraBehavior.overrideCameraLerp = false;
+            });
     }
     
     public void IncreaseTemperature()

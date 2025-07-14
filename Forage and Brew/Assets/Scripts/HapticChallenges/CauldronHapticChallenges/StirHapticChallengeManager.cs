@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -192,6 +193,7 @@ public class StirHapticChallengeManager : MonoBehaviour
         if (!CurrentCauldron) return;
         
         // Camera
+        HouseCameraBehavior.overrideCameraLerp = true;
         _previousCameraPreset = SimpleCameraBehavior.instance.TargetCamSettings;
 
         // Character
@@ -389,6 +391,13 @@ public class StirHapticChallengeManager : MonoBehaviour
         }
         
         GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge = false;
+        
+        DOTween.To(() => transform.position, x => transform.position = x, transform.position,
+            cauldronCameraTransitionTime).OnComplete(
+            () =>
+            {
+                HouseCameraBehavior.overrideCameraLerp = false;
+            });
     }
     
     
