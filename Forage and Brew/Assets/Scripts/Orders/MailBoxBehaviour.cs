@@ -144,6 +144,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     {
         GameDontDestroyOnLoadManager.Instance.ChosenLetters.Clear();
 
+        Debug.Log(GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters.Count);
 
         foreach (var letter in GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters)
         {
@@ -155,8 +156,8 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                 GenerateSuccessLetter(letter);
                 continue;
             }
-            if (letter.RelatedNarrativeBlock.CompletedLetters[letter.RelatedNarrativeBlock.SelfProgressionIndex])
-            {
+            if (letter.RelatedNarrativeBlock.CompletedLetters[index])
+            {  
                 GenerateSuccessLetter(letter);
             }
         }
@@ -195,6 +196,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     
     private void GenerateSuccessLetter(Letter letter)
     {
+        Debug.Log("Generated success letter");
         int moneyToEarn = letter.LetterContent.OrderContent.MoneyReward;
         _moneyAmountsToEarn.Add((moneyToEarn, GameDontDestroyOnLoadManager.Instance.ChosenLetters.Count));
         GameDontDestroyOnLoadManager.Instance.ChosenLetters.Add((new Letter(letter.LetterContent.RelatedSuccessLetter, letter.RelatedNarrativeBlock),

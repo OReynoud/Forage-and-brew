@@ -123,9 +123,7 @@ public class OrderManager : MonoBehaviour
             CurrentOrders[orderIndex].RelatedNarrativeBlock.CompletedLetters[index] = true;
             CurrentOrders[orderIndex].RelatedNarrativeBlock.SelfProgressionIndex++;
                 
-            if (CurrentOrders[orderIndex].RelatedNarrativeBlock.SelfProgressionIndex >=
-                CurrentOrders[orderIndex].RelatedNarrativeBlock.CompletedLetters.Length &&
-                CurrentOrders[orderIndex].RelatedLetter.CanAdvanceQuestProgressionIndex)
+            if (CurrentOrders[orderIndex].RelatedLetter.CanAdvanceQuestProgressionIndex)
             {
                 GameDontDestroyOnLoadManager.Instance.QuestProgressionIndex++;
             }
