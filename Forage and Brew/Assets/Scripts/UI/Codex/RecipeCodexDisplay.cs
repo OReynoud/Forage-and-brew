@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
@@ -21,7 +19,6 @@ public class RecipeCodexDisplay : PageBehavior
     [BoxGroup("Potion Description")] public PotionValuesSo storedPotion;
     [BoxGroup("Potion Description")] public TextMeshProUGUI potionName;
     [BoxGroup("Potion Description")] public TextMeshProUGUI potionFlavorText;
-    [BoxGroup("Potion Description")] public TextMeshProUGUI potionPrice;
     [BoxGroup("Potion Description")] public GameObject[] potionDifficulty;
     [BoxGroup("Potion Description")] public Image potionIcon;
     [BoxGroup("Potion Description")] public Image liquidIcon;
@@ -128,7 +125,6 @@ public class RecipeCodexDisplay : PageBehavior
         storedPotion = PotionSteps;
         potionName.text = PotionSteps.Name;
         potionFlavorText.text = PotionSteps.Description;
-        potionPrice.text = PotionSteps.SalePrice.ToString(CultureInfo.InvariantCulture);
         for (int i = 0; i < PotionSteps.PotionDifficulty.Difficulty; i++)
         {
             potionDifficulty[i].SetActive(true);

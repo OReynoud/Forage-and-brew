@@ -5,6 +5,11 @@ public class OrderContentSo : ScriptableObject
 {
     [field: SerializeField] public PotionDemand[] RequestedPotions { get; private set; }
     [field: SerializeField] public int MoneyReward { get; private set; }
-    [field: SerializeField] public int ErrorMoneyReward { get; private set; }
-    [field: SerializeField] [field:Range(0f, 100f)] public float LateMoneyPenaltyPercentage { get; private set; }
+    
+    
+    public void SetData(PotionDemand[] requestedPotions, int moneyReward)
+    {
+        RequestedPotions = requestedPotions;
+        MoneyReward = moneyReward;
+    }
 }

@@ -14,4 +14,11 @@ public class IngredientValuesSo : StackableValuesSo
     [field: SerializeField] public WeatherStateSo[] WeatherStates { get; private set; }
     [field: SerializeField] public LunarCycleStateSo[] LunarCycleStates { get; private set; }
     [field: SerializeField] public GameObject MeshGameObject { get; private set; }
+
+
+    public void SetData(string newName, string newDescription)
+    {
+        Name = newName;
+        Description = newDescription;
+    }
 }

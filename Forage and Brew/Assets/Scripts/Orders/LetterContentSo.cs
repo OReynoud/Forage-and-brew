@@ -31,4 +31,32 @@ public class LetterContentSo : ScriptableObject
     [field: ShowIf("LetterType", LetterType.Gift)]
     [field: SerializeField]
     public int MoneyAmount { get; private set; }
+
+
+    public void SetData(ClientSo newClient, string newTextContent, OrderContentSo newOrderContent,
+        LetterContentSo newRelatedSuccessLetter, bool canAdvanceQuestProgressionIndex, int timeForLetterAfterSuccess)
+    {
+        Client = newClient;
+        TextContent = newTextContent;
+        LetterType = LetterType.Orders;
+        OrderContent = newOrderContent;
+        RelatedSuccessLetter = newRelatedSuccessLetter;
+        CanAdvanceQuestProgressionIndex = canAdvanceQuestProgressionIndex;
+        TimeForLetterAfterSuccess = timeForLetterAfterSuccess;
+    }
+
+    public void SetData(ClientSo newClient, string newTextContent)
+    {
+        Client = newClient;
+        TextContent = newTextContent;
+        LetterType = LetterType.Thanks;
+    }
+    
+    public void SetData(ClientSo newClient, string newTextContent, int moneyAmount)
+    {
+        Client = newClient;
+        TextContent = newTextContent;
+        LetterType = LetterType.Gift;
+        MoneyAmount = moneyAmount;
+    }
 }

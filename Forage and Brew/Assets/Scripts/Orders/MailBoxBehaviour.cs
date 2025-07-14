@@ -147,20 +147,17 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 
         foreach (var letter in GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters)
         {
-            int index = Array.IndexOf(
-                letter.RelatedNarrativeBlock.ContentSo.Content,
-                letter.LetterContent);
+            int index = letter.RelatedNarrativeBlock.ContentSo.Content.IndexOf(letter.LetterContent);
             letter.RelatedNarrativeBlock.InactiveLetters[index] = false;
-            float percentPenalty = letter.LetterContent.OrderContent.LateMoneyPenaltyPercentage;
             
             if (letter.RelatedNarrativeBlock.SelfProgressionIndex == letter.RelatedNarrativeBlock.CompletedLetters.Length)
             {
-                GenerateSuccessLetter(letter, percentPenalty);
+                GenerateSuccessLetter(letter);
                 continue;
             }
             if (letter.RelatedNarrativeBlock.CompletedLetters[letter.RelatedNarrativeBlock.SelfProgressionIndex])
             {
-                GenerateSuccessLetter(letter, percentPenalty);
+                GenerateSuccessLetter(letter);
             }
         }
 
@@ -196,12 +193,9 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         GameDontDestroyOnLoadManager.Instance.HasChosenLettersToday = true;
     }
     
-    private void GenerateSuccessLetter(Letter letter, float percentPenalty)
+    private void GenerateSuccessLetter(Letter letter)
     {
-        int moneyToEarn;
-        moneyToEarn = letter.DeliveredOnTime
-            ? letter.LetterContent.OrderContent.MoneyReward
-            : Mathf.RoundToInt(letter.LetterContent.OrderContent.MoneyReward * percentPenalty * 0.01f);
+        int moneyToEarn = letter.LetterContent.OrderContent.MoneyReward;
         _moneyAmountsToEarn.Add((moneyToEarn, GameDontDestroyOnLoadManager.Instance.ChosenLetters.Count));
         GameDontDestroyOnLoadManager.Instance.ChosenLetters.Add((new Letter(letter.LetterContent.RelatedSuccessLetter, letter.RelatedNarrativeBlock),
             letter.LetterContent));

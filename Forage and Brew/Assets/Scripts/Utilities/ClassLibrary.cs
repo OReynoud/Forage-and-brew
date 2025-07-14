@@ -9,15 +9,7 @@ public class Letter
 {
     [field: SerializeField] public LetterContentSo LetterContent { get; set; }
     [field: SerializeField] public NarrativeBlockOfLetters RelatedNarrativeBlock { get; set; }
-    [field: SerializeField] public bool DeliveredOnTime { get; set; }
 
-    public Letter(LetterContentSo content, NarrativeBlockOfLetters nBlock, bool deliveredOnTime)
-    {
-        LetterContent = content;
-        RelatedNarrativeBlock = nBlock;
-        DeliveredOnTime = deliveredOnTime;
-    }
-    
     public Letter(LetterContentSo content, NarrativeBlockOfLetters nBlock)
     {
         LetterContent = content;
@@ -50,16 +42,16 @@ public class PotionDemand
     [field: AllowNesting] [field: HideIf("IsSpecific")] [field: SerializeField] public string Keywords { get; private set; }
     [field: AllowNesting] [field: HideIf("IsSpecific")] [field: SerializeField] public PotionTagSo ValidTag { get; private set; }
 
-    public PotionDemand(bool newIsSpecific, PotionValuesSo newPotion)
+    public PotionDemand(PotionValuesSo newPotion)
     {
         Potion = newPotion;
-        IsSpecific = newIsSpecific;
+        IsSpecific = true;
     }
     
-    public PotionDemand(bool newIsSpecific, PotionTagSo newTag, string newKeywords)
+    public PotionDemand(PotionTagSo newTag, string newKeywords)
     {
         ValidTag = newTag;
-        IsSpecific = newIsSpecific;
+        IsSpecific = false;
         Keywords = newKeywords;
     }
 }
@@ -78,8 +70,8 @@ public class NarrativeBlockOfLetters
     {
         ContentSo = content;
         
-        CompletedLetters = new bool [ContentSo.Content.Length];
-        InactiveLetters = new bool [ContentSo.Content.Length];
+        CompletedLetters = new bool [ContentSo.Content.Count];
+        InactiveLetters = new bool [ContentSo.Content.Count];
     }
 }
 

@@ -114,13 +114,11 @@ public class OrderManager : MonoBehaviour
             }
 
             //Debug.Log("Order is " + (isOrderCorrect ? "correct" : "incorrect"));
-            int index = Array.IndexOf(
-                CurrentOrders[orderIndex].RelatedNarrativeBlock.ContentSo.Content,
-                CurrentOrders[orderIndex].RelatedLetter);
+            int index = CurrentOrders[orderIndex].RelatedNarrativeBlock.ContentSo.Content.IndexOf(CurrentOrders[orderIndex].RelatedLetter);
 
             GameDontDestroyOnLoadManager.Instance. ThanksAndErrorLetters.Add(new Letter(
                 CurrentOrders[orderIndex].RelatedLetter,
-                CurrentOrders[orderIndex].RelatedNarrativeBlock, true));
+                CurrentOrders[orderIndex].RelatedNarrativeBlock));
                 
             CurrentOrders[orderIndex].RelatedNarrativeBlock.CompletedLetters[index] = true;
             CurrentOrders[orderIndex].RelatedNarrativeBlock.SelfProgressionIndex++;
