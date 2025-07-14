@@ -9,6 +9,8 @@ public class BundleContainerCodexDisplay : MonoBehaviour
 
     public BundleElementContainerDisplay[] potionRequirementElements;
 
+    public TextMeshProUGUI bundleTitle;
+    
     public TextMeshProUGUI rewardMoneyText;
 
     public PotionEnsembleSo displayedBundle;
@@ -33,6 +35,7 @@ public class BundleContainerCodexDisplay : MonoBehaviour
             potionRequirementElements[i].InitSelf(bundleToDisplay.Potions[i].SpriteLiquidColor,bundleToDisplay.Potions[i].PotionDifficulty.PotionSprite);
         }
 
+        bundleTitle.text = displayedBundle.Name;
         rewardMoneyText.text = displayedBundle.MoneyReward.ToString();
         isInitialized = true;
     }

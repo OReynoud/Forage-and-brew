@@ -1,26 +1,33 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BundlePageCodexDisplay : PageBehavior
 {
-    public BundleContainerCodexDisplay[] allContainers;
+    public List<BundleContainerCodexDisplay> allContainers = new();
     private int activationIndex;
 
-
-    public override void InitBundlesPage(PotionEnsembleSo bundleToDisplay)
+    public void Awake()
     {
         foreach (var container in allContainers)
         {
             container.gameObject.SetActive(false);
         }
-        
-        allContainers[0].gameObject.SetActive(true);
+    }
+
+    public override void InitBundlesPage(PotionEnsembleSo bundleToDisplay)
+    {
         
         InitNewBundle(bundleToDisplay);
     }
 
     public void InitNewBundle(PotionEnsembleSo bundleToDisplay)
     {
+        allContainers[activationIndex].gameObject.SetActive(true);
         allContainers[activationIndex].InitBundle(bundleToDisplay);
         activationIndex++;
+
+
+        
     }
 }

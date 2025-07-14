@@ -474,22 +474,31 @@ public class CodexContentManager : Singleton<CodexContentManager>
     {
         pageChoser = Random.Range(0, rightEmptyPage.Length);
 
+        Debug.Log("New bundle pages");
         var pageContainer = Instantiate(emptyPage, transform);
 
         emptyBundlesPage = Instantiate(emptyPage, transform);
         var bundles1 = Instantiate(bundlesDisplayPrefab, pageContainer);
-        var bundles2 = Instantiate(bundlesDisplayPrefab, pageContainer);
+        var bundles2 = Instantiate(bundlesDisplayPrefab, emptyBundlesPage);
         pageContainer.anchoredPosition = new Vector2(1500, 0);
         emptyBundlesPage.anchoredPosition = new Vector2(1500, 0);
-
-        AutoFlip.instance.ControledBook.bookPages.Add(new Book.BookPage(rightEmptyPage[pageChoser], pageContainer,
-            bundles1));
-        pageContainer.name = "Page " + AutoFlip.instance.ControledBook.bookMarks[0].index;
-
-        AutoFlip.instance.ControledBook.bookPages.Add(new Book.BookPage(leftEmptyPage[pageChoser], emptyBundlesPage,
+        
+        AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[0].index,new Book.BookPage(rightEmptyPage[pageChoser], emptyBundlesPage,
             bundles2));
-        emptyBundlesPage.name = "Page " + (AutoFlip.instance.ControledBook.bookMarks[0].index + 1);
+        emptyBundlesPage.name = "Bundle, Page " + (AutoFlip.instance.ControledBook.bookMarks[0].index + 1);
 
+        AutoFlip.instance.ControledBook.bookPages.Insert(AutoFlip.instance.ControledBook.bookMarks[0].index,new Book.BookPage(leftEmptyPage[pageChoser], pageContainer,
+            bundles1));
+        pageContainer.name = "Bundle, Page " + AutoFlip.instance.ControledBook.bookMarks[0].index;
+        
+        if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[0].index)
+        {
+            AutoFlip.instance.ControledBook.currentPage += 2;
+        }
+        for (int i = 0; i < AutoFlip.instance.ControledBook.bookMarks.Length; i++)
+        {
+            AutoFlip.instance.ControledBook.bookMarks[i].index += 2;
+        }
 
         bundlesPages.Add(bundles1);
         bundlesPages.Add(bundles2);
@@ -513,7 +522,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
             foreach (var bundle in bundlesPage.allContainers)
             {
                 if (bundle.isInitialized)continue;
-                bundle.InitBundle(bundleToDisplay);
+                bundlesPage.InitNewBundle(bundleToDisplay);
                 return;
             }
         }
