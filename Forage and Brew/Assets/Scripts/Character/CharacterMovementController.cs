@@ -98,7 +98,7 @@ public class CharacterMovementController : MonoBehaviour
                 walkAudioSource.resource = walkSwamp;
                 break;
             default:
-                throw new ArgumentOutOfRangeException(nameof(scene), scene, null);
+                throw new ArgumentOutOfRangeException(nameof(scene), scene, scene.ToString());
         }
     }
     
