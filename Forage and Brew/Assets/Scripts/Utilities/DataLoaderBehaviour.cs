@@ -12,9 +12,9 @@ public class DataLoaderBehaviour : MonoBehaviour
     [SerializeField] private Object recipeDataCsv;
     [SerializeField] private Object ingredientDataCsv;
     
+    [SerializeField] private GameDontDestroyOnLoadManager gameDontDestroyOnLoadManager;
     [SerializeField] private Object narrativeBlockDataFolder;
     private string _narrativeBlockDataFolderPath;
-    private readonly List<NarrativeBlockOfLettersContentSo> _narrativeBlocks = new();
     [SerializeField] private Object clientDataFolder;
     private string _clientDataFolderPath;
     private List<ClientSo> _clients;
@@ -42,7 +42,6 @@ public class DataLoaderBehaviour : MonoBehaviour
     private void GenerateData()
     {
         _narrativeBlockDataFolderPath = AssetDatabase.GetAssetPath(narrativeBlockDataFolder);
-        _narrativeBlocks.Clear();
         _clientDataFolderPath = AssetDatabase.GetAssetPath(clientDataFolder);
         _clients = Directory.GetFiles(_clientDataFolderPath).Select(AssetDatabase.LoadAssetAtPath<ClientSo>).Where(x => x != null).ToList();
         _letterDataFolderPath = AssetDatabase.GetAssetPath(letterDataFolder);
@@ -62,6 +61,8 @@ public class DataLoaderBehaviour : MonoBehaviour
             }
         }
         
+        gameDontDestroyOnLoadManager.AllNarrativeBlocksContentSo.Clear();
+        
         // Narrative Blocks Csv
         TextAsset csvFile = Resources.Load<TextAsset>(narrativeBlockDataCsv.name);
         GenerateCsvElementList(csvFile, out List<List<string>> narrativeBlockCsvElementList);
@@ -78,7 +79,7 @@ public class DataLoaderBehaviour : MonoBehaviour
                                                requiredQuestProgressionIndex + "_" + lineData[0].Replace(" ", "") + ".asset";
             AssetDatabase.CreateAsset(narrativeBlockInstance, newNarrativeBlockDataPath);
             
-            _narrativeBlocks.Add(narrativeBlockInstance);
+            gameDontDestroyOnLoadManager.AllNarrativeBlocksContentSo.Add(narrativeBlockInstance);
         }
         
         // Ingredients Csv
@@ -221,7 +222,8 @@ public class DataLoaderBehaviour : MonoBehaviour
 
             if (lineData[0] == "") continue; // Skip empty lines
 
-            NarrativeBlockOfLettersContentSo narrativeBlock = _narrativeBlocks.Find(x => x.Name == lineData[0]);
+            NarrativeBlockOfLettersContentSo narrativeBlock = gameDontDestroyOnLoadManager.AllNarrativeBlocksContentSo
+                .Find(x => x.Name == lineData[0]);
 
             ClientSo clientSoInstance;
 
