@@ -5,18 +5,19 @@ using UnityEngine.UI;
 public class RecipeIngredientDisplayContainer : MonoBehaviour
 {
     public Sprite[] ingredientStateSprites;
-    public Color[] ingredientStateColors = new []{Color.blue, Color.green, Color.red, Color.black, };
+    public Color[] ingredientStateColors = new[] { Color.blue, Color.green, Color.red, Color.black, };
     public IngredientValuesSo storedIngredient;
     public IngredientTypeSo storedIngredientType;
 
+    public TextMeshProUGUI currentNumberText;
     public TextMeshProUGUI numberRequiredText;
 
     public Image ingredientBackground;
     public Image ingredientRequiredSprite;
     public Image ingredientStateHighlight;
 
-    public int ingredientUpperLimit = 2;
-    
+    public int ingredientLimit;
+
 
     public void AddListener()
     {
@@ -24,67 +25,109 @@ public class RecipeIngredientDisplayContainer : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void InitializeSelf(int ingredientAmount, IngredientValuesSo ingredient,
+    public void InitializeSelf(int requiredIngredientAmount, IngredientValuesSo ingredientToStore,
         Sprite ingredientBackgroundSprite)
     {
-        storedIngredient = ingredient;
+        storedIngredient = ingredientToStore;
         ingredientBackground.sprite = ingredientBackgroundSprite;
         ingredientRequiredSprite.enabled = true;
         ingredientRequiredSprite.sprite = storedIngredient.iconLow;
-        if (ingredientAmount == 0)
+        ingredientLimit = requiredIngredientAmount;
+
+
+        int counter = 0;
+
+        foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.CollectedIngredients)
         {
-            ingredientStateHighlight.sprite = ingredientStateSprites[2];
-            ingredientStateHighlight.color = ingredientStateColors[2];
-            numberRequiredText.color = ingredientStateColors[2];
-        }
-        else
-        {
-            if (ingredientAmount > ingredientUpperLimit)
+            if (ingredient == storedIngredient)
             {
-                ingredientStateHighlight.sprite = ingredientStateSprites[0];
-                ingredientStateHighlight.color = ingredientStateColors[0];
-                numberRequiredText.color = ingredientStateColors[0];
-            }
-            else
-            {
-                ingredientStateHighlight.sprite = ingredientStateSprites[1];
-                ingredientStateHighlight.color = ingredientStateColors[1];
-                numberRequiredText.color = ingredientStateColors[1];
+                counter++;
             }
         }
 
-        numberRequiredText.text = ingredientAmount.ToString();
+        foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients)
+        {
+            if (ingredient.IngredientValuesSo == storedIngredient)
+            {
+                counter++;
+            }
+        }
+
+        foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.FloorCollectedIngredients)
+        {
+            if (ingredient.Ingredient == storedIngredient)
+            {
+                counter++;
+            }
+        }
+
+        if (counter > requiredIngredientAmount)
+        {
+            ingredientStateHighlight.sprite = ingredientStateSprites[0];
+            ingredientStateHighlight.color = ingredientStateColors[0];
+            numberRequiredText.color = ingredientStateColors[0];
+        }
+        else
+        {
+            ingredientStateHighlight.sprite = ingredientStateSprites[1];
+            ingredientStateHighlight.color = ingredientStateColors[1];
+            numberRequiredText.color = ingredientStateColors[1];
+        }
+
+        currentNumberText.text = counter.ToString();
+        numberRequiredText.text = requiredIngredientAmount.ToString();
     }
 
-    public void InitializeSelf(int ingredientAmount, IngredientTypeSo ingredient, Sprite ingredientBackgroundSprite)
+    public void InitializeSelf(int requiredIngredientAmount, IngredientTypeSo ingredientToStore,
+        Sprite ingredientBackgroundSprite)
     {
-        storedIngredientType = ingredient;
+        storedIngredientType = ingredientToStore;
         ingredientBackground.sprite = ingredientBackgroundSprite;
         ingredientRequiredSprite.sprite = storedIngredientType.IconLow;
-        
-        if (ingredientAmount == 0)
+        ingredientLimit = requiredIngredientAmount;
+
+        int counter = 0;
+
+        foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.CollectedIngredients)
         {
-            ingredientStateHighlight.sprite = ingredientStateSprites[2];
-            ingredientStateHighlight.color = ingredientStateColors[2];
-            numberRequiredText.color = ingredientStateColors[2];
-        }
-        else
-        {
-            if (ingredientAmount > ingredientUpperLimit)
+            if (ingredient == storedIngredient)
             {
-                ingredientStateHighlight.sprite = ingredientStateSprites[0];
-                ingredientStateHighlight.color = ingredientStateColors[0];
-                numberRequiredText.color = ingredientStateColors[0];
-            }
-            else
-            {
-                ingredientStateHighlight.sprite = ingredientStateSprites[1];
-                ingredientStateHighlight.color = ingredientStateColors[1];
-                numberRequiredText.color = ingredientStateColors[1];
+                counter++;
             }
         }
 
-        numberRequiredText.text = ingredientAmount.ToString();
+        foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients)
+        {
+            if (ingredient.IngredientValuesSo == storedIngredient)
+            {
+                counter++;
+            }
+        }
+
+        foreach (var ingredient in GameDontDestroyOnLoadManager.Instance.FloorCollectedIngredients)
+        {
+            if (ingredient.Ingredient == storedIngredient)
+            {
+                counter++;
+            }
+        }
+
+        if (counter >= requiredIngredientAmount)
+        {
+            ingredientStateHighlight.sprite = ingredientStateSprites[0];
+            ingredientStateHighlight.color = ingredientStateColors[0];
+            numberRequiredText.color = ingredientStateColors[0];
+        }
+        else
+        {
+            ingredientStateHighlight.sprite = ingredientStateSprites[1];
+            ingredientStateHighlight.color = ingredientStateColors[1];
+            numberRequiredText.color = ingredientStateColors[1];
+        }
+
+
+        currentNumberText.text = counter.ToString();
+        numberRequiredText.text = requiredIngredientAmount.ToString();
     }
 
     void UpdateSelf(IngredientValuesSo ingredientToUpdate)
@@ -116,30 +159,20 @@ public class RecipeIngredientDisplayContainer : MonoBehaviour
             }
         }
 
-        numberRequiredText.text = counter.ToString();
-        
-        ingredientRequiredSprite.enabled = true;
-        ingredientRequiredSprite.sprite = storedIngredient.iconLow;
-        if (counter == 0)
+        if (counter > ingredientLimit)
         {
-            ingredientStateHighlight.sprite = ingredientStateSprites[2];
-            ingredientStateHighlight.color = ingredientStateColors[2];
-            numberRequiredText.color = ingredientStateColors[2];
+            ingredientStateHighlight.sprite = ingredientStateSprites[0];
+            ingredientStateHighlight.color = ingredientStateColors[0];
+            numberRequiredText.color = ingredientStateColors[0];
         }
         else
         {
-            if (counter > ingredientUpperLimit)
-            {
-                ingredientStateHighlight.sprite = ingredientStateSprites[0];
-                ingredientStateHighlight.color = ingredientStateColors[0];
-                numberRequiredText.color = ingredientStateColors[0];
-            }
-            else
-            {
-                ingredientStateHighlight.sprite = ingredientStateSprites[1];
-                ingredientStateHighlight.color = ingredientStateColors[1];
-                numberRequiredText.color = ingredientStateColors[1];
-            }
+            ingredientStateHighlight.sprite = ingredientStateSprites[1];
+            ingredientStateHighlight.color = ingredientStateColors[1];
+            numberRequiredText.color = ingredientStateColors[1];
         }
+
+
+        currentNumberText.text = counter.ToString();
     }
 }

@@ -145,11 +145,9 @@ public class RecipeCodexDisplay : PageBehavior
                 ingredientDisplayContainers[i].gameObject.SetActive(true);
                 int ingredientAmount;
 
+                int numberOfIngredients = Ex.CheckForSameElementsSprite(ingredientsIndex, 0, potionIngredientsLow);
                 if (i + 1 < potionIngredientsLow.Length)
                 {
-                    int numberOfIngredients = Ex.CheckForSameElementsSprite(ingredientsIndex, 0, potionIngredientsLow);
-
-
                     ingredientAmount = (1 + numberOfIngredients);
 
                     ingredientsIndex += numberOfIngredients;
@@ -202,7 +200,7 @@ public class RecipeCodexDisplay : PageBehavior
 
                 int numberOfIngredients = Ex.CheckForSameElementsIngredientSo(i, 0, t.CookedIngredients);
 
-                stepText[writingIndex].text = (1 + numberOfIngredients).ToString();
+                stepText[writingIndex].text = "X" + (1 + numberOfIngredients);
 
                 var cookedIngredient = t.CookedIngredients[i];
 
