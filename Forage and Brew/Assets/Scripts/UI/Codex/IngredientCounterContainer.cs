@@ -6,12 +6,8 @@ public class IngredientCounterContainer : MonoBehaviour
 {
     private int counter;
     public IngredientValuesSo trackedIngredient;
-    public Sprite[] ingredientStateSprites;
-    public Color[] ingredientStateColors = new[] {Color.blue, Color.green,  };
     
     public TextMeshProUGUI ingredientAmountDisplay;
-    public Image ingredientBackground;
-    public int ingredientUpperLimit = 2;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -59,22 +55,5 @@ public class IngredientCounterContainer : MonoBehaviour
 
         ingredientAmountDisplay.text = counter.ToString();
         
-        if (counter == 0)
-        {
-            ingredientBackground.color = Color.clear;
-        }
-        else
-        {
-            if (counter > ingredientUpperLimit)
-            {
-                ingredientBackground.sprite = ingredientStateSprites[0];
-                ingredientBackground.color = ingredientStateColors[0];
-            }
-            else
-            {
-                ingredientBackground.sprite = ingredientStateSprites[1];
-                ingredientBackground.color = ingredientStateColors[1];
-            }
-        }
     }
 }

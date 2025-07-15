@@ -66,13 +66,13 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
             anim.SetBool("IsOpen", true);
             blink.SetActive(false);
         }
+        _letterPileTargetPosition = letterPileHiddenPosition;
+        letterPile.anchoredPosition = letterPileHiddenPosition;
     }
 
     public void MailNewDayMethod()
     {
 
-        _letterPileTargetPosition = letterPileHiddenPosition;
-        letterPile.anchoredPosition = letterPileHiddenPosition;
         _backgroundTargetFadeValue = backgroundHiddenFadeValue;
         backgroundImage.color = new Color(backgroundImage.color.r, backgroundImage.color.g, backgroundImage.color.b,
             backgroundHiddenFadeValue);
