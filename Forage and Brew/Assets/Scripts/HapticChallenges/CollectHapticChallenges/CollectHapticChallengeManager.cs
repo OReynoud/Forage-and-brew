@@ -78,7 +78,6 @@ public class CollectHapticChallengeManager : MonoBehaviour
     private void Start()
     {
         GameDontDestroyOnLoadManager.Instance.OnNewIngredientCollected.AddListener(CodexCall);
-
     }
 
     private void Update()
@@ -186,7 +185,6 @@ public class CollectHapticChallengeManager : MonoBehaviour
         if (!_areBothUnearthingInputsPressed)
         {
             _unearthingInputIndexAlreadyPressed = 0;
-            _currentIngredientToCollectBehaviour = null;
             return;
         }
         
