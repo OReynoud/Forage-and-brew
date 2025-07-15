@@ -217,11 +217,8 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         maskElement.sizeDelta = Vector2.zero;
         CharacterAnimManager.instance.animator.SetTrigger(DoWakeUp);
         CharacterAnimManager.instance.StopPurrSound();
-        if (GameDontDestroyOnLoadManager.Instance.lockoutOnWakeUp)
-        {
-            GameDontDestroyOnLoadManager.Instance.lockoutOnWakeUp = false;
-        }
-        else
+        
+        if (GameDontDestroyOnLoadManager.Instance.unlockedOnWakeUp)
         {
             CharacterInputManager.Instance.EnableInputs();
         }
