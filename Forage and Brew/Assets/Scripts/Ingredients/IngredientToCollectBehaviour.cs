@@ -274,9 +274,24 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         }
     }
     
-    public void SetWeedingValue(float value)
+    public void ChangeWeedingInputIndex(int newSliderIndex)
     {
-        weedBehaviour.SetWeedingValue(value, isUiRight);
+        weedBehaviour.ChangeWeedingInputIndex(newSliderIndex, isUiRight);
+    }
+    
+    public void ResetWeedingInputIndex()
+    {
+        weedBehaviour.ResetWeedingInputIndex(isUiRight);
+    }
+    
+    public void SetWeedingValue(float value, int inputIndex)
+    {
+        weedBehaviour.SetWeedingValue(value, inputIndex, isUiRight);
+    }
+    
+    public void PressWeeding()
+    {
+        weedBehaviour.PressWeeding(isUiRight);
     }
     
     public void ReleaseWeeding()
@@ -391,7 +406,7 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         if (other.TryGetComponent(out CollectHapticChallengeManager collectHapticChallengeManager) &&
             collectHapticChallengeManager.CurrentIngredientToCollectBehaviours.Contains(this))
         {
-            collectHapticChallengeManager.CurrentIngredientToCollectBehaviours.Remove(this);
+            collectHapticChallengeManager.RemoveIngredientToCollectBehaviour(this);
             DisableCollect();
             _currentTriggerTime = 0f;
         }
