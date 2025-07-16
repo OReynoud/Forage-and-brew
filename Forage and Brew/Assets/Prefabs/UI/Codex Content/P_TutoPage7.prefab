@@ -239,14 +239,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Kitten,\r\n\r\nJe suis fiere que tu reprennes mon affaire de potions.
-    Dans ces premieres pages, tu pourras retrouver tous mes conseils pour t'accompagner
-    dans la prise en main de cette entreprise et des missions qui lui sont propres.\n\nEn
-    tant que concoctrice de potions professionnelle, ta mission est simple: remplir
-    les commandes    de potions qu'on te fait.\r\nEn ce sens, ton premier reflexe
-    en te levant doit etre de consulter ta boite aux lettres.    C'est la que tu
-    recois les lettres de tes clients. \n\nCertains clients te feront des demandes
-    specifiques, et d'autres te demanderont une potion avec une caracteristique particuliere."
+  m_text: "Pour finaliser ta potion, touille le chaudron.    Si elle est reussie,
+    tu peux la mettre dans le panier correspondant a la commande que tu cherches
+    a completer.\r\n\r\nUne commande completee s'envoie pendant la nuit, quand tu
+    dors a pattes fermees sleep like a baby.\r\n\r\nSurtout, fais attention a toi
+    en marchant dans ton atelier: des substances peuvent couler sur le sol et faire
+    des taches. Quand tu les nettoies, il se peut que leurs proprietes magiques fasse
+    apparaitre toutes sortes d'elements. \r"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6e55dff7a4d969643ae165b0a0cdc89c, type: 2}
   m_sharedMaterial: {fileID: -8047737665849052859, guid: 6e55dff7a4d969643ae165b0a0cdc89c, type: 2}
@@ -1423,7 +1422,7 @@ GameObject:
   - component: {fileID: 7831608483183987664}
   - component: {fileID: -1496446141894363402}
   m_Layer: 5
-  m_Name: P_TutoPage1
+  m_Name: P_TutoPage7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2729,7 +2728,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 43.5, y: -61.2}
+  m_AnchoredPosition: {x: -98, y: 201}
   m_SizeDelta: {x: 40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1293502391525284555
@@ -3085,7 +3084,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 252238004459912619}
-  - {fileID: 2747898405074426278}
   - {fileID: 87041892195378684}
   m_Father: {fileID: 2023229468120887065}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3928,81 +3926,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!1 &8778665566535149025
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2747898405074426278}
-  - component: {fileID: 31857093009058009}
-  - component: {fileID: 5588495380554591502}
-  m_Layer: 5
-  m_Name: icon (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &2747898405074426278
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8778665566535149025}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6262208860889675774}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -78.5, y: -166.8}
-  m_SizeDelta: {x: 40, y: 40}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &31857093009058009
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8778665566535149025}
-  m_CullTransparentMesh: 1
---- !u!114 &5588495380554591502
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8778665566535149025}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4d7cea76f03ac5f4ba449d52a6a5c8bf, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &8989455585842028220
 GameObject:
   m_ObjectHideFlags: 0

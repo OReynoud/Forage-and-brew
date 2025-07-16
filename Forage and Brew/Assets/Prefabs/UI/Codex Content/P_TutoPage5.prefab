@@ -239,14 +239,29 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Kitten,\r\n\r\nJe suis fiere que tu reprennes mon affaire de potions.
-    Dans ces premieres pages, tu pourras retrouver tous mes conseils pour t'accompagner
-    dans la prise en main de cette entreprise et des missions qui lui sont propres.\n\nEn
-    tant que concoctrice de potions professionnelle, ta mission est simple: remplir
-    les commandes    de potions qu'on te fait.\r\nEn ce sens, ton premier reflexe
-    en te levant doit etre de consulter ta boite aux lettres.    C'est la que tu
-    recois les lettres de tes clients. \n\nCertains clients te feront des demandes
-    specifiques, et d'autres te demanderont une potion avec une caracteristique particuliere."
+  m_text: 'Une fois tous les ingredients requis reunis, tu peux realiser la potion
+    en suivant a la lettre les etapes de preparation. Une etape manquee ou realisee
+    dans le mauvais ordre, et ta potion ne pourra pas etre vendue. Les recettes sont
+    ainsi composees d''etapes simples comme mettre les ingredients dans le chaudron,
+    mais certaines recettes plus complexes auront des etapes de preparation plus
+    exigeantes impliquant d''autres ateliers de cuisine.
+
+    
+
+    Tu peux regler
+    la temperature du chaudron avec le soufflet.    Pour cela, presse le soufflet
+    et maintiens la temperature dans la zone souhaitee.
+
+    
+
+    Tu peux aussi
+    emincer tes ingredients avec la planche a decouper    pour des morceaux plus
+    digestes.
+
+    
+
+    Enfin, pour extraire les meilleurs aromes, tu peux moudre
+    tes ingredients avec le mortier.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6e55dff7a4d969643ae165b0a0cdc89c, type: 2}
   m_sharedMaterial: {fileID: -8047737665849052859, guid: 6e55dff7a4d969643ae165b0a0cdc89c, type: 2}
@@ -1423,7 +1438,7 @@ GameObject:
   - component: {fileID: 7831608483183987664}
   - component: {fileID: -1496446141894363402}
   m_Layer: 5
-  m_Name: P_TutoPage1
+  m_Name: P_TutoPage5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2729,7 +2744,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 43.5, y: -61.2}
+  m_AnchoredPosition: {x: 91, y: -143}
   m_SizeDelta: {x: 40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1293502391525284555
@@ -3086,6 +3101,7 @@ RectTransform:
   m_Children:
   - {fileID: 252238004459912619}
   - {fileID: 2747898405074426278}
+  - {fileID: 4416268845780598297}
   - {fileID: 87041892195378684}
   m_Father: {fileID: 2023229468120887065}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3928,6 +3944,81 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &8693702055052972900
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4416268845780598297}
+  - component: {fileID: 2328511999985168654}
+  - component: {fileID: 5046375250417319395}
+  m_Layer: 5
+  m_Name: icon (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &4416268845780598297
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8693702055052972900}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6262208860889675774}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -31, y: -406}
+  m_SizeDelta: {x: 40, y: 40}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &2328511999985168654
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8693702055052972900}
+  m_CullTransparentMesh: 1
+--- !u!114 &5046375250417319395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8693702055052972900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 4d7cea76f03ac5f4ba449d52a6a5c8bf, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &8778665566535149025
 GameObject:
   m_ObjectHideFlags: 0
@@ -3962,7 +4053,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -78.5, y: -166.8}
+  m_AnchoredPosition: {x: 93, y: -277}
   m_SizeDelta: {x: 40, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &31857093009058009
