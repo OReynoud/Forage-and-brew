@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class CodexOpexUpdateBehavior : StateMachineBehaviour
 {
-    public static bool isCodexOpenTriggered;
+    public bool isCodexOpenTriggered;
     private bool isCodexActiveTriggered;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        isCodexOpenTriggered = false;
+        isCodexActiveTriggered = false;
         CharacterInputManager.Instance.DisableMoveInputs();
         CharacterInputManager.Instance.DisableCodexInputs();
         

@@ -165,7 +165,7 @@ public class RecipeCodexDisplay : PageBehavior
                     
                     foreach (var cookedForm in t.CookedIngredients)
                     {
-                        if (cookedForm.Ingredient.iconLow == potionIngredientsLow[i])
+                        if (cookedForm.Ingredient.iconLow == potionIngredientsLow[ingredientsIndex])
                         {
                             cookedIngredient = cookedForm;
                             index = PotionSteps.TemperatureChallengeIngredients.Length;

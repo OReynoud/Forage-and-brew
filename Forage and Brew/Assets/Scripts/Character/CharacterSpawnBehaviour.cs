@@ -7,7 +7,6 @@ public class CharacterSpawnBehaviour : MonoBehaviour
     [SerializeField] private Transform characterTransform;
     [SerializeField] private Scene sourceScene;
     [SerializeField] private CameraPreset camSettings;
-    public HouseCameraSettingsBehavior mainCameraPreset;
 
     private void Start()
     {

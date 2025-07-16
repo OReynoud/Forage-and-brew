@@ -250,7 +250,7 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
         transitionStartPos = transform.parent.position;
         transitionStartZDist = transform.localPosition;
         transitionStartRot = transform.localRotation;
-        Debug.Log("Instant Cam Settings: " + TargetCamSettings.name);
+//        Debug.Log("Instant Cam Settings: " + TargetCamSettings.name);
     }
 
     private void Start()
