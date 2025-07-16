@@ -54,6 +54,8 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     // Animator Hashes
     private static readonly int IsOpen = Animator.StringToHash("IsOpen");
     private static readonly int IsEmpty = Animator.StringToHash("IsEmpty");
+    private static readonly int ReadingLetters = Animator.StringToHash("Letters");
+    private static readonly int StartRead = Animator.StringToHash("DoReadLetters");
 
 
     private void Start()
@@ -220,7 +222,9 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     {
         if (GeneratedLetters.Count == 0) return;
         //Debug.Log("OpenMailbox");
-
+        CharacterAnimManager.instance.animator.SetTrigger(StartRead);
+        CharacterAnimManager.instance.animator.SetBool(ReadingLetters, true);
+        
         audio.Play();
         letterBoxAnimator.SetBool(IsOpen, true);
         blink.SetActive(false);
@@ -305,6 +309,9 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         AutoFlip.instance.HandleNewRecipes();
         audio.Stop();
         audio.Play();
+        
+        CharacterAnimManager.instance.animator.SetBool(ReadingLetters, false);
+        
         GameDontDestroyOnLoadManager.Instance.ChosenLetters.Clear();
     }
 

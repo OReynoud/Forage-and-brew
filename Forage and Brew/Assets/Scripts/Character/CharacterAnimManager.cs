@@ -9,6 +9,7 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
     [SerializeField] public GameObject dropShadow;
     public bool isSitting;
     private float sitTimer;
+    public int numberOfAfksToBlend = 2;
     public AnimationCurve sitCurve;
     public Vector3 couchPlayerOffset;
     public Vector3 couchDropShadowOffset;
@@ -36,6 +37,7 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
     private static readonly int DoFlick = Animator.StringToHash("DoFlick");
     public static readonly int IsCarrying = Animator.StringToHash("IsCarrying");
     private static readonly int DoAfk = Animator.StringToHash("DoAfk");
+    private static readonly int AfkIndex = Animator.StringToHash("IndexAFK");
     private static readonly int DoCodexOpen = Animator.StringToHash("DoCodexOpen");
     private static readonly int DoCodexClose = Animator.StringToHash("DoCodexClose");
 
@@ -100,6 +102,7 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
             _currentTimeBeforeAfk -= Time.deltaTime;
             if (_currentTimeBeforeAfk < 0f)
             {
+                animator.SetFloat(AfkIndex, Random.Range(0,numberOfAfksToBlend));
                 animator.SetTrigger(DoAfk);
                 _currentTimeBeforeAfk = timeBeforeAfk;
             }
@@ -143,6 +146,7 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
             }
         }
 
+        
         return true;
     }
 
