@@ -159,7 +159,7 @@ public class RecipeIngredientDisplayContainer : MonoBehaviour
             }
         }
 
-        if (counter > ingredientLimit)
+        if (counter >= ingredientLimit)
         {
             ingredientStateHighlight.sprite = ingredientStateSprites[0];
             ingredientStateHighlight.color = ingredientStateColors[0];

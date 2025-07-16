@@ -45,7 +45,6 @@ public class IngredientPageDisplay : PageBehavior
 
     void StartDissolve()
     {
-        Debug.Log(CodexContentManager.instance.ingredientDissolveDelay);
         Material matInstance = Instantiate(disolveImage.material);
         disolveImage.material = matInstance;
         disolveImage.material.SetFloat("_Cutoff_Height", 0);
@@ -56,7 +55,7 @@ public class IngredientPageDisplay : PageBehavior
         AutoFlip.instance.ControledBook.discoveryAudio.Play();
         
         disolveImage.sprite = AutoFlip.instance.ControledBook.bookPages.Find(x => x.pageBehavior == this).pageSprite;
-        Debug.Log("Init Dissolve");
+        //Debug.Log("Init Dissolve");
     }
     // Update is called once per frame
     void Update()
@@ -141,6 +140,7 @@ public class IngredientPageDisplay : PageBehavior
         typeImage.sprite = associatedIngredient.Type.IconLow;
         
         ingredientCounter.trackedIngredient = ingredientToDisplay;
+        ingredientCounter.AddListener();
         ingredientCounter.UpdateDisplay(ingredientToDisplay);
 
         Debug.Log("Init ingredient");
