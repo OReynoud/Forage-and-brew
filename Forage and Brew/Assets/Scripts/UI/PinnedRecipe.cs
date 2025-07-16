@@ -10,7 +10,13 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 {
     private RectTransform ownTransform; //Behavior logic
     public bool isPinned { get; set; } //Behavior logic
-    private bool canShow; //Behavior logic
+    public bool canShow { get; set; }
+    // {
+    //     get => true;
+    //     set
+    // {
+    //     Debug.Log(value);
+    // } } //Behavior logic
     private int writingIndex; // Display logic
     private Sprite[] potionIngredients; // Display logic
 
@@ -52,6 +58,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
     {
         ownTransform = GetComponent<RectTransform>();
         CharacterInputManager.Instance.OnInputsEnabled.AddListener(ChangePos);
+        CharacterInputManager.Instance.OnCodexUse.AddListener(InverseChangePos);
         for (int i = 0; i < potionIngredientsImage.Length; i++)
         {
             potionIngredientsImage[i].preserveAspect = true;
@@ -68,6 +75,18 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
             return;
         }
         canShow = arg0;
+        
+        if (pinnedRecipe)
+            PinRecipe(pinnedRecipe, potionIngredients);
+    }
+    private void InverseChangePos(bool arg0)
+    {
+        if (TemperatureHapticChallengeManager.Instance.IsChallengeActive)
+        {
+            canShow = true;
+            return;
+        }
+        canShow = !arg0;
         
         if (pinnedRecipe)
             PinRecipe(pinnedRecipe, potionIngredients);

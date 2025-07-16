@@ -144,8 +144,6 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     {
         GameDontDestroyOnLoadManager.Instance.ChosenLetters.Clear();
 
-        Debug.Log(GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters.Count);
-
         foreach (var letter in GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters)
         {
             int index = letter.RelatedNarrativeBlock.ContentSo.Content.IndexOf(letter.LetterContent);
