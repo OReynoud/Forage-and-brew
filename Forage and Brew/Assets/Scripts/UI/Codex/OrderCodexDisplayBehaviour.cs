@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using NUnit.Framework;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,18 +9,15 @@ public class OrderCodexDisplayBehaviour : PageBehavior
     public Image orderBackground;
     
     public TextMeshProUGUI descriptionText;
-    public Image outdatedStamp;
 
     public VerticalLayoutGroup mainContentLayoutGroup;
     public List<PotionDemand> potionsDemanded = new();
 
     public OrderSpecificPotionDemand specificPotionPrefab;
     public OrderSpecificPotionDemand keywordPotionPrefab;
-    public List<Transform> potionLists = new List<Transform>();
+    public List<Transform> potionLists = new();
     public List<OrderSpecificPotionDemand> demandedPotionsList = new();
-
-
-
+    
 
     public override void InitOrder(ClientSo client,string description, PotionDemand[] Potions, int Reward, int index)
     {
@@ -30,8 +26,6 @@ public class OrderCodexDisplayBehaviour : PageBehavior
         potionsDemanded.Clear();
         potionsDemanded.AddRange(Potions);
         orderBackground.color = client.AssociatedColor;
-
-        outdatedStamp.enabled = false;
         
         for (int i = 0; i < potionsDemanded.Count; i++)
         {
@@ -56,6 +50,5 @@ public class OrderCodexDisplayBehaviour : PageBehavior
         }
         
         LayoutRebuilder.ForceRebuildLayoutImmediate(mainContentLayoutGroup.transform as RectTransform);
-        
     }
 }
