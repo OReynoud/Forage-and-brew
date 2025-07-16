@@ -9,8 +9,6 @@ using UnityEngine.UI;
 
 public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 {
-    
-
     private readonly List<(int moneyAmount, int letterIndex)> _moneyAmountsToEarn = new();
     [field: SerializeField]public List<LetterMailBoxDisplayBehaviour> GeneratedLetters { get; set; } = new();
 
@@ -43,15 +41,19 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     [SerializeField] private float addMoneyStartFadeValue = 1f;
     [SerializeField] private float addMoneyEndFadeValue;
 
-    public Collider letterBoxTrigger;
+    [SerializeField] private Collider letterBoxTrigger;
+    [SerializeField] private Animator letterBoxAnimator;
 
     private bool _openedMailOnFrame;
 
     [BoxGroup("LetterAnimation")] public AnimationCurve animCurve;
     [BoxGroup("LetterAnimation")] public float animSpeed;
-    [BoxGroup("LetterAnimation")] public Animator anim;
     [BoxGroup("LetterAnimation")] public GameObject blink;
     [BoxGroup("LetterAnimation")] public AudioSource audio;
+    
+    // Animator Hashes
+    private static readonly int IsOpen = Animator.StringToHash("IsOpen");
+    private static readonly int IsEmpty = Animator.StringToHash("IsEmpty");
 
 
     private void Start()
@@ -63,7 +65,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         if (GeneratedLetters.Count == 0)
         {
             letterBoxTrigger.enabled = false;
-            anim.SetBool("IsOpen", true);
+            letterBoxAnimator.SetBool(IsEmpty, true);
             blink.SetActive(false);
         }
         _letterPileTargetPosition = letterPileHiddenPosition;
@@ -72,7 +74,6 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 
     public void MailNewDayMethod()
     {
-
         _backgroundTargetFadeValue = backgroundHiddenFadeValue;
         backgroundImage.color = new Color(backgroundImage.color.r, backgroundImage.color.g, backgroundImage.color.b,
             backgroundHiddenFadeValue);
@@ -90,13 +91,13 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         if (GeneratedLetters.Count == 0)
         {
             letterBoxTrigger.enabled = false;
-            anim.SetBool("IsOpen", true);
+            letterBoxAnimator.SetBool(IsEmpty, true);
             blink.SetActive(false);
         }
         else
         {
             letterBoxTrigger.enabled = true;
-            anim.SetBool("IsOpen", false);
+            letterBoxAnimator.SetBool(IsEmpty, false);
             blink.SetActive(true);
         }
     }
@@ -221,7 +222,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         //Debug.Log("OpenMailbox");
 
         audio.Play();
-        anim.SetBool("IsOpen", true);
+        letterBoxAnimator.SetBool(IsOpen, true);
         blink.SetActive(false);
         StartCoroutine(HandleMultipleExecutions()); // Wait to be able to pass to next letter
         CharacterInputManager.Instance.DisableMoveInputs();
@@ -261,6 +262,8 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         }
 
         Debug.Log("Read every letter");
+        letterBoxAnimator.SetBool(IsOpen, false);
+        letterBoxAnimator.SetBool(IsEmpty, true);
         CharacterInputManager.Instance.DisableMailInputs();
         DisableInteract();
 
