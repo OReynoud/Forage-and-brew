@@ -11,14 +11,15 @@ public class HouseCameraBehavior : SimpleCameraBehavior
     public float[] cameraSettingsWeights;
 
     private float totalWeight;
-    public static bool overrideCameraLerp
-    {
-        get => true;
-        set
-        {
-            Debug.Log(value);
-        }
-    }
+
+    public static bool overrideCameraLerp;
+    // {
+    //     get => true;
+    //     set
+    //     {
+    //         Debug.Log(value);
+    //     }
+    // }
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void Awake()
