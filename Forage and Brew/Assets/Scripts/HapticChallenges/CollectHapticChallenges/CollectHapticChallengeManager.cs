@@ -114,10 +114,17 @@ public class CollectHapticChallengeManager : MonoBehaviour
 
             FaceIngredient(characterScythingDistance);
 
-            CollectIngredient();
+            CharacterMovementController.Instance.FinishWalkToLocation.AddListener(CollectScythingIngredient);
             
             return;
         }
+    }
+    
+    private void CollectScythingIngredient()
+    {
+        CharacterMovementController.Instance.FinishWalkToLocation.RemoveListener(CollectScythingIngredient);
+        
+        CollectIngredient();
     }
 
     #endregion
