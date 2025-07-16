@@ -17,6 +17,7 @@ public class CharacterMovementController : MonoBehaviour
     [SerializeField] private AudioResource walkSwamp;
     [SerializeField] private GameObject classicClothes;
     [SerializeField] private GameObject rainClothes;
+    [SerializeField] private Collider coll;
     
     [Header("Movement Settings")]
     [SerializeField] private float walkSpeed = 5;
@@ -63,6 +64,7 @@ public class CharacterMovementController : MonoBehaviour
             DestroyImmediate(this);
         }
         rb = GetComponent<Rigidbody>();
+        coll = GetComponent<Collider>();
     }
     
     private void Start()
@@ -205,6 +207,10 @@ public class CharacterMovementController : MonoBehaviour
     public void TriggerWalkTransition(Vector3 locationToWalk)
     {
         CharacterInputManager.Instance.DisableMoveInputs();
+        
+        coll.isTrigger = true;
+        rb.useGravity = false;
+        
         aimedLocation = locationToWalk;
         transitionWalk = true;
         float walkDistance = Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(aimedLocation.x, aimedLocation.z)) - 0.2f;
@@ -229,6 +235,8 @@ public class CharacterMovementController : MonoBehaviour
             playerDir *= 0;
             rb.linearVelocity *= 0;
             transitionWalk = false;
+            coll.isTrigger = false;
+            rb.useGravity = true;
             if (FinishWalkToLocation != null)
                 FinishWalkToLocation.Invoke();
         }

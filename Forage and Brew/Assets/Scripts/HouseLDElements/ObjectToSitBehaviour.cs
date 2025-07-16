@@ -12,7 +12,9 @@ public class ObjectToSitBehaviour : MonoBehaviour, ICinematicInteraction
     private bool _usingCouch;
     public float afkTime;
     private float _afkTimer;
+
     public bool overrideCam;
+
     [ShowIf("overrideCam")] public CameraPreset sitCam;
     [ShowIf("overrideCam")] public float sitCamTransitionTime;
     [ShowIf("overrideCam")] public CameraPreset standCam;
@@ -39,10 +41,7 @@ public class ObjectToSitBehaviour : MonoBehaviour, ICinematicInteraction
     }
 #endif
 
-    private void Start()
-    {
-        OnCouchExitEvent.AddListener(ReceiveExitCouchEvent);
-    }
+
 
     private void Update()
     {
@@ -65,7 +64,10 @@ public class ObjectToSitBehaviour : MonoBehaviour, ICinematicInteraction
 
     private void OnTriggerExit(Collider other)
     {
-        CharacterInteractController.Instance.CurrentNearCinematicInteraction = null;
+        if ((ICinematicInteraction)this == CharacterInteractController.Instance.CurrentNearCinematicInteraction)
+        {
+            CharacterInteractController.Instance.CurrentNearCinematicInteraction = null;
+        }
         localCanvas.SetActive(false);
     }
 
@@ -114,6 +116,8 @@ public class ObjectToSitBehaviour : MonoBehaviour, ICinematicInteraction
         }
         yield return new WaitForSeconds(sitCamTransitionTime);
         SitOnCouch();
+        
+        OnCouchExitEvent.AddListener(ReceiveExitCouchEvent);
     }
     
     private void SitOnCouch()
@@ -135,9 +139,11 @@ public class ObjectToSitBehaviour : MonoBehaviour, ICinematicInteraction
             SimpleCameraBehavior.instance.ApplyScriptableCamSettings(standCam, standCamTransitionTime);
         }
         yield return new WaitForSeconds(standCamTransitionTime);
-        
+        Debug.Log("Stand");
         localCanvas.SetActive(true);
         HouseCameraBehavior.overrideCameraLerp = false;
         CharacterInputManager.Instance.EnableInputs();
+        
+        OnCouchExitEvent.RemoveListener(ReceiveExitCouchEvent);
     }
 }

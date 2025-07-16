@@ -78,7 +78,11 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
 
     private void OnTriggerExit(Collider other)
     {
-        CharacterInteractController.Instance.CurrentNearCinematicInteraction = null;
+        if ((ICinematicInteraction)this == CharacterInteractController.Instance.CurrentNearCinematicInteraction)
+        {
+            CharacterInteractController.Instance.CurrentNearCinematicInteraction = null;
+        }
+        
         localCanvas.SetActive(false);
         animator.SetBool(IsOpen, false);
         
