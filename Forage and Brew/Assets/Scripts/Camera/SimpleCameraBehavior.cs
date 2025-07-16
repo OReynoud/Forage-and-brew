@@ -191,7 +191,7 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
         applyZClamping = Mathf.Abs(TargetCamSettings.posMaxClamp.z) >= 1 ||
                          Mathf.Abs(TargetCamSettings.posMinClamp.z) >= 1;
         
-        Debug.Log("Cam Settings: " + preset.name);
+        // Debug.Log("Cam Settings: " + preset.name);
         // UsingCamPosToBlendClamps["XMax"] = previousCamSettings.posMaxClamp.x != TargetCamSettings.posMaxClamp.x;
         // UsingCamPosToBlendClamps["YMax"] = previousCamSettings.posMaxClamp.y != TargetCamSettings.posMaxClamp.y;
         // UsingCamPosToBlendClamps["ZMax"] = previousCamSettings.posMaxClamp.z != TargetCamSettings.posMaxClamp.z;
@@ -250,8 +250,7 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
         transitionStartPos = transform.parent.position;
         transitionStartZDist = transform.localPosition;
         transitionStartRot = transform.localRotation;
-
-//        Debug.Log("Instant Cam Settings: " + TargetCamSettings.name);
+        Debug.Log("Instant Cam Settings: " + TargetCamSettings.name);
     }
 
     private void Start()

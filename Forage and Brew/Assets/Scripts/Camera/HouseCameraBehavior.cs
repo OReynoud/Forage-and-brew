@@ -32,6 +32,7 @@ public class HouseCameraBehavior : SimpleCameraBehavior
     // Update is called once per frame
     public override void FixedUpdate()
     {
+        //Debug.Log(mainCameraPreset);
         if (localCodexShow || overrideCameraLerp)
         {
             base.FixedUpdate();
@@ -158,5 +159,20 @@ public class HouseCameraBehavior : SimpleCameraBehavior
             }
             allHouseCameraSettings.Remove(settingsBehavior);
         }
+    }
+
+    public override void InstantCamUpdate(CameraPreset preset)
+    {
+        base.InstantCamUpdate(preset);
+        cameraOffset = preset.cameraOffset;
+        distanceFromPlayer = preset.distanceFromPlayer;
+        cameraRotation = preset.cameraRotation;
+        posMaxClamp = preset.posMaxClamp;
+        posMinClamp = preset.posMinClamp;
+        transform.parent.position = player.position + cameraOffset;
+        transform.rotation = Quaternion.Euler(cameraRotation);
+        transform.localPosition = -transform.forward * distanceFromPlayer;
+        
+        mainCameraPreset = null;
     }
 }
