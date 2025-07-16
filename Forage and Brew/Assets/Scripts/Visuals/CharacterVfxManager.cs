@@ -37,10 +37,19 @@ public class CharacterVfxManager : MonoBehaviour
         {
             PlayRainVfx();
         }
+        else
+        {
+            StopRainVfx();
+        }
     }
     
     public void PlayRainVfx()
     {
         rainVfxGameObject.SetActive(true);
+    }
+    
+    public void StopRainVfx()
+    {
+        rainVfxGameObject.SetActive(false);
     }
 }
