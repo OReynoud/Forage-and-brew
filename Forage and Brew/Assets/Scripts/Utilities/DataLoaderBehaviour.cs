@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NaughtyAttributes;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 public class DataLoaderBehaviour : MonoBehaviour
 {
@@ -31,6 +34,8 @@ public class DataLoaderBehaviour : MonoBehaviour
     [SerializeField] private Object potionDifficultyDataFolder;
     private List<PotionDifficultySo> _potionDifficulties;
     
+    [SerializeField] private List<WeatherStateSo> weatherStates;
+    [SerializeField] private List<LunarCycleStateSo> lunarCycleStates;
     [SerializeField] private IngredientListSo ingredientListSo;
     [SerializeField] private PotionListSo potionListSo;
     [SerializeField] private ChoppingHapticChallengeListSo choppingHapticChallengeListSo;
@@ -106,7 +111,71 @@ public class DataLoaderBehaviour : MonoBehaviour
                 ingredientSoInstance = _ingredients.Find(x => x.Name == lineData[0]);
             }
             
-            ingredientSoInstance.SetData(lineData[0], lineData[1]);
+            List<WeatherStateSo> newWeatherStates = new();
+
+            foreach (string weather in lineData[3].Split(", "))
+            {
+                WeatherStateSo weatherStateSoInstance = weatherStates.Find(x => x.Name == weather);
+                
+                if (weatherStateSoInstance)
+                {
+                    newWeatherStates.Add(weatherStateSoInstance);
+                }
+            }
+            
+            List<LunarCycleStateSo> newLunarCycleStates = new();
+            
+            foreach (string lunarCycle in lineData[4].Split(", "))
+            {
+                LunarCycleStateSo lunarCycleStateSoInstance = lunarCycleStates.Find(x => x.Name == lunarCycle);
+                
+                if (lunarCycleStateSoInstance)
+                {
+                    newLunarCycleStates.Add(lunarCycleStateSoInstance);
+                }
+            }
+            
+            Biome newBiomes = Biome.None;
+            int biomeMaxValue = Enum.GetValues(typeof(Biome)).Cast<int>().Max();
+            
+            foreach (string newBiome in lineData[5].Split(", "))
+            {
+                string newBiomeText = newBiome.Replace(" ", "");
+        
+                for (int mask = biomeMaxValue; mask > 0; mask >>= 1)
+                {
+                    Biome currentBiome = (Biome)mask;
+                    string biomeText = currentBiome.ToString();
+            
+                    if (biomeText == newBiomeText)
+                    {
+                        newBiomes |= currentBiome;
+                        break; // Exit the loop once we find a match
+                    }
+                }
+            }
+            
+            SpawnLocation newSpawnLocations = SpawnLocation.None;
+            int spawnLocationMaxValue = Enum.GetValues(typeof(SpawnLocation)).Cast<int>().Max();
+            
+            foreach (string newSpawnLocation in lineData[6].Split(", "))
+            {
+                string newSpawnLocationText = newSpawnLocation.Replace(" ", "");
+        
+                for (int mask = spawnLocationMaxValue; mask > 0; mask >>= 1)
+                {
+                    SpawnLocation currentSpawnLocation = (SpawnLocation)mask;
+                    string spawnLocationText = currentSpawnLocation.ToString();
+            
+                    if (spawnLocationText == newSpawnLocationText)
+                    {
+                        newSpawnLocations |= currentSpawnLocation;
+                        break; // Exit the loop once we find a match
+                    }
+                }
+            }
+            
+            ingredientSoInstance.SetData(lineData[0], lineData[2], newWeatherStates, newLunarCycleStates, newBiomes, newSpawnLocations);
             EditorUtility.SetDirty(ingredientSoInstance);
         }
         

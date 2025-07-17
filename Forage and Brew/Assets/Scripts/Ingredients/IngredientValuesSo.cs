@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
 
@@ -16,9 +17,14 @@ public class IngredientValuesSo : StackableValuesSo
     [field: SerializeField] public GameObject MeshGameObject { get; private set; }
 
 
-    public void SetData(string newName, string newDescription)
+    public void SetData(string newName, string newDescription, List<WeatherStateSo> newWeatherStates,
+        List<LunarCycleStateSo> newLunarCycleStates, Biome newBiomes, SpawnLocation newSpawnLocations)
     {
         Name = newName;
         Description = newDescription;
+        WeatherStates = newWeatherStates.ToArray();
+        LunarCycleStates = newLunarCycleStates.ToArray();
+        Biomes = newBiomes;
+        SpawnLocations = newSpawnLocations;
     }
 }
