@@ -24,6 +24,8 @@ public class ObjectToSitBehaviour : MonoBehaviour, ICinematicInteraction
     [ShowIf("specificSitLocation")] public Transform locationToWalk;
     [HideIf("specificSitLocation")] public float distanceToSit;
 
+    private Vector3 ShadowSitPosition;
+
 
     public static readonly UnityEvent OnCouchExitEvent = new();
     
@@ -125,6 +127,8 @@ public class ObjectToSitBehaviour : MonoBehaviour, ICinematicInteraction
         CharacterAnimManager.instance.transform.LookAt(new Vector3(transform.position.x,CharacterAnimManager.instance.transform.position.y,transform.position.z));
         CharacterAnimManager.instance.animator.SetTrigger(DoSit);
         CharacterAnimManager.instance.UseCouch();
+        
+        CharacterMovementController.Instance.rb.constraints = RigidbodyConstraints.FreezeAll;
     }
 
     private void ReceiveExitCouchEvent()
@@ -139,6 +143,8 @@ public class ObjectToSitBehaviour : MonoBehaviour, ICinematicInteraction
             SimpleCameraBehavior.instance.ApplyScriptableCamSettings(standCam, standCamTransitionTime);
         }
         yield return new WaitForSeconds(standCamTransitionTime);
+        
+        CharacterMovementController.Instance.rb.constraints = RigidbodyConstraints.FreezeRotation;
         Debug.Log("Stand");
         localCanvas.SetActive(true);
         HouseCameraBehavior.overrideCameraLerp = false;

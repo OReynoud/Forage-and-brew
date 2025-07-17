@@ -121,7 +121,7 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
             if (sitTimer < 1)
             {
                 sitTimer += Time.deltaTime;        
-                dropShadow.transform.localPosition = Vector3.Lerp(dropShadowOriginalPos, dropShadowOriginalPos - transform.forward * 2.5f, sitCurve.Evaluate(sitTimer/1));
+                dropShadow.transform.localPosition = Vector3.Lerp(dropShadowOriginalPos, dropShadowOriginalPos + Vector3.forward * 1.5f , sitCurve.Evaluate(sitTimer/1));
             }
         }
         else
@@ -129,7 +129,7 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
             if (sitTimer > 0)
             {
                 sitTimer -= Time.deltaTime * 1.2f;        
-                dropShadow.transform.localPosition = Vector3.Lerp(dropShadowOriginalPos + couchDropShadowOffset, dropShadowOriginalPos - transform.forward * 2.5f, sitCurve.Evaluate(sitTimer/1));
+                dropShadow.transform.localPosition = Vector3.Lerp(dropShadowOriginalPos + couchDropShadowOffset, dropShadowOriginalPos + Vector3.forward * 1.5f, sitCurve.Evaluate(sitTimer/1));
             }
         }
 

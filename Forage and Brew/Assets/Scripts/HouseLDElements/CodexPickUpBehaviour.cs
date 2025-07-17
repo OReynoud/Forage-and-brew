@@ -25,6 +25,7 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
         }
         else
         {
+            doTutorialPages = true;
             AutoFlip.instance.ControledBook.OnFlip.AddListener(FlipListener);
         }
     }
@@ -56,6 +57,7 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
             InfoDisplayManager.instance.canShowCodex = true;
             CharacterInputManager.Instance.EnableCodexInputs();
             CharacterInputManager.Instance.EnableCodexExit();
+            AutoFlip.instance.ControledBook.OnFlip.RemoveListener(FlipListener);
         }
     }
     
