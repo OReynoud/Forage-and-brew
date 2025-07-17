@@ -10,19 +10,13 @@ public enum SpawnLocation
     None = 0,
     FlatLand = 1 << 0,
     BaseOfTree = 1 << 1,
-    OnTreeTrunk = 1 << 2,
-    DeadTreeTrunk = 1 << 3,
-    Stump = 1 << 4,
-    Bush = 1 << 5,
-    RiverBank = 1 << 6,
-    RiverBed = 1 << 7,
-    Pond = 1 << 8,
-    SubmergedLand = 1 << 9,
-    BaseOfBigTree = 1 << 10,
-    MagicTreeStump = 1 << 11,
-    MagicDeadTrunk = 1 << 12,
-    Rock = 1 << 13,
-  
-   
-    
+    DeadTreeTrunk = 1 << 2,
+    TreeStump = 1 << 3,
+    Bush = 1 << 4,
+    RiverBank = 1 << 5,
+    SubmergedLand = 1 << 6,
+    BaseOfGiantTree = 1 << 7,
+    MagicTreeStump = 1 << 8,
+    MagicDeadTreeTrunk = 1 << 9,
+    Rock = 1 << 10
 }
