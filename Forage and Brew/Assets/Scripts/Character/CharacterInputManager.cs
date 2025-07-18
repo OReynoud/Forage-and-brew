@@ -607,10 +607,11 @@ public class CharacterInputManager : MonoBehaviour
     
     private void DiscoverNewPage(InputAction.CallbackContext obj)
     {
-        if (CodexContentManager.instance.pageIndexesToCheck.Count > 0)
-        {
-            AutoFlip.instance.ContinuePageDiscovery();
-        }
+        if (CodexContentManager.instance.pageIndexesToCheck.Count == 0) return;
+        
+        if (obj.ReadValue<Vector2>().x < 0.5f) return;
+        
+        AutoFlip.instance.ContinuePageDiscovery();
     }
 
     #endregion
