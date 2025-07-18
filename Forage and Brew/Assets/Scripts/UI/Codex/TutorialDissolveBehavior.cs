@@ -26,7 +26,6 @@ public class TutorialDissolveBehavior : MonoBehaviour
         {
             CodexContentManager.instance.tutorialDissolvesToCheck.Insert(1, dissolveID);
         }
-        //transform.parent.parent.gameObject.SetActive(false);
     }
 
     public void StartDissolve()

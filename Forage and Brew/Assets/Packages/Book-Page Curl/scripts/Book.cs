@@ -113,7 +113,7 @@ public class Book : MonoBehaviour
     {
         Left.gameObject.SetActive(false);
         Right.gameObject.SetActive(false);
-        UpdateSprites();
+        //UpdateSprites();
         CalcCurlCriticalPoints();
 
 
