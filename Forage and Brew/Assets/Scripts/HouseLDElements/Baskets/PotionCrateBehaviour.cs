@@ -279,6 +279,8 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
         {
             potion.gameObject.SetActive(false);
         }
+        
+        TutorialManager.instance.NotifyFromCompleteOrder();
     }
     
     

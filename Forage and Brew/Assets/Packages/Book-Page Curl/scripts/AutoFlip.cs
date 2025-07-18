@@ -337,9 +337,9 @@ public class AutoFlip : Singleton<AutoFlip>
         presentNewCodexContentContainer = StartCoroutine(PresentNewCodexContent(true));
     }
 
-    public void ContinuePageDiscovery()
+    public void ContinuePageDiscovery(bool startupDelay = false)
     {
-        presentNewCodexContentContainer = StartCoroutine(PresentNewCodexContent(false));
+        presentNewCodexContentContainer = StartCoroutine(PresentNewCodexContent(startupDelay));
     }
 
     IEnumerator PresentNewCodexContent(bool startupDelay)

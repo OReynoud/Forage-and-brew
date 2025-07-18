@@ -113,7 +113,6 @@ public class Book : MonoBehaviour
     {
         Left.gameObject.SetActive(false);
         Right.gameObject.SetActive(false);
-        //UpdateSprites();
         CalcCurlCriticalPoints();
 
 
@@ -704,7 +703,7 @@ public class Book : MonoBehaviour
         {
             bookPages[currentPage].UIComponent.gameObject.SetActive(false);
             bookPages[currentPage].UIComponent.transform.SetParent(GameDontDestroyOnLoadManager.Instance.transform);
-            Debug.Log(bookPages[currentPage].UIComponent.name, bookPages[currentPage].UIComponent); 
+//            Debug.Log(bookPages[currentPage].UIComponent.name, bookPages[currentPage].UIComponent); 
         }
 //        Debug.Log(currentPage);
         if (currentPage > 0)

@@ -15,6 +15,7 @@ public class TutorialDissolveBehavior : MonoBehaviour
     public AnimationCurve animCurveDissolve;
     private bool isDissolved;
     public bool pairedDissolve;
+    public int pageToCheck;
     [ShowIf("pairedDissolve")] public TutorialDissolveBehavior pairedBehavior;
     
 

@@ -40,12 +40,9 @@ public class TutorialManager : Singleton<TutorialManager>
 
     public void NotifyFromCompleteOrder()
     {
-        
-    }
-
-    public void NotifyFromNewDay()
-    {
-        CharacterInputManager.Instance.EnterCodexMethod();
+        if (!CodexContentManager.instance.tutorialDissolves.ContainsKey("CompleteOrder"))
+            return;
+        CodexContentManager.instance.pageIndexesToCheck.Add(CodexContentManager.instance.tutorialDissolves["CompleteOrder"].pageToCheck);
         if (CodexContentManager.instance.pageIndexesToCheck[^1] % 2 == 1)
         {
             AutoFlip.instance.ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1] + 1);
@@ -54,6 +51,38 @@ public class TutorialManager : Singleton<TutorialManager>
         {
             AutoFlip.instance.ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1]);
         }
+        CharacterInputManager.Instance.EnterCodexMethod();
+        
+        
+        CodexContentManager.instance.tutorialDissolvesToCheck.Add("CompleteOrder");
+        CharacterInputManager.Instance.DisableCodexInputs();
+        CharacterInputManager.Instance.DisableInputs();
+        
+        AutoFlip.instance.ContinuePageDiscovery(true);
+    }
+
+    public void NotifyFromNewDay()
+    {
+        if (!CodexContentManager.instance.tutorialDissolves.ContainsKey("IngredientApparition"))
+            return;
+        
+        CodexContentManager.instance.pageIndexesToCheck.Add(CodexContentManager.instance.tutorialDissolves["IngredientApparition"].pageToCheck);
+        if (CodexContentManager.instance.pageIndexesToCheck[^1] % 2 == 1)
+        {
+            AutoFlip.instance.ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1] + 1);
+        }
+        else
+        {
+            AutoFlip.instance.ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1]);
+        }
+        CharacterInputManager.Instance.EnterCodexMethod();
+        
+        
+        CodexContentManager.instance.tutorialDissolvesToCheck.Add("IngredientApparition");
+        CharacterInputManager.Instance.DisableCodexInputs();
+        CharacterInputManager.Instance.DisableInputs();
+        
+        AutoFlip.instance.ContinuePageDiscovery(true);
     }
 
     // foreach (var tutorial in TutorialPopups)
