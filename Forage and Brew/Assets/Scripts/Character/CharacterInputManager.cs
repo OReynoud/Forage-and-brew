@@ -41,7 +41,13 @@ public class CharacterInputManager : MonoBehaviour
 
     private void Update()
     {
-        if (showCodex)
+        if (CodexContentManager.instance.pageIndexesToCheck.Count > 0)
+        {
+            if (_inputs.Player.Move.ReadValue<Vector2>().x < 0.5f) return;
+        
+            AutoFlip.instance.ContinuePageDiscovery();
+        }
+        else if (showCodex)
         {
             AutoFlip.instance.PlayerInputFlipPages(_inputs.Player.Move.ReadValue<Vector2>());
         }
@@ -49,7 +55,6 @@ public class CharacterInputManager : MonoBehaviour
         {
             CharacterMovementController.Instance.Move(_inputs.Player.Move.ReadValue<Vector2>());
         }
-        
     }
 
     private void OnDestroy()
@@ -108,8 +113,6 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.PauseIn.performed += PauseInOnPerformed;
         _inputs.Player.PauseOut.performed += PauseOutOnPerformed;
         _inputs.Player.SwitchClothes.performed += SwitchClothesOnPerformed;
-        _inputs.Player.Move.performed += DiscoverNewPage;
-        
     }
 
 
@@ -603,15 +606,6 @@ public class CharacterInputManager : MonoBehaviour
         if (!MailBoxBehaviour.instance || !CharacterInteractController.Instance.CurrentNearMailBoxBehaviour) 
             return;
         MailBoxBehaviour.instance.PassToNextLetter();
-    }
-    
-    private void DiscoverNewPage(InputAction.CallbackContext obj)
-    {
-        if (CodexContentManager.instance.pageIndexesToCheck.Count == 0) return;
-        
-        if (obj.ReadValue<Vector2>().x < 0.5f) return;
-        
-        AutoFlip.instance.ContinuePageDiscovery();
     }
 
     #endregion
