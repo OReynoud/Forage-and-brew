@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class PricePopUpBehaviour : MonoBehaviour
 {
     [SerializeField] private GameObject pricePopUpCanvas;
+    [SerializeField] private RectTransform pricePopUpLayoutRectTransform;
     [SerializeField] private Image backgroundImage;
     [SerializeField] private Sprite enoughMoneyBackgroundSprite;
     [SerializeField] private Sprite notEnoughMoneyBackgroundSprite;
@@ -26,6 +27,7 @@ public class PricePopUpBehaviour : MonoBehaviour
         backgroundImage.sprite = MoneyManager.Instance.MoneyAmount < price ? notEnoughMoneyBackgroundSprite : enoughMoneyBackgroundSprite;
         priceText.color = MoneyManager.Instance.MoneyAmount < price ? notEnoughMoneyColor : enoughMoneyColor;
         purchaseButtonGameObject.SetActive(MoneyManager.Instance.MoneyAmount >= price);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(pricePopUpLayoutRectTransform);
     }
     
     public void HidePrice()
