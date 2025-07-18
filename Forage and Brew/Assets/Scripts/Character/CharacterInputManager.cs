@@ -108,8 +108,11 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.PauseIn.performed += PauseInOnPerformed;
         _inputs.Player.PauseOut.performed += PauseOutOnPerformed;
         _inputs.Player.SwitchClothes.performed += SwitchClothesOnPerformed;
+        _inputs.Player.Move.performed += DiscoverNewPage;
         
     }
+
+
 
     public void EnableDebugCommands()
     {
@@ -210,7 +213,7 @@ public class CharacterInputManager : MonoBehaviour
 
     public void EnableCodexExitInput()
     {
-        Debug.Log("Enable codex Leave");
+//        Debug.Log("Enable codex Leave");
         _inputs.Player.CodexEnter.Disable();
         _inputs.Player.CodexLeave.Enable();
     }
@@ -535,7 +538,7 @@ public class CharacterInputManager : MonoBehaviour
 
     public void EnableCodexExit()
     {
-        Debug.Log("Enable codex Leave");
+//        Debug.Log("Enable codex Leave");
         _inputs.Player.CodexLeave.Enable();
         _inputs.Player.CodexEnter.Disable();
     }
@@ -600,6 +603,14 @@ public class CharacterInputManager : MonoBehaviour
         if (!MailBoxBehaviour.instance || !CharacterInteractController.Instance.CurrentNearMailBoxBehaviour) 
             return;
         MailBoxBehaviour.instance.PassToNextLetter();
+    }
+    
+    private void DiscoverNewPage(InputAction.CallbackContext obj)
+    {
+        if (CodexContentManager.instance.pageIndexesToCheck.Count > 0)
+        {
+            AutoFlip.instance.ContinuePageDiscovery();
+        }
     }
 
     #endregion

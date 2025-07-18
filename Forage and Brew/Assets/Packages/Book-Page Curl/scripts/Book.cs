@@ -698,12 +698,15 @@ public class Book : MonoBehaviour
 
     public void JumpToPage(int pageIndex)
     {
+        
+        
         if (currentPage != bookPages.Count)
         {
             bookPages[currentPage].UIComponent.gameObject.SetActive(false);
             bookPages[currentPage].UIComponent.transform.SetParent(GameDontDestroyOnLoadManager.Instance.transform);
+            Debug.Log(bookPages[currentPage].UIComponent.name, bookPages[currentPage].UIComponent); 
         }
-        //Debug.Log(bookPages[currentPage].UIComponent.name);
+//        Debug.Log(currentPage);
         if (currentPage > 0)
         {
             bookPages[currentPage - 1].UIComponent.gameObject.SetActive(false);

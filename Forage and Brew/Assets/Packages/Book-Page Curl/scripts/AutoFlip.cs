@@ -12,6 +12,7 @@ public class AutoFlip : Singleton<AutoFlip>
     [BoxGroup("References")] public RectTransform codexTransform;
     [BoxGroup("References")] public RectTransform codexProportions;
     [BoxGroup("References")] public Book ControledBook;
+    [BoxGroup("References")] public GameObject PageFlipIndication;
 
     [BoxGroup("Page Flipping")] public float PageFlipTime = 1;
     [BoxGroup("Page Flipping")] public float acceleratedFlipTime = 0.2f;
@@ -205,7 +206,7 @@ public class AutoFlip : Singleton<AutoFlip>
 
         if (pageDiff == 0) return;
         ControledBook.bookmarkAudio.Play();
-        
+
         FlipXPages(Mathf.CeilToInt(pageDiff * 0.5f), index <= ControledBook.currentPage);
     }
 
@@ -279,17 +280,18 @@ public class AutoFlip : Singleton<AutoFlip>
             }
         }
     }
-    
-    
+
+
     private List<Sprite> tempIngredientsHigh = new List<Sprite>();
     public PotionValuesSo recipeToPin { get; set; }
+
     public void HandleNewRecipes()
     {
         foreach (var recipe in CodexContentManager.instance.recipes)
         {
             if (!recipe.isDissolved)
             {
-                CodexContentManager.instance.pageIndexesToCheck.Add(recipe.PageNumber);
+                CodexContentManager.instance.pageIndexesToCheck.Insert(0, recipe.PageNumber);
             }
         }
 
@@ -301,9 +303,8 @@ public class AutoFlip : Singleton<AutoFlip>
             CharacterInputManager.Instance.EnableCodexInputs();
             return;
         }
-        
-        TutorialManager.instance.NotifyFromRecipeReceived();
 
+        TutorialManager.instance.NotifyFromRecipeReceived();
 
 
         if (CodexContentManager.instance.pageIndexesToCheck[^1] % 2 == 1)
@@ -316,26 +317,47 @@ public class AutoFlip : Singleton<AutoFlip>
         }
         //var oui = CodexContentManager.instance.pageIndexesToCheck.OrderBy(x => x);
         //CodexContentManager.instance.pageIndexesToCheck = oui.ToList();
-        
+
         CharacterInputManager.Instance.EnterCodexMethod();
-            
+
         CharacterInputManager.Instance.DisableCodexInputs();
         CharacterInputManager.Instance.DisableMoveInputs();
         CharacterInputManager.Instance.DisableInputs();
 
-        presentNewCodexContentContainer = StartCoroutine(PresentNewCodexContent());
+        presentNewCodexContentContainer = StartCoroutine(PresentNewCodexContent(true));
     }
 
-    public Coroutine presentNewCodexContentContainer; 
-    IEnumerator PresentNewCodexContent()
+    public Coroutine presentNewCodexContentContainer;
+
+    public void TutorialPagesDiscoveryStart()
     {
-        yield return new WaitForSeconds(0.1f);
-        for (int i = CodexContentManager.instance.pageIndexesToCheck.Count - 1; i >= 0; i--)
+        CodexContentManager.instance.pageIndexesToCheck.AddRange(new[] { 8, 6, 4, 2, 0 });
+
+        CharacterInputManager.Instance.DisableCodexInputs();
+        CharacterInputManager.Instance.DisableInputs();
+
+        presentNewCodexContentContainer = StartCoroutine(PresentNewCodexContent(true));
+    }
+
+    public void ContinuePageDiscovery()
+    {
+        presentNewCodexContentContainer = StartCoroutine(PresentNewCodexContent(false));
+    }
+
+    IEnumerator PresentNewCodexContent(bool startupDelay)
+    {
+        if (startupDelay)
+            yield return new WaitWhile(() => !CharacterInputManager.Instance.showCodex);
+
+        CharacterInputManager.Instance.DisableMoveInputs();
+        PageFlipIndication.SetActive(false);
+        if (CodexContentManager.instance.pageIndexesToCheck.Count > 0)
         {
-            FlipToPageIndex(CodexContentManager.instance.pageIndexesToCheck[i]);
+            yield return new WaitForSeconds(0.1f);
+            FlipToPageIndex(CodexContentManager.instance.pageIndexesToCheck[^1]);
             isDissolving = true;
             yield return new WaitWhile(() => isFlipping);
-            switch (ControledBook.bookPages[CodexContentManager.instance.pageIndexesToCheck[i]].pageBehavior)
+            switch (ControledBook.bookPages[CodexContentManager.instance.pageIndexesToCheck[^1]].pageBehavior)
             {
                 case RecipeCodexDisplay recipeDisplay:
                     recipeDisplay.StartDissolve();
@@ -344,8 +366,22 @@ public class AutoFlip : Singleton<AutoFlip>
                 case OrderCodexDisplayBehaviour:
                     yield return new WaitForSeconds(0.2f);
                     break;
+                case not null:
+                    yield return new WaitForSeconds(0.2f);
+                    break;
             }
+
+
+            PageFlipIndication.SetActive(true);
+            CharacterInputManager.Instance.EnableMoveInputs();
+            CodexContentManager.instance.pageIndexesToCheck.RemoveAt(CodexContentManager.instance.pageIndexesToCheck
+                .Count - 1);
+            if (CodexContentManager.instance.pageIndexesToCheck.Count == 0)
+                presentNewCodexContentContainer = StartCoroutine(PresentNewCodexContent(false));
+
+            yield break;
         }
+
         if (recipeToPin)
         {
             foreach (TemperatureChallengeIngredients t in recipeToPin.TemperatureChallengeIngredients)
@@ -362,7 +398,8 @@ public class AutoFlip : Singleton<AutoFlip>
                     }
                 }
             }
-            PinnedRecipe.instance.AutoPin(recipeToPin,tempIngredientsHigh.ToArray());
+
+            PinnedRecipe.instance.AutoPin(recipeToPin, tempIngredientsHigh.ToArray());
             for (int i = 0; i < CodexContentManager.instance.recipes.Count; i++)
             {
                 if (CodexContentManager.instance.recipes[i].storedPotion != recipeToPin)
@@ -375,12 +412,13 @@ public class AutoFlip : Singleton<AutoFlip>
                 CodexContentManager.instance.recipes[i].pinIcon.enabled = true;
                 CodexContentManager.instance.pinImage.enabled = true;
             }
+
             recipeToPin = null;
             tempIngredientsHigh.Clear();
         }
-        CodexContentManager.instance.pageIndexesToCheck.Clear();
+        
+        CharacterInputManager.Instance.EnableMoveInputs();
         CharacterInputManager.Instance.EnableCodexInputs();
         CharacterInputManager.Instance.EnableCodexExitInput();
-        CharacterInputManager.Instance.EnableMoveInputs();
     }
 }

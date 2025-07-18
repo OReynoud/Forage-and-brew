@@ -333,12 +333,16 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
             AutoFlip.instance.ControledBook.bookPages.Add(new Book.BookPage(rightEmptyPage[pageChoser], pageContainer,
                 historic));
-            pageContainer.name = "Page " + AutoFlip.instance.ControledBook.bookMarks[0].index;
+            pageContainer.name = "Page " + AutoFlip.instance.ControledBook.bookMarks[3].index;
 
             AutoFlip.instance.ControledBook.bookPages.Add(new Book.BookPage(leftEmptyPage[pageChoser],
                 emptyHistoricPage, dummy));
-            emptyHistoricPage.name = "Page " + (AutoFlip.instance.ControledBook.bookMarks[0].index + 1);
+            emptyHistoricPage.name = "Page " + (AutoFlip.instance.ControledBook.bookMarks[3].index + 1);
 
+            if (AutoFlip.instance.ControledBook.currentPage >= AutoFlip.instance.ControledBook.bookMarks[3].index)
+            {
+                AutoFlip.instance.ControledBook.currentPage += 2;
+            }
 
             historicPages.Add(historic);
             if (successLetter)

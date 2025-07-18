@@ -44,6 +44,7 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
         CharacterMovementController.Instance.FinishWalkToLocation.RemoveListener(PickupCodex);
         CharacterMovementController.Instance.transform.rotation = locationToWalk.rotation;
         CharacterInputManager.Instance.EnterCodexMethod();
+        AutoFlip.instance.TutorialPagesDiscoveryStart();
         gameObject.SetActive(false);
         CharacterInteractController.Instance.CurrentNearCinematicInteraction = null;
         CharacterInputManager.Instance.DisableInputs();
@@ -51,7 +52,7 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
 
     void FlipListener()
     {
-        if (AutoFlip.instance.ControledBook.currentPage == AutoFlip.instance.ControledBook.bookPages.Count)
+        if (AutoFlip.instance.ControledBook.currentPage == AutoFlip.instance.ControledBook.bookPages.Count - 2)
         {
             doTutorialPages = false;
             InfoDisplayManager.instance.canShowCodex = true;
