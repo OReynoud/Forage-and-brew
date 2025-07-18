@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using NaughtyAttributes;
 
 [RequireComponent(typeof(Book))]
@@ -290,6 +291,10 @@ public class AutoFlip : Singleton<AutoFlip>
             if (!recipe.isDissolved)
             {
                 CodexContentManager.instance.pageIndexesToCheck.Insert(0, recipe.PageNumber);
+                if (Array.Exists(recipe.storedPotion.TemperatureChallengeIngredients, x => x.Temperature != Temperature.None))
+                {
+                    TutorialManager.instance.NotifyFromRecipeReceived("Bellows");
+                }
             }
         }
 
@@ -302,7 +307,7 @@ public class AutoFlip : Singleton<AutoFlip>
             return;
         }
 
-        TutorialManager.instance.NotifyFromRecipeReceived();
+
 
 
         if (CodexContentManager.instance.pageIndexesToCheck[^1] % 2 == 1)
@@ -367,7 +372,7 @@ public class AutoFlip : Singleton<AutoFlip>
                 case not null:
                     break;
             }
-            if (CodexContentManager.instance.tutorialDissolvesToCheck.Count > 0)
+            if (CodexContentManager.instance.tutorialDissolvesToCheck.Count > 0 && CodexContentManager.instance.tutorialDissolvesToCheck.Count == CodexContentManager.instance.pageIndexesToCheck.Count)
             {
                 if (CodexContentManager.instance.tutorialDissolves.ContainsKey(CodexContentManager.instance.tutorialDissolvesToCheck[0]))
                 {

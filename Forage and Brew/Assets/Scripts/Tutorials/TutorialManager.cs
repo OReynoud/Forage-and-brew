@@ -29,9 +29,13 @@ public class TutorialManager : Singleton<TutorialManager>
     {
 
     }
-    public void NotifyFromRecipeReceived()
+    public void NotifyFromRecipeReceived(string workshop)
     {
-
+        if (!CodexContentManager.instance.tutorialDissolves.ContainsKey(workshop))
+            return;
+        
+        CodexContentManager.instance.pageIndexesToCheck.Insert(0, CodexContentManager.instance.tutorialDissolves[workshop].pageToCheck);
+        CodexContentManager.instance.tutorialDissolvesToCheck.Add(workshop);
     }
     public void NotifyFromCompletePotion()
     {
