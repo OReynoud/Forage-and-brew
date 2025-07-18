@@ -229,6 +229,8 @@ public class CollectHapticChallengeManager : MonoBehaviour
     
     private void UpdateScraping()
     {
+        if (!_isCollectHapticChallengeActive) return;
+        
         if (JoystickInputValue.magnitude < 1f - scrapingHapticChallengeSo.JoystickMagnitudeTolerance &&
             _firstScrapingJoystickPosition == Vector2.zero) return;
         
@@ -248,6 +250,8 @@ public class CollectHapticChallengeManager : MonoBehaviour
             
                 _currentIngredientToCollectBehaviour = ingredientToCollectBehaviour;
                 _firstScrapingJoystickPosition = JoystickInputValue;
+                
+                _isCollectHapticChallengeActive = true;
                 
                 break;
             }
@@ -269,6 +273,8 @@ public class CollectHapticChallengeManager : MonoBehaviour
         CharacterInputManager.Instance.DisableMoveInputs();
 
         FaceIngredient(characterScrapingDistance);
+        
+        _isCollectHapticChallengeActive = false;
         
         CollectIngredient();
     }
