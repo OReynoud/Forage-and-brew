@@ -12,11 +12,11 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     public bool IsFirstGameSession { get; set; } = true;
     
     // Scene
-    [field: SerializeField] public Scene CurrentScene { get; set; }
+    [field: SerializeField] [field: ReadOnly] public Scene CurrentScene { get; set; }
     
     // Days
     public TimeOfDay CurrentTimeOfDay { get; set; } = TimeOfDay.Daytime;
-    public int DayPassed { get; set; }
+    [field: SerializeField]public int DayPassed { get; set; }
     
     // Collected Ingredients and Potions
     public List<IngredientValuesSo> CollectedIngredients { get; private set; } = new();

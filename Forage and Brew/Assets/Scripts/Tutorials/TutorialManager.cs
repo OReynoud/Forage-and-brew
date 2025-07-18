@@ -19,59 +19,51 @@ public class TutorialManager : Singleton<TutorialManager>
         }
     }
 
-    public void NotifyFromZoneTrigger(int triggerID)
+    public void NotifyFromZoneTrigger(string triggerID)
     {
-        foreach (var tutorial in TutorialPopups)
-        {
-            if (CheckValidTags(tutorial, TutorialTriggerConditions.ZoneTrigger)) 
-                continue;
-            
-            if (tutorial.data.triggerID >= 0)
-            {
-                if (triggerID != tutorial.data.triggerID)
-                    continue;
-            }
-            
-            ShowTutorialPopup(tutorial);
-            break;
-        }
+
     }
 
 
     public void NotifyFromIngredientReceived()
     {
-        foreach (var tutorial in TutorialPopups)
-        {
-            if (CheckValidTags(tutorial, TutorialTriggerConditions.ObtainIngredient)) 
-                continue;
-            
-            ShowTutorialPopup(tutorial);
-            break;
-        }
+
     }
     public void NotifyFromRecipeReceived()
     {
-        foreach (var tutorial in TutorialPopups)
-        {
-            if (CheckValidTags(tutorial, TutorialTriggerConditions.ObtainCommand)) 
-                continue;
-            
-            ShowTutorialPopup(tutorial);
-            break;
-        }
+
     }
     public void NotifyFromCompletePotion()
     {
-        foreach (var tutorial in TutorialPopups)
-        {
-            if (CheckValidTags(tutorial, TutorialTriggerConditions.ObtainPotion)) 
-                continue;
 
-            ShowTutorialPopup(tutorial);
-            break;
+    }
+
+    public void NotifyFromCompleteOrder()
+    {
+        
+    }
+
+    public void NotifyFromNewDay()
+    {
+        CharacterInputManager.Instance.EnterCodexMethod();
+        if (CodexContentManager.instance.pageIndexesToCheck[^1] % 2 == 1)
+        {
+            AutoFlip.instance.ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1] + 1);
+        }
+        else
+        {
+            AutoFlip.instance.ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1]);
         }
     }
 
+    // foreach (var tutorial in TutorialPopups)
+    // {
+    //     if (CheckValidTags(tutorial, TutorialTriggerConditions.ObtainPotion)) 
+    //         continue;
+    //
+    //     ShowTutorialPopup(tutorial);
+    //     break;
+    // }
     public void ShowTutorialPopup(TutorialBlock tutorial)
     {
         tutorial.hasBeenTriggered = true;
