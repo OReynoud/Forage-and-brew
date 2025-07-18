@@ -2,9 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using NaughtyAttributes;
-using UnityEngine.Events;
 
 [RequireComponent(typeof(Book))]
 public class AutoFlip : Singleton<AutoFlip>
@@ -367,8 +365,30 @@ public class AutoFlip : Singleton<AutoFlip>
                     yield return new WaitForSeconds(0.2f);
                     break;
                 case not null:
-                    yield return new WaitForSeconds(0.2f);
                     break;
+            }
+            if (CodexContentManager.instance.tutorialDissolvesToCheck.Count > 0)
+            {
+                if (CodexContentManager.instance.tutorialDissolves.ContainsKey(CodexContentManager.instance.tutorialDissolvesToCheck[0]))
+                {
+                    isDissolving = true;
+                    CodexContentManager.instance.tutorialDissolves[CodexContentManager.instance.tutorialDissolvesToCheck[0]].StartDissolve();
+                    yield return new WaitWhile(() => isDissolving);
+                    if (CodexContentManager.instance.tutorialDissolves[CodexContentManager.instance.tutorialDissolvesToCheck[0]].pairedDissolve)
+                    {
+                        yield return new WaitForSeconds(0.2f);
+                        isDissolving = true;
+                        CodexContentManager.instance.tutorialDissolves[CodexContentManager.instance.tutorialDissolvesToCheck[0]].pairedBehavior.StartDissolve();
+                        yield return new WaitWhile(() => isDissolving);
+                    }
+                    CodexContentManager.instance.tutorialDissolves.Remove(CodexContentManager.instance.tutorialDissolvesToCheck[0]);
+                }
+                CodexContentManager.instance.tutorialDissolvesToCheck.RemoveAt(0);
+
+                if (CodexContentManager.instance.tutorialDissolvesToCheck.Count == 0)
+                {
+                    ControledBook.OnFlip.Invoke();
+                }
             }
 
 
@@ -376,6 +396,7 @@ public class AutoFlip : Singleton<AutoFlip>
             CharacterInputManager.Instance.EnableMoveInputs();
             CodexContentManager.instance.pageIndexesToCheck.RemoveAt(CodexContentManager.instance.pageIndexesToCheck
                 .Count - 1);
+
             if (CodexContentManager.instance.pageIndexesToCheck.Count == 0)
                 presentNewCodexContentContainer = StartCoroutine(PresentNewCodexContent(false));
 

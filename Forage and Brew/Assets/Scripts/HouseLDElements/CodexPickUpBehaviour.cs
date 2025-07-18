@@ -50,9 +50,9 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
         CharacterInputManager.Instance.DisableInputs();
     }
 
-    void FlipListener()
+    public void FlipListener()
     {
-        if (AutoFlip.instance.ControledBook.currentPage == AutoFlip.instance.ControledBook.bookPages.Count - 2)
+        if (CodexContentManager.instance.tutorialDissolvesToCheck.Count == 0)
         {
             doTutorialPages = false;
             InfoDisplayManager.instance.canShowCodex = true;

@@ -16,7 +16,7 @@ public enum FlipMode
     LeftToRight
 }
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class Book : MonoBehaviour
 {
     [SerializeField] RectTransform BookPanel;

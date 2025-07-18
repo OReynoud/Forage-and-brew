@@ -55,11 +55,19 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
     [Foldout("Debug")] private List<Sprite> tempIngredientsLow = new();
     [Foldout("Debug")] private List<Sprite> tempIngredientsHigh = new();
+    public Dictionary<string, TutorialDissolveBehavior> tutorialDissolves = new();
 
     public List<int> pageIndexesToCheck = new();
+    public List<string> tutorialDissolvesToCheck = new();
     private int pageChoser;
 
     public bool isDiscoveringNewIngredient { get; set; }
+
+    public override void Awake()
+    {
+        base.Awake();
+        tutorialDissolvesToCheck.Add("");
+    }
 
     private void Start()
     {
