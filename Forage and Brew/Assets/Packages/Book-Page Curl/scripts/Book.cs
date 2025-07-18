@@ -7,6 +7,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
+using TMPro;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
@@ -28,6 +29,7 @@ public class Book : MonoBehaviour
         public Sprite pageSprite;
         public RectTransform UIComponent;
         public PageBehavior pageBehavior;
+
         public BookPage(Sprite PageSprite, RectTransform uiComponent, PageBehavior PageBehavior)
         {
             pageSprite = PageSprite;
@@ -71,14 +73,14 @@ public class Book : MonoBehaviour
     [Foldout("Refs")] public Image LeftNext;
     [Foldout("Refs")] public Image Right;
     [Foldout("Refs")] public Image RightNext;
-    [Foldout("Refs")] public CanvasGroup pinRecipeUI;
+    [Foldout("Refs")] public TextMeshProUGUI pinRecipeUI;
     [Foldout("Refs")] public BookPage dummyOrderPage;
     [Foldout("Refs")] public AudioSource codexShowAudio;
     [Foldout("Refs")] public AudioSource pageflipAudio;
     [Foldout("Refs")] public AudioSource bookmarkAudio;
     [Foldout("Refs")] public AudioSource discoveryAudio;
     public UnityEvent OnFlip;
-    
+
 
     float radius1, radius2;
 
@@ -105,8 +107,6 @@ public class Book : MonoBehaviour
     //current flip mode
     FlipMode mode;
     private IngredientValuesSo newIngredientToDisplay;
-    
-    
 
 
     void Start()
@@ -122,19 +122,19 @@ public class Book : MonoBehaviour
 
 
         ClippingPlane.rectTransform.sizeDelta = new Vector2(pageWidth * 2 + pageHeight, pageHeight + pageHeight * 2);
-        
+
 
         foreach (var bookMark in bookMarks)
         {
             bookMark.basePos = bookMark.UIComponent.anchoredPosition;
         }
 
-        if (!GameDontDestroyOnLoadManager.Instance) 
+        if (!GameDontDestroyOnLoadManager.Instance)
             return;
-        
+
         DisplayNewIngredientFromSave();
     }
-    
+
 
     public void UpdatePageNumbers()
     {
@@ -158,6 +158,7 @@ public class Book : MonoBehaviour
             bookPages[i].pageBehavior.PlacePageNumberText();
         }
     }
+
     public void PlayCodexSound(bool oui)
     {
         codexShowAudio.Stop();
@@ -167,18 +168,17 @@ public class Book : MonoBehaviour
     public void StoreNewIngredient(IngredientValuesSo arg0)
     {
         newIngredientToDisplay = arg0;
-        
     }
+
     public void DisplayNewIngredient()
     {
-
         CodexContentManager.instance.isDiscoveringNewIngredient = true;
         int index = CodexContentManager.instance.AddIngredientPage(newIngredientToDisplay);
         CharacterInputManager.Instance.EnterCodexMethod();
-        
+
         CharacterInputManager.Instance.DisableCodexInputs();
         CharacterInputManager.Instance.DisableMoveInputs();
-        
+
         if (index % 2 == 1)
         {
             JumpToPage(index + 1);
@@ -188,14 +188,16 @@ public class Book : MonoBehaviour
             JumpToPage(index);
         }
     }
-    
+
     //TO FIX
     public void DisplayNewIngredientFromSave()
     {
         for (int i = 0; i < GameDontDestroyOnLoadManager.Instance.UnlockedIngredients.Count; i++)
         {
-            CodexContentManager.instance.AddIngredientPage(GameDontDestroyOnLoadManager.Instance.UnlockedIngredients[i]);
+            CodexContentManager.instance.AddIngredientPage(GameDontDestroyOnLoadManager.Instance
+                .UnlockedIngredients[i]);
         }
+
         for (var x = 0; x < CodexContentManager.instance.ingredientPages.Count; x++)
         {
             if (CodexContentManager.instance.ingredientPages[x].associatedIngredient != newIngredientToDisplay)
@@ -207,9 +209,6 @@ public class Book : MonoBehaviour
             return;
         }
     }
-
-
-
 
 
     private void CalcCurlCriticalPoints()
@@ -227,22 +226,44 @@ public class Book : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
-
         UpdateBookmarks();
     }
 
     private void UpdateBookmarks()
     {
-        if (currentPage >= bookMarks[1].index && currentPage < bookMarks[2].index)
+        if (currentPage != bookPages.Count)
         {
-            pinRecipeUI.alpha = 1;
+            if (bookPages[currentPage].pageBehavior is RecipeCodexDisplay && (bookPages[currentPage].pageBehavior as RecipeCodexDisplay)?.storedPotion ==
+                PinnedRecipe.instance.pinnedRecipe)
+            {
+                if (!pinRecipeUI.gameObject.activeSelf)
+                    pinRecipeUI.gameObject.SetActive(true);
+            
+                pinRecipeUI.text = "Unpin this recipe";
+            }
+            else if (currentPage >= bookMarks[1].index && currentPage < bookMarks[2].index)
+            {
+                if (!pinRecipeUI.gameObject.activeSelf)
+                    pinRecipeUI.gameObject.SetActive(true);
+                pinRecipeUI.text = "Pin this recipe";
+            }
+            else if(PinnedRecipe.instance.pinnedRecipe)
+            {
+                if (!pinRecipeUI.gameObject.activeSelf)
+                    pinRecipeUI.gameObject.SetActive(true);
+            
+                pinRecipeUI.text = "Unpin recipe";
+            }
+            else
+            {
+                pinRecipeUI.gameObject.SetActive(false);
+            }
         }
-        else
-        {
-            pinRecipeUI.alpha = 0;
-        }
-        
+
+
+        pinRecipeUI.alpha = 1;
+
+
         for (int i = 0; i < bookMarks.Length; i++)
         {
             if (i == bookMarks.Length - 1)
@@ -286,14 +307,13 @@ public class Book : MonoBehaviour
 
         LeftNext.transform.SetParent(NextPageClip.transform, true);
         LeftNext.rectTransform.pivot = Vector2.right;
-        
     }
 
     public void UpdateBookLTRToPoint(Vector3 followLocation)
     {
         mode = FlipMode.LeftToRight;
         f = followLocation;
-        
+
         c = Calc_C_Position(followLocation);
         clipAngle = CalcClipAngle(c, ebl, out t1);
 
@@ -368,10 +388,10 @@ public class Book : MonoBehaviour
 
         NextPageClip.transform.localEulerAngles = new Vector3(0, 0, clipAngle + 90);
         NextPageClip.transform.position = BookPanel.TransformPoint(t1);
-        
+
         Left.transform.localEulerAngles = new Vector3(0, 0, -(clipAngle + 90));
         Left.transform.position = BookPanel.TransformPoint(new Vector3(0, t1.y, 0));
-        
+
         RightNext.transform.localEulerAngles = new Vector3(0, 0, -(clipAngle + 90));
         RightNext.transform.position = BookPanel.TransformPoint(new Vector3(0, t1.y, 0));
     }
@@ -611,7 +631,7 @@ public class Book : MonoBehaviour
             //Debug.Log("Set right background");
         }
 
-        
+
         if (currentPage + 2 < bookPages.Count)
         {
             bookPages[currentPage + 1].UIComponent.gameObject.SetActive(false);
@@ -633,33 +653,32 @@ public class Book : MonoBehaviour
     {
         if (mode == FlipMode.RightToLeft)
         {
-            
             bookPages[currentPage].UIComponent.gameObject.SetActive(false);
             bookPages[currentPage].UIComponent.transform.SetParent(GameDontDestroyOnLoadManager.Instance.transform);
             if (currentPage > 0)
             {
                 bookPages[currentPage - 1].UIComponent.gameObject.SetActive(false);
-                bookPages[currentPage - 1].UIComponent.transform.SetParent(GameDontDestroyOnLoadManager.Instance.transform);
-                
+                bookPages[currentPage - 1].UIComponent.transform
+                    .SetParent(GameDontDestroyOnLoadManager.Instance.transform);
             }
-            
+
             currentPage += 2 * pageFlips;
         }
         else
         {
-
             if (currentPage < bookPages.Count)
             {
                 bookPages[currentPage].UIComponent.gameObject.SetActive(false);
                 bookPages[currentPage].UIComponent.transform.SetParent(GameDontDestroyOnLoadManager.Instance.transform);
             }
+
             bookPages[currentPage - 1].UIComponent.gameObject.SetActive(false);
             bookPages[currentPage - 1].UIComponent.transform.SetParent(GameDontDestroyOnLoadManager.Instance.transform);
-            
+
             currentPage -= 2 * pageFlips;
             Right.rectTransform.pivot = Vector2.zero;
-            
         }
+
         Left.transform.SetParent(BookPanel.transform, true);
         LeftNext.transform.SetParent(BookPanel.transform, true);
         Left.gameObject.SetActive(false);
@@ -697,14 +716,13 @@ public class Book : MonoBehaviour
 
     public void JumpToPage(int pageIndex)
     {
-        
-        
         if (currentPage != bookPages.Count)
         {
             bookPages[currentPage].UIComponent.gameObject.SetActive(false);
             bookPages[currentPage].UIComponent.transform.SetParent(GameDontDestroyOnLoadManager.Instance.transform);
 //            Debug.Log(bookPages[currentPage].UIComponent.name, bookPages[currentPage].UIComponent); 
         }
+
 //        Debug.Log(currentPage);
         if (currentPage > 0)
         {
@@ -714,7 +732,7 @@ public class Book : MonoBehaviour
         }
 
         currentPage = pageIndex;
-        
+
         UpdateSprites();
     }
 }
