@@ -154,7 +154,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         }
 
         var camSettings = SimpleCameraBehavior.instance.TargetCamSettings;
-        HouseCameraBehavior.overrideCameraLerp = true;
+        ((HouseCameraBehavior)HouseCameraBehavior.instance).overrideCameraLerp = true;
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(sleepCam,0);
         SimpleCameraBehavior.instance.InstantCamUpdate(sleepCam);
         
@@ -183,7 +183,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         }
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(camSettings,0);
         SimpleCameraBehavior.instance.InstantCamUpdate(camSettings);
-        HouseCameraBehavior.overrideCameraLerp = false;
+        ((HouseCameraBehavior)HouseCameraBehavior.instance).overrideCameraLerp = false;
         CharacterAnimManager.instance.transform.position = spawnPoint.position;
         CharacterAnimManager.instance.transform.rotation = spawnPoint.rotation;
         CharacterMovementController.Instance.rb.constraints = RigidbodyConstraints.FreezeRotation;

@@ -83,7 +83,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
         IsChallengeActive = true;
         characterAnimator.SetTrigger(DoEnterBellows);
 
-        HouseCameraBehavior.overrideCameraLerp = true;
+        ((HouseCameraBehavior)HouseCameraBehavior.instance).overrideCameraLerp = true;
         _previousCameraPreset = SimpleCameraBehavior.instance.TargetCamSettings;
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(stirChallengeCameraPreset, cauldronCameraTransitionTime);
 
@@ -307,7 +307,7 @@ public class TemperatureHapticChallengeManager : MonoBehaviour
             cauldronCameraTransitionTime).OnComplete(
             () =>
             {
-                HouseCameraBehavior.overrideCameraLerp = false;
+                ((HouseCameraBehavior)HouseCameraBehavior.instance).overrideCameraLerp = false;
             });
     }
     

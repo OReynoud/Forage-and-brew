@@ -12,7 +12,7 @@ public class HouseCameraBehavior : SimpleCameraBehavior
 
     private float totalWeight;
 
-    public static bool overrideCameraLerp;
+    public bool overrideCameraLerp;
     // {
     //     get => true;
     //     set

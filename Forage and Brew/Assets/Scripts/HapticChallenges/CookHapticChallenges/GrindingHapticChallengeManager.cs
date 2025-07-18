@@ -157,7 +157,7 @@ public class GrindingHapticChallengeManager : MonoBehaviour
         CharacterInputManager.Instance.EnableGrindingHapticChallengeInputs();
         
         // Camera
-        HouseCameraBehavior.overrideCameraLerp = true;
+        ((HouseCameraBehavior)HouseCameraBehavior.instance).overrideCameraLerp = true;
         _previousCameraPreset = SimpleCameraBehavior.instance.TargetCamSettings;
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(grindingChallengeCameraPreset, grindingCameraTransitionTime);
 
@@ -200,7 +200,7 @@ public class GrindingHapticChallengeManager : MonoBehaviour
             grindingCameraTransitionTime).OnComplete(
             () =>
             {
-                HouseCameraBehavior.overrideCameraLerp = false;
+                ((HouseCameraBehavior)HouseCameraBehavior.instance).overrideCameraLerp = false;
             });
     }
     

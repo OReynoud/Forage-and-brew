@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using NaughtyAttributes;
 using UnityEditor;
@@ -113,7 +112,7 @@ public class ObjectToSitBehaviour : MonoBehaviour, ICinematicInteraction
         if (overrideCam)
         {
             
-            HouseCameraBehavior.overrideCameraLerp = true;
+            ((HouseCameraBehavior)HouseCameraBehavior.instance).overrideCameraLerp = true;
             SimpleCameraBehavior.instance.ApplyScriptableCamSettings(sitCam, sitCamTransitionTime);
         }
         yield return new WaitForSeconds(sitCamTransitionTime);
@@ -147,7 +146,7 @@ public class ObjectToSitBehaviour : MonoBehaviour, ICinematicInteraction
         CharacterMovementController.Instance.rb.constraints = RigidbodyConstraints.FreezeRotation;
         Debug.Log("Stand");
         localCanvas.SetActive(true);
-        HouseCameraBehavior.overrideCameraLerp = false;
+        ((HouseCameraBehavior)HouseCameraBehavior.instance).overrideCameraLerp = false;
         CharacterInputManager.Instance.EnableInputs();
         
         OnCouchExitEvent.RemoveListener(ReceiveExitCouchEvent);

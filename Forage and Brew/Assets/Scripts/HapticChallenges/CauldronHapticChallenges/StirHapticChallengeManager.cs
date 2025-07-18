@@ -193,7 +193,7 @@ public class StirHapticChallengeManager : MonoBehaviour
         if (!CurrentCauldron) return;
         
         // Camera
-        HouseCameraBehavior.overrideCameraLerp = true;
+        ((HouseCameraBehavior)HouseCameraBehavior.instance).overrideCameraLerp = true;
         _previousCameraPreset = SimpleCameraBehavior.instance.TargetCamSettings;
 
         // Character
@@ -396,7 +396,7 @@ public class StirHapticChallengeManager : MonoBehaviour
             cauldronCameraTransitionTime).OnComplete(
             () =>
             {
-                HouseCameraBehavior.overrideCameraLerp = false;
+                ((HouseCameraBehavior)HouseCameraBehavior.instance).overrideCameraLerp = false;
             });
     }
     

@@ -87,7 +87,7 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         
         // Camera
         _previousCameraPreset = SimpleCameraBehavior.instance.TargetCamSettings;
-        HouseCameraBehavior.overrideCameraLerp = true;
+        ((HouseCameraBehavior)HouseCameraBehavior.instance).overrideCameraLerp = true;
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(choppingChallengeCameraPreset, choppingCameraTransitionTime);
 
         // Character
@@ -127,7 +127,7 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
             choppingCameraTransitionTime).OnComplete(
             () =>
             {
-                HouseCameraBehavior.overrideCameraLerp = false;
+                ((HouseCameraBehavior)HouseCameraBehavior.instance).overrideCameraLerp = false;
             });
     }
     
