@@ -26,6 +26,7 @@ public class HouseCameraBehavior : SimpleCameraBehavior
     {
         base.Awake();
         cameraTriggerBehavior.AddListener(UpdateUsingCamerasList);
+        applyXYClamping = true;
     }
 
     private HouseCameraSettingsBehavior temp;
@@ -39,6 +40,7 @@ public class HouseCameraBehavior : SimpleCameraBehavior
             return;
         }
         transform.parent.position = Vector3.Lerp(transform.parent.position, player.position + cameraOffset, positionLerp);
+        transform.parent.position = ClampCamPos(transform.parent.position);
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(cameraRotation), rotationLerp);
         
         transform.localPosition =

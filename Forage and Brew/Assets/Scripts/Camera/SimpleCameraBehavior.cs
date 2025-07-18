@@ -41,7 +41,7 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
 
     public float transitionTime = 0.001f;
     [SerializeField] [ReadOnly] private float counter;
-    [SerializeField] [ReadOnly] private bool applyXYClamping;
+    [SerializeField] [ReadOnly] protected bool applyXYClamping;
     [SerializeField] [ReadOnly] private bool applyZClamping;
 
     private Dictionary<string, bool> UsingCamPosToBlendClamps = new Dictionary<string, bool>();
@@ -288,7 +288,7 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
 
     }
 
-    private Vector3 ClampCamPos(Vector3 position)
+    protected Vector3 ClampCamPos(Vector3 position)
     {
         if (!applyXYClamping || GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge)
             return position;
