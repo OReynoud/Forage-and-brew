@@ -64,7 +64,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         CharacterInputManager.Instance.DisableMailInputs();
 
         moneyDisplayGameObject.SetActive(false);
-        if (GeneratedLetters.Count == 0)
+        if (GameDontDestroyOnLoadManager.Instance.MailBoxLetters.Count == 0)
         {
             letterBoxTrigger.enabled = false;
             letterBoxAnimator.SetBool(IsEmpty, true);
