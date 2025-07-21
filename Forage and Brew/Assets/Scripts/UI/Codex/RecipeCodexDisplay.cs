@@ -41,14 +41,20 @@ public class RecipeCodexDisplay : PageBehavior
     private bool doDissolve;
     private float dissolveTimer;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    
     void Awake()
     {
         DisableAll();
-        leftPageDissolve.material.SetFloat(Ex.CutoffHeight, 0);
+        
+        Material mat = Instantiate(leftPageDissolve.material);
+        mat.SetFloat(Ex.CutoffHeight, 0);
+        leftPageDissolve.material = mat;
 
-        rightPageDissolve.material.SetFloat(Ex.CutoffHeight, 0);
+        Material mat2 = Instantiate(rightPageDissolve.material);
+        mat2.SetFloat(Ex.CutoffHeight, 0);
+        rightPageDissolve.material = mat2;
     }
+    
 
     public void DisableAll()
     {
@@ -65,21 +71,17 @@ public class RecipeCodexDisplay : PageBehavior
             singleActionImage[i].gameObject.SetActive(false);
             stepText[i].transform.parent.gameObject.SetActive(false);
         }
-
-
-        foreach (var VARIABLE in potionDifficulty)
+        
+        foreach (GameObject difficultyGameObject in potionDifficulty)
         {
-            VARIABLE.SetActive(false);
+            difficultyGameObject.SetActive(false);
         }
     }
 
 
     public void StartDissolve()
     {
-
-
         doDissolve = true;
-
 
         AutoFlip.instance.ControledBook.discoveryAudio.Play();
     }
@@ -89,9 +91,14 @@ public class RecipeCodexDisplay : PageBehavior
         if (!doDissolve) return;
 
         dissolveTimer += Time.deltaTime;
-
-        leftPageDissolve.material.SetFloat(Ex.CutoffHeight, animCurveDissolve.Evaluate(dissolveTimer));
-        rightPageDissolve.material.SetFloat(Ex.CutoffHeight, animCurveDissolve.Evaluate(dissolveTimer));
+        
+        Material mat = Instantiate(leftPageDissolve.material);
+        mat.SetFloat(Ex.CutoffHeight, animCurveDissolve.Evaluate(dissolveTimer));
+        leftPageDissolve.material = mat;
+        
+        Material mat2 = Instantiate(rightPageDissolve.material);
+        mat2.SetFloat(Ex.CutoffHeight, animCurveDissolve.Evaluate(dissolveTimer));
+        rightPageDissolve.material = mat2;
 
         //Debug.Log(rightPageDissolve.material.GetFloat(Ex.CutoffHeight));
         if (dissolveTimer > animCurveDissolve.keys[^1].time)
@@ -270,8 +277,13 @@ public class RecipeCodexDisplay : PageBehavior
 
     public void RemoveDissolve()
     {
-        leftPageDissolve.material.SetFloat(Ex.CutoffHeight, 1);
-        rightPageDissolve.material.SetFloat(Ex.CutoffHeight, 1);
+        Material mat = Instantiate(leftPageDissolve.material);
+        mat.SetFloat(Ex.CutoffHeight, 1);
+        leftPageDissolve.material = mat;
+
+        Material mat2 = Instantiate(rightPageDissolve.material);
+        mat2.SetFloat(Ex.CutoffHeight, 1);
+        rightPageDissolve.material = mat2;
     }
 
     public override void PlacePageNumberText()

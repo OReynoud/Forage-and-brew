@@ -205,7 +205,10 @@ public class Book : MonoBehaviour
 
             var display = CodexContentManager.instance.ingredientPages[x];
 
-            display.disolveImage.material.SetFloat(Ex.CutoffHeight, 1);
+            Material matInstance = Instantiate(display.disolveImage.material);
+            matInstance.SetFloat(Ex.CutoffHeight, 1);
+            display.disolveImage.material = matInstance;
+            
             return;
         }
     }
