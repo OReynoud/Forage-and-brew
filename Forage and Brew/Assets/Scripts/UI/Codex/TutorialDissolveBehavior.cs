@@ -22,7 +22,15 @@ public class TutorialDissolveBehavior : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (GameDontDestroyOnLoadManager.Instance.codexIsUnlocked)
+        {
+            Material mat = Instantiate(DissolveImage.material);
+            DissolveImage.material.SetFloat(Ex.CutoffHeight, 1);
+            DissolveImage.material = mat;
+            return;
+        }
         CodexContentManager.instance.tutorialDissolves.Add(dissolveID, this);
+        
         if (autoAdd)
         {
             CodexContentManager.instance.tutorialDissolvesToCheck.Insert(1, dissolveID);
