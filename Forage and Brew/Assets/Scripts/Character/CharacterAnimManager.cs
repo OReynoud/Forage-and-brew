@@ -54,7 +54,7 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
 
     private void UseCodex(bool state)
     {
-
+        Debug.Log(state);
         if (state)
         {
             animator.SetTrigger(DoCodexOpen);

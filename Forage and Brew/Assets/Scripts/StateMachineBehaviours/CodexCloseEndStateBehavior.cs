@@ -16,11 +16,12 @@ public class CodexCloseEndStateBehavior : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        //Debug.Log(stateInfo.normalizedTime);
         animator.SetLayerWeight(animator.GetLayerIndex("Walk_LowerBody"),1 - stateInfo.normalizedTime/1.2f);
         
         animator.SetLayerWeight(animator.GetLayerIndex("Walk_FullBody"),stateInfo.normalizedTime/1.2f);
         if (isExitTriggered) return;
-        if (stateInfo.normalizedTime > 1.1f)
+        if (stateInfo.normalizedTime > 0.95f)
         {
             isExitTriggered = true;
             CharacterAnimManager.instance.codexObject.SetActive(false);
