@@ -20,6 +20,8 @@ public class HouseCameraBehavior : SimpleCameraBehavior
     //         Debug.Log(value);
     //     }
     // }
+
+    public Vector3 aimedPos;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void Awake()
@@ -39,8 +41,16 @@ public class HouseCameraBehavior : SimpleCameraBehavior
             base.FixedUpdate();
             return;
         }
-        transform.parent.position = Vector3.Lerp(transform.parent.position, player.position + cameraOffset, positionLerp);
-        transform.parent.position = ClampCamPos(transform.parent.position);
+
+        if (allHouseCameraSettings.Count <= 1)
+        {
+            transform.parent.position = Vector3.Lerp(transform.parent.position, player.position + cameraOffset, positionLerp);
+            transform.parent.position = ClampCamPos(transform.parent.position);
+        }
+        else
+        {
+            transform.parent.position = Vector3.Lerp(transform.parent.position, aimedPos, positionLerp * 3);
+        }
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(cameraRotation), rotationLerp);
         
         transform.localPosition =
@@ -73,6 +83,7 @@ public class HouseCameraBehavior : SimpleCameraBehavior
         posMaxClamp = Vector3.zero;
         if (Vector3.Distance(mainCameraPreset.transform.position,player.position) < mainCameraPreset.settings.triggerDistance)
         {
+            aimedPos = Vector3.zero;
             for (int i = 0; i < allHouseCameraSettings.Count; i++)
             {
                 CalculateWeight(i);
@@ -81,6 +92,12 @@ public class HouseCameraBehavior : SimpleCameraBehavior
 
             for (int i = 0; i < allHouseCameraSettings.Count; i++)
             {
+                        
+                aimedPos += ClampCamPos(
+                    player.position + allHouseCameraSettings[i].settings.cameraPreset.cameraOffset,
+                    allHouseCameraSettings[i].settings.cameraPreset.posMaxClamp,
+                    allHouseCameraSettings[i].settings.cameraPreset.posMinClamp) * cameraSettingsWeights[i] / totalWeight;
+                
                 if (totalWeight > 0.1f)
                 {
                     ApplyWeightedSettings(i);
@@ -90,6 +107,8 @@ public class HouseCameraBehavior : SimpleCameraBehavior
                 
                 break;
             }
+
+            //aimedPos /= allHouseCameraSettings.Count;
         }
         else
         {
@@ -127,6 +146,7 @@ public class HouseCameraBehavior : SimpleCameraBehavior
         cameraSettingsWeights[i] =
             1 - Vector3.Distance(allHouseCameraSettings[i].transform.position, player.position) / allHouseCameraSettings[i].settings.triggerDistance;
         totalWeight += cameraSettingsWeights[i];
+
     }
 
     void ApplyWeightedSettings(int i)
@@ -136,6 +156,9 @@ public class HouseCameraBehavior : SimpleCameraBehavior
         cameraRotation += allHouseCameraSettings[i].settings.cameraPreset.cameraRotation * cameraSettingsWeights[i] / totalWeight;
         posMaxClamp += allHouseCameraSettings[i].settings.cameraPreset.posMaxClamp * cameraSettingsWeights[i] / totalWeight;
         posMinClamp += allHouseCameraSettings[i].settings.cameraPreset.posMinClamp * cameraSettingsWeights[i] / totalWeight;
+
+
+
     }
 
     void ApplySettings()
@@ -176,5 +199,36 @@ public class HouseCameraBehavior : SimpleCameraBehavior
         transform.localPosition = -transform.forward * distanceFromPlayer;
         
         mainCameraPreset = null;
+    }
+
+    protected Vector3 ClampCamPos(Vector3 position, Vector3 MaxClamp, Vector3 MinClamp)
+    {
+        if (!applyXYClamping || GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge)
+            return position;
+
+        if (position.x > MaxClamp.x)
+        {
+            position = new Vector3(MaxClamp.x, position.y, position.z);
+        }
+
+        if (position.x < MinClamp.x)
+        {
+            position =
+                new Vector3(MinClamp.x, position.y, position.z);
+        }
+
+        if (position.z > MaxClamp.y)
+        {
+            position =
+                new Vector3(position.x, position.y, MaxClamp.y);
+        }
+
+        if (position.z < MinClamp.y)
+        {
+            position =
+                new Vector3(position.x, position.y, MinClamp.y);
+        }
+        
+        return position;
     }
 }

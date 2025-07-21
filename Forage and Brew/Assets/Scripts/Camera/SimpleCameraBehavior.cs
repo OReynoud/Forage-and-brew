@@ -94,20 +94,10 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
             ApplyScriptableCamSettings();
             //Debug.Log(transform.localRotation.eulerAngles);
         }
-
-        SetupBlendClampBools();
     }
 
 
-    void SetupBlendClampBools()
-    {
-        // UsingCamPosToBlendClamps.Add("XMax", false);
-        // UsingCamPosToBlendClamps.Add("YMax", false);
-        // UsingCamPosToBlendClamps.Add("ZMax", false);
-        // UsingCamPosToBlendClamps.Add("XMin", false);
-        // UsingCamPosToBlendClamps.Add("YMin", false);
-        // UsingCamPosToBlendClamps.Add("ZMin", false);
-    }
+
 
     [Button]
     public void ApplyScriptableCamSettings()
@@ -192,12 +182,6 @@ public class SimpleCameraBehavior : Singleton<SimpleCameraBehavior>
                          Mathf.Abs(TargetCamSettings.posMinClamp.z) >= 1;
         
         // Debug.Log("Cam Settings: " + preset.name);
-        // UsingCamPosToBlendClamps["XMax"] = previousCamSettings.posMaxClamp.x != TargetCamSettings.posMaxClamp.x;
-        // UsingCamPosToBlendClamps["YMax"] = previousCamSettings.posMaxClamp.y != TargetCamSettings.posMaxClamp.y;
-        // UsingCamPosToBlendClamps["ZMax"] = previousCamSettings.posMaxClamp.z != TargetCamSettings.posMaxClamp.z;
-        // UsingCamPosToBlendClamps["XMin"] = previousCamSettings.posMinClamp.x != TargetCamSettings.posMinClamp.x;
-        // UsingCamPosToBlendClamps["YMin"] = previousCamSettings.posMinClamp.y != TargetCamSettings.posMinClamp.y;
-        // UsingCamPosToBlendClamps["ZMin"] = previousCamSettings.posMinClamp.z != TargetCamSettings.posMinClamp.z;
     }
 
     private void ApplyScriptableCamSettings(float TransitionTime)
