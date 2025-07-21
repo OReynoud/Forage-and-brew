@@ -43,9 +43,12 @@ public class CharacterInputManager : MonoBehaviour
     {
         if (CodexContentManager.instance.pageIndexesToCheck.Count > 0)
         {
-            if (_inputs.Player.Move.ReadValue<Vector2>().x < 0.5f) return;
+            if (_inputs.Player.Move.ReadValue<Vector2>().x > 0.5f && CodexContentManager.instance.pageIndexesToCheck[^1] > AutoFlip.instance.ControledBook.currentPage ||
+                _inputs.Player.Move.ReadValue<Vector2>().x < -0.5f && CodexContentManager.instance.pageIndexesToCheck[^1] < AutoFlip.instance.ControledBook.currentPage )
+            {
+                AutoFlip.instance.ContinuePageDiscovery();
+            }
         
-            AutoFlip.instance.ContinuePageDiscovery();
         }
         else if (showCodex)
         {

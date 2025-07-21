@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class JoystickAnimationManagerBehaviour : MonoBehaviour
 {
-    [SerializeField] private JoystickAnimationValuesSo joystickAnimationValuesSo;
+    [SerializeField] public JoystickAnimationValuesSo joystickAnimationValuesSo;
     [SerializeField] private RectTransform animatedJoystickRectTransform;
     
     public float AnimationDuration { get; set; }

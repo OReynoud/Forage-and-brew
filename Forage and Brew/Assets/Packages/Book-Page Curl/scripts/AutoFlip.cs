@@ -11,7 +11,10 @@ public class AutoFlip : Singleton<AutoFlip>
     [BoxGroup("References")] public RectTransform codexTransform;
     [BoxGroup("References")] public RectTransform codexProportions;
     [BoxGroup("References")] public Book ControledBook;
-    [BoxGroup("References")] public GameObject PageFlipIndication;
+    [BoxGroup("References")] public JoystickAnimationManagerBehaviour PageFlipIndication;
+    
+    [BoxGroup("References")] public JoystickAnimationValuesSo rightFlipAnim;
+    [BoxGroup("References")] public JoystickAnimationValuesSo leftFlipAnim;
 
     [BoxGroup("Page Flipping")] public float PageFlipTime = 1;
     [BoxGroup("Page Flipping")] public float acceleratedFlipTime = 0.2f;
@@ -344,6 +347,7 @@ public class AutoFlip : Singleton<AutoFlip>
 
     public void ContinuePageDiscovery(bool startupDelay = false)
     {
+        
         presentNewCodexContentContainer = StartCoroutine(PresentNewCodexContent(startupDelay));
     }
 
@@ -353,7 +357,7 @@ public class AutoFlip : Singleton<AutoFlip>
             yield return new WaitWhile(() => !CharacterInputManager.Instance.showCodex);
 
         CharacterInputManager.Instance.DisableMoveInputs();
-        PageFlipIndication.SetActive(false);
+        PageFlipIndication.gameObject.SetActive(false);
         if (CodexContentManager.instance.pageIndexesToCheck.Count > 0)
         {
             yield return new WaitForSeconds(0.1f);
@@ -396,14 +400,25 @@ public class AutoFlip : Singleton<AutoFlip>
                 }
             }
 
+            
 
-            PageFlipIndication.SetActive(true);
+            
             CharacterInputManager.Instance.EnableMoveInputs();
             CodexContentManager.instance.pageIndexesToCheck.RemoveAt(CodexContentManager.instance.pageIndexesToCheck
                 .Count - 1);
 
             if (CodexContentManager.instance.pageIndexesToCheck.Count == 0)
+            {
+                
+                
                 presentNewCodexContentContainer = StartCoroutine(PresentNewCodexContent(false));
+            }
+            else
+            {
+                PageFlipIndication.gameObject.SetActive(true);
+                PageFlipIndication.joystickAnimationValuesSo = 
+                    ControledBook.currentPage < CodexContentManager.instance.pageIndexesToCheck[^1] ? leftFlipAnim : rightFlipAnim;
+            }
 
             yield break;
         }
