@@ -65,7 +65,11 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         
             if (GameDontDestroyOnLoadManager.Instance.CurrentScene is Scene.Biome1 or Scene.Biome2)
             {
-                AddListeners();
+                AddBiomeListeners();
+            }
+            else
+            {
+                AddHouseListeners();
             }
         
         
@@ -73,6 +77,8 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
             CharacterInputManager.Instance.EnableInputs();
         }));
     }
+
+
 
     public void FixedUpdate()
     {
@@ -225,22 +231,41 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
     }
 
     
-    void AddListeners()
+    void AddBiomeListeners()
     {
-        Debug.Log("Adding Listeners");
+        Debug.Log("Adding Biome Listeners");
+        CollectHapticChallengeManager.Instance.UpdateCounters.RemoveAllListeners();
         foreach (var recipeDisplay in CodexContentManager.instance.recipes)
         {
             foreach (var container in recipeDisplay.ingredientDisplayContainers)
             {
-                container.AddListener();
+                container.AddCollectListener();
             }
         }
 
         foreach (var ingredientDisplay in CodexContentManager.instance.ingredientPages)
         {
-            ingredientDisplay.ingredientCounter.AddListener();
+            ingredientDisplay.ingredientCounter.AddCollectListener();
         }
         
+    }
+    
+    private void AddHouseListeners()
+    {
+        StirHapticChallengeManager.Instance.OnAddIngredient.RemoveAllListeners();
+        Debug.Log("Adding House Listeners");
+        foreach (var recipeDisplay in CodexContentManager.instance.recipes)
+        {
+            foreach (var container in recipeDisplay.ingredientDisplayContainers)
+            {
+                container.AddCauldronListener();
+            }
+        }    
+        
+        foreach (var ingredientDisplay in CodexContentManager.instance.ingredientPages)
+        {
+            ingredientDisplay.ingredientCounter.AddCauldronListener();
+        }
     }
     
 }

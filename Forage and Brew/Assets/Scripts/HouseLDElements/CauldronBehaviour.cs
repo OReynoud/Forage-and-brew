@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddable
 {
@@ -17,6 +19,7 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
     [SerializeField] private AudioSource checkInputFinalAudioSource;
     [SerializeField] private AudioSource brewingAudioSource;
     [SerializeField] private List<AudioClip> brewingAudioClips;
+
     
     
     private void Start()
@@ -78,6 +81,8 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
     private void DestroyIngredient(CollectedIngredientBehaviour collectedIngredientBehaviour)
     {
         Destroy(collectedIngredientBehaviour.gameObject);
+        if (StirHapticChallengeManager.Instance.OnAddIngredient != null)
+            StirHapticChallengeManager.Instance.OnAddIngredient.Invoke(collectedIngredientBehaviour.IngredientValuesSo);
     }
     
     public void AddTemperature(Temperature temperature)

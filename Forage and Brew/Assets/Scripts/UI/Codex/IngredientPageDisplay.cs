@@ -140,7 +140,7 @@ public class IngredientPageDisplay : PageBehavior
         typeImage.sprite = associatedIngredient.Type.IconLow;
         
         ingredientCounter.trackedIngredient = ingredientToDisplay;
-        ingredientCounter.AddListener();
+        ingredientCounter.AddCollectListener();
         ingredientCounter.UpdateDisplay(ingredientToDisplay);
 
         Debug.Log("Init ingredient");

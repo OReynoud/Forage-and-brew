@@ -14,16 +14,16 @@ public class IngredientCounterContainer : MonoBehaviour
         
     }
 
-    public void AddListener()
+    public void AddCollectListener()
     {
         CollectHapticChallengeManager.Instance.UpdateCounters.AddListener(UpdateDisplay);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void AddCauldronListener()
     {
-        
+        StirHapticChallengeManager.Instance.OnAddIngredient.AddListener(UpdateDisplay);
     }
+
 
     public void UpdateDisplay(IngredientValuesSo ingredientToCheck)
     {

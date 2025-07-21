@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -60,6 +61,9 @@ public class StirHapticChallengeManager : MonoBehaviour
     private static readonly int IsStirring = Animator.StringToHash("IsStirring");
     private static readonly int PotionSuccess = Animator.StringToHash("PotionSuccess");
     private static readonly int PotionFail = Animator.StringToHash("PotionFail");
+    
+    
+    public UnityEvent<IngredientValuesSo> OnAddIngredient = new();
 
 
     private void Awake()

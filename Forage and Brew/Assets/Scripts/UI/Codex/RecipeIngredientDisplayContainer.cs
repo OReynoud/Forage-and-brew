@@ -19,9 +19,14 @@ public class RecipeIngredientDisplayContainer : MonoBehaviour
     public int ingredientLimit;
 
 
-    public void AddListener()
+    public void AddCollectListener()
     {
         CollectHapticChallengeManager.Instance.UpdateCounters.AddListener(UpdateSelf);
+    }
+
+    public void AddCauldronListener()
+    {
+        StirHapticChallengeManager.Instance.OnAddIngredient.AddListener(UpdateSelf);
     }
 
     // Update is called once per frame
@@ -61,7 +66,7 @@ public class RecipeIngredientDisplayContainer : MonoBehaviour
             }
         }
 
-        if (counter > requiredIngredientAmount)
+        if (counter >= requiredIngredientAmount)
         {
             ingredientStateHighlight.sprite = ingredientStateSprites[0];
             ingredientStateHighlight.color = ingredientStateColors[0];
