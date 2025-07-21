@@ -233,11 +233,11 @@ public class Book : MonoBehaviour
     {
         if (currentPage != bookPages.Count)
         {
-            UpdatePinRecipeUI(1);
+            UpdatePinRecipeUI(0);
         }
         else
         {
-            UpdatePinRecipeUI(0);
+            UpdatePinRecipeUI(1);
         }
 
 

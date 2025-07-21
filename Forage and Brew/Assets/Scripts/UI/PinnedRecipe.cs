@@ -51,7 +51,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
     [BoxGroup("Recipe Steps")] public Image[] checkMarkImage;
     private List<Sprite> tempCollectedIngredientsList = new List<Sprite>();
 
-    public bool isInHouse { get; set; } = false;
+    [field: SerializeField]public bool isInHouse { get; set; } = true;
 
 
     public void Start()
@@ -72,6 +72,12 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         if (TemperatureHapticChallengeManager.Instance.IsChallengeActive)
         {
             canShow = true;
+            return;
+        }
+
+        if (isInHouse)
+        {
+            canShow = false;
             return;
         }
         canShow = arg0;
