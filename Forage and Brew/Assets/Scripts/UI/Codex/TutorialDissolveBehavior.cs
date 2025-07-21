@@ -1,6 +1,5 @@
 using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class TutorialDissolveBehavior : MonoBehaviour
@@ -22,17 +21,19 @@ public class TutorialDissolveBehavior : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Material mat = Instantiate(DissolveImage.material);
+        
         if (GameDontDestroyOnLoadManager.Instance.codexIsUnlocked)
         {
-            Material mat = Instantiate(DissolveImage.material);
-            DissolveImage.material.SetFloat(Ex.CutoffHeight, 1);
+            mat.SetFloat(Ex.CutoffHeight, 1);
             DissolveImage.material = mat;
+            
             return;
         }
-        else
-        {
-            DissolveImage.material.SetFloat(Ex.CutoffHeight, 0);
-        }
+
+        mat.SetFloat(Ex.CutoffHeight, 0);
+        DissolveImage.material = mat;
+        
         CodexContentManager.instance.tutorialDissolves.Add(dissolveID, this);
         
         if (autoAdd)
@@ -44,13 +45,11 @@ public class TutorialDissolveBehavior : MonoBehaviour
     public void StartDissolve()
     {
         Material mat = Instantiate(DissolveImage.material);
-        DissolveImage.material.SetFloat(Ex.CutoffHeight, 0);
+        mat.SetFloat(Ex.CutoffHeight, 0);
         DissolveImage.material = mat;
-
-
+        
         doDissolve = true;
-
-
+        
         AutoFlip.instance.ControledBook.discoveryAudio.Play();
     }
 
@@ -60,7 +59,9 @@ public class TutorialDissolveBehavior : MonoBehaviour
 
         dissolveTimer += Time.deltaTime;
 
-        DissolveImage.material.SetFloat(Ex.CutoffHeight, animCurveDissolve.Evaluate(dissolveTimer));
+        Material mat = Instantiate(DissolveImage.material);
+        mat.SetFloat(Ex.CutoffHeight, animCurveDissolve.Evaluate(dissolveTimer));
+        DissolveImage.material = mat;
 
         if (dissolveTimer > animCurveDissolve.keys[^1].time)
         {

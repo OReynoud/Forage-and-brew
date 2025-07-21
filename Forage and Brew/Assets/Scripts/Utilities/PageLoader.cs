@@ -78,7 +78,9 @@ public class PageLoader : MonoBehaviour
                 break;
             case IngredientPageDisplay ingredient:
                 ingredient.InitIngredient(ingredientToLoad);
-                ingredient.disolveImage.material.SetFloat(Ex.CutoffHeight, 0);
+                Material matInstance = Instantiate(ingredient.disolveImage.material);
+                matInstance.SetFloat(Ex.CutoffHeight, 0);
+                ingredient.disolveImage.material = matInstance;
                 ingredient.disolveImage.transform.SetParent(loadedPageBehavior.transform);
                 ingredient.disolveImage.transform.SetAsFirstSibling();
                 break;

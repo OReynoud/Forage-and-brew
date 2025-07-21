@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -34,20 +33,18 @@ public class IngredientPageDisplay : PageBehavior
     public float animationTime;
 
     public bool doDissolve;
-
+    
 
     private void OnDisable()
     {
         Debug.Log("Disabled", gameObject);
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
-    void StartDissolve()
+    private void StartDissolve()
     {
         Material matInstance = Instantiate(disolveImage.material);
+        matInstance.SetFloat(Ex.CutoffHeight, 0);
         disolveImage.material = matInstance;
-        disolveImage.material.SetFloat("_Cutoff_Height", 0);
         delayTime = CodexContentManager.instance.ingredientDissolveDelay;
         animationTime = dissolveCurve.keys[^1].time;
         doDissolve = true;
@@ -57,8 +54,8 @@ public class IngredientPageDisplay : PageBehavior
         disolveImage.sprite = AutoFlip.instance.ControledBook.bookPages.Find(x => x.pageBehavior == this).pageSprite;
         //Debug.Log("Init Dissolve");
     }
-    // Update is called once per frame
-    void Update()
+
+    private void Update()
     {
         if (!doDissolve) return;
         if (delayTimer < delayTime)
@@ -68,8 +65,10 @@ public class IngredientPageDisplay : PageBehavior
         }
         
         dissolveTimer += Time.deltaTime;
-            
-        disolveImage.material.SetFloat(Ex.CutoffHeight, dissolveCurve.Evaluate(dissolveTimer));
+        
+        Material matInstance = Instantiate(disolveImage.material);
+        matInstance.SetFloat(Ex.CutoffHeight, dissolveCurve.Evaluate(dissolveTimer));
+        disolveImage.material = matInstance;
 
         if (dissolveTimer > animationTime)
         {
