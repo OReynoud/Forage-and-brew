@@ -45,7 +45,9 @@ public class RecipeCodexDisplay : PageBehavior
     void Awake()
     {
         DisableAll();
-        
+        leftPageDissolve.material.SetFloat(Ex.CutoffHeight, 0);
+
+        rightPageDissolve.material.SetFloat(Ex.CutoffHeight, 0);
     }
 
     public void DisableAll()
@@ -74,13 +76,7 @@ public class RecipeCodexDisplay : PageBehavior
 
     public void StartDissolve()
     {
-        Material mat = Instantiate(leftPageDissolve.material);
-        leftPageDissolve.material.SetFloat(Ex.CutoffHeight, 0);
-        leftPageDissolve.material = mat;
 
-        Material mat2 = Instantiate(rightPageDissolve.material);
-        rightPageDissolve.material.SetFloat(Ex.CutoffHeight, 0);
-        rightPageDissolve.material = mat2;
 
         doDissolve = true;
 
