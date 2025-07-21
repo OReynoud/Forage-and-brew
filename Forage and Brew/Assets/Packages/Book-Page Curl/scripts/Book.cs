@@ -233,31 +233,11 @@ public class Book : MonoBehaviour
     {
         if (currentPage != bookPages.Count)
         {
-            if (bookPages[currentPage].pageBehavior is RecipeCodexDisplay && (bookPages[currentPage].pageBehavior as RecipeCodexDisplay)?.storedPotion ==
-                PinnedRecipe.instance.pinnedRecipe)
-            {
-                if (!pinRecipeUI.gameObject.activeSelf)
-                    pinRecipeUI.gameObject.SetActive(true);
-            
-                pinRecipeUI.text = "Unpin this recipe";
-            }
-            else if (currentPage >= bookMarks[1].index && currentPage < bookMarks[2].index)
-            {
-                if (!pinRecipeUI.gameObject.activeSelf)
-                    pinRecipeUI.gameObject.SetActive(true);
-                pinRecipeUI.text = "Pin this recipe";
-            }
-            else if(PinnedRecipe.instance.pinnedRecipe)
-            {
-                if (!pinRecipeUI.gameObject.activeSelf)
-                    pinRecipeUI.gameObject.SetActive(true);
-            
-                pinRecipeUI.text = "Unpin recipe";
-            }
-            else
-            {
-                pinRecipeUI.gameObject.SetActive(false);
-            }
+            UpdatePinRecipeUI(1);
+        }
+        else
+        {
+            UpdatePinRecipeUI(0);
         }
 
 
@@ -296,6 +276,35 @@ public class Book : MonoBehaviour
                     bookMarks[i].UIComponent.anchoredPosition,
                     bookMarks[i].basePos, bookmarkLerp);
             }
+        }
+    }
+
+    void UpdatePinRecipeUI(int compensation)
+    {
+        if (bookPages[currentPage - compensation].pageBehavior is RecipeCodexDisplay && (bookPages[currentPage - compensation].pageBehavior as RecipeCodexDisplay)?.storedPotion ==
+            PinnedRecipe.instance.pinnedRecipe)
+        {
+            if (!pinRecipeUI.gameObject.activeSelf)
+                pinRecipeUI.gameObject.SetActive(true);
+            
+            pinRecipeUI.text = "Unpin this recipe";
+        }
+        else if (currentPage >= bookMarks[1].index && currentPage < bookMarks[2].index)
+        {
+            if (!pinRecipeUI.gameObject.activeSelf)
+                pinRecipeUI.gameObject.SetActive(true);
+            pinRecipeUI.text = "Pin this recipe";
+        }
+        else if(PinnedRecipe.instance.pinnedRecipe)
+        {
+            if (!pinRecipeUI.gameObject.activeSelf)
+                pinRecipeUI.gameObject.SetActive(true);
+            
+            pinRecipeUI.text = "Unpin recipe";
+        }
+        else
+        {
+            pinRecipeUI.gameObject.SetActive(false);
         }
     }
 
