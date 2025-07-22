@@ -167,6 +167,7 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.Unearth1.Enable();
         _inputs.Player.Unearth2.Enable();
         _inputs.Player.Harvest.Enable();
+        _inputs.Player.Weeding.Enable();
         EnableChoppingHapticChallengeInputs();
         EnableGrindingHapticChallengeInputs();
         EnableTemperatureHapticChallengeInputs();
@@ -277,6 +278,7 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.Unearth1.Disable();
         _inputs.Player.Unearth2.Disable();
         _inputs.Player.Harvest.Disable();
+        _inputs.Player.Weeding.Disable();
         DisableChoppingHapticChallengeInputs();
         DisableGrindingHapticChallengeInputs();
         DisableTemperatureHapticChallengeInputs();

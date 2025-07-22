@@ -160,6 +160,8 @@ public class CollectHapticChallengeManager : MonoBehaviour
         
             foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
             {
+                if (ingredientToCollectBehaviour.IsWeed) continue;
+                
                 if (ingredientToCollectBehaviour.IngredientValuesSo.Type != unearthingIngredientType) continue;
             
                 _currentIngredientToCollectBehaviour = ingredientToCollectBehaviour;
