@@ -5054,6 +5054,7 @@ MonoBehaviour:
   walkSwamp: {fileID: 6418180475301049370, guid: ed3af8fec8a1996478a0ed4ad10d6bef, type: 2}
   classicClothes: {fileID: 454140007495795361}
   rainClothes: {fileID: 6435402704340558422}
+  coll: {fileID: 0}
   walkSpeed: 4.5
   runSpeed: 7.5
   rotationSpeed: 0.177
@@ -5200,6 +5201,9 @@ MonoBehaviour:
   characterAnimator: {fileID: 6109746235251564882}
   characterStirPosition: {x: 0, y: 0, z: 2}
   characterStirRotation: {x: 0, y: 180, z: 0}
+  OnAddIngredient:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &716087170929209681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5351,6 +5355,7 @@ MonoBehaviour:
   codexObject: {fileID: 642994282701801207}
   dropShadow: {fileID: 6427702462320910211}
   isSitting: 0
+  numberOfAfksToBlend: 2
   sitCurve:
     serializedVersion: 2
     m_Curve:
@@ -5404,6 +5409,8 @@ MonoBehaviour:
   maxTimeBetweenFlick: 10
   timeBeforeAfk: 10
   layerIndexesToCheckForAfk: 000000000100000002000000060000000a0000000c0000000e000000
+  MinTimeBetweenLooks: 7
+  MaxTimeBetweenLooks: 10
   _currentTimeBeforeAfk: 0
 --- !u!114 &719871899960714664
 MonoBehaviour:

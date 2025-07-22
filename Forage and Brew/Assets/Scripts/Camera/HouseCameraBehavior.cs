@@ -47,7 +47,7 @@ public class HouseCameraBehavior : SimpleCameraBehavior
             transform.parent.position = Vector3.Lerp(transform.parent.position, player.position + cameraOffset, positionLerp);
             transform.parent.position = ClampCamPos(transform.parent.position);
         }
-        else if(totalWeight >= 0.1f)
+        else if(totalWeight >= 0.1f && clampUsed)
         {
             transform.parent.position = Vector3.Lerp(transform.parent.position, aimedPos, positionLerp * 3);
         }
@@ -206,32 +206,38 @@ public class HouseCameraBehavior : SimpleCameraBehavior
         mainCameraPreset = null;
     }
 
+    private bool clampUsed;
     protected Vector3 ClampCamPos(Vector3 position, Vector3 MaxClamp, Vector3 MinClamp)
     {
         if (!applyXYClamping || GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge)
             return position;
 
+        clampUsed = false;
         if (position.x > MaxClamp.x)
         {
             position = new Vector3(MaxClamp.x, position.y, position.z);
+            clampUsed = true;
         }
 
         if (position.x < MinClamp.x)
         {
             position =
                 new Vector3(MinClamp.x, position.y, position.z);
+            clampUsed = true;
         }
 
         if (position.z > MaxClamp.y)
         {
             position =
                 new Vector3(position.x, position.y, MaxClamp.y);
+            clampUsed = true;
         }
 
         if (position.z < MinClamp.y)
         {
             position =
                 new Vector3(position.x, position.y, MinClamp.y);
+            clampUsed = true;
         }
         
         return position;

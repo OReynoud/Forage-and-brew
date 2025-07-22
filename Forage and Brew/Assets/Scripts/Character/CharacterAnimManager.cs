@@ -7,6 +7,7 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
     [SerializeField] public AudioSource purrSound;
     [SerializeField] public GameObject codexObject;
     [SerializeField] public GameObject dropShadow;
+    private CharacterMovementController _movementController;
     public bool isSitting;
     private float sitTimer;
     public int numberOfAfksToBlend = 2;
@@ -30,6 +31,12 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
 
     [BoxGroup("AFK")] [SerializeField] private float timeBeforeAfk;
     [BoxGroup("AFK")] [SerializeField] private int[] layerIndexesToCheckForAfk;
+    
+    [BoxGroup("Run Look")] [SerializeField] private float MinTimeBetweenLooks;
+    [BoxGroup("Run Look")] [SerializeField] private float MaxTimeBetweenLooks;
+    [BoxGroup("Debug")] private float timeForNextLook;
+    
+    
     [BoxGroup("Debug")] [SerializeField] private float _currentTimeBeforeAfk;
     
     private static readonly int DoBlink = Animator.StringToHash("DoBlink");
@@ -40,6 +47,7 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
     private static readonly int AfkIndex = Animator.StringToHash("IndexAFK");
     private static readonly int DoCodexOpen = Animator.StringToHash("DoCodexOpen");
     private static readonly int DoCodexClose = Animator.StringToHash("DoCodexClose");
+    private static readonly int DoLookRun = Animator.StringToHash("DoLookRun");
 
 
     private void Start()
@@ -50,6 +58,7 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
         _currentTimeBeforeAfk = timeBeforeAfk;
         CharacterInputManager.Instance.OnCodexUse.AddListener(UseCodex);
         dropShadowOriginalPos = dropShadow.transform.localPosition;
+        _movementController = CharacterMovementController.Instance;
     }
 
     private void UseCodex(bool state)
@@ -76,6 +85,20 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
         {
             animator.SetTrigger(DoFlick);
             timeForNextFlick = Random.Range(minTimeBetweenFlick, maxTimeBetweenFlick);
+        }
+
+        if (_movementController.isRunning)
+        {
+            timeForNextLook -= Time.deltaTime;
+            if (timeForNextLook < 0f)
+            {
+                animator.SetTrigger(DoLookRun);
+                timeForNextLook = Random.Range(MinTimeBetweenLooks, MaxTimeBetweenLooks);
+            }
+        }
+        else
+        {
+            timeForNextLook = MaxTimeBetweenLooks;
         }
         
         if (!animator.GetCurrentAnimatorStateInfo(0).IsTag("Sleep") || !animator.GetCurrentAnimatorStateInfo(0).IsName("Sit_AFK"))
