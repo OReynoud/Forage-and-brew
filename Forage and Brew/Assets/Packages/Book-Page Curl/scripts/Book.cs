@@ -133,6 +133,11 @@ public class Book : MonoBehaviour
             return;
 
         DisplayNewIngredientFromSave();
+
+        if (bookPages.Count % 2 == 1)
+        {
+            Debug.LogError("Impair number of pages, Codex will break at some point");
+        }
     }
 
 

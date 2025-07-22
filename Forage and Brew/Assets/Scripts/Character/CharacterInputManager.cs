@@ -538,6 +538,7 @@ public class CharacterInputManager : MonoBehaviour
             OnCodexUse.Invoke(true);
 
         DisableInputs();
+        EnablePauseInputs();
         // DisableMailInputs();
         // DisableInteractInputs();
         // DisableHapticChallengeInputs();
