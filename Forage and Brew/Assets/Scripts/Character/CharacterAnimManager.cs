@@ -87,7 +87,7 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
             timeForNextFlick = Random.Range(minTimeBetweenFlick, maxTimeBetweenFlick);
         }
 
-        if (_movementController.isRunning)
+        if (_movementController.playerDir.sqrMagnitude > 0)
         {
             timeForNextLook -= Time.deltaTime;
             if (timeForNextLook < 0f)

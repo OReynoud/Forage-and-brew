@@ -26,7 +26,8 @@ public class CharacterMovementController : MonoBehaviour
     [SerializeField] private float maxAngle;
     [SerializeField] private AnimationCurve accelerationCurve;
 
-    [Foldout("Debug")] [SerializeField] [ReadOnly] private Vector3 playerDir;
+    [Foldout("Debug")] [SerializeField] [ReadOnly]
+    internal Vector3 playerDir;
     [Foldout("Debug")] [SerializeField] [ReadOnly] private float accelerationCurveIndex;
     [Foldout("Debug")] [SerializeField] [ReadOnly] private bool isGrounded;
     [Foldout("Debug")] [SerializeField] [ReadOnly] private bool isMoving;

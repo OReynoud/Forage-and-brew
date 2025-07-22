@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 
 public class CodexContentManager : Singleton<CodexContentManager>
 {
+    [Foldout("References")] public GameDontDestroyOnLoadManager GDDOL;
     [Foldout("References")] public OrderCodexDisplayBehaviour[] orderPrefabs;
     [Foldout("References")] public RecipeCodexDisplay recipeDisplayPrefab;
     [Foldout("References")] public IngredientPageDisplay ingredientDisplayPrefabLeft;
@@ -66,7 +67,10 @@ public class CodexContentManager : Singleton<CodexContentManager>
     public override void Awake()
     {
         base.Awake();
-        tutorialDissolvesToCheck.Add("");
+        if (!GDDOL.codexIsUnlocked)
+        {
+            tutorialDissolvesToCheck.Add("");
+        }
     }
 
     private void Start()
