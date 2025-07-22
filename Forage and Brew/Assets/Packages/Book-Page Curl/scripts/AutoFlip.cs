@@ -296,6 +296,7 @@ public class AutoFlip : Singleton<AutoFlip>
                 CodexContentManager.instance.pageIndexesToCheck.Insert(0, recipe.PageNumber);
                 if (Array.Exists(recipe.storedPotion.TemperatureChallengeIngredients, x => x.Temperature != Temperature.None))
                 {
+                    Debug.Log("Add Bellows Tutorial");
                     TutorialManager.instance.NotifyFromRecipeReceived("Bellows");
                 }
             }
@@ -415,7 +416,7 @@ public class AutoFlip : Singleton<AutoFlip>
             }
             else
             {
-                Debug.Log("joystick");
+                Debug.Log(ControledBook.currentPage < CodexContentManager.instance.pageIndexesToCheck[^1]);
                 PageFlipIndication.gameObject.SetActive(true);
                 PageFlipIndication.joystickAnimationValuesSo = 
                     ControledBook.currentPage < CodexContentManager.instance.pageIndexesToCheck[^1] ? rightFlipAnim : leftFlipAnim;
