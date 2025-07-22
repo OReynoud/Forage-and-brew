@@ -47,9 +47,14 @@ public class HouseCameraBehavior : SimpleCameraBehavior
             transform.parent.position = Vector3.Lerp(transform.parent.position, player.position + cameraOffset, positionLerp);
             transform.parent.position = ClampCamPos(transform.parent.position);
         }
-        else
+        else if(totalWeight >= 0.1f)
         {
             transform.parent.position = Vector3.Lerp(transform.parent.position, aimedPos, positionLerp * 3);
+        }
+        else
+        {
+            transform.parent.position = Vector3.Lerp(transform.parent.position, player.position + cameraOffset, positionLerp);
+            transform.parent.position = ClampCamPos(transform.parent.position);
         }
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(cameraRotation), rotationLerp);
         
