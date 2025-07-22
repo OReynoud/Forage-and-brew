@@ -12,7 +12,7 @@ public class TutorialDissolveBehavior : MonoBehaviour
     [ReadOnly]public bool doDissolve;
     private float dissolveTimer;
     public AnimationCurve animCurveDissolve;
-    private bool isDissolved;
+    [ReadOnly] [SerializeField] private bool isDissolved;
     public bool pairedDissolve;
     public int pageToCheck;
     [ShowIf("pairedDissolve")] public TutorialDissolveBehavior pairedBehavior;
