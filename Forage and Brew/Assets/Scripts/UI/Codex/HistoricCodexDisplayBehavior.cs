@@ -27,8 +27,8 @@ public class HistoricCodexDisplayBehavior : PageBehavior
         description1Text.text = originLetter.TextContent;
         backGround2.gameObject.SetActive(false);
         backGround1.color = originLetter.Client.AssociatedColor;
-        backGround1.rectTransform.offsetMax = new Vector2(-33, -10);
-        backGround1.rectTransform.offsetMin = new Vector2(33, 37);
+        backGround1.rectTransform.offsetMax = new Vector2(-53, -30);
+        backGround1.rectTransform.offsetMin = new Vector2(53, 47);
         description2Text.enabled = false;
         backGround1.transform.rotation = Quaternion.identity;
         tampon.SetActive(false);
