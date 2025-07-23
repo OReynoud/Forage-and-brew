@@ -13,8 +13,10 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
     [SerializeField] private Sprite ingredientOutOfBoxBackgroundSprite;
     public IngredientBasketManagerBehaviour IngredientBasketManagerBehaviour { get; set; }
     public int IngredientCount { get; private set; }
-    
-    
+    [field: SerializeField] public bool UseEndPoint { get; set; }
+    [field: SerializeField] public Transform EndPoint { get; set; }
+
+
     private void Start()
     {
         interactInputCanvasGameObject.SetActive(false);
@@ -96,7 +98,8 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
         GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Add(ingredient);
         collectedIngredientBehaviour.OnIngredientDropEnd.AddListener(DestroyIngredient);
     }
-    
+
+
     private void DestroyIngredient(CollectedIngredientBehaviour collectedIngredientBehaviour)
     {
         Destroy(collectedIngredientBehaviour.gameObject);

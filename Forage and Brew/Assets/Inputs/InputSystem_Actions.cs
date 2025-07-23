@@ -1425,6 +1425,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""8ea7f3ed-7d1f-4189-88bc-5be177ce06e7"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuitHapticChallenge"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""485f3afb-5c5e-42c1-970e-13925f543640"",
                     ""path"": ""<Keyboard>/p"",
                     ""interactions"": """",

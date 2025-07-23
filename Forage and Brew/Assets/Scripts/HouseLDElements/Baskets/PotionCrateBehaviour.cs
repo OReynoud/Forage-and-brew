@@ -43,6 +43,8 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
     [SerializeField] private Transform potionElementParentTransform;
     private readonly List<PotionDemandElementBehaviour> _potionElements = new();
     [SerializeField] private TMP_Text priceText;
+    [field: SerializeField] public bool UseEndPoint { get; set; }
+    [field: SerializeField] public Transform EndPoint { get; set; }
     
     // Hashes
     private static readonly int DoEnable = Animator.StringToHash("DoEnable");
@@ -201,7 +203,9 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
         
         CheckCompletion();
     }
-    
+
+
+
     private void CloseCollider()
     {
         closingColliderObject.SetActive(true);
