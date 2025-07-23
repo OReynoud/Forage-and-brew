@@ -417,9 +417,9 @@ public class AutoFlip : Singleton<AutoFlip>
             else
             {
                 Debug.Log(ControledBook.currentPage < CodexContentManager.instance.pageIndexesToCheck[^1]);
-                PageFlipIndication.gameObject.SetActive(true);
                 PageFlipIndication.joystickAnimationValuesSo = 
                     ControledBook.currentPage < CodexContentManager.instance.pageIndexesToCheck[^1] ? rightFlipAnim : leftFlipAnim;
+                PageFlipIndication.gameObject.SetActive(true);
             }
 
             yield break;

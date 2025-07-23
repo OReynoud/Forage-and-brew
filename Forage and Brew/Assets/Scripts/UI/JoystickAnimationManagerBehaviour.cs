@@ -4,6 +4,7 @@ public class JoystickAnimationManagerBehaviour : MonoBehaviour
 {
     [SerializeField] public JoystickAnimationValuesSo joystickAnimationValuesSo;
     [SerializeField] private RectTransform animatedJoystickRectTransform;
+    [SerializeField] private RectTransform arrowRectTransform;
     
     public float AnimationDuration { get; set; }
     
@@ -147,6 +148,8 @@ public class JoystickAnimationManagerBehaviour : MonoBehaviour
         _animationTime = 0f;
         animatedJoystickRectTransform.anchoredPosition = _startPosition;
         _targetPosition = new Vector2(_startPosition.x - joystickAnimationValuesSo.AnimationDistance, _startPosition.y);
+        if (arrowRectTransform != null)
+            arrowRectTransform.rotation = Quaternion.Euler(0,0,180);
     }
 
     public void PlayRightAnimation()
@@ -158,6 +161,8 @@ public class JoystickAnimationManagerBehaviour : MonoBehaviour
         _animationTime = 0f;
         animatedJoystickRectTransform.anchoredPosition = _startPosition;
         _targetPosition = new Vector2(_startPosition.x + joystickAnimationValuesSo.AnimationDistance, _startPosition.y);
+        if (arrowRectTransform != null)
+            arrowRectTransform.rotation = Quaternion.identity;
     }
     
     public void PlayDownAnimation()
