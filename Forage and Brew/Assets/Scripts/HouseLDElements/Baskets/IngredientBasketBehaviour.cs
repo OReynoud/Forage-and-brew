@@ -25,7 +25,7 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
         cancelInputCanvasGameObject.SetActive(false);
     }
     
-    private void OnDisable()
+    protected override void OnDisable()
     {
         IngredientBasketManagerBehaviour.ManageTriggerExit(this);
         
@@ -37,7 +37,27 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
         DisableInteract();
         DisableCancel();
     }
-    
+
+    private void Update()
+    {
+        if (HasToBeDisabled || HasToBeEnabled)
+        {
+            CurrentTimeLeft -= Time.deltaTime;
+
+            if (CurrentTimeLeft > 0f) return;
+            
+            meshGameObject.SetActive(HasToBeEnabled);
+            meshParentTransform.gameObject.SetActive(HasToBeEnabled &&
+                GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Contains(ingredient));
+            ingredientLocalCanvasGameObject.SetActive(HasToBeEnabled);
+            basketCollider.enabled = HasToBeEnabled;
+            basketTrigger.enabled = HasToBeEnabled;
+            IsEnabled = HasToBeEnabled;
+            HasToBeDisabled = false;
+            HasToBeEnabled = false;
+        }
+    }
+
 
     public void SetBasketContent(IngredientValuesSo newIngredient)
     {
@@ -53,8 +73,6 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
         if (GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Contains(ingredient))
         {
             Instantiate(ingredient.MeshGameObject, meshParentTransform);
-            meshParentTransform.gameObject.SetActive(true);
-            ingredientSpriteCanvasGameObject.SetActive(true);
             ingredientSpriteImage.sprite = ingredient.iconHigh;
             ingredientBackgroundImage.sprite = ingredientInBoxBackgroundSprite;
 
@@ -69,7 +87,7 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
         else if (GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients
                  .Select(behaviour => behaviour.IngredientValuesSo).Contains(ingredient))
         {
-            ingredientSpriteCanvasGameObject.SetActive(true);
+            Instantiate(ingredient.MeshGameObject, meshParentTransform);
             ingredientSpriteImage.sprite = ingredient.iconHigh;
             ingredientBackgroundImage.sprite = ingredientOutOfBoxBackgroundSprite;
         }

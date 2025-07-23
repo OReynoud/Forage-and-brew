@@ -277,6 +277,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5662304526841227842}
   - component: {fileID: 5228861399827495733}
+  - component: {fileID: 2887623206792531289}
   m_Layer: 0
   m_Name: P_IngredientBasketManager_FNC
   m_TagString: Untagged
@@ -326,7 +327,7 @@ MonoBehaviour:
   - {fileID: 789614911083815431}
   ingredientListSo: {fileID: 11400000, guid: 598b7cc4aae03634d9670b75608034ab, type: 2}
   ingredientTypeListSo: {fileID: 11400000, guid: 482e541795a16bd4593cc33eabf3ec9d, type: 2}
-  enableDisableTime: 0.5
+  enableDisableTime: 0.32
   localCanvasGameObject: {fileID: 2036125008015499195}
   currentTypeBackgroundTransform: {fileID: 8660382435181540616}
   ingredientTypeTransforms:
@@ -334,6 +335,29 @@ MonoBehaviour:
   - {fileID: 8497817215963284838}
   - {fileID: 8376497674380029683}
   - {fileID: 6976982740910214824}
+--- !u!136 &2887623206792531289
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2223458038528303985}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.5
+  m_Height: 8
+  m_Direction: 0
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &3226975686408868534
 GameObject:
   m_ObjectHideFlags: 0

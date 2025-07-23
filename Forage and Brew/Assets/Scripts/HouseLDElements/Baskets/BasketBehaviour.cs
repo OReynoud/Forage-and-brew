@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BasketBehaviour : MonoBehaviour
+public abstract class BasketBehaviour : MonoBehaviour
 {
     [SerializeField] protected Transform meshParentTransform;
     [SerializeField] protected GameObject meshGameObject;
@@ -8,32 +8,17 @@ public class BasketBehaviour : MonoBehaviour
     [SerializeField] protected Collider basketTrigger;
     [SerializeField] protected GameObject interactInputCanvasGameObject;
     [SerializeField] protected GameObject cancelInputCanvasGameObject;
+    [SerializeField] protected GameObject ingredientLocalCanvasGameObject;
     [field: SerializeField] public BasketVfxManager BasketVfxManager { get; private set; }
     public bool DoesNeedToCheckAvailability { get; set; }
     
-    public bool IsEnabled { get; private set; } = true;
-    private bool _hasToBeDisabled;
-    private bool _hasToBeEnabled;
-    private float _currentTimeLeft;
-    
-    
-    private void Update()
-    {
-        if (_hasToBeDisabled || _hasToBeEnabled)
-        {
-            _currentTimeLeft -= Time.deltaTime;
+    public bool IsEnabled { get; protected set; } = true;
+    protected bool HasToBeDisabled;
+    protected bool HasToBeEnabled;
+    protected float CurrentTimeLeft;
 
-            if (_currentTimeLeft > 0f) return;
-            
-            meshParentTransform.gameObject.SetActive(_hasToBeEnabled);
-            meshGameObject.SetActive(_hasToBeEnabled);
-            basketCollider.enabled = _hasToBeEnabled;
-            basketTrigger.enabled = _hasToBeEnabled;
-            IsEnabled = _hasToBeEnabled;
-            _hasToBeDisabled = false;
-            _hasToBeEnabled = false;
-        }
-    }
+
+    protected abstract void OnDisable();
 
 
     public void EnableInteract()
@@ -60,25 +45,28 @@ public class BasketBehaviour : MonoBehaviour
     
     public void StartEnable(float duration)
     {
-        _hasToBeEnabled = true;
+        HasToBeEnabled = true;
         StopDisable();
-        _currentTimeLeft = duration;
+        CurrentTimeLeft = duration;
     }
     
     public void StopEnable()
     {
-        _hasToBeEnabled = false;
+        HasToBeEnabled = false;
     }
     
     public void StartDisable(float duration)
     {
-        _hasToBeDisabled = true;
+        if (!IsEnabled) return; // If already disabled, do nothing
+        
+        OnDisable();
+        HasToBeDisabled = true;
         StopEnable();
-        _currentTimeLeft = duration;
+        CurrentTimeLeft = duration;
     }
     
     public void StopDisable()
     {
-        _hasToBeDisabled = false;
+        HasToBeDisabled = false;
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -84,11 +85,17 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
     private void ReactivateRightIngredientBaskets()
     {
         currentTypeBackgroundTransform.position = ingredientTypeTransforms[_currentIngredientSetIndex].position;
+
+        int activeBasketsCount = 0;
         
         for (int i = 0; i < ingredientBaskets.Count; i++)
         {
-            if (i < _ingredientSets[_currentIngredientSetIndex].Count)
+            if (i < _ingredientSets[_currentIngredientSetIndex].Count &&
+                (GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Contains(_ingredientSets[_currentIngredientSetIndex][i]) ||
+                 GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients.Select(behaviour => behaviour.IngredientValuesSo)
+                     .Contains(_ingredientSets[_currentIngredientSetIndex][i])))
             {
+                activeBasketsCount++;
                 ingredientBaskets[i].SetBasketContent(_ingredientSets[_currentIngredientSetIndex][i]);
                 ingredientBaskets[i].StartEnable(enableDisableTime);
                 ingredientBaskets[i].DoesNeedToCheckAvailability = true;
@@ -96,11 +103,8 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
             }
             else
             {
-                if (i < _ingredientSets[_currentIngredientSetIndex - 1].Count)
-                {
-                    ingredientBaskets[i].BasketVfxManager.PlaySmokescreen();
-                    ingredientBaskets[i].StartDisable(enableDisableTime);
-                }
+                ingredientBaskets[i].BasketVfxManager.PlaySmokescreen();
+                ingredientBaskets[i].StartDisable(enableDisableTime);
             }
         }
     }
@@ -112,30 +116,51 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
         currentTypeBackgroundTransform.position = ingredientTypeTransforms[_currentIngredientSetIndex].position;
     }
     
+
+    private void EnableChangeSet()
+    {
+        if (!BasketInputManager.Instance.CurrentBasketManagers.Contains(this))
+        {
+            BasketInputManager.Instance.CurrentBasketManagers.Add(this);
+        }
+
+        if (_ingredientSets.Count > 1)
+        {
+            localCanvasGameObject.SetActive(true);
+        }
+    }
+
+    private void DisableChangeSet()
+    {
+        BasketInputManager.Instance.CurrentBasketManagers.Remove(this);
+        localCanvasGameObject.SetActive(false);
+    }
+    
     
     public void ManageTriggerEnter(IngredientBasketBehaviour ingredientBasket)
     {
-        if (_currentTriggeredIngredientBaskets.Count == 0)
-        {
-            BasketInputManager.Instance.CurrentBasketManagers.Add(this);
-            
-            if (_ingredientSets.Count > 1)
-            {
-                localCanvasGameObject.SetActive(true);
-            }
-        }
-        
         _currentTriggeredIngredientBaskets.Add(ingredientBasket);
     }
-    
+
     public void ManageTriggerExit(IngredientBasketBehaviour ingredientBasket)
     {
         _currentTriggeredIngredientBaskets.Remove(ingredientBasket);
-        
-        if (_currentTriggeredIngredientBaskets.Count == 0)
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
         {
-            BasketInputManager.Instance.CurrentBasketManagers.Remove(this);
-            localCanvasGameObject.SetActive(false);
+            EnableChangeSet();
+        }
+    }
+    
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            DisableChangeSet();
         }
     }
 }
