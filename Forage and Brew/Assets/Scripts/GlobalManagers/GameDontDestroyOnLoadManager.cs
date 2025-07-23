@@ -73,6 +73,7 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     [Foldout("Debug")] public bool debugCommands;
     [Foldout("Debug")] public bool codexIsUnlocked;
     [Foldout("Debug")] public bool unlockedOnWakeUp;
+    [Foldout("Debug")] public int moneyAmountOnStart;
     
     
     private void Awake()

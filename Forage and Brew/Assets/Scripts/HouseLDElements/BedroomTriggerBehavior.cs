@@ -10,6 +10,7 @@ public class BedroomTriggerBehavior : MonoBehaviour
         if (PinnedRecipe.instance.pinnedRecipe == null)
             return;
         
-        PinnedRecipe.instance.isPinned = !toBedroom;
+        PinnedRecipe.instance.isInBedroom = toBedroom;
+        PinnedRecipe.instance.InverseChangePos(toBedroom);
     }
 }

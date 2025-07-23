@@ -29,6 +29,7 @@ public class HouseCameraBehavior : SimpleCameraBehavior
         base.Awake();
         cameraTriggerBehavior.AddListener(UpdateUsingCamerasList);
         applyXYClamping = true;
+        overrideCameraLerp = false;
     }
 
     private HouseCameraSettingsBehavior temp;

@@ -52,6 +52,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
     private List<Sprite> tempCollectedIngredientsList = new List<Sprite>();
 
     [field: SerializeField]public bool isInHouse { get; set; } = true;
+    [field: SerializeField]public bool isInBedroom { get; set; } = true;
 
 
     public void Start()
@@ -67,7 +68,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
     }
 
-    private void ChangePos(bool arg0)
+    public void ChangePos(bool arg0)
     {
         if (TemperatureHapticChallengeManager.Instance.IsChallengeActive)
         {
@@ -75,7 +76,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
             return;
         }
 
-        if (isInHouse)
+        if (isInBedroom)
         {
             canShow = false;
             return;
@@ -85,13 +86,20 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         if (pinnedRecipe)
             PinRecipe(pinnedRecipe, potionIngredients);
     }
-    private void InverseChangePos(bool arg0)
+    public void InverseChangePos(bool arg0)
     {
         if (TemperatureHapticChallengeManager.Instance.IsChallengeActive)
         {
             canShow = true;
             return;
         }
+        
+        if (isInBedroom)
+        {
+            canShow = false;
+            return;
+        }
+        
         canShow = !arg0;
         
         if (pinnedRecipe)

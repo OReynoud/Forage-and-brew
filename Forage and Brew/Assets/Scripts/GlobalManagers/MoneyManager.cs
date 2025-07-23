@@ -22,6 +22,7 @@ public class MoneyManager : MonoBehaviour
     
     private void Start()
     {
+        MoneyAmount = GameDontDestroyOnLoadManager.Instance.moneyAmountOnStart;
         InfoDisplayManager.instance.DisplayMoney();
     }
     
