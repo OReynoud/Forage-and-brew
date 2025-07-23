@@ -183,14 +183,14 @@ public class CharacterInteractController : MonoBehaviour
                 {
                     case ObjectToSitBehaviour couch:
                         couch.CancelCouch();
-                        return;
+                        break;
                 }
             }
+            return;
         }
-        else
-        {
-            CharacterAnimManager.instance.animator.SetTrigger(DoThrow);
-        }
+
+        CharacterAnimManager.instance.animator.SetTrigger(DoThrow);
+        
         if (CurrentNearIngredientBaskets.Count > 0)
         {
             foreach (IngredientBasketBehaviour ingredientBasket in CurrentNearIngredientBaskets)
