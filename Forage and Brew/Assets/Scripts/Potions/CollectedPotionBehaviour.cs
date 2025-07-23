@@ -18,6 +18,8 @@ public class CollectedPotionBehaviour : MonoBehaviour, IStackable
     private Vector3 _startControl;
     private Vector3 _endControl;
     private Vector3 _originControl;
+    private Vector3 _startRotation;
+    private Vector3 _endRotation;
     private float _dropInTargetLerp;
     private Transform _dropTarget;
     private Vector3 _dropTargetOffset;
@@ -29,6 +31,8 @@ public class CollectedPotionBehaviour : MonoBehaviour, IStackable
     public Transform GetTransform() => transform;
     public StackableValuesSo GetStackableValuesSo() => PotionValuesSo;
     public float GetStackHeight() => StackHeight;
+    
+    [field: SerializeField] public AnimationCurve ShoveRotationCurve { get; set; } = AnimationCurve.EaseInOut(0,0,1,1);
 
 
     private void Start()
@@ -61,6 +65,7 @@ public class CollectedPotionBehaviour : MonoBehaviour, IStackable
             3 * Mathf.Pow(1 - _lerp, 2) * _lerp * _startControl +
             3 * (1 - _lerp) * Mathf.Pow(_lerp, 2) * _endControl +
             Mathf.Pow(_lerp, 3) * _dropTarget.position + _dropTargetOffset;
+        transform.rotation = Quaternion.Lerp(Quaternion.Euler(_startRotation),Quaternion.Euler(_endRotation), ShoveRotationCurve.Evaluate(_lerp) );
     }
 
 
@@ -104,13 +109,13 @@ public class CollectedPotionBehaviour : MonoBehaviour, IStackable
     public void DropInTarget(Transform target, bool useEndPoint, Vector3 offset = default)
     {
         _dropTarget = target;
-        //_dropTargetOffset = offset;
+        _dropTargetOffset = offset;
         _originControl = transform.position;
+        _startRotation = transform.eulerAngles;
         if (useEndPoint)
         {
-            _startControl = _originControl;
+            _startControl = _originControl + offset;
             _endControl = target.position;
-            rb.AddTorque(Random.insideUnitSphere,ForceMode.Impulse);
         }
         else
         {

@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using UnityEngine;
 
 public class BinBehaviour : MonoBehaviour, IPotionAddable
@@ -5,7 +6,8 @@ public class BinBehaviour : MonoBehaviour, IPotionAddable
     [SerializeField] private GameObject interactInputCanvasGameObject;
     [SerializeField] private Animator binAnimator;
     [field: SerializeField] public bool UseEndPoint { get; set; }
-    [field: SerializeField] public Transform EndPoint { get; set; }
+    [field: ShowIf("UseEndPoint")][field: SerializeField] public Transform EndPoint { get; set; }
+    [field: ShowIf("UseEndPoint")][field: SerializeField] public float heightShove { get; set; }
     
     private static readonly int DoThrowAway = Animator.StringToHash("DoThrowAway");
     

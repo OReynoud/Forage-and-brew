@@ -6,6 +6,7 @@ public interface IIngredientAddable
     
     bool UseEndPoint { get; set; }
     Transform EndPoint { get; set; }
+    float heightShove { get; set; }
 }
 
 public interface IPotionAddable
@@ -13,6 +14,7 @@ public interface IPotionAddable
     void AddPotion(CollectedPotionBehaviour collectedPotionBehaviour);
     bool UseEndPoint { get; set; }
     Transform EndPoint { get; set; }
+    float heightShove { get; set; }
 }
 
 public interface IStackable
@@ -24,6 +26,7 @@ public interface IStackable
     Transform GetTransform();
     StackableValuesSo GetStackableValuesSo();
     float GetStackHeight();
+    AnimationCurve ShoveRotationCurve { get; set; }
 }
 
 public interface ICinematicInteraction
