@@ -506,6 +506,7 @@ public class Book : MonoBehaviour
             bookPages[currentPage].UIComponent.SetParent(Left.transform);
             bookPages[currentPage].UIComponent.SetAsLastSibling();
             bookPages[currentPage].UIComponent.anchoredPosition = Vector2.zero;
+            bookPages[currentPage].UIComponent.localScale = Vector2.one;
         }
         else
             Left.sprite = leftBackground;
@@ -522,6 +523,7 @@ public class Book : MonoBehaviour
             bookPages[currentPage + 1 + 2 * pageFlips].UIComponent.SetAsLastSibling();
             bookPages[currentPage + 1 + 2 * pageFlips].UIComponent.anchoredPosition = Vector2.zero;
             bookPages[currentPage + 1 + 2 * pageFlips].UIComponent.gameObject.SetActive(true);
+            bookPages[currentPage + 1 + 2 * pageFlips].UIComponent.localScale = Vector2.one;
         }
         else
             Right.sprite = rightBackground;
@@ -533,6 +535,7 @@ public class Book : MonoBehaviour
             bookPages[currentPage + 2 + 2 * pageFlips].UIComponent.SetAsLastSibling();
             bookPages[currentPage + 2 + 2 * pageFlips].UIComponent.anchoredPosition = Vector2.zero;
             bookPages[currentPage + 2 + 2 * pageFlips].UIComponent.gameObject.SetActive(true);
+            bookPages[currentPage + 2 + 2 * pageFlips].UIComponent.localScale = Vector2.one;
         }
         else
             RightNext.sprite = rightBackground;
@@ -540,6 +543,7 @@ public class Book : MonoBehaviour
         if (currentPage >= 2)
         {
             bookPages[currentPage - 2].UIComponent.gameObject.SetActive(false);
+            bookPages[currentPage - 2].UIComponent.localScale = Vector2.one;
         }
 
         LeftNext.transform.SetAsFirstSibling();
@@ -566,9 +570,11 @@ public class Book : MonoBehaviour
         bookPages[currentPage - 1].UIComponent.SetAsLastSibling();
         bookPages[currentPage - 1].UIComponent.anchoredPosition = Vector2.zero;
         bookPages[currentPage - 1].UIComponent.gameObject.SetActive(true);
+        bookPages[currentPage - 1].UIComponent.localScale = Vector2.one;
         if (currentPage + 1 - 2 * pageFlips < bookPages.Count)
         {
             bookPages[currentPage + 1 - 2 * pageFlips].UIComponent.gameObject.SetActive(false);
+            bookPages[currentPage + 1 - 2 * pageFlips].UIComponent.localScale = Vector2.one;
         }
 
         Left.gameObject.SetActive(true);
@@ -582,6 +588,7 @@ public class Book : MonoBehaviour
             bookPages[currentPage - 2 - 2 * pageFlips].UIComponent.SetAsLastSibling();
             bookPages[currentPage - 2 - 2 * pageFlips].UIComponent.gameObject.SetActive(true);
             bookPages[currentPage - 2 - 2 * pageFlips].UIComponent.anchoredPosition = Vector2.zero;
+            bookPages[currentPage - 2 - 2 * pageFlips].UIComponent.localScale = Vector2.one;
         }
         else
             Left.sprite = leftBackground;
@@ -594,6 +601,7 @@ public class Book : MonoBehaviour
             bookPages[currentPage - 3 - 2 * pageFlips].UIComponent.SetAsLastSibling();
             bookPages[currentPage - 3 - 2 * pageFlips].UIComponent.gameObject.SetActive(true);
             bookPages[currentPage - 3 - 2 * pageFlips].UIComponent.anchoredPosition = Vector2.zero;
+            bookPages[currentPage - 3 - 2 * pageFlips].UIComponent.localScale = Vector2.one;
         }
         else
             LeftNext.sprite = leftBackground;
