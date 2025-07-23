@@ -12,6 +12,8 @@ public class GrindingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngre
     [SerializeField] private GameObject interactInputCanvasGameObject;
     
     private readonly List<CollectedIngredientBehaviour> _collectedIngredients = new();
+    [field: SerializeField] public bool UseEndPoint { get; set; }
+    [field: SerializeField] public Transform EndPoint { get; set; }
     
     
     protected override void Start()
@@ -37,6 +39,7 @@ public class GrindingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngre
     {
         _collectedIngredients.Add(collectedIngredientBehaviour);
     }
+
 
     public void GrindIngredient(CookHapticChallengeSo cookHapticChallengeSo)
     {

@@ -368,7 +368,7 @@ public class CharacterInteractController : MonoBehaviour
         {
             collectedStack[i].stackable.GetTransform().SetParent(targetTransform);
             targetBehaviour.AddIngredient((CollectedIngredientBehaviour)collectedStack[i].stackable);
-            collectedStack[i].stackable.DropInTarget(targetTransform, offset);
+            collectedStack[i].stackable.DropInTarget(targetTransform,targetBehaviour.UseEndPoint , offset);
         }
         
         collectedStack.Clear();
@@ -381,7 +381,7 @@ public class CharacterInteractController : MonoBehaviour
         {
             collectedStack[i].stackable.GetTransform().SetParent(targetTransform);
             targetBehaviour.AddPotion((CollectedPotionBehaviour)collectedStack[i].stackable);
-            collectedStack[i].stackable.DropInTarget(targetTransform, offset);
+            collectedStack[i].stackable.DropInTarget(targetTransform, targetBehaviour.UseEndPoint, offset);
         }
         
         collectedStack.Clear();

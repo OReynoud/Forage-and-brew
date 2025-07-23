@@ -19,6 +19,8 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
     [SerializeField] private AudioSource checkInputFinalAudioSource;
     [SerializeField] private AudioSource brewingAudioSource;
     [SerializeField] private List<AudioClip> brewingAudioClips;
+    [field: SerializeField] public bool UseEndPoint { get; set; }
+    [field: SerializeField] public Transform EndPoint { get; set; }
 
     
     
@@ -77,7 +79,8 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
 
         PinnedRecipe.instance.UpdateRecipeStepsCounter();
     }
-    
+
+
     private void DestroyIngredient(CollectedIngredientBehaviour collectedIngredientBehaviour)
     {
         Destroy(collectedIngredientBehaviour.gameObject);

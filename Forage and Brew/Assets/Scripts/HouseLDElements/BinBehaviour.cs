@@ -4,6 +4,8 @@ public class BinBehaviour : MonoBehaviour, IPotionAddable
 {
     [SerializeField] private GameObject interactInputCanvasGameObject;
     [SerializeField] private Animator binAnimator;
+    [field: SerializeField] public bool UseEndPoint { get; set; }
+    [field: SerializeField] public Transform EndPoint { get; set; }
     
     private static readonly int DoThrowAway = Animator.StringToHash("DoThrowAway");
     

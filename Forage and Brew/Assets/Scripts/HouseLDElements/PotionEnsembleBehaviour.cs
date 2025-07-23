@@ -23,6 +23,9 @@ public class PotionEnsembleBehaviour : MonoBehaviour, IPotionAddable
     private readonly List<PotionDemandElementBehaviour> _potionElements = new();
     [SerializeField] private TMP_Text priceText;
     
+    [field: SerializeField] public bool UseEndPoint { get; set; }
+    [field: SerializeField] public Transform EndPoint { get; set; }
+    
     private void Start()
     {
         interactInputCanvasGameObject.SetActive(false);

@@ -101,13 +101,22 @@ public class CollectedPotionBehaviour : MonoBehaviour, IStackable
     }
 
     
-    public void DropInTarget(Transform target, Vector3 offset = default)
+    public void DropInTarget(Transform target, bool useEndPoint, Vector3 offset = default)
     {
         _dropTarget = target;
-        _dropTargetOffset = offset;
+        //_dropTargetOffset = offset;
         _originControl = transform.position;
-        _startControl = _originControl + Vector3.up + new Vector3(Random.Range(-1f, 1f), Random.value, Random.Range(-1f, 1f));
-        _endControl = target.position + _dropTargetOffset + Vector3.up + new Vector3(Random.Range(-1f, 1f), Random.value, Random.Range(-1f, 1f));
+        if (useEndPoint)
+        {
+            _startControl = _originControl;
+            _endControl = target.position;
+            rb.AddTorque(Random.insideUnitSphere,ForceMode.Impulse);
+        }
+        else
+        {
+            _startControl = _originControl + Vector3.up + new Vector3(Random.Range(-1f, 1f), Random.value, Random.Range(-1f, 1f));
+            _endControl = target.position + _dropTargetOffset + Vector3.up + new Vector3(Random.Range(-1f, 1f), Random.value, Random.Range(-1f, 1f));
+        }
         _lerp = 0f;
         _isBeingDroppedInTarget = true;
     }
