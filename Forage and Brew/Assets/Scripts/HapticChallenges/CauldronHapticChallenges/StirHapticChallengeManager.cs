@@ -4,7 +4,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 public class StirHapticChallengeManager : MonoBehaviour
 {
@@ -21,8 +20,6 @@ public class StirHapticChallengeManager : MonoBehaviour
     [SerializeField] private GameObject visualIndicationGameObject;
     [SerializeField] private GameObject clockwiseArrowGameObject;
     [SerializeField] private Image clockwiseArrowImage;
-    [SerializeField] private GameObject rotationMarkerGameObject;
-    [SerializeField] private Image rotationMarkerImage;
     [SerializeField] private JoystickAnimationManagerBehaviour joystickAnimationManagerBehaviour;
     [SerializeField] private Transform confirmationCircleParentTransform;
     [SerializeField] private ConfirmationCircleBehaviour confirmationCirclePrefab;
@@ -55,7 +52,6 @@ public class StirHapticChallengeManager : MonoBehaviour
     // Input
     public Vector2 JoystickInputValue { get; set; }
     private readonly List<Vector2> _storedJoystickInputValues = new();
-    private readonly List<float> _joystickInputDifferences = new();
     
     // Animator Hashes
     private static readonly int IsStirring = Animator.StringToHash("IsStirring");
@@ -223,8 +219,8 @@ public class StirHapticChallengeManager : MonoBehaviour
         _currentStirTime = 0;
         _currentStirIndex = 0;
         
-        _isCurrentStirClockwise = Random.Range(0, 2) == 0;
-        _joystickInputDifferences.Clear();
+        _isCurrentStirClockwise = _currentChallenge.StirCamerasAndDurations[_currentStirIndex].Direction ==
+                                  StirDirection.Clockwise;
         
         // UI
         stirChallengeGameObject.SetActive(true);
@@ -243,8 +239,6 @@ public class StirHapticChallengeManager : MonoBehaviour
         _isInPreview = true;
         _storedJoystickInputValues.Clear();
         clockwiseArrowImage.color = new Color(clockwiseArrowImage.color.r, clockwiseArrowImage.color.g, clockwiseArrowImage.color.b, 0.5f);
-        rotationMarkerImage.color = new Color(rotationMarkerImage.color.r, rotationMarkerImage.color.g, rotationMarkerImage.color.b, 0.5f);
-        joystickAnimationManagerBehaviour.AnimationDuration = _currentChallenge.StirCamerasAndDurations[_currentStirIndex].Duration;
         _confirmationCircles[_currentStirIndex].SetCurrentCircle();
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(_currentChallenge.StirCamerasAndDurations[_currentStirIndex].Camera,
             cauldronCameraTransitionTime);
@@ -257,7 +251,6 @@ public class StirHapticChallengeManager : MonoBehaviour
         _isInPreview = false;
         _isInPreviewPause = false;
         clockwiseArrowImage.color = new Color(clockwiseArrowImage.color.r, clockwiseArrowImage.color.g, clockwiseArrowImage.color.b, 1f);
-        rotationMarkerImage.color = new Color(rotationMarkerImage.color.r, rotationMarkerImage.color.g, rotationMarkerImage.color.b, 1f);
         _currentStirTime = 0;
         StartStirTurn();
     }
@@ -266,8 +259,6 @@ public class StirHapticChallengeManager : MonoBehaviour
     {
         clockwiseArrowGameObject.SetActive(true);
         clockwiseArrowGameObject.transform.localScale = new Vector3(_isCurrentStirClockwise ? 1 : -1, 1, 1);
-        rotationMarkerGameObject.SetActive(true);
-        rotationMarkerGameObject.transform.localRotation = Quaternion.Euler(0, 0, 0);
         
         if (_isCurrentStirClockwise)
         {
@@ -302,7 +293,7 @@ public class StirHapticChallengeManager : MonoBehaviour
                 return;
             }
 
-            if (_currentStirTime >= _currentChallenge.StirCamerasAndDurations[_currentStirIndex].Duration)
+            if (_currentStirTime >= joystickAnimationManagerBehaviour.AnimationDuration)
             {
                 _isInPreviewPause = true;
                 joystickAnimationManagerBehaviour.StopAnimation();
@@ -314,12 +305,10 @@ public class StirHapticChallengeManager : MonoBehaviour
         {
             if (!CheckInput()) return;
         
-            if (_currentStirTime >= _currentChallenge.StirCamerasAndDurations[_currentStirIndex].Duration) return;
+            if (_currentStirTime >= joystickAnimationManagerBehaviour.AnimationDuration) return;
         }
         
         _currentStirTime += Time.deltaTime;
-        rotationMarkerGameObject.transform.Rotate(0, 0, (_isCurrentStirClockwise ? -1 : 1) * 360 * Time.deltaTime /
-                                                        _currentChallenge.StirCamerasAndDurations[_currentStirIndex].Duration);
     }
 
     private void NextStirTurn()
@@ -339,7 +328,8 @@ public class StirHapticChallengeManager : MonoBehaviour
             return;
         }
         
-        _isCurrentStirClockwise = Random.Range(0, 2) == 0;
+        _isCurrentStirClockwise = _currentChallenge.StirCamerasAndDurations[_currentStirIndex].Direction ==
+                                  StirDirection.Clockwise;
             
         StartPreview();
     }
@@ -349,18 +339,6 @@ public class StirHapticChallengeManager : MonoBehaviour
         if (!_currentChallenge) return;
         
         if (_isObtainedPotionAnimationPlaying) return;
-        
-        // float averageDifference = 0;
-        
-        // foreach (float difference in _joystickInputDifferences)
-        // {
-        //     averageDifference += difference;
-        // }
-        
-        // averageDifference /= _joystickInputDifferences.Count;
-        // Debug.Log("Average Difference: " + averageDifference);
-        
-        // Debug.Log(_currentPotion.Name + " Stir Challenge Finished");
         
         if (isSuccessful)
         {
@@ -407,50 +385,109 @@ public class StirHapticChallengeManager : MonoBehaviour
     
     private bool CheckInput()
     {
-        if (JoystickInputValue == Vector2.zero) return true;
+        if (JoystickInputValue == Vector2.zero)
+        {
+            _storedJoystickInputValues.Clear();
+            return true;
+        }
+
+        Quaternion baseRotation = Quaternion.identity;
+
+        if (_storedJoystickInputValues.Count > 0)
+        {
+            baseRotation = Quaternion.Euler(0f, 0f, Vector2.SignedAngle(Vector2.down, _storedJoystickInputValues[0]));
+        }
         
-        if (_storedJoystickInputValues.Count == 3 &&
-            Vector2.Angle(JoystickInputValue.normalized, Vector2.down) <=
-            stirHapticChallengeGlobalValuesSo.AngleToleranceForTurnEnd)
+        if (_storedJoystickInputValues.Count == 4)
         {
-            NextStirTurn();
-            return false;
+            if (Vector2.Angle(JoystickInputValue.normalized, baseRotation * Vector2.down) <=
+                stirHapticChallengeGlobalValuesSo.AngleToleranceForTurnEnd)
+            {
+                NextStirTurn();
+                CurrentCauldron.SpoonTransform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+                return false;
+            }
+
+            if (Vector2.Angle(JoystickInputValue.normalized, baseRotation * Vector2.up) <=
+                stirHapticChallengeGlobalValuesSo.AngleToleranceForTurnEnd)
+            {
+                _storedJoystickInputValues.Clear();
+                return true;
+            }
         }
 
-        if (_storedJoystickInputValues.Count == 2 &&
-            Vector2.Angle(JoystickInputValue.normalized, _isCurrentStirClockwise ? Vector2.right : Vector2.left) <=
-            stirHapticChallengeGlobalValuesSo.AngleToleranceForTurnEnd)
+        if (_storedJoystickInputValues.Count == 3)
         {
-            _storedJoystickInputValues.Add(_isCurrentStirClockwise ? Vector2.right : Vector2.left);
+            if (Vector2.Angle(JoystickInputValue.normalized, baseRotation * (_isCurrentStirClockwise ?
+                    Vector2.right : Vector2.left)) <= stirHapticChallengeGlobalValuesSo.AngleToleranceForTurnEnd)
+            {
+                _storedJoystickInputValues.Add(_isCurrentStirClockwise ? Vector2.right : Vector2.left);
+            }
+            else if (Vector2.Angle(JoystickInputValue.normalized, baseRotation * (_isCurrentStirClockwise ?
+                         Vector2.left : Vector2.right)) <= stirHapticChallengeGlobalValuesSo.AngleToleranceForTurnEnd)
+            {
+                _storedJoystickInputValues.Clear();
+                return true;
+            }
         }
 
-        if (_storedJoystickInputValues.Count == 1 &&
-            Vector2.Angle(JoystickInputValue.normalized, Vector2.up) <=
-            stirHapticChallengeGlobalValuesSo.AngleToleranceForTurnEnd)
+        if (_storedJoystickInputValues.Count == 2)
         {
-            _storedJoystickInputValues.Add(Vector2.up);
+            if (Vector2.Angle(JoystickInputValue.normalized, baseRotation * Vector2.up) <=
+                stirHapticChallengeGlobalValuesSo.AngleToleranceForTurnEnd)
+            {
+                _storedJoystickInputValues.Add(Vector2.up);
+            }
+            else if (Vector2.Angle(JoystickInputValue.normalized, baseRotation * Vector2.down) <=
+                     stirHapticChallengeGlobalValuesSo.AngleToleranceForTurnEnd)
+            {
+                _storedJoystickInputValues.Clear();
+                return true;
+            }
         }
 
-        if (_storedJoystickInputValues.Count == 0 &&
-            Vector2.Angle(JoystickInputValue.normalized, _isCurrentStirClockwise ? Vector2.left : Vector2.right) <=
-            stirHapticChallengeGlobalValuesSo.AngleToleranceForTurnEnd)
+        if (_storedJoystickInputValues.Count == 1)
         {
-            _storedJoystickInputValues.Add(_isCurrentStirClockwise ? Vector2.left : Vector2.right);
+            if (Vector2.Angle(JoystickInputValue.normalized, baseRotation * (_isCurrentStirClockwise ?
+                    Vector2.left : Vector2.right)) <= stirHapticChallengeGlobalValuesSo.AngleToleranceForTurnEnd)
+            {
+                _storedJoystickInputValues.Add(_isCurrentStirClockwise ? Vector2.left : Vector2.right);
+            }
+            else if (Vector2.Angle(JoystickInputValue.normalized, baseRotation * (_isCurrentStirClockwise ? 
+                         Vector2.right : Vector2.left)) <= stirHapticChallengeGlobalValuesSo.AngleToleranceForTurnEnd)
+            {
+                _storedJoystickInputValues.Clear();
+                return true;
+            }
+        }
+        
+        if (_storedJoystickInputValues.Count == 0)
+        {
+            _storedJoystickInputValues.Add(JoystickInputValue.normalized);
         }
         
         float joystickInputAngle = -Vector2.SignedAngle(Vector2.down, JoystickInputValue.normalized);
         
         CurrentCauldron.SpoonTransform.localRotation = Quaternion.Euler(0, joystickInputAngle, 0);
         
-        // _joystickInputDifferences.Add(Mathf.Abs(rotationMarkerGameObject.transform.localEulerAngles.z -
-        //                                         joystickInputAngle));
-        
         return true;
     }
     
     private bool CheckInputPreview()
     {
-        return Vector2.Angle(JoystickInputValue.normalized, Vector2.down) >
+        if (JoystickInputValue == Vector2.zero)
+        {
+            _storedJoystickInputValues.Clear();
+            return false;
+        }
+        
+        if (_storedJoystickInputValues.Count == 0)
+        {
+            _storedJoystickInputValues.Add(JoystickInputValue.normalized);
+            return false;
+        }
+        
+        return Vector2.Angle(JoystickInputValue.normalized, _storedJoystickInputValues[0]) >
                stirHapticChallengeGlobalValuesSo.AngleToleranceForPreviewEnd;
     }
 

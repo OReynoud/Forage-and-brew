@@ -97,7 +97,7 @@ public struct TemperatureChallengeIngredients
 public struct StirCameraAndDuration
 {
     [field: SerializeField] public CameraPreset Camera { get; private set; }
-    [field: SerializeField] [field: Min(0f)] public float Duration { get; private set; }
+    [field: SerializeField] public StirDirection Direction { get; private set; }
 }
 
 [Serializable]

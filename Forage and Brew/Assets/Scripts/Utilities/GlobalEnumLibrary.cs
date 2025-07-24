@@ -46,3 +46,9 @@ public enum JoystickDirection
     CounterClockwise,
     ArcOfACircleDownCounterClockwise
 }
+
+public enum StirDirection
+{
+    Clockwise,
+    CounterClockwise
+}
