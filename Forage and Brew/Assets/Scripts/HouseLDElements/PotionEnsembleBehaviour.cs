@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 
@@ -24,8 +25,9 @@ public class PotionEnsembleBehaviour : MonoBehaviour, IPotionAddable
     [SerializeField] private TMP_Text priceText;
     
     [field: SerializeField] public bool UseEndPoint { get; set; }
-    [field: SerializeField] public Transform EndPoint { get; set; }
-    
+    [field: ShowIf("UseEndPoint")][field: SerializeField] public Transform EndPoint { get; set; }
+    [field: ShowIf("UseEndPoint")][field: SerializeField] public float heightShove { get; set; }
+
     private void Start()
     {
         interactInputCanvasGameObject.SetActive(false);
