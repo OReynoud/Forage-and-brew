@@ -313,7 +313,7 @@ public class CharacterInteractController : MonoBehaviour
         if (lowestDistance.index < 0) return;
 
         ShoveStackInTarget(CurrentNearPotionBaskets[lowestDistance.index].transform,
-            CurrentNearPotionBaskets[lowestDistance.index]);
+            CurrentNearPotionBaskets[lowestDistance.index], potionBasketOffset);
 
         foreach (PotionCrateBehaviour potionBasket in CurrentNearPotionBaskets)
         {
@@ -368,7 +368,7 @@ public class CharacterInteractController : MonoBehaviour
         {
             collectedStack[i].stackable.GetTransform().SetParent(targetTransform);
             targetBehaviour.AddIngredient((CollectedIngredientBehaviour)collectedStack[i].stackable);
-            collectedStack[i].stackable.DropInTarget(targetBehaviour.EndPoint,targetBehaviour.UseEndPoint , offset + Vector3.up * targetBehaviour.heightShove);
+            collectedStack[i].stackable.DropInTarget(targetTransform,targetBehaviour.UseEndPoint , offset);
         }
         
         collectedStack.Clear();
@@ -381,7 +381,7 @@ public class CharacterInteractController : MonoBehaviour
         {
             collectedStack[i].stackable.GetTransform().SetParent(targetTransform);
             targetBehaviour.AddPotion((CollectedPotionBehaviour)collectedStack[i].stackable);
-            collectedStack[i].stackable.DropInTarget(targetBehaviour.EndPoint, targetBehaviour.UseEndPoint, offset + Vector3.up * targetBehaviour.heightShove);
+            collectedStack[i].stackable.DropInTarget(targetTransform, targetBehaviour.UseEndPoint, offset);
         }
         
         collectedStack.Clear();

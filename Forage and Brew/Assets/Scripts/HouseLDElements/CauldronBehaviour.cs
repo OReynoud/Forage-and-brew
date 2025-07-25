@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using DG.Tweening;
-using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -21,8 +20,7 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
     [SerializeField] private AudioSource brewingAudioSource;
     [SerializeField] private List<AudioClip> brewingAudioClips;
     [field: SerializeField] public bool UseEndPoint { get; set; }
-    [field: ShowIf("UseEndPoint")][field: SerializeField] public Transform EndPoint { get; set; }
-    [field: ShowIf("UseEndPoint")][field: SerializeField] public float heightShove { get; set; }
+    [field: SerializeField] public Transform EndPoint { get; set; }
 
     
     

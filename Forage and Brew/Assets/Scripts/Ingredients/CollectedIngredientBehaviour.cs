@@ -20,8 +20,6 @@ public class CollectedIngredientBehaviour : MonoBehaviour, IStackable
     private Vector3 _startControl;
     private Vector3 _endControl;
     private Vector3 _originControl;
-    private Vector3 _startRotation;
-    private Vector3 _endRotation;
     private float _dropInTargetLerp;
     private Transform _dropTarget;
     private Vector3 _dropTargetOffset;
@@ -37,7 +35,6 @@ public class CollectedIngredientBehaviour : MonoBehaviour, IStackable
     public StackableValuesSo GetStackableValuesSo() => IngredientValuesSo;
     public float GetStackHeight() => StackHeight;
 
-    [field: SerializeField] public AnimationCurve ShoveRotationCurve { get; set; }
 
     private void Start()
     {
@@ -69,7 +66,6 @@ public class CollectedIngredientBehaviour : MonoBehaviour, IStackable
             3 * Mathf.Pow(1 - _lerp, 2) * _lerp * _startControl +
             3 * (1 - _lerp) * Mathf.Pow(_lerp, 2) * _endControl +
             Mathf.Pow(_lerp, 3) * _dropTarget.position + _dropTargetOffset;
-        transform.rotation = Quaternion.Lerp(Quaternion.Euler(_startRotation),Quaternion.Euler(_endRotation), ShoveRotationCurve.Evaluate(_lerp) );
     }
 
 
@@ -134,12 +130,11 @@ public class CollectedIngredientBehaviour : MonoBehaviour, IStackable
         _dropTarget = target;
         _dropTargetOffset = offset;
         _originControl = transform.position;
-        _startRotation = transform.eulerAngles;
-        _endRotation = target.eulerAngles;
         if (useEndPoint)
         {
-            _startControl = _originControl + offset;
+            _startControl = _originControl;
             _endControl = target.position;
+            rb.AddTorque(Random.insideUnitSphere,ForceMode.Impulse);
         }
         else
         {

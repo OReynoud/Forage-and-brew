@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using NaughtyAttributes;
 using UnityEngine;
 
 public class ChoppingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngredientAddable
@@ -12,8 +11,7 @@ public class ChoppingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngre
     
     private readonly List<CollectedIngredientBehaviour> _collectedIngredients = new();
     [field: SerializeField] public bool UseEndPoint { get; set; }
-    [field: ShowIf("UseEndPoint")][field: SerializeField] public Transform EndPoint { get; set; }
-    [field: ShowIf("UseEndPoint")][field: SerializeField] public float heightShove { get; set; }
+    [field: SerializeField] public Transform EndPoint { get; set; }
 
 
     protected override void Start()
