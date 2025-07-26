@@ -5,6 +5,14 @@ using UnityEngine.UI;
 
 public class WeedBehaviour : MonoBehaviour
 {
+    [Header("Young Sprout")]
+    [SerializeField] private GameObject youngSproutGameObject;
+    
+    // TODO: Replace by animator
+    [SerializeField] private float youngSproutGrowthDuration = 1f;
+    [SerializeField] private AnimationCurve youngSproutGrowthCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    [SerializeField] private float youngSproutStartScale = 0.1f;
+    
     [Header("UI")]
     [SerializeField] private GameObject weedingInputLeftGameObject;
     [SerializeField] private GameObject weedingReleaseLeftGameObject;
@@ -77,6 +85,18 @@ public class WeedBehaviour : MonoBehaviour
         {
             weedingGaugeRightRectTransform.gameObject.SetActive(false);
         }
+    }
+    
+
+    public void CollectWeed()
+    {
+        DisableWeed();
+        
+        youngSproutGameObject.SetActive(true);
+        
+        // TODO: Replace by real animation
+        youngSproutGameObject.transform.localScale = new Vector3(youngSproutStartScale, youngSproutStartScale, youngSproutStartScale);
+        youngSproutGameObject.transform.DOScale(Vector3.one, youngSproutGrowthDuration).SetEase(youngSproutGrowthCurve);
     }
     
     

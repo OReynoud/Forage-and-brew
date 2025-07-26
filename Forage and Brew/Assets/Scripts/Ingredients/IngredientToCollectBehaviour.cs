@@ -360,7 +360,7 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         
         DisableCollect();
         
-        weedBehaviour.DisableWeed();
+        weedBehaviour.CollectWeed();
         IngredientToCollectVfxManagerBehaviour.StopAllLunarCycleVfx();
         collectTrigger.enabled = false;
     }
