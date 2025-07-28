@@ -401,9 +401,6 @@ public class AutoFlip : Singleton<AutoFlip>
                 }
             }
 
-            
-
-            
             CharacterInputManager.Instance.EnableMoveInputs();
             CodexContentManager.instance.pageIndexesToCheck.RemoveAt(CodexContentManager.instance.pageIndexesToCheck
                 .Count - 1);
@@ -416,7 +413,6 @@ public class AutoFlip : Singleton<AutoFlip>
             }
             else
             {
-                Debug.Log(ControledBook.currentPage < CodexContentManager.instance.pageIndexesToCheck[^1]);
                 PageFlipIndication.joystickAnimationValuesSo = 
                     ControledBook.currentPage < CodexContentManager.instance.pageIndexesToCheck[^1] ? rightFlipAnim : leftFlipAnim;
                 PageFlipIndication.gameObject.SetActive(true);
@@ -425,6 +421,9 @@ public class AutoFlip : Singleton<AutoFlip>
             yield break;
         }
 
+        if (CodexContentManager.instance.recipes.Count > 0 && !ControledBook.ChangeCategoryUI.activeSelf)
+            ControledBook.ChangeCategoryUI.SetActive(true);
+        
         if (recipeToPin)
         {
             foreach (TemperatureChallengeIngredients t in recipeToPin.TemperatureChallengeIngredients)

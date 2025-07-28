@@ -74,6 +74,7 @@ public class Book : MonoBehaviour
     [Foldout("Refs")] public Image Right;
     [Foldout("Refs")] public Image RightNext;
     [Foldout("Refs")] public TextMeshProUGUI pinRecipeUI;
+    [Foldout("Refs")] public GameObject ChangeCategoryUI;
     [Foldout("Refs")] public BookPage dummyOrderPage;
     [Foldout("Refs")] public AudioSource codexShowAudio;
     [Foldout("Refs")] public AudioSource pageflipAudio;
@@ -134,6 +135,7 @@ public class Book : MonoBehaviour
 
         DisplayNewIngredientFromSave();
 
+        ChangeCategoryUI.SetActive(false);
         if (bookPages.Count % 2 == 1)
         {
             Debug.LogError("Impair number of pages, Codex will break at some point");
