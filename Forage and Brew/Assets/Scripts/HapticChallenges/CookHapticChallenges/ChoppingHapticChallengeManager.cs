@@ -9,6 +9,7 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
     
     [Header("Dependencies")]
     [SerializeField] private ChoppingHapticChallengeListSo choppingHapticChallengeListSo;
+    [SerializeField] private Rigidbody characterRigidbody;
     [SerializeField] private Animator characterAnimator;
     [SerializeField] private GameObject knifeGameObject;
     
@@ -80,6 +81,7 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         
         // Countertop
         CurrentChoppingCountertopBehaviour.DisableInteract();
+        CurrentChoppingCountertopBehaviour.IsCharacterOnCountertop = true;
         
         // Inputs
         CharacterInputManager.Instance.DisableInputs();
@@ -93,6 +95,7 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         // Character
         transform.position = CurrentChoppingCountertopBehaviour.transform.position + CurrentChoppingCountertopBehaviour.transform.rotation * characterChoppingPosition;
         transform.rotation = CurrentChoppingCountertopBehaviour.transform.rotation * Quaternion.Euler(characterChoppingRotation);
+        characterRigidbody.isKinematic = true;
         
         // Animation
         characterAnimator.SetBool(IsChopping, true);
@@ -117,8 +120,10 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(_previousCameraPreset, choppingCameraTransitionTime);
         CharacterInputManager.Instance.EnableInputs();
         // CurrentChoppingCountertopBehaviour.EnableInteract();
+        characterRigidbody.isKinematic = false;
         characterAnimator.SetBool(IsChopping, false);
         knifeGameObject.SetActive(false);
+        CurrentChoppingCountertopBehaviour.IsCharacterOnCountertop = false;
         CurrentChoppingCountertopBehaviour.ChopIngredient(choppingHapticChallengeListSo);
         
         GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge = false;

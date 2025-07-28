@@ -10,6 +10,8 @@ public class ChoppingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngre
     
     [SerializeField] private GameObject interactInputCanvasGameObject;
     
+    public bool IsCharacterOnCountertop { get; set; }
+    
     private readonly List<CollectedIngredientBehaviour> _collectedIngredients = new();
     [field: SerializeField] public bool UseEndPoint { get; set; }
     [field: ShowIf("UseEndPoint")][field: SerializeField] public Transform EndPoint { get; set; }
@@ -62,6 +64,8 @@ public class ChoppingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngre
     
     protected override void ManageCharacterNear(Collider other)
     {
+        if (IsCharacterOnCountertop) return;
+        
         if (CanPurchase)
         {
             if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
@@ -94,6 +98,8 @@ public class ChoppingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngre
     
     protected override void ManageCharacterFar(Collider other)
     {
+        if (IsCharacterOnCountertop) return;
+
         if (LastTriggeredCollider == other)
         {
             LastTriggeredCollider = null;

@@ -11,6 +11,7 @@ public class GrindingHapticChallengeManager : MonoBehaviour
     
     [Header("Dependencies")]
     [SerializeField] private GrindingHapticChallengeSo grindingHapticChallengeSo;
+    [SerializeField] private Rigidbody characterRigidbody;
     [SerializeField] private Animator characterAnimator;
     [SerializeField] private GameObject mortarGameObject;
     
@@ -151,6 +152,7 @@ public class GrindingHapticChallengeManager : MonoBehaviour
         
         // Countertop
         CurrentGrindingCountertopBehaviour.DisableInteract();
+        CurrentGrindingCountertopBehaviour.IsCharacterOnCountertop = true;
         
         // Inputs
         CharacterInputManager.Instance.DisableInputs();
@@ -165,6 +167,7 @@ public class GrindingHapticChallengeManager : MonoBehaviour
         transform.position = CurrentGrindingCountertopBehaviour.transform.position +
                              CurrentGrindingCountertopBehaviour.transform.rotation * characterGrindingPosition;
         transform.rotation = CurrentGrindingCountertopBehaviour.transform.rotation * Quaternion.Euler(characterGrindingRotation);
+        characterRigidbody.isKinematic = true;
         
         // Animation
         characterAnimator.SetBool(IsGrinding, true);
@@ -189,8 +192,10 @@ public class GrindingHapticChallengeManager : MonoBehaviour
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(_previousCameraPreset, grindingCameraTransitionTime);
         CharacterInputManager.Instance.EnableInputs();
         // CurrentGrindingCountertopBehaviour.EnableInteract();
+        characterRigidbody.isKinematic = false;
         characterAnimator.SetBool(IsGrinding, false);
         mortarGameObject.SetActive(false);
+        CurrentGrindingCountertopBehaviour.IsCharacterOnCountertop = false;
         CurrentGrindingCountertopBehaviour.ExitGrindingChallenge();
         CurrentGrindingCountertopBehaviour.GrindIngredient(grindingHapticChallengeSo);    
         

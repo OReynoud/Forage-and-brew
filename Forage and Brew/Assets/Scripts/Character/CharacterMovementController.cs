@@ -154,6 +154,7 @@ public class CharacterMovementController : MonoBehaviour
         }
         else
         {
+            if (rb.isKinematic) return;
             
             //Debug.Log("falling");
             angledVelocity = playerDir * ((isRunning ? runSpeed : walkSpeed) * accelerationCurve.Evaluate(accelerationCurveIndex) * playerDir.magnitude);

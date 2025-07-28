@@ -12,6 +12,8 @@ public class GrindingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngre
     
     [SerializeField] private GameObject interactInputCanvasGameObject;
     
+    public bool IsCharacterOnCountertop { get; set; }
+    
     private readonly List<CollectedIngredientBehaviour> _collectedIngredients = new();
     
     [field: SerializeField] public bool UseEndPoint { get; set; }
@@ -91,6 +93,8 @@ public class GrindingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngre
     
     protected override void ManageCharacterNear(Collider other)
     {
+        if (IsCharacterOnCountertop) return;
+        
         if (CanPurchase)
         {
             if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
@@ -124,6 +128,8 @@ public class GrindingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngre
     
     protected override void ManageCharacterFar(Collider other)
     {
+        if (IsCharacterOnCountertop) return;
+        
         if (LastTriggeredCollider == other)
         {
             LastTriggeredCollider = null;
