@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using DG.Tweening;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -20,7 +21,8 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
     [SerializeField] private AudioSource brewingAudioSource;
     [SerializeField] private List<AudioClip> brewingAudioClips;
     [field: SerializeField] public bool UseEndPoint { get; set; }
-    [field: SerializeField] public Transform EndPoint { get; set; }
+    [field: ShowIf("UseEndPoint")][field: SerializeField] public Transform EndPoint { get; set; }
+    [field: ShowIf("UseEndPoint")][field: SerializeField] public float heightShove { get; set; }
 
     
     
@@ -173,7 +175,7 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
         {
             if (GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients.Count == 0 &&
                 (!characterInteractController.AreHandsFull ||
-                 characterInteractController.collectedStack[0].stackable is CollectedPotionBehaviour)) return;
+                 characterInteractController.collectedStack[0].StackableItem is CollectedPotionBehaviour)) return;
             
             characterInteractController.CurrentNearCauldron = this;
             stirHapticChallengeManager.CurrentCauldron = this;

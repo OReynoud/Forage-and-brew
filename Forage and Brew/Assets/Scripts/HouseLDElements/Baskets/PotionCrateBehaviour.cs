@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 
@@ -44,7 +45,8 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
     private readonly List<PotionDemandElementBehaviour> _potionElements = new();
     [SerializeField] private TMP_Text priceText;
     [field: SerializeField] public bool UseEndPoint { get; set; }
-    [field: SerializeField] public Transform EndPoint { get; set; }
+    [field: ShowIf("UseEndPoint")][field: SerializeField] public Transform EndPoint { get; set; }
+    [field: ShowIf("UseEndPoint")][field: SerializeField] public float heightShove { get; set; }
     
     // Hashes
     private static readonly int DoEnable = Animator.StringToHash("DoEnable");
@@ -208,7 +210,7 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
 
     private void CloseCollider()
     {
-        closingColliderObject.SetActive(true);
+        //closingColliderObject.SetActive(true);
 
         closingColliderObject.transform.DOKill();
         closingColliderObject.transform.localPosition = _closingColliderDefaultLocalPosition +
@@ -297,7 +299,7 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
             characterInteractController.CurrentNearPotionBaskets.Add(this);
             
             if (characterInteractController.collectedStack.Count > 0 &&
-                characterInteractController.collectedStack[0].stackable is CollectedPotionBehaviour &&
+                characterInteractController.collectedStack[0].StackableItem is CollectedPotionBehaviour &&
                 !IsFulfilled)
             {
                 EnableInteract();
@@ -312,7 +314,7 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
             if (characterInteractController.collectedStack.Count > 0 &&
-                characterInteractController.collectedStack[0].stackable is CollectedPotionBehaviour &&
+                characterInteractController.collectedStack[0].StackableItem is CollectedPotionBehaviour &&
                 !IsFulfilled)
             {
                 EnableInteract();

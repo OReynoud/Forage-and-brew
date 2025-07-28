@@ -1,4 +1,5 @@
 using System.Linq;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +15,8 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
     public IngredientBasketManagerBehaviour IngredientBasketManagerBehaviour { get; set; }
     public int IngredientCount { get; private set; }
     [field: SerializeField] public bool UseEndPoint { get; set; }
-    [field: SerializeField] public Transform EndPoint { get; set; }
+    [field: ShowIf("UseEndPoint")][field: SerializeField] public Transform EndPoint { get; set; }
+    [field: ShowIf("UseEndPoint")][field: SerializeField] public float heightShove { get; set; }
 
 
     private void Start()
@@ -135,7 +137,7 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
             characterInteractController.CurrentNearIngredientBaskets.Add(this);
             
             if (characterInteractController.collectedStack.Count > 0 &&
-                characterInteractController.collectedStack[0].stackable is CollectedIngredientBehaviour ingredientBehaviour &&
+                characterInteractController.collectedStack[0].StackableItem is CollectedIngredientBehaviour ingredientBehaviour &&
                 ingredientBehaviour.IngredientValuesSo == ingredient)
             {
                 EnableCancel();
@@ -159,7 +161,7 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
             if (characterInteractController.collectedStack.Count > 0 &&
-                characterInteractController.collectedStack[0].stackable is CollectedIngredientBehaviour ingredientBehaviour &&
+                characterInteractController.collectedStack[0].StackableItem is CollectedIngredientBehaviour ingredientBehaviour &&
                 ingredientBehaviour.IngredientValuesSo == ingredient)
             {
                 EnableCancel();

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NaughtyAttributes;
 using UnityEngine;
 
 public class GrindingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngredientAddable
@@ -12,8 +13,10 @@ public class GrindingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngre
     [SerializeField] private GameObject interactInputCanvasGameObject;
     
     private readonly List<CollectedIngredientBehaviour> _collectedIngredients = new();
+    
     [field: SerializeField] public bool UseEndPoint { get; set; }
-    [field: SerializeField] public Transform EndPoint { get; set; }
+    [field: ShowIf("UseEndPoint")][field: SerializeField] public Transform EndPoint { get; set; }
+    [field: ShowIf("UseEndPoint")][field: SerializeField] public float heightShove { get; set; }
     
     
     protected override void Start()
@@ -39,6 +42,7 @@ public class GrindingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngre
     {
         _collectedIngredients.Add(collectedIngredientBehaviour);
     }
+
 
 
     public void GrindIngredient(CookHapticChallengeSo cookHapticChallengeSo)
@@ -104,7 +108,7 @@ public class GrindingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngre
             if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
                 other.TryGetComponent(out GrindingHapticChallengeManager grindingHapticChallengeManager) &&
                 characterInteractController.collectedStack.Count > 0 &&
-                characterInteractController.collectedStack[0].stackable is CollectedIngredientBehaviour
+                characterInteractController.collectedStack[0].StackableItem is CollectedIngredientBehaviour
                     { CookedForm: null })
             {
                 LastTriggeredCollider = other;

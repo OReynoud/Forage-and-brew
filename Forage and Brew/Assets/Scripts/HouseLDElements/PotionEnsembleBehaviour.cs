@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 
@@ -24,8 +25,9 @@ public class PotionEnsembleBehaviour : MonoBehaviour, IPotionAddable
     [SerializeField] private TMP_Text priceText;
     
     [field: SerializeField] public bool UseEndPoint { get; set; }
-    [field: SerializeField] public Transform EndPoint { get; set; }
-    
+    [field: ShowIf("UseEndPoint")][field: SerializeField] public Transform EndPoint { get; set; }
+    [field: ShowIf("UseEndPoint")][field: SerializeField] public float heightShove { get; set; }
+
     private void Start()
     {
         interactInputCanvasGameObject.SetActive(false);
@@ -199,11 +201,11 @@ public class PotionEnsembleBehaviour : MonoBehaviour, IPotionAddable
             }
             
             if (characterInteractController.collectedStack.Count > 0 &&
-                characterInteractController.collectedStack[0].stackable is CollectedPotionBehaviour)
+                characterInteractController.collectedStack[0].StackableItem is CollectedPotionBehaviour)
             {
                 characterInteractController.CurrentNearPotionEnsemble = this;
                 
-                if (CheckPotion(((CollectedPotionBehaviour)characterInteractController.collectedStack[0].stackable).PotionValuesSo))
+                if (CheckPotion(((CollectedPotionBehaviour)characterInteractController.collectedStack[0].StackableItem).PotionValuesSo))
                 {
                     EnableInteract();
                 }

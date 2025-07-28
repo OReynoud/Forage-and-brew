@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [Serializable]
 
@@ -130,4 +131,68 @@ public class SpawnGroupCount
 {
     [field: SerializeField] public Transform SpawnGroupTransform { get; set; }
     [field: SerializeField] public int SpawnCount { get; set; }
+}
+
+public class StackableItem : MonoBehaviour
+{
+    protected bool isBeingDroppedInTarget;
+    private Vector3 _startPosition;
+    private Vector3 _endPosition;
+    private Vector3 _startRotation;
+    private Vector3 _endRotation;
+    public float dropInTargetLerp;
+    private Vector3 _dropTargetOffset;
+    protected float lerp;
+    public virtual void EnableGrab(){}
+    public virtual void DisableGrab(){}
+    public virtual void GrabMethod(bool grab){}
+
+    public void Update()
+    {
+        if (!isBeingDroppedInTarget) return;
+
+        if (lerp >= 1f)
+        {
+            StackableDropped();
+            return;
+        }
+        
+        lerp += Time.deltaTime * dropInTargetLerp;
+        transform.position = Vector3.Lerp(_startPosition,_endPosition,lerp) + Vector3.up * ShoveHeightCurve.Evaluate(lerp);
+        transform.rotation = Quaternion.Lerp(Quaternion.Euler(_startRotation),Quaternion.Euler(_endRotation), ShoveRotationCurve.Evaluate(lerp) );
+    }
+
+    public virtual void StackableDropped()
+    {
+        
+    }
+
+    public float StackHeight { get; protected set; }
+    
+    public void DropInTarget(Transform target, bool randomizeEndPoint, Vector3 offset = default)
+    {
+        _dropTargetOffset = offset;
+        _startRotation = transform.eulerAngles;
+        _endRotation = target.eulerAngles;
+        if (randomizeEndPoint)
+        {
+            _startPosition = transform.position;
+            _endPosition = target.position;
+        }
+        else
+        {
+            _startPosition = transform.position;
+            _endPosition = target.position+ _dropTargetOffset + Vector3.up + new Vector3(Random.Range(-1f, 1f), Random.value, Random.Range(-1f, 1f));
+        }
+        lerp = 0f;
+        isBeingDroppedInTarget = true;
+    }
+    public Transform GetTransform() => transform;
+
+    public virtual StackableValuesSo GetStackableValuesSo()
+    {
+        return default;
+    }
+    [field: SerializeField] public AnimationCurve ShoveHeightCurve { get; set; }
+    [field: SerializeField] public AnimationCurve ShoveRotationCurve { get; set; } = AnimationCurve.EaseInOut(0,0,1,1);
 }

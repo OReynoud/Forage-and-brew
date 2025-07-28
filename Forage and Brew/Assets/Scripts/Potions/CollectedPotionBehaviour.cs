@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class CollectedPotionBehaviour : MonoBehaviour, IStackable
+public class CollectedPotionBehaviour : StackableItem
 {
     [Header("Dependencies")]
     [SerializeField] private CollectedPotionGlobalValuesSo collectedPotionGlobalValuesSo;
@@ -11,24 +11,15 @@ public class CollectedPotionBehaviour : MonoBehaviour, IStackable
     [SerializeField] private Collider potionCollider;
     [SerializeField] private Transform meshParentTransform;
     
-    public float StackHeight { get; private set; }
     public UnityEvent<CollectedPotionBehaviour> OnPotionDropEnd { get; private set; } = new();
     
-    private bool _isBeingDroppedInTarget;
-    private Vector3 _startControl;
-    private Vector3 _endControl;
-    private Vector3 _originControl;
-    private float _dropInTargetLerp;
-    private Transform _dropTarget;
-    private Vector3 _dropTargetOffset;
-    private float _lerp;
+
 
     [Header("UI")]
     [SerializeField] private GameObject grabInputCanvasGameObject;
 
-    public Transform GetTransform() => transform;
-    public StackableValuesSo GetStackableValuesSo() => PotionValuesSo;
-    public float GetStackHeight() => StackHeight;
+    public override StackableValuesSo GetStackableValuesSo() => PotionValuesSo;
+
 
 
     private void Start()
@@ -38,44 +29,32 @@ public class CollectedPotionBehaviour : MonoBehaviour, IStackable
         potionLiquidColorManager.SetLiquidColor(PotionValuesSo);
         grabInputCanvasGameObject.SetActive(false);
         StackHeight = collectedPotionGlobalValuesSo.StackHeight;
-        _dropInTargetLerp = Random.Range(collectedPotionGlobalValuesSo.MinDropInTargetLerp,
+        dropInTargetLerp = Random.Range(collectedPotionGlobalValuesSo.MinDropInTargetLerp,
             collectedPotionGlobalValuesSo.MaxDropInTargetLerp);
     }
 
-    private void Update()
-    {
-        if (!_isBeingDroppedInTarget) return;
 
-        if (_lerp >= 1f)
-        {
-            _isBeingDroppedInTarget = false;
-            _lerp = 0f;
-            OnPotionDropEnd.Invoke(this);
-            OnPotionDropEnd.RemoveAllListeners();
-            return;
-        }
-        
-        _lerp += Time.deltaTime * _dropInTargetLerp;
-        transform.position =
-            Mathf.Pow(1 - _lerp, 3) * _originControl +
-            3 * Mathf.Pow(1 - _lerp, 2) * _lerp * _startControl +
-            3 * (1 - _lerp) * Mathf.Pow(_lerp, 2) * _endControl +
-            Mathf.Pow(_lerp, 3) * _dropTarget.position + _dropTargetOffset;
+    public override void StackableDropped()
+    {
+        isBeingDroppedInTarget = false;
+        lerp = 0f;
+        OnPotionDropEnd.Invoke(this);
+        OnPotionDropEnd.RemoveAllListeners();
     }
 
 
-    public void EnableGrab()
+    public override void EnableGrab()
     {
         grabInputCanvasGameObject.SetActive(true);
     }
     
-    public void DisableGrab()
+    public override void DisableGrab()
     {
         grabInputCanvasGameObject.SetActive(false);
     }
 
 
-    public void GrabMethod(bool grab)
+    public override void GrabMethod(bool grab)
     {
         rb.isKinematic = grab;
         grabTrigger.enabled = !grab;
@@ -101,25 +80,7 @@ public class CollectedPotionBehaviour : MonoBehaviour, IStackable
     }
 
     
-    public void DropInTarget(Transform target, bool useEndPoint, Vector3 offset = default)
-    {
-        _dropTarget = target;
-        //_dropTargetOffset = offset;
-        _originControl = transform.position;
-        if (useEndPoint)
-        {
-            _startControl = _originControl;
-            _endControl = target.position;
-            rb.AddTorque(Random.insideUnitSphere,ForceMode.Impulse);
-        }
-        else
-        {
-            _startControl = _originControl + Vector3.up + new Vector3(Random.Range(-1f, 1f), Random.value, Random.Range(-1f, 1f));
-            _endControl = target.position + _dropTargetOffset + Vector3.up + new Vector3(Random.Range(-1f, 1f), Random.value, Random.Range(-1f, 1f));
-        }
-        _lerp = 0f;
-        _isBeingDroppedInTarget = true;
-    }
+
 
     #region Trigger
 
