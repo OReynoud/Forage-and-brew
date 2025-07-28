@@ -172,6 +172,7 @@ public class GrindingHapticChallengeManager : MonoBehaviour
         // Animation
         characterAnimator.SetBool(IsGrinding, true);
         mortarGameObject.SetActive(true);
+        characterAnimator.SetLayerWeight(characterAnimator.GetLayerIndex("Carry"),0);
         
         // Audio
         CurrentGrindingCountertopBehaviour.EnterGrindingChallenge();
@@ -207,6 +208,9 @@ public class GrindingHapticChallengeManager : MonoBehaviour
             {
                 ((HouseCameraBehavior)HouseCameraBehavior.instance).overrideCameraLerp = false;
             });
+        
+        //Animation
+        characterAnimator.SetLayerWeight(characterAnimator.GetLayerIndex("Carry"),1);
     }
     
     private void UpdateGrindingChallenge()

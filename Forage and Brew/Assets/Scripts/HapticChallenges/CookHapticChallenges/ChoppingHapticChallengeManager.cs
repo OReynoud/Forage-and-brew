@@ -100,6 +100,7 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         // Animation
         characterAnimator.SetBool(IsChopping, true);
         knifeGameObject.SetActive(true);
+        characterAnimator.SetLayerWeight(characterAnimator.GetLayerIndex("Carry"),0);
         
         // Put in HapticChallenge
         GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge = true;
@@ -134,6 +135,9 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
             {
                 ((HouseCameraBehavior)HouseCameraBehavior.instance).overrideCameraLerp = false;
             });
+        
+        //Animation
+        characterAnimator.SetLayerWeight(characterAnimator.GetLayerIndex("Carry"),1);
     }
     
     private void UpdateChoppingChallenge()
