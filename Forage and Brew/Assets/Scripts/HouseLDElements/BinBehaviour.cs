@@ -47,7 +47,7 @@ public class BinBehaviour : MonoBehaviour, IPotionAddable
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
             characterInteractController.collectedStack.Count > 0 &&
-            characterInteractController.collectedStack[0].stackable is CollectedPotionBehaviour)
+            characterInteractController.collectedStack[0].StackableItem is CollectedPotionBehaviour)
         {
             characterInteractController.CurrentNearBin = this;
             EnableInteract();

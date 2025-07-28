@@ -175,7 +175,7 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
         {
             if (GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients.Count == 0 &&
                 (!characterInteractController.AreHandsFull ||
-                 characterInteractController.collectedStack[0].stackable is CollectedPotionBehaviour)) return;
+                 characterInteractController.collectedStack[0].StackableItem is CollectedPotionBehaviour)) return;
             
             characterInteractController.CurrentNearCauldron = this;
             stirHapticChallengeManager.CurrentCauldron = this;

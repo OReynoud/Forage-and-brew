@@ -299,7 +299,7 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
             characterInteractController.CurrentNearPotionBaskets.Add(this);
             
             if (characterInteractController.collectedStack.Count > 0 &&
-                characterInteractController.collectedStack[0].stackable is CollectedPotionBehaviour &&
+                characterInteractController.collectedStack[0].StackableItem is CollectedPotionBehaviour &&
                 !IsFulfilled)
             {
                 EnableInteract();
@@ -314,7 +314,7 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
             if (characterInteractController.collectedStack.Count > 0 &&
-                characterInteractController.collectedStack[0].stackable is CollectedPotionBehaviour &&
+                characterInteractController.collectedStack[0].StackableItem is CollectedPotionBehaviour &&
                 !IsFulfilled)
             {
                 EnableInteract();

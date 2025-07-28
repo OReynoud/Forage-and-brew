@@ -137,7 +137,7 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
             characterInteractController.CurrentNearIngredientBaskets.Add(this);
             
             if (characterInteractController.collectedStack.Count > 0 &&
-                characterInteractController.collectedStack[0].stackable is CollectedIngredientBehaviour ingredientBehaviour &&
+                characterInteractController.collectedStack[0].StackableItem is CollectedIngredientBehaviour ingredientBehaviour &&
                 ingredientBehaviour.IngredientValuesSo == ingredient)
             {
                 EnableCancel();
@@ -161,7 +161,7 @@ public class IngredientBasketBehaviour : BasketBehaviour, IIngredientAddable
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
             if (characterInteractController.collectedStack.Count > 0 &&
-                characterInteractController.collectedStack[0].stackable is CollectedIngredientBehaviour ingredientBehaviour &&
+                characterInteractController.collectedStack[0].StackableItem is CollectedIngredientBehaviour ingredientBehaviour &&
                 ingredientBehaviour.IngredientValuesSo == ingredient)
             {
                 EnableCancel();

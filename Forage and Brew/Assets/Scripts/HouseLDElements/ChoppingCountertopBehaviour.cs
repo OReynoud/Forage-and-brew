@@ -79,7 +79,7 @@ public class ChoppingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngre
             if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
                 other.TryGetComponent(out ChoppingHapticChallengeManager choppingHapticChallengeManager) &&
                 characterInteractController.collectedStack.Count > 0 &&
-                characterInteractController.collectedStack[0].stackable is CollectedIngredientBehaviour
+                characterInteractController.collectedStack[0].StackableItem is CollectedIngredientBehaviour
                     { CookedForm: null })
             {
                 LastTriggeredCollider = other;

@@ -201,11 +201,11 @@ public class PotionEnsembleBehaviour : MonoBehaviour, IPotionAddable
             }
             
             if (characterInteractController.collectedStack.Count > 0 &&
-                characterInteractController.collectedStack[0].stackable is CollectedPotionBehaviour)
+                characterInteractController.collectedStack[0].StackableItem is CollectedPotionBehaviour)
             {
                 characterInteractController.CurrentNearPotionEnsemble = this;
                 
-                if (CheckPotion(((CollectedPotionBehaviour)characterInteractController.collectedStack[0].stackable).PotionValuesSo))
+                if (CheckPotion(((CollectedPotionBehaviour)characterInteractController.collectedStack[0].StackableItem).PotionValuesSo))
                 {
                     EnableInteract();
                 }

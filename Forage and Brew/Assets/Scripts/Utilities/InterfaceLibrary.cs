@@ -17,17 +17,7 @@ public interface IPotionAddable
     float heightShove { get; set; }
 }
 
-public interface IStackable
-{
-    void EnableGrab();
-    void DisableGrab();
-    void GrabMethod(bool grab);
-    void DropInTarget(Transform target, bool useEndPoint, Vector3 offset = default);
-    Transform GetTransform();
-    StackableValuesSo GetStackableValuesSo();
-    float GetStackHeight();
-    AnimationCurve ShoveRotationCurve { get; set; }
-}
+
 
 public interface ICinematicInteraction
 {
