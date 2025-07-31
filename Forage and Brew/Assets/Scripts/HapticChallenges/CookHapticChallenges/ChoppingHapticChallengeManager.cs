@@ -82,6 +82,7 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         // Countertop
         CurrentChoppingCountertopBehaviour.DisableInteract();
         CurrentChoppingCountertopBehaviour.IsCharacterOnCountertop = true;
+        CurrentChoppingCountertopBehaviour.SetCutIngredient();
         
         // Inputs
         CharacterInputManager.Instance.DisableInputs();
@@ -197,7 +198,10 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         {
             StopChoppingChallenge();
         }
-        
-        _isWaitingForNextChopping = true;
+        else
+        {
+            CurrentChoppingCountertopBehaviour.SetCutIngredientPositionAndRotation(_currentChoppingInputIndex);
+            _isWaitingForNextChopping = true;
+        }
     }
 }

@@ -43,8 +43,20 @@ public class ChoppingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngre
     }
 
 
+    public void SetCutIngredient()
+    {
+        _collectedIngredients[0].SetCutMeshGameObject();
+    }
+    
+    public void SetCutIngredientPositionAndRotation(int index)
+    {
+        _collectedIngredients[0].SetCutMeshPositionAndRotation(index);
+    }
+
     public void ChopIngredient(CookHapticChallengeSo cookHapticChallengeSo)
     {
+        _collectedIngredients[0].SetFinalCutMeshPositionAndRotation();
+        
         _collectedIngredients[0].SetCookedForm(cookHapticChallengeSo);
         CharacterInteractController.Instance.AddToPile(_collectedIngredients[0]);
         _collectedIngredients.RemoveAt(0);
@@ -84,7 +96,9 @@ public class ChoppingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngre
                 other.TryGetComponent(out ChoppingHapticChallengeManager choppingHapticChallengeManager) &&
                 characterInteractController.collectedStack.Count > 0 &&
                 characterInteractController.collectedStack[0].StackableItem is CollectedIngredientBehaviour
-                    { CookedForm: null })
+                    { CookedForm: null } &&
+                ((CollectedIngredientBehaviour)characterInteractController.collectedStack[0].StackableItem)
+                    .IngredientValuesSo.Type.IsChoppable)
             {
                 LastTriggeredCollider = other;
                 
