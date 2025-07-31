@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -10,6 +11,12 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
     [SerializeField] private List<ParticleSystem> sparkleEffects;
     [SerializeField] private AudioSource audio;
     [SerializeField] private AudioSource audioPages;
+    [SerializeField] private CanvasGroup tutorialBackground;
+    [SerializeField] private float timeBeforeLerp;
+    [SerializeField] private float lerpTime;
+    [SerializeField] private float timer;
+    [SerializeField] private bool startDelay;
+    [SerializeField] private bool startBackGroundLerp;
     public static bool doTutorialPages = true;
     public static UnityEvent codexTutorialEvent;
     
@@ -22,14 +29,53 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
         {
             doTutorialPages = false;
             gameObject.SetActive(false);
+            Destroy(tutorialBackground.gameObject);
         }
         else
         {
             doTutorialPages = true;
             AutoFlip.instance.ControledBook.OnFlip.AddListener(FlipListener);
+            CharacterInputManager.Instance.OnCodexUse.AddListener(DestroyTutorialBackground);
         }
     }
-    
+
+    void DestroyTutorialBackground(bool state)
+    {
+        if (!state)
+        {
+            Destroy(tutorialBackground.gameObject, 0.4f);
+            CharacterInputManager.Instance.OnCodexUse.RemoveListener(DestroyTutorialBackground);
+        }
+    }
+
+    private void Update()
+    {
+        if (startBackGroundLerp)
+        {
+            timer += Time.deltaTime;
+            tutorialBackground.alpha = Mathf.Lerp(0, 1, timer / lerpTime);
+            if (timer > lerpTime)
+            {
+                startDelay = false;
+                startBackGroundLerp = false;
+            }
+            return;
+        }
+        if (startDelay)
+        {
+            timer += Time.deltaTime;
+            if (timer > timeBeforeLerp)
+            {
+                doTutorialPages = false;
+                InfoDisplayManager.instance.canShowCodex = true;
+                CharacterInputManager.Instance.EnableCodexInputs();
+                CharacterInputManager.Instance.EnableCodexExit();
+                startBackGroundLerp = true;
+                timer = 0;
+            }
+        }
+    }
+
 
     public void StartInteraction()
     {
@@ -40,24 +86,23 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
 
     private void PickupCodex()
     {
-        GameDontDestroyOnLoadManager.Instance.codexIsUnlocked = true;
+        AutoFlip.instance.TutorialPagesDiscoveryStart();
         CharacterMovementController.Instance.FinishWalkToLocation.RemoveListener(PickupCodex);
         CharacterMovementController.Instance.transform.rotation = locationToWalk.rotation;
-        CharacterInputManager.Instance.EnterCodexMethod();
-        AutoFlip.instance.TutorialPagesDiscoveryStart();
-        gameObject.SetActive(false);
+
+        animator.gameObject.SetActive(false);
+        GameDontDestroyOnLoadManager.Instance.codexIsUnlocked = true;
         CharacterInteractController.Instance.CurrentNearCinematicInteraction = null;
         CharacterInputManager.Instance.DisableInputs();
+        CharacterInputManager.Instance.EnterCodexMethod();
     }
 
     public void FlipListener()
     {
         if (CodexContentManager.instance.tutorialDissolvesToCheck.Count == 0)
         {
-            doTutorialPages = false;
-            InfoDisplayManager.instance.canShowCodex = true;
-            CharacterInputManager.Instance.EnableCodexInputs();
-            CharacterInputManager.Instance.EnableCodexExit();
+            startDelay = true;
+            timer = 0;
             AutoFlip.instance.ControledBook.OnFlip.RemoveListener(FlipListener);
         }
     }

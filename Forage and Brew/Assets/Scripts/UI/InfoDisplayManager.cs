@@ -109,7 +109,7 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
     [ReadOnly]public bool showPause;
     private bool showOptions;
     private bool _canInputPause = true;
-    public bool canShowCodex { get; set; }
+    [field: SerializeField] public bool canShowCodex { get; set; }
 
 
     public void DisplayAll()
@@ -137,14 +137,22 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
     private void UpdateCodexSprite(bool state)
     {
         crossImage.sprite = state ? downArrow : upArrow;
-    }
+        if (CodexContentManager.instance.pageIndexesToCheck.Count > 0)
+        {
+            canShowCodex = false;
+        }
+        else
+        {
+            canShowCodex = state;
+        }
+    } 
 
     private void UpdateUIVisibility(bool arg0)
     {
         if (!GameDontDestroyOnLoadManager.Instance.codexIsUnlocked)
             return;
         canShow = arg0;
-        canShowCodex = false;
+        //canShowCodex = false;
     }
 
     private void UpdateUIVisibilityReverse(bool arg0)
@@ -152,7 +160,7 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
         if (!GameDontDestroyOnLoadManager.Instance.codexIsUnlocked)
             return;
         canShow = !arg0;
-        canShowCodex = false;
+        //canShowCodex = false;
     }
 
     private void Update()

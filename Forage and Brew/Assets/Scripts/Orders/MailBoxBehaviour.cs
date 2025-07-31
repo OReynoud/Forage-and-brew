@@ -202,7 +202,6 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         }
 
         fillerChosen = false;
-        Debug.Log(OrderManager.Instance.CurrentOrders.FindIndex(x => x == null) + " + " + ordersCount);
         if (OrderManager.Instance.CurrentOrders.FindIndex(x => x == null) + ordersCount < GameDontDestroyOnLoadManager.Instance.QuestProgressionIndexWatchers[GameDontDestroyOnLoadManager.Instance.FillerQuestProgression].MinimumOrdersAmount)
         {
             foreach (var FillerBlocks in GameDontDestroyOnLoadManager.Instance.AllFillerBlocks)
