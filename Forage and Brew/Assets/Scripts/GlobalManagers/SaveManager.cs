@@ -140,6 +140,10 @@ public class SaveManager : MonoBehaviour
             {
                 gameDontDestroyOnLoadManager.AllNarrativeBlocks.Add(new NarrativeBlockOfLetters(contentSo));
             }
+            foreach (FillerBlockLettersContentSo contentSo in gameDontDestroyOnLoadManager.AllFillerBlocksContentSo)
+            {
+                gameDontDestroyOnLoadManager.AllFillerBlocks.Add(new FillerBlockOfLetters(contentSo, false, null));
+            }
             
             return;
         }

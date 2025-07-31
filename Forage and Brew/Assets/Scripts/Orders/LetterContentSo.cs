@@ -27,12 +27,24 @@ public class LetterContentSo : ScriptableObject
     
     [field: ShowIf("LetterType", LetterType.Orders)]
     [field: SerializeField] public int TimeForLetterAfterSuccess { get; set; }
+    
+    [field: ShowIf("LetterType", LetterType.Orders)]
+    [field: SerializeField] public bool IsFiller { get; set; }
+    
+    
+    [field: ShowIf("ValidateFiller")]
+    [field: SerializeField] public int QuestProgressionRequired { get; set; }
+
 
     [field: ShowIf("LetterType", LetterType.Gift)]
     [field: SerializeField]
     public int MoneyAmount { get; private set; }
 
 
+    bool ValidateFiller()
+    {
+        return IsFiller && LetterType == LetterType.Orders;
+    }
     public void SetData(ClientSo newClient, string newTextContent, OrderContentSo newOrderContent,
         LetterContentSo newRelatedSuccessLetter, bool canAdvanceQuestProgressionIndex, int timeForLetterAfterSuccess)
     {

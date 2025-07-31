@@ -76,6 +76,22 @@ public class NarrativeBlockOfLetters
     }
 }
 
+public class FillerBlockOfLetters
+{
+    
+    [field: SerializeField] public FillerBlockLettersContentSo ContentSo { get; set; }
+    [field: SerializeField] public bool HasUsedFirstLetter { get; set; }
+    [field: SerializeField] public LetterContentSo LastUsedLetter { get; set; }
+
+    public FillerBlockOfLetters(FillerBlockLettersContentSo content, bool hasUsedFirstLetter,
+        LetterContentSo lastUsedLetter)
+    {
+        ContentSo = content;
+        HasUsedFirstLetter = hasUsedFirstLetter;
+        LastUsedLetter = lastUsedLetter;
+    }
+}
+
 [Serializable]
 public class ClientOrderPotions
 {

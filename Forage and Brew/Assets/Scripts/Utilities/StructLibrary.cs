@@ -13,6 +13,12 @@ public struct SceneName
 }
 
 [Serializable]
+public struct QuestProgressionIndexWatcher
+{
+    [field: SerializeField] public int RequiredIndex { get; private set; }
+    [field: SerializeField] public int MinimumOrdersAmount { get; private set; }
+}
+[Serializable]
 public struct MusicContainer
 {
     [field: SerializeField] public Scene Scene { get; private set; }

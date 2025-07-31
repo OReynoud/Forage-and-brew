@@ -126,6 +126,11 @@ public class OrderManager : MonoBehaviour
             if (CurrentOrders[orderIndex].RelatedLetter.CanAdvanceQuestProgressionIndex)
             {
                 GameDontDestroyOnLoadManager.Instance.QuestProgressionIndex++;
+                if (GameDontDestroyOnLoadManager.Instance.QuestProgressionIndex >= 
+                    GameDontDestroyOnLoadManager.Instance.QuestProgressionIndexWatchers[GameDontDestroyOnLoadManager.Instance.FillerQuestProgression].RequiredIndex)
+                {
+                    GameDontDestroyOnLoadManager.Instance.FillerQuestProgression++;
+                }
             }
             
             potionCrate.DisableCrate();
