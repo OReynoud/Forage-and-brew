@@ -87,18 +87,9 @@ public class CollectedIngredientBehaviour : StackableItem
     
     private void UpdateCookedForm()
     {
-        if (CookedForm is GrindingHapticChallengeSo)
-        {
-            localCanvasGameObject.SetActive(true);
-            chopIconGameObject.SetActive(false);
-            grindIconGameObject.SetActive(true);
-        }
-        else
-        {
-            localCanvasGameObject.SetActive(false);
-            chopIconGameObject.SetActive(false);
-            grindIconGameObject.SetActive(false);
-        }
+        localCanvasGameObject.SetActive(false);
+        chopIconGameObject.SetActive(false);
+        grindIconGameObject.SetActive(false);
     }
     
 
@@ -175,6 +166,30 @@ public class CollectedIngredientBehaviour : StackableItem
                     IngredientValuesSo.CutMeshEndRotations[i],
                     collectedIngredientGlobalValuesSo.CutMeshMoveDuration)
                 .SetEase(collectedIngredientGlobalValuesSo.CutMeshMoveCurve));
+        }
+    }
+    
+
+    public void SetUpMeshForGrinding()
+    {
+        meshParentTransform.GetChild(0).DOScale(collectedIngredientGlobalValuesSo.GroundMeshScale, 
+                collectedIngredientGlobalValuesSo.GroundMeshScaleDuration)
+            .SetEase(collectedIngredientGlobalValuesSo.GroundMeshScaleCurve);
+        meshParentTransform.DOLocalMove(Vector3.zero, collectedIngredientGlobalValuesSo.GroundMeshScaleDuration)
+            .SetEase(collectedIngredientGlobalValuesSo.GroundMeshScaleCurve);
+    }
+
+    public void SetGroundMeshGameObject()
+    {
+        if (IngredientValuesSo.Type.GroundMeshGameObject)
+        {
+            Destroy(meshParentTransform.GetChild(0).gameObject); // Remove original mesh
+            meshParentTransform.localPosition = Vector3.zero;
+            Instantiate(IngredientValuesSo.Type.GroundMeshGameObject, meshParentTransform);
+        }
+        else
+        {
+            Debug.LogWarning("No Ground Mesh GameObject set for " + IngredientValuesSo.name);
         }
     }
     

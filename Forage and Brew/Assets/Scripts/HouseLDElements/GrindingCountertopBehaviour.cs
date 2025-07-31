@@ -42,13 +42,20 @@ public class GrindingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngre
     
     public void AddIngredient(CollectedIngredientBehaviour collectedIngredientBehaviour)
     {
+        collectedIngredientBehaviour.SetUpMeshForGrinding();
         _collectedIngredients.Add(collectedIngredientBehaviour);
     }
 
 
+    public void SetGroundIngredient()
+    {
+        _collectedIngredients[0].SetGroundMeshGameObject();
+    }
 
     public void GrindIngredient(CookHapticChallengeSo cookHapticChallengeSo)
     {
+        SetGroundIngredient();
+        
         _collectedIngredients[0].SetCookedForm(cookHapticChallengeSo);
         CharacterInteractController.Instance.AddToPile(_collectedIngredients[0]);
         _collectedIngredients.RemoveAt(0);
@@ -113,7 +120,9 @@ public class GrindingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngre
                 other.TryGetComponent(out GrindingHapticChallengeManager grindingHapticChallengeManager) &&
                 characterInteractController.collectedStack.Count > 0 &&
                 characterInteractController.collectedStack[0].StackableItem is CollectedIngredientBehaviour
-                    { CookedForm: null })
+                    { CookedForm: null } &&
+                ((CollectedIngredientBehaviour)characterInteractController.collectedStack[0].StackableItem)
+                .IngredientValuesSo.Type.IsGrindable)
             {
                 LastTriggeredCollider = other;
                 

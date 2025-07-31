@@ -9,5 +9,5 @@ public class IngredientTypeSo : ScriptableObject
     [field: SerializeField] public Sprite IconHigh { get; private set; }
     [field: SerializeField] public bool IsChoppable { get; private set; }
     [field: SerializeField] public bool IsGrindable { get; private set; }
-    [field: ShowIf("IsGrindable")] [field: SerializeField] public GameObject GrindMeshGameObject { get; private set; }
+    [field: ShowIf("IsGrindable")] [field: SerializeField] public GameObject GroundMeshGameObject { get; private set; }
 }
