@@ -10,11 +10,22 @@ public class Letter
 {
     [field: SerializeField] public LetterContentSo LetterContent { get; set; }
     [field: SerializeField] public NarrativeBlockOfLetters RelatedNarrativeBlock { get; set; }
+    [field: SerializeField] public FillerBlockOfLetters RelatedFillerBlock { get; set; }
 
     public Letter(LetterContentSo content, NarrativeBlockOfLetters nBlock)
     {
         LetterContent = content;
         RelatedNarrativeBlock = nBlock;
+    }
+    public Letter(LetterContentSo content, FillerBlockOfLetters fBlock)
+    {
+        LetterContent = content;
+        RelatedFillerBlock = fBlock;
+    }
+
+    public Letter(LetterContentSo content)
+    {
+        LetterContent = content;
     }
 }
 
@@ -76,9 +87,9 @@ public class NarrativeBlockOfLetters
     }
 }
 
+[Serializable]
 public class FillerBlockOfLetters
 {
-    
     [field: SerializeField] public FillerBlockLettersContentSo ContentSo { get; set; }
     [field: SerializeField] public bool HasUsedFirstLetter { get; set; }
     [field: SerializeField] public LetterContentSo LastUsedLetter { get; set; }

@@ -6,6 +6,7 @@ using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 {
@@ -144,12 +145,22 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         }
     }
 
+    public int ordersCount = 0;
+    private bool fillerChosen = false;
+    private List<FillerBlockOfLetters> tempValidFillerBlocks = new();
+    private List<LetterContentSo> tempValidFillerLetters = new();
     public void ChooseLetters()
     {
+        ordersCount = 0;
         GameDontDestroyOnLoadManager.Instance.ChosenLetters.Clear();
 
         foreach (var letter in GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters)
         {
+            if (letter.RelatedFillerBlock != null)
+            {
+                GenerateSuccessLetter(letter);
+                continue;
+            }
             int index = letter.RelatedNarrativeBlock.ContentSo.Content.IndexOf(letter.LetterContent);
             letter.RelatedNarrativeBlock.InactiveLetters[index] = false;
             
@@ -184,9 +195,64 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
             //Debug.Log("Generated a letter");
             GameDontDestroyOnLoadManager.Instance.ChosenLetters.Add((new Letter(t.ContentSo.Content[t.SelfProgressionIndex], t), null));
             t.InactiveLetters[t.SelfProgressionIndex] = true;
+            if (t.ContentSo.Content[t.SelfProgressionIndex].LetterType == LetterType.Orders)
+            {
+                ordersCount++;
+            }
+        }
+
+        fillerChosen = false;
+        Debug.Log(OrderManager.Instance.CurrentOrders.FindIndex(x => x == null) + " + " + ordersCount);
+        if (OrderManager.Instance.CurrentOrders.FindIndex(x => x == null) + ordersCount < GameDontDestroyOnLoadManager.Instance.QuestProgressionIndexWatchers[GameDontDestroyOnLoadManager.Instance.FillerQuestProgression].MinimumOrdersAmount)
+        {
+            Debug.Log("B");
+            foreach (var FillerBlocks in GameDontDestroyOnLoadManager.Instance.AllFillerBlocks)
+            {
+                if (FillerBlocks == GameDontDestroyOnLoadManager.Instance.LastUsedFillerBlockOfLetters || 
+                    FillerBlocks.ContentSo.RequiredQuestProgressionIndex > GameDontDestroyOnLoadManager.Instance.QuestProgressionIndex)
+                    continue;
+                
+                Debug.Log("C");
+                if (!FillerBlocks.HasUsedFirstLetter)
+                {
+                    GameDontDestroyOnLoadManager.Instance.ChosenLetters.Add((new Letter(FillerBlocks.ContentSo.FirstFiller,FillerBlocks), null));
+                    
+                    Debug.Log("D");
+                    fillerChosen = true;
+                    break;
+                }
+            }
+
+            if (!fillerChosen)
+            {
+                
+                foreach (var FillerBlocks in GameDontDestroyOnLoadManager.Instance.AllFillerBlocks)
+                {
+                    if (FillerBlocks == GameDontDestroyOnLoadManager.Instance.LastUsedFillerBlockOfLetters || 
+                        FillerBlocks.ContentSo.RequiredQuestProgressionIndex > GameDontDestroyOnLoadManager.Instance.QuestProgressionIndex)
+                        continue;
+                    tempValidFillerBlocks.Add(FillerBlocks);
+                }
+
+                int i = Random.Range(0, tempValidFillerBlocks.Count);
+                GameDontDestroyOnLoadManager.Instance.LastUsedFillerBlockOfLetters = tempValidFillerBlocks[i];
+                foreach (var FillerLetter in tempValidFillerBlocks[i].ContentSo.Content)
+                {
+                    if (FillerLetter == tempValidFillerBlocks[i].LastUsedLetter || 
+                        FillerLetter.QuestProgressionRequired > GameDontDestroyOnLoadManager.Instance.QuestProgressionIndex)
+                        continue;
+                    tempValidFillerLetters.Add(FillerLetter);
+                }
+                int y = Random.Range(0, tempValidFillerLetters.Count);
+                tempValidFillerBlocks[i].LastUsedLetter = tempValidFillerLetters[y];
+                GameDontDestroyOnLoadManager.Instance.ChosenLetters.Add((new Letter(tempValidFillerLetters[y],tempValidFillerBlocks[i]), null));
+                fillerChosen = true;
+            }
         }
 
         GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters.Clear();
+        tempValidFillerBlocks.Clear();
+        tempValidFillerLetters.Clear();
         foreach (var letterTupple in GameDontDestroyOnLoadManager.Instance.ChosenLetters)
         {
             GameDontDestroyOnLoadManager.Instance.MailBoxLetters.Add(letterTupple.Item1);
@@ -201,10 +267,19 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         Debug.Log("Generated success letter");
         int moneyToEarn = letter.LetterContent.OrderContent.MoneyReward;
         _moneyAmountsToEarn.Add((moneyToEarn, GameDontDestroyOnLoadManager.Instance.ChosenLetters.Count));
-        GameDontDestroyOnLoadManager.Instance.ChosenLetters.Add((new Letter(letter.LetterContent.RelatedSuccessLetter, letter.RelatedNarrativeBlock),
-            letter.LetterContent));
-        letter.RelatedNarrativeBlock.NewLetterCountDown =
-            letter.LetterContent.TimeForLetterAfterSuccess;
+        if (letter.RelatedNarrativeBlock != null)
+        {
+            GameDontDestroyOnLoadManager.Instance.ChosenLetters.Add((new Letter(letter.LetterContent.RelatedSuccessLetter, letter.RelatedNarrativeBlock),
+                letter.LetterContent));
+            letter.RelatedNarrativeBlock.NewLetterCountDown =
+                letter.LetterContent.TimeForLetterAfterSuccess;
+        }
+        else
+        {
+            GameDontDestroyOnLoadManager.Instance.ChosenLetters.Add((new Letter(letter.LetterContent.RelatedSuccessLetter, letter.RelatedFillerBlock),
+                letter.LetterContent));
+        }
+
     }
 
     public void GenerateLetters()
@@ -294,7 +369,8 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                     OrderManager.Instance.CreateNewOrder(letter.Item1);
                     break;
                 case LetterType.Thanks:
-                    CodexContentManager.instance.AddHistoricPage(letter.Item2, letter.Item1.LetterContent);
+                    if (!CodexContentManager.instance.historicPages.Find(x => x.OriginLetter))
+                        CodexContentManager.instance.AddHistoricPage(letter.Item2, letter.Item1.LetterContent);
                     break;
                 case LetterType.Gift:
                     CodexContentManager.instance.AddHistoricPage(letter.Item1.LetterContent, null);

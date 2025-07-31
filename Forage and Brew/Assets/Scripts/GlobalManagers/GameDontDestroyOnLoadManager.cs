@@ -44,14 +44,15 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     // Letters
     [field: SerializeField] public bool HasChosenLettersToday { get; set; }
     [field: SerializeField] public int QuestProgressionIndex { get; set; }
-    
+    [field: SerializeField] public int FillerQuestProgression { get; set; }
     [field: Expandable] [field: SerializeField] public List<NarrativeBlockOfLettersContentSo> AllNarrativeBlocksContentSo { get; set; } = new();
     [field: SerializeField] [field: AllowNesting] public List<NarrativeBlockOfLetters> AllNarrativeBlocks { get; set; } = new();
     
     [field: Expandable] [field: SerializeField] public List<FillerBlockLettersContentSo> AllFillerBlocksContentSo { get; set; } = new();
     [field: SerializeField] [field: AllowNesting] public List<FillerBlockOfLetters> AllFillerBlocks { get; set; } = new();
+    public FillerBlockOfLetters LastUsedFillerBlockOfLetters { get; set; }
     [field: SerializeField] [field: AllowNesting] public List<QuestProgressionIndexWatcher> QuestProgressionIndexWatchers { get; set; } = new();
-    [field: SerializeField] public int FillerQuestProgression { get; set; }
+
 
     public List<Letter> ThanksAndErrorLetters { get; set; } = new();
     [field: SerializeField]public List<Letter> MailBoxLetters { get; set; } = new();

@@ -95,7 +95,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
         {
             foreach (var orderSo in GameDontDestroyOnLoadManager.Instance.OrdersToLoad)
             {
-                OrderManager.Instance.CreateNewOrder(new Letter(orderSo, null));
+                OrderManager.Instance.CreateNewOrder(new Letter(orderSo));
             }
         }
 

@@ -12,6 +12,7 @@ public class HistoricCodexDisplayBehavior : PageBehavior
     public TextMeshProUGUI description1Text;
     public TextMeshProUGUI description2Text;
     public GameObject tampon;
+    public LetterContentSo OriginLetter;
 
     
     public override void InitHistoric(LetterContentSo originLetter, LetterContentSo successLetter)
@@ -20,6 +21,7 @@ public class HistoricCodexDisplayBehavior : PageBehavior
         description1Text.text = originLetter.TextContent;
         description2Text.text = successLetter ? successLetter.TextContent : "";
         backGround1.color = backGround2.color = originLetter.Client.AssociatedColor;
+        OriginLetter = originLetter;
     }    
     public void InitHistoric(LetterContentSo originLetter)
     {
@@ -32,5 +34,6 @@ public class HistoricCodexDisplayBehavior : PageBehavior
         description2Text.enabled = false;
         backGround1.transform.rotation = Quaternion.identity;
         tampon.SetActive(false);
+        OriginLetter = originLetter;
     }
 }
