@@ -205,19 +205,16 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         Debug.Log(OrderManager.Instance.CurrentOrders.FindIndex(x => x == null) + " + " + ordersCount);
         if (OrderManager.Instance.CurrentOrders.FindIndex(x => x == null) + ordersCount < GameDontDestroyOnLoadManager.Instance.QuestProgressionIndexWatchers[GameDontDestroyOnLoadManager.Instance.FillerQuestProgression].MinimumOrdersAmount)
         {
-            Debug.Log("B");
             foreach (var FillerBlocks in GameDontDestroyOnLoadManager.Instance.AllFillerBlocks)
             {
                 if (FillerBlocks == GameDontDestroyOnLoadManager.Instance.LastUsedFillerBlockOfLetters || 
                     FillerBlocks.ContentSo.RequiredQuestProgressionIndex > GameDontDestroyOnLoadManager.Instance.QuestProgressionIndex)
                     continue;
                 
-                Debug.Log("C");
                 if (!FillerBlocks.HasUsedFirstLetter)
                 {
                     GameDontDestroyOnLoadManager.Instance.ChosenLetters.Add((new Letter(FillerBlocks.ContentSo.FirstFiller,FillerBlocks), null));
                     
-                    Debug.Log("D");
                     fillerChosen = true;
                     break;
                 }
