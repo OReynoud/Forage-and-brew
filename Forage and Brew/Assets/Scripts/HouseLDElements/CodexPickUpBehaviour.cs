@@ -29,7 +29,8 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
         {
             doTutorialPages = false;
             gameObject.SetActive(false);
-            Destroy(tutorialBackground.gameObject);
+            if (tutorialBackground != null)
+                Destroy(tutorialBackground.gameObject);
         }
         else
         {

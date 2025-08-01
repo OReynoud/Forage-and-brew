@@ -120,8 +120,33 @@ public class CharacterMovementController : MonoBehaviour
     }
 
     private void PlayerMovement()
-    {
-        angle = maxAngle;
+    {      
+        if (playerDir.magnitude > 0)
+        {
+            accelerationCurveIndex += Time.deltaTime;
+            isMoving = true;
+            animator.SetFloat(WalkSpeed,isRunning? runSpeed / walkSpeed : playerDir.magnitude);
+            animator.SetBool(IsWalking, true);
+            if (footStepTimer <= 0)
+            {
+                footStepTimer = isRunning ? runFootStepInterval : walkFootStepInterval;
+                walkAudioSource.Play();
+            }
+            else
+            {
+                footStepTimer -= Time.deltaTime * playerDir.magnitude;
+            }
+        }
+        else
+        {
+            footStepTimer = 0;
+            accelerationCurveIndex = 0;
+            isMoving = false;
+            isRunning = false;
+            animator.SetBool(IsWalking, false);
+        }
+        
+        angle = maxAngle;  
         animator.SetBool(IsRunning, isRunning);
         if (isRunning)
             playerDir.Normalize();
@@ -167,30 +192,7 @@ public class CharacterMovementController : MonoBehaviour
             WalkToLocation();
         }
         
-        if (playerDir.magnitude > 0)
-        {
-            accelerationCurveIndex += Time.deltaTime;
-            isMoving = true;
-            animator.SetFloat(WalkSpeed,isRunning? runSpeed / walkSpeed : playerDir.magnitude);
-            animator.SetBool(IsWalking, true);
-            if (footStepTimer <= 0)
-            {
-                footStepTimer = isRunning ? runFootStepInterval : walkFootStepInterval;
-                walkAudioSource.Play();
-            }
-            else
-            {
-                footStepTimer -= Time.deltaTime * playerDir.magnitude;
-            }
-        }
-        else
-        {
-            footStepTimer = 0;
-            accelerationCurveIndex = 0;
-            isMoving = false;
-            isRunning = false;
-            animator.SetBool(IsWalking, false);
-        }
+
     }
     
     private void RotatePlayer()

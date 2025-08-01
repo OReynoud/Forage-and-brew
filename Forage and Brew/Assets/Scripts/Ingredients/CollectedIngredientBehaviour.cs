@@ -43,7 +43,6 @@ public class CollectedIngredientBehaviour : StackableItem
 
     public override void StackableDropped()
     {
-        Debug.Log("used overriden method");
         isBeingDroppedInTarget = false;
         lerp = 0f;
         OnIngredientDropEnd.Invoke(this);
