@@ -35,7 +35,7 @@ public class OrderManager : MonoBehaviour
 
     private void InitializeCurrentOrders()
     {
-        if (GameDontDestroyOnLoadManager.Instance.IsFirstGameSession)
+        if (GameDontDestroyOnLoadManager.Instance.IsFirstGameSession && PotionCrateManager.Instance != null)
         {
             for (int i = 0; i < PotionCrateManager.Instance.PotionCrates.Count; i++)
             {

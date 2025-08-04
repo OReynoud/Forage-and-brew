@@ -8,6 +8,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
 {
     private static readonly int DoSleep = Animator.StringToHash("DoSleep");
     private static readonly int DoWakeUp = Animator.StringToHash("DoWakeUp");
+    [SerializeField] private SceneListSo sceneListSo;
     public float transitionTime;
     public float timer;
     public float transitionFrameCount;
@@ -39,6 +40,10 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         }
         
         SceneManager.sceneUnloaded += SceneManagerOnsceneLoaded;
+        if (sceneListSo.SceneNames[0].Name != SceneManager.GetActiveScene().name)
+        {
+            SceneManagerOnsceneLoaded(SceneManager.GetActiveScene());
+        }
         //SceneManager.sceneUnloaded += SceneManagerOnsceneUnloaded;
     }
 

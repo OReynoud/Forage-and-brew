@@ -9,6 +9,7 @@ public class WeatherManager : MonoBehaviour
     
     public WeatherSuccessiveDays CurrentWeatherState { get; set; }
 
+    private GameDontDestroyOnLoadManager GDDOL;
     
 
     private void Awake()
@@ -21,14 +22,16 @@ public class WeatherManager : MonoBehaviour
         {
             DestroyImmediate(this);
         }
+
+        GDDOL = GetComponent<GameDontDestroyOnLoadManager>();
+        if (GDDOL.IsFirstGameSession)
+        {
+            CurrentWeatherState = new WeatherSuccessiveDays(startingWeatherState, 1);
+        }
     }
     
     private void Start()
     {
-        if (GameDontDestroyOnLoadManager.Instance.IsFirstGameSession)
-        {
-            CurrentWeatherState = new WeatherSuccessiveDays(startingWeatherState, 1);
-        }
         Debug.Log("The weather state for the first day is " + CurrentWeatherState.WeatherStateSo.Name +
                   " in the forest and the swamp.");
         InfoDisplayManager.instance.DisplayWeather();
