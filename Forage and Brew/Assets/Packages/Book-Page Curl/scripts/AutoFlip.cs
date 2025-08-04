@@ -2,7 +2,6 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using NaughtyAttributes;
 
 [RequireComponent(typeof(Book))]
@@ -12,6 +11,7 @@ public class AutoFlip : Singleton<AutoFlip>
     [BoxGroup("References")] public RectTransform codexProportions;
     [BoxGroup("References")] public Book ControledBook;
     [BoxGroup("References")] public JoystickAnimationManagerBehaviour PageFlipIndication;
+
     
     [BoxGroup("References")] public JoystickAnimationValuesSo rightFlipAnim;
     [BoxGroup("References")] public JoystickAnimationValuesSo leftFlipAnim;
@@ -23,12 +23,25 @@ public class AutoFlip : Singleton<AutoFlip>
     [BoxGroup("Codex Movement")] public Vector2 offset;
     [BoxGroup("Codex Movement")] public float codexLerp = 0.17f;
     [BoxGroup("Codex Movement")] public bool isNavigatingPages;
+    [BoxGroup("Codex Movement")] public Vector3 shownCodexPos;
     [BoxGroup("Codex Movement")] public Vector3 aimedCodexPos;
 
     [BoxGroup("Codex Movement")] public float zoomIntensity = 2;
     [BoxGroup("Codex Movement")] public float yCursorSpeed = 1;
+
     [BoxGroup("Codex Movement")] public float xCursorSpeed = 1;
 
+    
+    [BoxGroup("PinRecipeCutout")] public RectTransform cutoutTransform;
+    [BoxGroup("PinRecipeCutout")] public CanvasGroup cutoutCanvasGroup;
+    [BoxGroup("PinRecipeCutout")] public Vector2 cutoutActivePos;
+    [BoxGroup("PinRecipeCutout")] public Vector2 cutoutActiveSize;
+    private Vector2 cutoutBaseSize;
+    [BoxGroup("PinRecipeCutout")] public AnimationCurve cutoutAnimCurve = AnimationCurve.EaseInOut(0,0,1,1);
+    [BoxGroup("PinRecipeCutout")] public float cutoutLerpTime;
+    [BoxGroup("PinRecipeCutout")] public float cutoutTimer;
+    [BoxGroup("PinRecipeCutout")] public bool doCutout;
+    [BoxGroup("PinRecipeCutout")] public bool removeCutout;
 
     //Controls
 
@@ -59,6 +72,8 @@ public class AutoFlip : Singleton<AutoFlip>
 
         ControledBook.bookPages.RemoveAt(index);
         ControledBook.bookPages.RemoveAt(index);
+
+        cutoutBaseSize = cutoutTransform.sizeDelta;
     }
 
     void Start()
@@ -77,13 +92,35 @@ public class AutoFlip : Singleton<AutoFlip>
     private void Update()
     {
         CodexNavigation();
+
+        if (removeCutout &&  cutoutTimer > 0)
+        {
+            cutoutTimer -= Time.deltaTime;
+            cutoutCanvasGroup.alpha = Mathf.Lerp(0, 1, cutoutAnimCurve.Evaluate(cutoutTimer / cutoutLerpTime));
+            cutoutTransform.anchoredPosition = Vector2.Lerp(Vector2.zero, cutoutActivePos, cutoutAnimCurve.Evaluate(cutoutTimer / cutoutLerpTime));
+            cutoutTransform.sizeDelta = Vector2.Lerp(cutoutBaseSize, cutoutActiveSize, cutoutAnimCurve.Evaluate(cutoutTimer / cutoutLerpTime));
+            if (cutoutTimer < 0)
+            {
+                Destroy(cutoutTransform.gameObject);
+                removeCutout = false;
+            }
+            return;
+        }
+        if (doCutout && cutoutTimer < cutoutLerpTime)
+        {
+            cutoutTimer += Time.deltaTime;
+            cutoutCanvasGroup.alpha = Mathf.Lerp(0, 1, cutoutTimer / cutoutLerpTime);
+            cutoutTransform.anchoredPosition = Vector2.Lerp(Vector2.zero, cutoutActivePos, cutoutTimer / cutoutLerpTime);
+            cutoutTransform.sizeDelta = Vector2.Lerp(cutoutBaseSize, cutoutActiveSize, cutoutTimer / cutoutLerpTime);
+            
+        }
     }
 
     private void CodexNavigation()
     {
         if (CharacterInputManager.Instance.showCodex)
         {
-            codexTransform.anchoredPosition = Vector2.Lerp(codexTransform.anchoredPosition, aimedCodexPos,
+            codexTransform.anchoredPosition = Vector2.Lerp(codexTransform.anchoredPosition, shownCodexPos,
                 isNavigatingPages ? codexLerp * 0.3f : codexLerp);
         }
         else
@@ -426,6 +463,12 @@ public class AutoFlip : Singleton<AutoFlip>
         
         if (recipeToPin)
         {
+            if (!GameDontDestroyOnLoadManager.Instance.hasDonePinTutorial)
+            {
+                CharacterInputManager.Instance.EnableCodexPinRecipe();
+                doCutout = true;
+                yield break;
+            }
             foreach (TemperatureChallengeIngredients t in recipeToPin.TemperatureChallengeIngredients)
             {
                 foreach (CookedIngredientForm cookedIngredient in t.CookedIngredients)

@@ -78,6 +78,7 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     [Foldout("Debug")][ShowIf("loadHistoric")] public List<LetterContentSo> HistoricToLoad;
     [Foldout("Debug")] public bool debugCommands;
     [Foldout("Debug")] public bool codexIsUnlocked;
+    [Foldout("Debug")] public bool hasDonePinTutorial;
     [Foldout("Debug")] public bool unlockedOnWakeUp;
     [Foldout("Debug")] public int moneyAmountOnStart;
     

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -44,8 +45,15 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
     {
         if (!state)
         {
-            Destroy(tutorialBackground.gameObject, 0.4f);
+
+            DOTween.To(() => tutorialBackground.alpha, x => tutorialBackground.alpha = x, 0,
+                0.2f).OnComplete((() =>
+            {
+                Destroy(tutorialBackground.gameObject);
+            }));
+
             CharacterInputManager.Instance.OnCodexUse.RemoveListener(DestroyTutorialBackground);
+            Destroy(gameObject);
         }
     }
 

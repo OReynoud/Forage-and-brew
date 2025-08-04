@@ -214,6 +214,11 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.BookMarkRight.Enable();
         _inputs.Player.StartPageNavigation.Enable();
         _inputs.Player.ExitPageNavigation.Disable();
+        EnableCodexPinRecipe();
+    }
+
+    public void EnableCodexPinRecipe()
+    {
         _inputs.Player.PinLeft.Enable();
         _inputs.Player.PinRight.Enable();
     }

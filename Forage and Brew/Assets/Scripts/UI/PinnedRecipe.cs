@@ -183,6 +183,16 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         }
 
         isPinned = true;
+
+        if (!GameDontDestroyOnLoadManager.Instance.hasDonePinTutorial)
+        {
+            GameDontDestroyOnLoadManager.Instance.hasDonePinTutorial = true;
+            AutoFlip.instance.doCutout = false;
+            AutoFlip.instance.removeCutout = true;
+            CharacterInputManager.Instance.EnableMoveInputs();
+            CharacterInputManager.Instance.EnableCodexInputs();
+            CharacterInputManager.Instance.EnableCodexExitInput();
+        }
     }
 
     /// <summary>
