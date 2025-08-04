@@ -25,6 +25,8 @@ public class CollectedIngredientBehaviour : StackableItem
     [SerializeField] private GameObject chopIconGameObject;
     [SerializeField] private GameObject grindIconGameObject;
     
+    // Shader hashes
+    private static readonly int CutoffHeight = Shader.PropertyToID("_CutoffHeight");
 
 
     private void Start()
@@ -123,22 +125,38 @@ public class CollectedIngredientBehaviour : StackableItem
 
         for (int i = 0; i < index; i++)
         {
-            meshParentTransform.GetChild(0).GetChild(i).DOMove(meshParentTransform.position +
+            if (i < IngredientValuesSo.CutPieceCount)
+            {
+                meshParentTransform.GetChild(0).GetChild(i).DOMove(meshParentTransform.position +
                     IngredientValuesSo.CutMeshEndPositions[i], collectedIngredientGlobalValuesSo.CutMeshMoveDuration)
-                .SetEase(collectedIngredientGlobalValuesSo.CutMeshMoveCurve);
-            meshParentTransform.GetChild(0).GetChild(i).DORotate((meshParentTransform.rotation *
+                    .SetEase(collectedIngredientGlobalValuesSo.CutMeshMoveCurve);
+                meshParentTransform.GetChild(0).GetChild(i).DORotate((meshParentTransform.rotation *
                         Quaternion.Euler(IngredientValuesSo.CutMeshEndRotations[i])).eulerAngles,
-                    collectedIngredientGlobalValuesSo.CutMeshMoveDuration)
-                .SetEase(collectedIngredientGlobalValuesSo.CutMeshMoveCurve);
+                        collectedIngredientGlobalValuesSo.CutMeshMoveDuration)
+                    .SetEase(collectedIngredientGlobalValuesSo.CutMeshMoveCurve);
+            }
+            else
+            {
+                if (meshParentTransform.GetChild(0).GetChild(i).gameObject.activeSelf)
+                {
+                    int trashIndex = i;
+                    // Dissolve trash pieces
+                    meshParentTransform.GetChild(0).GetChild(i).GetComponent<MeshRenderer>().material
+                        .DOFloat(1f, CutoffHeight, collectedIngredientGlobalValuesSo.CutMeshMoveDuration)
+                        .OnComplete(() => meshParentTransform.GetChild(0).GetChild(trashIndex).gameObject.SetActive(false));
+                }
+            }
         }
     }
     
     public void SetFinalCutMeshPositionAndRotation()
     {
+        Transform meshTransform = meshParentTransform.GetChild(0);
+        
         meshParentTransform.localPosition = Vector3.zero;
-        meshParentTransform.GetChild(0).localPosition = Vector3.zero;
-        meshParentTransform.GetChild(0).localRotation = Quaternion.identity;
-        meshParentTransform.GetChild(0).localScale = Vector3.one;
+        meshTransform.localPosition = Vector3.zero;
+        meshTransform.localRotation = Quaternion.identity;
+        meshTransform.localScale = Vector3.one;
         
         Sequence cutMeshSequence = DOTween.Sequence();
         
@@ -153,18 +171,30 @@ public class CollectedIngredientBehaviour : StackableItem
         float averageZEndPosition = (minZEndPosition + maxZEndPosition) * 0.5f;
         Vector3 averageEndPosition = new(averageXEndPosition, averageYEndPosition, averageZEndPosition);
         
-        Debug.Log(averageEndPosition);
-        
-        for (int i = 0; i < IngredientValuesSo.CutMeshEndPositions.Count; i++)
+        for (int i = 0; i < IngredientValuesSo.CutPieceCount + IngredientValuesSo.CutTrashCount; i++)
         {
-            cutMeshSequence.Join(meshParentTransform.GetChild(0).GetChild(i).DOLocalMove(
-                    (IngredientValuesSo.CutMeshEndPositions[i] - averageEndPosition) / collectedIngredientGlobalValuesSo.CutMeshScale,
-                    collectedIngredientGlobalValuesSo.CutMeshMoveDuration)
-                .SetEase(collectedIngredientGlobalValuesSo.CutMeshMoveCurve));
-            cutMeshSequence.Join(meshParentTransform.GetChild(0).GetChild(i).DOLocalRotate(
-                    IngredientValuesSo.CutMeshEndRotations[i],
-                    collectedIngredientGlobalValuesSo.CutMeshMoveDuration)
-                .SetEase(collectedIngredientGlobalValuesSo.CutMeshMoveCurve));
+            if (i < IngredientValuesSo.CutPieceCount)
+            {
+                cutMeshSequence.Join(meshTransform.GetChild(i).DOLocalMove((IngredientValuesSo.CutMeshEndPositions[i] -
+                            averageEndPosition) / collectedIngredientGlobalValuesSo.CutMeshScale,
+                        collectedIngredientGlobalValuesSo.CutMeshMoveDuration)
+                    .SetEase(collectedIngredientGlobalValuesSo.CutMeshMoveCurve));
+                cutMeshSequence.Join(meshTransform.GetChild(i).DOLocalRotate(
+                        IngredientValuesSo.CutMeshEndRotations[i],
+                        collectedIngredientGlobalValuesSo.CutMeshMoveDuration)
+                    .SetEase(collectedIngredientGlobalValuesSo.CutMeshMoveCurve));
+            }
+            else
+            {
+                if (meshTransform.GetChild(i).gameObject.activeSelf)
+                {
+                    int trashIndex = i;
+                    // Dissolve trash pieces
+                    meshTransform.GetChild(i).GetComponent<MeshRenderer>().material
+                        .DOFloat(1f, CutoffHeight, collectedIngredientGlobalValuesSo.CutMeshMoveDuration)
+                        .OnComplete(() => meshTransform.GetChild(trashIndex).gameObject.SetActive(false));
+                }
+            }
         }
     }
     

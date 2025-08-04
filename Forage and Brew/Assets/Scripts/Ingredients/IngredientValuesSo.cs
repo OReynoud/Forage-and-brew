@@ -16,6 +16,9 @@ public class IngredientValuesSo : StackableValuesSo
     [field: SerializeField] public LunarCycleStateSo[] LunarCycleStates { get; private set; }
     [field: SerializeField] public GameObject MeshGameObject { get; private set; }
     [field: ShowIf("IsChoppable")] [field: SerializeField] public GameObject CutMeshGameObject { get; private set; }
+    [field: ShowIf("IsChoppable")] [field: SerializeField] public int CutPieceCount { get; private set; } = 5;
+    [field: ShowIf("IsChoppable")] [field: ReadOnly] [field: SerializeField] public int CutTrashCount { get; private set; }
+    [field: ShowIf("IsChoppable")] [field: ReadOnly] [field: SerializeField] public int CutActionCount { get; private set; }
     [field: ShowIf("IsChoppable")] [field: SerializeField] public List<Vector3> CutMeshPositions { get; private set; }
     [field: ShowIf("IsChoppable")] [field: SerializeField] public List<Vector3> CutMeshRotations { get; private set; }
     [field: ShowIf("IsChoppable")] [field: SerializeField] public List<Vector3> CutMeshEndPositions { get; private set; }
@@ -40,42 +43,49 @@ public class IngredientValuesSo : StackableValuesSo
     {
         if (!IsChoppable) return;
         
-        while (CutMeshPositions.Count < 4)
+        if (CutMeshGameObject)
+        {
+            CutTrashCount = CutMeshGameObject.transform.childCount - CutPieceCount;
+        }
+        
+        CutActionCount = CutPieceCount + CutTrashCount - 1;
+        
+        while (CutMeshPositions.Count < CutActionCount)
         {
             CutMeshPositions.Add(Vector3.zero);
         }
 
-        while (CutMeshPositions.Count > 4)
+        while (CutMeshPositions.Count > CutActionCount)
         {
             CutMeshPositions.RemoveAt(CutMeshPositions.Count - 1);
         }
         
-        while (CutMeshRotations.Count < 4)
+        while (CutMeshRotations.Count < CutActionCount)
         {
             CutMeshRotations.Add(Vector3.zero);
         }
         
-        while (CutMeshRotations.Count > 4)
+        while (CutMeshRotations.Count > CutActionCount)
         {
             CutMeshRotations.RemoveAt(CutMeshRotations.Count - 1);
         }
         
-        while (CutMeshEndPositions.Count < 5)
+        while (CutMeshEndPositions.Count < CutPieceCount)
         {
             CutMeshEndPositions.Add(Vector3.zero);
         }
         
-        while (CutMeshEndPositions.Count > 5)
+        while (CutMeshEndPositions.Count > CutPieceCount)
         {
             CutMeshEndPositions.RemoveAt(CutMeshEndPositions.Count - 1);
         }
         
-        while (CutMeshEndRotations.Count < 5)
+        while (CutMeshEndRotations.Count < CutPieceCount)
         {
             CutMeshEndRotations.Add(Vector3.zero);
         }
         
-        while (CutMeshEndRotations.Count > 5)
+        while (CutMeshEndRotations.Count > CutPieceCount)
         {
             CutMeshEndRotations.RemoveAt(CutMeshEndRotations.Count - 1);
         }

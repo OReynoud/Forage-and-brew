@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 
@@ -64,8 +65,11 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         
         // Challenge variables
         _isChallengeActive = true;
-        _currentChoppingChallenge = choppingHapticChallengeListSo.ChoppingHapticChallenges[Random.Range(0,
-            choppingHapticChallengeListSo.ChoppingHapticChallenges.Count)];
+        List<ChoppingHapticChallengeSo> choppingHapticChallenges = choppingHapticChallengeListSo
+            .ChoppingHapticChallenges.Where(choppingHapticChallenge =>
+                choppingHapticChallenge.ChoppingInputIndices.Count ==
+                CurrentChoppingCountertopBehaviour.CollectedIngredients[0].IngredientValuesSo.CutActionCount).ToList();
+        _currentChoppingChallenge = choppingHapticChallenges[Random.Range(0, choppingHapticChallenges.Count)];
         _currentChoppingInputIndex = 0;
         _isWaitingForNextChopping = false;
         _currentChoppingWaitTime = 0f;

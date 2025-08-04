@@ -12,7 +12,7 @@ public class ChoppingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngre
     
     public bool IsCharacterOnCountertop { get; set; }
     
-    private readonly List<CollectedIngredientBehaviour> _collectedIngredients = new();
+    public List<CollectedIngredientBehaviour> CollectedIngredients { get; } = new();
     [field: SerializeField] public bool UseEndPoint { get; set; }
     [field: ShowIf("UseEndPoint")][field: SerializeField] public Transform EndPoint { get; set; }
     [field: ShowIf("UseEndPoint")][field: SerializeField] public float heightShove { get; set; }
@@ -39,29 +39,29 @@ public class ChoppingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngre
     
     public void AddIngredient(CollectedIngredientBehaviour collectedIngredientBehaviour)
     {
-        _collectedIngredients.Add(collectedIngredientBehaviour);
+        CollectedIngredients.Add(collectedIngredientBehaviour);
     }
 
 
     public void SetCutIngredient()
     {
-        _collectedIngredients[0].SetCutMeshGameObject();
+        CollectedIngredients[0].SetCutMeshGameObject();
     }
     
     public void SetCutIngredientPositionAndRotation(int index)
     {
-        _collectedIngredients[0].SetCutMeshPositionAndRotation(index);
+        CollectedIngredients[0].SetCutMeshPositionAndRotation(index);
     }
 
     public void ChopIngredient(CookHapticChallengeSo cookHapticChallengeSo)
     {
-        _collectedIngredients[0].SetFinalCutMeshPositionAndRotation();
+        CollectedIngredients[0].SetFinalCutMeshPositionAndRotation();
         
-        _collectedIngredients[0].SetCookedForm(cookHapticChallengeSo);
-        CharacterInteractController.Instance.AddToPile(_collectedIngredients[0]);
-        _collectedIngredients.RemoveAt(0);
+        CollectedIngredients[0].SetCookedForm(cookHapticChallengeSo);
+        CharacterInteractController.Instance.AddToPile(CollectedIngredients[0]);
+        CollectedIngredients.RemoveAt(0);
 
-        if (_collectedIngredients.Count > 0)
+        if (CollectedIngredients.Count > 0)
         {
             ChoppingHapticChallengeManager.Instance.StartChoppingChallenge();
         }
