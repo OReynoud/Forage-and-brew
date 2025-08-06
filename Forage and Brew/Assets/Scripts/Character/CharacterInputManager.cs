@@ -115,17 +115,17 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.ToggleRun.performed += ToggleRunOnPerformed;
         _inputs.Player.PauseIn.performed += PauseInOnPerformed;
         _inputs.Player.PauseOut.performed += PauseOutOnPerformed;
-        _inputs.Player.SwitchClothes.performed += SwitchClothesOnPerformed;
+        _inputs.Player.PreviousOutfit.performed += PreviousOutfitOnPerformed;
+        _inputs.Player.NextOutfit.performed += NextOutfitOnPerformed;
+        _inputs.Player.ExitMirror.performed += ExitMirrorOnPerformed;
+        _inputs.Player.SelectOutfit.performed += SelectOutfitOnPerformed;
+        _inputs.Player.PurchaseOutfit.performed += PurchaseOutfitOnPerformed;
     }
-
-
 
     public void EnableDebugCommands()
     {
         _inputs.Player.DEBUG_SkipDiscoveryAnimation.performed += SkipDiscoveryAnimationOnPerformed;
     }
-
-
 
     #endregion
 
@@ -240,6 +240,15 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.PauseIn.Enable();
         _inputs.Player.PauseOut.Enable();
     }
+    
+    public void EnableMirrorInputs()
+    {
+        _inputs.Player.PreviousOutfit.Enable();
+        _inputs.Player.NextOutfit.Enable();
+        _inputs.Player.ExitMirror.Enable();
+        _inputs.Player.SelectOutfit.Enable();
+        _inputs.Player.PurchaseOutfit.Enable();
+    }
 
     #endregion
 
@@ -254,6 +263,7 @@ public class CharacterInputManager : MonoBehaviour
         DisableCodexInputs();
         DisableMailInputs();
         DisablePauseInputs();
+        DisableMirrorInputs();
         _inputs.Player.Disable();
         if (OnInputsEnabled != null)
             OnInputsEnabled.Invoke(false);
@@ -343,6 +353,15 @@ public class CharacterInputManager : MonoBehaviour
     {
         _inputs.Player.PauseIn.Disable();
         _inputs.Player.PauseOut.Disable();
+    }
+    
+    public void DisableMirrorInputs()
+    {
+        _inputs.Player.PreviousOutfit.Disable();
+        _inputs.Player.NextOutfit.Disable();
+        _inputs.Player.ExitMirror.Disable();
+        _inputs.Player.SelectOutfit.Disable();
+        _inputs.Player.PurchaseOutfit.Disable();
     }
 
     #endregion
@@ -621,9 +640,49 @@ public class CharacterInputManager : MonoBehaviour
     }
 
     #endregion
+    
+    
+    #region Mirror Input Callbacks
+    
+    private void PreviousOutfitOnPerformed(InputAction.CallbackContext obj)
+    {
+        if (!CharacterInteractController.Instance.CurrentNearMirror) return;
+        
+        CharacterInteractController.Instance.CurrentNearMirror.PreviousOutfit();
+    }
+    
+    private void NextOutfitOnPerformed(InputAction.CallbackContext obj)
+    {
+        if (!CharacterInteractController.Instance.CurrentNearMirror) return;
+        
+        CharacterInteractController.Instance.CurrentNearMirror.NextOutfit();
+    }
+    
+    private void ExitMirrorOnPerformed(InputAction.CallbackContext obj)
+    {
+        if (!CharacterInteractController.Instance.CurrentNearMirror) return;
+        
+        CharacterInteractController.Instance.CurrentNearMirror.ExitMirror();
+    }
+    
+    private void SelectOutfitOnPerformed(InputAction.CallbackContext obj)
+    {
+        if (!CharacterInteractController.Instance.CurrentNearMirror) return;
+        
+        CharacterInteractController.Instance.CurrentNearMirror.SelectOutfit();
+    }
+    
+    private void PurchaseOutfitOnPerformed(InputAction.CallbackContext obj)
+    {
+        if (!CharacterInteractController.Instance.CurrentNearMirror) return;
+        
+        CharacterInteractController.Instance.CurrentNearMirror.PurchaseOutfit();
+    }
+    
+    #endregion
+    
 
     #region Debug Input Callbacks
-
         
     private void SkipDiscoveryAnimationOnPerformed(InputAction.CallbackContext obj)
     {
@@ -637,11 +696,6 @@ public class CharacterInputManager : MonoBehaviour
         EnableCodexInputs();
         EnableCodexExitInput();
         EnableMoveInputs();
-    }
-
-    private void SwitchClothesOnPerformed(InputAction.CallbackContext obj)
-    {
-        CharacterMovementController.Instance.SwitchClothes();
     }
 
     #endregion

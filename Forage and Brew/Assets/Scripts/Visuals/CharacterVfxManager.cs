@@ -10,6 +10,9 @@ public class CharacterVfxManager : MonoBehaviour
     [SerializeField] private WeatherStateSo rainWeatherState;
     [SerializeField] private GameObject rainVfxGameObject;
 
+    [Header("Puff")]
+    [SerializeField] private ParticleSystem puffVfxParticleSystem;
+
     
     private void Awake()
     {
@@ -23,6 +26,8 @@ public class CharacterVfxManager : MonoBehaviour
         }
     }
 
+
+    #region Rain VFX
 
     public void CheckForRainVfx()
     {
@@ -52,4 +57,16 @@ public class CharacterVfxManager : MonoBehaviour
     {
         rainVfxGameObject.SetActive(false);
     }
+
+    #endregion
+
+
+    #region Puff VFX
+
+    public void PlayPuffVfx()
+    {
+        puffVfxParticleSystem.Play();
+    }
+
+    #endregion
 }

@@ -15,8 +15,6 @@ public class CharacterMovementController : MonoBehaviour
     [SerializeField] private AudioResource walkHome;
     [SerializeField] private AudioResource walkForest;
     [SerializeField] private AudioResource walkSwamp;
-    [SerializeField] private GameObject classicClothes;
-    [SerializeField] private GameObject rainClothes;
     [SerializeField] private Collider coll;
     
     [Header("Movement Settings")]
@@ -43,8 +41,6 @@ public class CharacterMovementController : MonoBehaviour
     
     private Vector3 angledVelocity;
     private float angle;
-
-    private bool clothesBool;
     
     // Animator Hashes
     private static readonly int IsWalking = Animator.StringToHash("isWalking");
@@ -191,8 +187,6 @@ public class CharacterMovementController : MonoBehaviour
         {
             WalkToLocation();
         }
-        
-
     }
     
     private void RotatePlayer()
@@ -205,9 +199,16 @@ public class CharacterMovementController : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, finalAngle, 0), rotationSpeed);
     }
 
-    private bool transitionWalk = false;
+    private bool transitionWalk;
+    private bool manageFinalRotation;
     private Vector3 aimedLocation;
+    private Quaternion aimedRotation;
     private float timeToWalk;
+    private float transitionWalkDuration;
+    private float transitionWalkSpeed;
+    private float transitionWalkDistance;
+    private float aimedLocationTolerance = 0.05f; // Tolerance for the final position
+    
     public void TriggerWalkTransition(Vector3 locationToWalk)
     {
         CharacterInputManager.Instance.DisableMoveInputs();
@@ -215,6 +216,7 @@ public class CharacterMovementController : MonoBehaviour
         coll.isTrigger = true;
         rb.useGravity = false;
         
+        manageFinalRotation = false;
         aimedLocation = locationToWalk;
         transitionWalk = true;
         float walkDistance = Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(aimedLocation.x, aimedLocation.z)) - 0.2f;
@@ -223,26 +225,71 @@ public class CharacterMovementController : MonoBehaviour
         timeToWalk = walkDistance / walkSpeed;
         Debug.DrawLine(transform.position, locationToWalk, Color.red, 5);
     }
+    
+    public void TriggerWalkTransition(Transform locationToWalk, float walkDuration)
+    {
+        CharacterInputManager.Instance.DisableMoveInputs();
+        
+        coll.isTrigger = true;
+        rb.useGravity = false;
+        
+        manageFinalRotation = true;
+        aimedLocation = locationToWalk.position;
+        aimedRotation = locationToWalk.rotation;
+        transitionWalk = true;
+        transitionWalkDistance = Vector2.Distance(new Vector2(transform.position.x, transform.position.z),
+            new Vector2(aimedLocation.x, aimedLocation.z));
+        transform.LookAt(locationToWalk);
+        playerDir = transform.forward;
+        transitionWalkDuration = walkDuration;
+        timeToWalk = 0f;
+        transitionWalkSpeed = transitionWalkDistance / walkDuration;
+        Debug.DrawLine(transform.position, locationToWalk.position, Color.red, 5);
+    }
 
     public UnityEvent FinishWalkToLocation = new ();
 
-    void WalkToLocation()
+    private void WalkToLocation()
     {
-        if ( timeToWalk > 0)
+        if (manageFinalRotation)
         {
-            rb.linearVelocity = playerDir * walkSpeed;
-            timeToWalk -= Time.deltaTime;
-
+            if (Vector2.Distance(new Vector2(transform.position.x, transform.position.z),
+                    new Vector2(aimedLocation.x, aimedLocation.z)) < aimedLocationTolerance)
+            {
+                playerDir *= 0;
+                rb.linearVelocity *= 0;
+                transitionWalk = false;
+                coll.isTrigger = false;
+                rb.useGravity = true;
+                transform.rotation = aimedRotation;
+                FinishWalkToLocation?.Invoke();
+            }
+            else
+            {
+                float currentTimePart = timeToWalk / transitionWalkDuration;
+                rb.linearVelocity = playerDir * Mathf.Max(0.01f, transitionWalkSpeed *
+                                                                 Mathf.LerpUnclamped(1.5f, 0.5f, currentTimePart));
+                transform.rotation = Quaternion.Slerp(transform.rotation, aimedRotation, Mathf.Lerp(0f, 1f, currentTimePart));
+                timeToWalk += Time.deltaTime;
+            }
         }
         else
         {
-            playerDir *= 0;
-            rb.linearVelocity *= 0;
-            transitionWalk = false;
-            coll.isTrigger = false;
-            rb.useGravity = true;
-            if (FinishWalkToLocation != null)
-                FinishWalkToLocation.Invoke();
+            if (timeToWalk > 0)
+            {
+                rb.linearVelocity = playerDir * walkSpeed;
+                timeToWalk -= Time.deltaTime;
+            }
+            else
+            {
+                playerDir *= 0;
+                rb.linearVelocity *= 0;
+                transitionWalk = false;
+                coll.isTrigger = false;
+                rb.useGravity = true;
+                if (FinishWalkToLocation != null)
+                    FinishWalkToLocation.Invoke();
+            }
         }
     }
 
@@ -253,11 +300,4 @@ public class CharacterMovementController : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position,0.4f);
     }
 #endif
-    public void SwitchClothes()
-    {
-        clothesBool = !clothesBool;
-
-        classicClothes.SetActive(!clothesBool);
-        rainClothes.SetActive(clothesBool);
-    }
 }

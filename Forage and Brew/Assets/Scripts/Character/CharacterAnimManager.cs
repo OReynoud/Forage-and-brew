@@ -15,6 +15,11 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
     public Vector3 couchPlayerOffset;
     public Vector3 couchDropShadowOffset;
     private Vector3 dropShadowOriginalPos;
+    
+    // Outfit
+    [SerializeField] private GameObject defaultClothes;
+    [SerializeField] private GameObject rainClothes;
+    
     [SerializeField] public GameObject catPelvis;
 
     [BoxGroup("Blinking Animation")] [SerializeField] private float minTimeBetweenBlinks;
@@ -42,7 +47,7 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
     private static readonly int DoBlink = Animator.StringToHash("DoBlink");
     private static readonly int DoWag = Animator.StringToHash("DoWag");
     private static readonly int DoFlick = Animator.StringToHash("DoFlick");
-    public static readonly int IsCarrying = Animator.StringToHash("IsCarrying");
+    private static readonly int IsCarrying = Animator.StringToHash("IsCarrying");
     private static readonly int DoAfk = Animator.StringToHash("DoAfk");
     private static readonly int AfkIndex = Animator.StringToHash("IndexAFK");
     private static readonly int DoCodexOpen = Animator.StringToHash("DoCodexOpen");
@@ -59,6 +64,7 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
         CharacterInputManager.Instance.OnCodexUse.AddListener(UseCodex);
         dropShadowOriginalPos = dropShadow.transform.localPosition;
         _movementController = CharacterMovementController.Instance;
+        SetOutfit(GameDontDestroyOnLoadManager.Instance.CurrentOutfitSo);
     }
 
     private void UseCodex(bool state)
@@ -197,4 +203,25 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
     {
         purrSound.Stop();
     }
+
+
+    #region Mirror
+    
+    public void SetOutfit(CharacterOutfitSo outfitSo)
+    {
+        if (GameDontDestroyOnLoadManager.Instance.CurrentOutfitSo == outfitSo) return;
+        
+        GameDontDestroyOnLoadManager.Instance.CurrentOutfitSo = outfitSo;
+        
+        defaultClothes.SetActive(!outfitSo.IsRainOutfit);
+        rainClothes.SetActive(outfitSo.IsRainOutfit);
+
+        foreach (SkinnedMeshRenderer meshRenderer in
+                 (outfitSo.IsRainOutfit ? rainClothes : defaultClothes).GetComponentsInChildren<SkinnedMeshRenderer>())
+        {
+            meshRenderer.material = outfitSo.OutfitMaterial;
+        }
+    }
+
+    #endregion
 }

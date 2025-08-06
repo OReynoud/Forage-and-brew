@@ -80,6 +80,9 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
     [BoxGroup("Behavior")] [SerializeField] [ReadOnly]
     private bool canShow;
 
+    [BoxGroup("Behavior")] [SerializeField] [ReadOnly]
+    private bool canShowMoney;
+
     [BoxGroup("Behavior")] [SerializeField]
     private Vector2 topRightShownPos;
 
@@ -162,6 +165,11 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
         canShow = !arg0;
         //canShowCodex = false;
     }
+    
+    public void ShowOnlyMoney(bool show)
+    {
+        canShowMoney = show;
+    }
 
     private void Update()
     {
@@ -178,8 +186,8 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
         {
             weatherUIContainer.anchoredPosition =
                 Vector2.Lerp(weatherUIContainer.anchoredPosition, topRightHiddenPos, lerp);
-            moneyUIContainer.anchoredPosition =
-                Vector2.Lerp(moneyUIContainer.anchoredPosition, bottomRightHiddenPos, lerp);
+            moneyUIContainer.anchoredPosition = Vector2.Lerp(moneyUIContainer.anchoredPosition,
+                canShowMoney ? bottomRightShownPos : bottomRightHiddenPos, lerp);
             if (!canShowCodex)
             {
                 codexIcon.anchoredPosition = Vector2.Lerp(codexIcon.anchoredPosition, bottomLeftHiddenPos, lerp);

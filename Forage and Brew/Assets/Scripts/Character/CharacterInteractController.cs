@@ -25,6 +25,7 @@ public class CharacterInteractController : MonoBehaviour
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<StackableItem> CurrentStackableBehaviours { get; private set; } = new();
 
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public BedBehaviour CurrentNearBed { get; set; }
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public MirrorBehaviour CurrentNearMirror { get; set; }
     
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public MailBoxBehaviour CurrentNearMailBoxBehaviour { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public BinBehaviour CurrentNearBin { get; set; }
@@ -158,6 +159,10 @@ public class CharacterInteractController : MonoBehaviour
         {
             CurrentNearMailBoxBehaviour.ShowLetters();
             // Debug.Log("Check letters");
+        }
+        else if (CurrentNearMirror && collectedStack.Count == 0)
+        {
+            CurrentNearMirror.EnterMirror();
         }
         else if (CurrentNearCinematicInteraction != null)
         {

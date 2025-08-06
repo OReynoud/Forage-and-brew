@@ -69,6 +69,10 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     public int WorkshopProgressionIndex { get; set; }
     public List<ChargedBiomeAreaSo> UnlockedChargedBiomeAreas { get; set; } = new();
     
+    // Outfits
+    [field: SerializeField] public CharacterOutfitSo CurrentOutfitSo { get; set; }
+    [field: SerializeField] public List<CharacterOutfitSo> UnlockedOutfits { get; set; } = new();
+    
     //Debug Options
     [Foldout("Debug")] public bool loadOrders;
     [Foldout("Debug")][ShowIf("loadOrders")] public List<LetterContentSo> OrdersToLoad;

@@ -343,6 +343,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""QuitHapticChallenge"",
+                    ""type"": ""Button"",
+                    ""id"": ""bd5d560f-c2a5-4aaf-a59b-0ee85a13bb77"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""PauseIn"",
                     ""type"": ""Button"",
                     ""id"": ""35b39d7c-cdbc-4f16-bd82-b746b6189076"",
@@ -361,30 +370,57 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""QuitHapticChallenge"",
-                    ""type"": ""Button"",
-                    ""id"": ""bd5d560f-c2a5-4aaf-a59b-0ee85a13bb77"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""SwitchClothes"",
-                    ""type"": ""Button"",
-                    ""id"": ""a6c2f8c6-9c7a-4b12-9f81-d318d3aef6e0"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""DEBUG_SkipDiscoveryAnimation"",
                     ""type"": ""Button"",
                     ""id"": ""e8f735ef-8de6-4554-9836-f7db3c005d09"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press(pressPoint=1)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ExitMirror"",
+                    ""type"": ""Button"",
+                    ""id"": ""1f96c36c-b970-448f-805a-683793c9321f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PreviousOutfit"",
+                    ""type"": ""Button"",
+                    ""id"": ""003fc252-24ae-476e-8444-ebc3b35ec663"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NextOutfit"",
+                    ""type"": ""Button"",
+                    ""id"": ""ee80f06f-a25b-4f56-9437-b4b907505348"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectOutfit"",
+                    ""type"": ""Button"",
+                    ""id"": ""65bb620a-b105-4fe0-bb88-b8a5f88ca0b1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PurchaseOutfit"",
+                    ""type"": ""Button"",
+                    ""id"": ""1f28c3fd-5626-48fc-9451-c97b9d91724a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 }
             ],
@@ -1436,23 +1472,210 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""485f3afb-5c5e-42c1-970e-13925f543640"",
-                    ""path"": ""<Keyboard>/p"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""SwitchClothes"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""8c16266d-c392-420d-857d-103431a78278"",
                     ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""DEBUG_SkipDiscoveryAnimation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d8f16670-3e5d-4723-a11b-8f4244c4b8ed"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""PreviousOutfit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9ddc77cb-a627-49e1-a165-7477bb115811"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""PreviousOutfit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d0346387-b4d8-4833-9634-0a32681183e2"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""PreviousOutfit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""64455df0-5bad-4320-9780-f9403728bb8f"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""PreviousOutfit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""66edc48f-dbd6-4d11-a4c2-b126eddbd87c"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""PreviousOutfit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4532a87c-e0ab-4cb4-8571-3f4d9ecf3a1c"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""PreviousOutfit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4d6937f0-92a9-4f47-9c2f-af8184da7e1c"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""NextOutfit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c1719bf1-049c-4b4c-a8ed-9783446653fd"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""NextOutfit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""de137f61-0a29-4e2c-a492-0e3fe0f2ab52"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""NextOutfit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""256e18cb-2123-4dbc-b2bf-ecfff2aca128"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""NextOutfit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5add2eea-ba53-4e78-b08e-353a43773ccd"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""NextOutfit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""504a681d-5ad4-4e0b-9872-4f359156b86e"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""NextOutfit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0474aa1b-6dfe-4ae6-984b-7b96e81c11fd"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""SelectOutfit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4023e58b-ebfc-42d6-9728-3fe8032abe0a"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""SelectOutfit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""38a0ce34-5b00-4dc2-b680-eebebf9830cd"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""PurchaseOutfit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b61c4065-00a8-47b6-997c-b40acca53a69"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""PurchaseOutfit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0b51b651-3405-4f32-9b2e-b1b646fcd0b8"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ExitMirror"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a84575ed-5803-4799-a1a9-e0ae3122cf33"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ExitMirror"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2075,11 +2298,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_ChoppingHapticChallenge5 = m_Player.FindAction("ChoppingHapticChallenge5", throwIfNotFound: true);
         m_Player_GrindingHapticChallenge1 = m_Player.FindAction("GrindingHapticChallenge1", throwIfNotFound: true);
         m_Player_GrindingHapticChallenge2 = m_Player.FindAction("GrindingHapticChallenge2", throwIfNotFound: true);
+        m_Player_QuitHapticChallenge = m_Player.FindAction("QuitHapticChallenge", throwIfNotFound: true);
         m_Player_PauseIn = m_Player.FindAction("PauseIn", throwIfNotFound: true);
         m_Player_PauseOut = m_Player.FindAction("PauseOut", throwIfNotFound: true);
-        m_Player_QuitHapticChallenge = m_Player.FindAction("QuitHapticChallenge", throwIfNotFound: true);
-        m_Player_SwitchClothes = m_Player.FindAction("SwitchClothes", throwIfNotFound: true);
         m_Player_DEBUG_SkipDiscoveryAnimation = m_Player.FindAction("DEBUG_SkipDiscoveryAnimation", throwIfNotFound: true);
+        m_Player_ExitMirror = m_Player.FindAction("ExitMirror", throwIfNotFound: true);
+        m_Player_PreviousOutfit = m_Player.FindAction("PreviousOutfit", throwIfNotFound: true);
+        m_Player_NextOutfit = m_Player.FindAction("NextOutfit", throwIfNotFound: true);
+        m_Player_SelectOutfit = m_Player.FindAction("SelectOutfit", throwIfNotFound: true);
+        m_Player_PurchaseOutfit = m_Player.FindAction("PurchaseOutfit", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -2194,11 +2421,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ChoppingHapticChallenge5;
     private readonly InputAction m_Player_GrindingHapticChallenge1;
     private readonly InputAction m_Player_GrindingHapticChallenge2;
+    private readonly InputAction m_Player_QuitHapticChallenge;
     private readonly InputAction m_Player_PauseIn;
     private readonly InputAction m_Player_PauseOut;
-    private readonly InputAction m_Player_QuitHapticChallenge;
-    private readonly InputAction m_Player_SwitchClothes;
     private readonly InputAction m_Player_DEBUG_SkipDiscoveryAnimation;
+    private readonly InputAction m_Player_ExitMirror;
+    private readonly InputAction m_Player_PreviousOutfit;
+    private readonly InputAction m_Player_NextOutfit;
+    private readonly InputAction m_Player_SelectOutfit;
+    private readonly InputAction m_Player_PurchaseOutfit;
     public struct PlayerActions
     {
         private @InputSystem_Actions m_Wrapper;
@@ -2238,11 +2469,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @ChoppingHapticChallenge5 => m_Wrapper.m_Player_ChoppingHapticChallenge5;
         public InputAction @GrindingHapticChallenge1 => m_Wrapper.m_Player_GrindingHapticChallenge1;
         public InputAction @GrindingHapticChallenge2 => m_Wrapper.m_Player_GrindingHapticChallenge2;
+        public InputAction @QuitHapticChallenge => m_Wrapper.m_Player_QuitHapticChallenge;
         public InputAction @PauseIn => m_Wrapper.m_Player_PauseIn;
         public InputAction @PauseOut => m_Wrapper.m_Player_PauseOut;
-        public InputAction @QuitHapticChallenge => m_Wrapper.m_Player_QuitHapticChallenge;
-        public InputAction @SwitchClothes => m_Wrapper.m_Player_SwitchClothes;
         public InputAction @DEBUG_SkipDiscoveryAnimation => m_Wrapper.m_Player_DEBUG_SkipDiscoveryAnimation;
+        public InputAction @ExitMirror => m_Wrapper.m_Player_ExitMirror;
+        public InputAction @PreviousOutfit => m_Wrapper.m_Player_PreviousOutfit;
+        public InputAction @NextOutfit => m_Wrapper.m_Player_NextOutfit;
+        public InputAction @SelectOutfit => m_Wrapper.m_Player_SelectOutfit;
+        public InputAction @PurchaseOutfit => m_Wrapper.m_Player_PurchaseOutfit;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -2357,21 +2592,33 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @GrindingHapticChallenge2.started += instance.OnGrindingHapticChallenge2;
             @GrindingHapticChallenge2.performed += instance.OnGrindingHapticChallenge2;
             @GrindingHapticChallenge2.canceled += instance.OnGrindingHapticChallenge2;
+            @QuitHapticChallenge.started += instance.OnQuitHapticChallenge;
+            @QuitHapticChallenge.performed += instance.OnQuitHapticChallenge;
+            @QuitHapticChallenge.canceled += instance.OnQuitHapticChallenge;
             @PauseIn.started += instance.OnPauseIn;
             @PauseIn.performed += instance.OnPauseIn;
             @PauseIn.canceled += instance.OnPauseIn;
             @PauseOut.started += instance.OnPauseOut;
             @PauseOut.performed += instance.OnPauseOut;
             @PauseOut.canceled += instance.OnPauseOut;
-            @QuitHapticChallenge.started += instance.OnQuitHapticChallenge;
-            @QuitHapticChallenge.performed += instance.OnQuitHapticChallenge;
-            @QuitHapticChallenge.canceled += instance.OnQuitHapticChallenge;
-            @SwitchClothes.started += instance.OnSwitchClothes;
-            @SwitchClothes.performed += instance.OnSwitchClothes;
-            @SwitchClothes.canceled += instance.OnSwitchClothes;
             @DEBUG_SkipDiscoveryAnimation.started += instance.OnDEBUG_SkipDiscoveryAnimation;
             @DEBUG_SkipDiscoveryAnimation.performed += instance.OnDEBUG_SkipDiscoveryAnimation;
             @DEBUG_SkipDiscoveryAnimation.canceled += instance.OnDEBUG_SkipDiscoveryAnimation;
+            @ExitMirror.started += instance.OnExitMirror;
+            @ExitMirror.performed += instance.OnExitMirror;
+            @ExitMirror.canceled += instance.OnExitMirror;
+            @PreviousOutfit.started += instance.OnPreviousOutfit;
+            @PreviousOutfit.performed += instance.OnPreviousOutfit;
+            @PreviousOutfit.canceled += instance.OnPreviousOutfit;
+            @NextOutfit.started += instance.OnNextOutfit;
+            @NextOutfit.performed += instance.OnNextOutfit;
+            @NextOutfit.canceled += instance.OnNextOutfit;
+            @SelectOutfit.started += instance.OnSelectOutfit;
+            @SelectOutfit.performed += instance.OnSelectOutfit;
+            @SelectOutfit.canceled += instance.OnSelectOutfit;
+            @PurchaseOutfit.started += instance.OnPurchaseOutfit;
+            @PurchaseOutfit.performed += instance.OnPurchaseOutfit;
+            @PurchaseOutfit.canceled += instance.OnPurchaseOutfit;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -2481,21 +2728,33 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @GrindingHapticChallenge2.started -= instance.OnGrindingHapticChallenge2;
             @GrindingHapticChallenge2.performed -= instance.OnGrindingHapticChallenge2;
             @GrindingHapticChallenge2.canceled -= instance.OnGrindingHapticChallenge2;
+            @QuitHapticChallenge.started -= instance.OnQuitHapticChallenge;
+            @QuitHapticChallenge.performed -= instance.OnQuitHapticChallenge;
+            @QuitHapticChallenge.canceled -= instance.OnQuitHapticChallenge;
             @PauseIn.started -= instance.OnPauseIn;
             @PauseIn.performed -= instance.OnPauseIn;
             @PauseIn.canceled -= instance.OnPauseIn;
             @PauseOut.started -= instance.OnPauseOut;
             @PauseOut.performed -= instance.OnPauseOut;
             @PauseOut.canceled -= instance.OnPauseOut;
-            @QuitHapticChallenge.started -= instance.OnQuitHapticChallenge;
-            @QuitHapticChallenge.performed -= instance.OnQuitHapticChallenge;
-            @QuitHapticChallenge.canceled -= instance.OnQuitHapticChallenge;
-            @SwitchClothes.started -= instance.OnSwitchClothes;
-            @SwitchClothes.performed -= instance.OnSwitchClothes;
-            @SwitchClothes.canceled -= instance.OnSwitchClothes;
             @DEBUG_SkipDiscoveryAnimation.started -= instance.OnDEBUG_SkipDiscoveryAnimation;
             @DEBUG_SkipDiscoveryAnimation.performed -= instance.OnDEBUG_SkipDiscoveryAnimation;
             @DEBUG_SkipDiscoveryAnimation.canceled -= instance.OnDEBUG_SkipDiscoveryAnimation;
+            @ExitMirror.started -= instance.OnExitMirror;
+            @ExitMirror.performed -= instance.OnExitMirror;
+            @ExitMirror.canceled -= instance.OnExitMirror;
+            @PreviousOutfit.started -= instance.OnPreviousOutfit;
+            @PreviousOutfit.performed -= instance.OnPreviousOutfit;
+            @PreviousOutfit.canceled -= instance.OnPreviousOutfit;
+            @NextOutfit.started -= instance.OnNextOutfit;
+            @NextOutfit.performed -= instance.OnNextOutfit;
+            @NextOutfit.canceled -= instance.OnNextOutfit;
+            @SelectOutfit.started -= instance.OnSelectOutfit;
+            @SelectOutfit.performed -= instance.OnSelectOutfit;
+            @SelectOutfit.canceled -= instance.OnSelectOutfit;
+            @PurchaseOutfit.started -= instance.OnPurchaseOutfit;
+            @PurchaseOutfit.performed -= instance.OnPurchaseOutfit;
+            @PurchaseOutfit.canceled -= instance.OnPurchaseOutfit;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -2713,11 +2972,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnChoppingHapticChallenge5(InputAction.CallbackContext context);
         void OnGrindingHapticChallenge1(InputAction.CallbackContext context);
         void OnGrindingHapticChallenge2(InputAction.CallbackContext context);
+        void OnQuitHapticChallenge(InputAction.CallbackContext context);
         void OnPauseIn(InputAction.CallbackContext context);
         void OnPauseOut(InputAction.CallbackContext context);
-        void OnQuitHapticChallenge(InputAction.CallbackContext context);
-        void OnSwitchClothes(InputAction.CallbackContext context);
         void OnDEBUG_SkipDiscoveryAnimation(InputAction.CallbackContext context);
+        void OnExitMirror(InputAction.CallbackContext context);
+        void OnPreviousOutfit(InputAction.CallbackContext context);
+        void OnNextOutfit(InputAction.CallbackContext context);
+        void OnSelectOutfit(InputAction.CallbackContext context);
+        void OnPurchaseOutfit(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

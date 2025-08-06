@@ -182,3 +182,21 @@ public struct FloorCookedPotion : IEquatable<FloorCookedPotion>
         return HashCode.Combine(Potion, Position, Rotation);
     }
 }
+
+[Serializable]
+public struct IngredientCost
+{
+    public IngredientCost(IngredientValuesSo ingredient, int amount)
+    {
+        Ingredient = ingredient;
+        Amount = amount;
+    }
+    
+    [field: SerializeField] public IngredientValuesSo Ingredient { get; private set; }
+    [field: SerializeField] public int Amount { get; private set; }
+
+    public override string ToString()
+    {
+        return $"{Ingredient.Name} x{Amount}";
+    }
+}
