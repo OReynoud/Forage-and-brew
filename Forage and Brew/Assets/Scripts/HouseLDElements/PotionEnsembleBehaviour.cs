@@ -193,7 +193,6 @@ public class PotionEnsembleBehaviour : MonoBehaviour, IPotionAddable
         {
             EnablePopup();
 
-            // TODO: Add discover behaviour here
             if (!IsDiscovered)
             {
                 CodexContentManager.instance.AddNewBundleToCodex(PotionEnsembleSo);

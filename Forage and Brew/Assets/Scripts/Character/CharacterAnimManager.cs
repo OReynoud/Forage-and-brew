@@ -49,10 +49,12 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
     private static readonly int DoFlick = Animator.StringToHash("DoFlick");
     private static readonly int IsCarrying = Animator.StringToHash("IsCarrying");
     private static readonly int DoAfk = Animator.StringToHash("DoAfk");
+    private static readonly int DoNo = Animator.StringToHash("DoNo");
     private static readonly int AfkIndex = Animator.StringToHash("IndexAFK");
     private static readonly int DoCodexOpen = Animator.StringToHash("DoCodexOpen");
     private static readonly int DoCodexClose = Animator.StringToHash("DoCodexClose");
     private static readonly int DoLookRun = Animator.StringToHash("DoLookRun");
+    private static readonly int DoThrow = Animator.StringToHash("DoThrow");
 
 
     private void Start()
@@ -81,6 +83,16 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
         }
         
 
+    }
+
+    public void CatNo()
+    {
+        animator.SetTrigger(DoNo);
+    }
+
+    public void CatThrow()
+    {
+        animator.SetTrigger(DoThrow);
     }
 
     private void Update()

@@ -37,6 +37,8 @@ public class CharacterInteractController : MonoBehaviour
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<PotionCrateBehaviour> CurrentNearPotionBaskets { get; set; } = new();
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public PotionEnsembleBehaviour CurrentNearPotionEnsemble { get; set; } = new();
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public GateBehaviour CurrentNearChargedGate { get; set; }
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public GardenCompostBehavior CurrentNearCompostBox { get; set; }
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public GardenPlotBehavior CurrentNearPlot { get; set; }
     
     
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public ICinematicInteraction CurrentNearCinematicInteraction { get; set; }
@@ -68,7 +70,6 @@ public class CharacterInteractController : MonoBehaviour
     [SerializeField] private Vector3 binOffset = new(0f, 1f, 0f);
     
     // Animator Hashes
-    private static readonly int DoThrow = Animator.StringToHash("DoThrow");
     private static readonly int DoNo = Animator.StringToHash("DoNo");
     
 
@@ -110,13 +111,13 @@ public class CharacterInteractController : MonoBehaviour
         {
             CurrentNearCauldron.DisableInteract(true);
             ShoveStackInTarget(CurrentNearCauldron.transform, CurrentNearCauldron);
-            CharacterAnimManager.instance.animator.SetTrigger(DoThrow);
+            CharacterAnimManager.instance.CatThrow();
         }
         else if (CurrentNearBin && collectedStack.Count > 0 && collectedStack[0].StackableItem is CollectedPotionBehaviour)
         {
             CurrentNearBin.DisableInteract();
             ShoveStackInTarget(CurrentNearBin.transform, CurrentNearBin, binOffset);
-            CharacterAnimManager.instance.animator.SetTrigger(DoThrow);
+            CharacterAnimManager.instance.CatThrow();
         }
         else if (CurrentStackableBehaviours.Count > 0)
         {
@@ -145,7 +146,7 @@ public class CharacterInteractController : MonoBehaviour
         else if (CurrentNearPotionBaskets.Count > 0 && collectedStack.Count > 0 && collectedStack[0].StackableItem is CollectedPotionBehaviour)
         {
             ChoosePotionBasket();
-            CharacterAnimManager.instance.animator.SetTrigger(DoThrow);
+            CharacterAnimManager.instance.CatThrow();
         }
         else if (CurrentNearIngredientBaskets.Count > 0)
         {
@@ -163,6 +164,10 @@ public class CharacterInteractController : MonoBehaviour
         else if (CurrentNearMirror && collectedStack.Count == 0)
         {
             CurrentNearMirror.EnterMirror();
+        }        
+        else if (CurrentNearCompostBox && collectedStack.Count > 0 && collectedStack[0].StackableItem is CollectedIngredientBehaviour)
+        {
+            CurrentNearCompostBox.HandlePlayerInput();
         }
         else if (CurrentNearCinematicInteraction != null)
         {
@@ -194,7 +199,7 @@ public class CharacterInteractController : MonoBehaviour
             return;
         }
 
-        CharacterAnimManager.instance.animator.SetTrigger(DoThrow);
+        CharacterAnimManager.instance.CatThrow();
         
         if (CurrentNearIngredientBaskets.Count > 0)
         {
@@ -236,11 +241,11 @@ public class CharacterInteractController : MonoBehaviour
             CurrentNearPotionEnsemble.DisableInteract();
             ShoveStackInTarget(CurrentNearPotionEnsemble.transform, CurrentNearPotionEnsemble,
                 CurrentNearPotionEnsemble.GetRightTransformLocalPosition(potion));
-            CharacterAnimManager.instance.animator.SetTrigger(DoThrow);
+            CharacterAnimManager.instance.CatThrow();
         }
         else
         {
-            CharacterAnimManager.instance.animator.SetTrigger(DoNo);
+            CharacterAnimManager.instance.CatNo();
         }
     }
     
@@ -378,6 +383,14 @@ public class CharacterInteractController : MonoBehaviour
         
         collectedStack.Clear();
         AreHandsFull = false;
+    }
+    public void ShovePartialStackInTarget(Transform targetTransform, IIngredientAddable targetBehaviour, CollectedStack[] partialList, Vector3 offset = default)
+    {
+        for (int i = 0; i < partialList.Length; i++)
+        {
+            partialList[i].StackableItem.GetTransform().SetParent(targetTransform);
+            partialList[i].StackableItem.DropInTarget(targetBehaviour.EndPoint,targetBehaviour.UseEndPoint , offset);
+        }
     }
 
     private void ShoveStackInTarget(Transform targetTransform, IPotionAddable targetBehaviour, Vector3 offset = default)
