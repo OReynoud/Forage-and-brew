@@ -1,12 +1,13 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MirrorBehaviour : MonoBehaviour
 {
     [Header("Dependencies")]
-    [SerializeField] private GameObject localInputCanvas;
-    [SerializeField] private GameObject mirrorInterfaceCanvas;
     [SerializeField] private CharacterOutfitListSo outfitListSo;
     [SerializeField] private Transform locationToWalk;
     
@@ -19,12 +20,29 @@ public class MirrorBehaviour : MonoBehaviour
     [Header("Change Outfit")]
     [SerializeField] private float outfitChangeDelay = 0.1f;
     
+    [Header("UI")]
+    [SerializeField] private GameObject localInputCanvas;
+    [SerializeField] private GameObject mirrorInterfaceCanvas;
+    [SerializeField] private TMP_Text outfitNameText;
+    [SerializeField] private CanvasGroup purchaseLayoutCanvasGroup;
+    [SerializeField] private float purchaseLayoutUnavailableAlpha = 0.5f;
+    [SerializeField] private float purchaseLayoutAvailableAlpha = 1f;
+    [SerializeField] private GameObject purchaseButtonGameObject;
+    [SerializeField] private RectTransform moneyCostLayoutRectTransform;
+    [SerializeField] private TMP_Text moneyCostText;
+    [SerializeField] private GameObject ingredientCostsLayout;
+    [SerializeField] private RectTransform ingredientCostsLayoutRectTransform;
+    [SerializeField] private List<GameObject> ingredientCostLayouts;
+    [SerializeField] private List<TMP_Text> ingredientCostTexts;
+    [SerializeField] private List<Image> ingredientCostImages;
+    
     // Global variables
     private bool _isUsingMirror;
     
     // Outfit variables
     private int _currentOutfitIndex;
     private int _selectedOutfitIndex;
+    private bool _canBuyCurrentOutfit;
     
     // Animator hashes
     private static readonly int DoNo = Animator.StringToHash("DoNo");
@@ -89,6 +107,7 @@ public class MirrorBehaviour : MonoBehaviour
     {
         // UI
         mirrorInterfaceCanvas.SetActive(true);
+        UpdateOutfitUI();
         
         // Inputs
         CharacterInputManager.Instance.EnableMirrorInputs();
@@ -165,6 +184,9 @@ public class MirrorBehaviour : MonoBehaviour
         StartCoroutine(ChangeOutfit(outfitListSo.Outfits[_currentOutfitIndex]));
         
         // TODO: UI behaviour to show outfit change success
+        
+        // Update UI for outfit selection
+        UpdateOutfitUI();
     }
 
     public void NextOutfit()
@@ -181,6 +203,9 @@ public class MirrorBehaviour : MonoBehaviour
         StartCoroutine(ChangeOutfit(outfitListSo.Outfits[_currentOutfitIndex]));
         
         // TODO: UI behaviour to show outfit change success
+        
+        // Update UI for outfit selection
+        UpdateOutfitUI();
     }
 
     public void SelectOutfit()
@@ -243,6 +268,9 @@ public class MirrorBehaviour : MonoBehaviour
         
         // Unlock the outfit
         GameDontDestroyOnLoadManager.Instance.UnlockedOutfits.Add(outfitListSo.Outfits[_currentOutfitIndex]);
+        
+        // Update the current outfit UI
+        UpdateOutfitUI();
     }
 
     private IEnumerator ChangeOutfit(CharacterOutfitSo outfit)
@@ -252,6 +280,60 @@ public class MirrorBehaviour : MonoBehaviour
         yield return new WaitForSeconds(outfitChangeDelay);
         
         CharacterAnimManager.instance.SetOutfit(outfit);
+    }
+
+    private void UpdateOutfitUI()
+    {
+        CharacterOutfitSo outfit = outfitListSo.Outfits[_currentOutfitIndex];
+        
+        outfitNameText.text = outfit.OutfitName;
+        outfitNameText.color = outfit.OutfitColor;
+        
+        if (GameDontDestroyOnLoadManager.Instance.UnlockedOutfits.Contains(outfit))
+        {
+            purchaseLayoutCanvasGroup.gameObject.SetActive(false);
+        }
+        else
+        {
+            _canBuyCurrentOutfit = !(MoneyManager.Instance.MoneyAmount < outfit.OutfitMoneyCost ||
+                                    outfit.IngredientCosts.Any(ingredientCost =>
+                                        GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Count(ingredient =>
+                                            ingredientCost.Ingredient == ingredient) +
+                                        GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients.Count(collectedIngredient =>
+                                            ingredientCost.Ingredient == collectedIngredient.IngredientValuesSo)
+                                        < ingredientCost.Amount));
+            
+            purchaseLayoutCanvasGroup.gameObject.SetActive(true);
+            purchaseLayoutCanvasGroup.alpha = _canBuyCurrentOutfit ? purchaseLayoutAvailableAlpha : purchaseLayoutUnavailableAlpha;
+            purchaseButtonGameObject.SetActive(_canBuyCurrentOutfit);
+            
+            moneyCostText.text = outfit.OutfitMoneyCost.ToString();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(moneyCostLayoutRectTransform);
+            
+            if (outfit.IngredientCosts.Count == 0)
+            {
+                ingredientCostsLayout.SetActive(false);
+            }
+            else
+            {
+                ingredientCostsLayout.SetActive(true);
+                
+                for (int i = 0; i < ingredientCostsLayout.transform.childCount; i++)
+                {
+                    ingredientCostLayouts[i].SetActive(false);
+                }
+
+                for (int i = 0; i < outfit.IngredientCosts.Count; i++)
+                {
+                    IngredientCost ingredientCost = outfit.IngredientCosts[i];
+                    ingredientCostLayouts[i].SetActive(true);
+                    ingredientCostTexts[i].text = ingredientCost.Amount.ToString();
+                    ingredientCostImages[i].sprite = ingredientCost.Ingredient.iconLow;
+                }
+
+                LayoutRebuilder.ForceRebuildLayoutImmediate(ingredientCostsLayoutRectTransform);
+            }
+        }
     }
     
     #endregion
