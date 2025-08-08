@@ -21,4 +21,5 @@ public enum SpawnLocation
     Rock = 1 << 10,
     GrassyPatch = 1 << 11,
     ExposedRoots = 1 << 12,
+    BaseOfRockWall = 1 << 13,
 }
