@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class LockBehaviour : MonoBehaviour
 {
     [SerializeField] private GameObject lockCanvas;
+    [SerializeField] private Sprite lockedSprite;
     [SerializeField] private Sprite unlockedSprite;
     [SerializeField] private Image lockImage;
     [SerializeField] private float lockSpriteChangeDelay = 0.5f;
@@ -29,6 +30,13 @@ public class LockBehaviour : MonoBehaviour
         {
             lockImage.sprite = unlockedSprite;
         }).SetDelay(lockSpriteChangeDelay);
+    }
+    
+    public void Enable()
+    {
+        lockCanvas.SetActive(true);
+        lockImage.sprite = lockedSprite;
+        lockImage.color = new Color(lockImage.color.r, lockImage.color.g, lockImage.color.b, 1f);
     }
     
     public void Disable()

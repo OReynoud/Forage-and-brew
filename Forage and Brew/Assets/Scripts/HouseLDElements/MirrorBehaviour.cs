@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,11 +20,23 @@ public class MirrorBehaviour : MonoBehaviour
     
     [Header("Change Outfit")]
     [SerializeField] private float outfitChangeDelay = 0.1f;
+    private int _currentOutfitIndex;
+    private int _selectedOutfitIndex;
+    private bool _canBuyCurrentOutfit;
     
     [Header("UI")]
     [SerializeField] private GameObject localInputCanvas;
     [SerializeField] private GameObject mirrorInterfaceCanvas;
+    [SerializeField] private GameObject checkmarkGameObject;
+    [SerializeField] private RectTransform leftArrowRectTransform;
+    private float _leftArrowStartX;
+    [SerializeField] private RectTransform rightArrowRectTransform;
+    private float _rightArrowStartX;
+    [SerializeField] private float arrowMoveDistance = 10f;
+    [SerializeField] private float arrowMoveDuration = 0.1f;
+    [SerializeField] private AnimationCurve arrowMoveCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
     [SerializeField] private TMP_Text outfitNameText;
+    [SerializeField] private GameObject selectLayout;
     [SerializeField] private CanvasGroup purchaseLayoutCanvasGroup;
     [SerializeField] private float purchaseLayoutUnavailableAlpha = 0.5f;
     [SerializeField] private float purchaseLayoutAvailableAlpha = 1f;
@@ -35,14 +48,10 @@ public class MirrorBehaviour : MonoBehaviour
     [SerializeField] private List<GameObject> ingredientCostLayouts;
     [SerializeField] private List<TMP_Text> ingredientCostTexts;
     [SerializeField] private List<Image> ingredientCostImages;
+    [SerializeField] private LockBehaviour lockBehaviour;
     
     // Global variables
     private bool _isUsingMirror;
-    
-    // Outfit variables
-    private int _currentOutfitIndex;
-    private int _selectedOutfitIndex;
-    private bool _canBuyCurrentOutfit;
     
     // Animator hashes
     private static readonly int DoNo = Animator.StringToHash("DoNo");
@@ -51,7 +60,11 @@ public class MirrorBehaviour : MonoBehaviour
     private void Start()
     {
         localInputCanvas.SetActive(false);
+        lockBehaviour.Disable();
         mirrorInterfaceCanvas.SetActive(false);
+        
+        _leftArrowStartX = leftArrowRectTransform.anchoredPosition.x;
+        _rightArrowStartX = rightArrowRectTransform.anchoredPosition.x;
     }
 
 
@@ -107,7 +120,10 @@ public class MirrorBehaviour : MonoBehaviour
     {
         // UI
         mirrorInterfaceCanvas.SetActive(true);
+        leftArrowRectTransform.anchoredPosition = new Vector2(_leftArrowStartX, leftArrowRectTransform.anchoredPosition.y);
+        rightArrowRectTransform.anchoredPosition = new Vector2(_rightArrowStartX, rightArrowRectTransform.anchoredPosition.y);
         UpdateOutfitUI();
+        UpdateLockUI();
         
         // Inputs
         CharacterInputManager.Instance.EnableMirrorInputs();
@@ -136,6 +152,7 @@ public class MirrorBehaviour : MonoBehaviour
         
         // UI
         mirrorInterfaceCanvas.SetActive(false);
+        lockBehaviour.Disable();
         
         // Camera
         StartCoroutine(ChangeToUsualCameraCoroutine());
@@ -184,9 +201,12 @@ public class MirrorBehaviour : MonoBehaviour
         StartCoroutine(ChangeOutfit(outfitListSo.Outfits[_currentOutfitIndex]));
         
         // TODO: UI behaviour to show outfit change success
+        leftArrowRectTransform.DOAnchorPosX(_leftArrowStartX - arrowMoveDistance, arrowMoveDuration)
+            .SetEase(arrowMoveCurve).SetLoops(2, LoopType.Yoyo);
         
         // Update UI for outfit selection
         UpdateOutfitUI();
+        UpdateLockUI();
     }
 
     public void NextOutfit()
@@ -203,9 +223,12 @@ public class MirrorBehaviour : MonoBehaviour
         StartCoroutine(ChangeOutfit(outfitListSo.Outfits[_currentOutfitIndex]));
         
         // TODO: UI behaviour to show outfit change success
+        rightArrowRectTransform.DOAnchorPosX(_rightArrowStartX + arrowMoveDistance, arrowMoveDuration)
+            .SetEase(arrowMoveCurve).SetLoops(2, LoopType.Yoyo);
         
         // Update UI for outfit selection
         UpdateOutfitUI();
+        UpdateLockUI();
     }
 
     public void SelectOutfit()
@@ -217,6 +240,8 @@ public class MirrorBehaviour : MonoBehaviour
         _selectedOutfitIndex = _currentOutfitIndex;
         
         // TODO: UI behaviour to show outfit selection success
+        
+        UpdateOutfitUI();
     }
 
     public void PurchaseOutfit()
@@ -258,6 +283,8 @@ public class MirrorBehaviour : MonoBehaviour
         
         // TODO: UI behaviour to show outfit purchase success
         
+        lockBehaviour.Unlock();
+        
         StartCoroutine(UnlockOutfitCoroutine());
     }
     
@@ -289,12 +316,18 @@ public class MirrorBehaviour : MonoBehaviour
         outfitNameText.text = outfit.OutfitName;
         outfitNameText.color = outfit.OutfitColor;
         
+        checkmarkGameObject.SetActive(_currentOutfitIndex == _selectedOutfitIndex);
+        
         if (GameDontDestroyOnLoadManager.Instance.UnlockedOutfits.Contains(outfit))
         {
+            selectLayout.SetActive(_currentOutfitIndex != _selectedOutfitIndex);
+            
             purchaseLayoutCanvasGroup.gameObject.SetActive(false);
         }
         else
         {
+            selectLayout.SetActive(false);
+            
             _canBuyCurrentOutfit = !(MoneyManager.Instance.MoneyAmount < outfit.OutfitMoneyCost ||
                                     outfit.IngredientCosts.Any(ingredientCost =>
                                         GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Count(ingredient =>
@@ -333,6 +366,18 @@ public class MirrorBehaviour : MonoBehaviour
 
                 LayoutRebuilder.ForceRebuildLayoutImmediate(ingredientCostsLayoutRectTransform);
             }
+        }
+    }
+
+    private void UpdateLockUI()
+    {
+        if (GameDontDestroyOnLoadManager.Instance.UnlockedOutfits.Contains(outfitListSo.Outfits[_currentOutfitIndex]))
+        {
+            lockBehaviour.Disable();
+        }
+        else
+        {
+            lockBehaviour.Enable();
         }
     }
     
