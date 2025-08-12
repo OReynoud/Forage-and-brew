@@ -1,7 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GardenManager : MonoBehaviour
 {
+    public GardenCompostBehavior compostBox;
+
+    public GardenPlotBehavior[] plantedSeeds;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

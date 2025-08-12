@@ -9,7 +9,7 @@ public class CollectedIngredientBehaviour : StackableItem
     [Header("Dependencies")]
     [SerializeField] private CollectedIngredientGlobalValuesSo collectedIngredientGlobalValuesSo;
     [field: SerializeField] public IngredientValuesSo IngredientValuesSo { get; set; }
-    public CookHapticChallengeSo CookedForm { get; set; }
+    [field:SerializeField] public CookHapticChallengeSo CookedForm { get; set; }
     [SerializeField] private SphereCollider grabTrigger;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Collider ingredientCollider;

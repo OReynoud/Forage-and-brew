@@ -42,7 +42,7 @@ public class CharacterInteractController : MonoBehaviour
     
     
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public ICinematicInteraction CurrentNearCinematicInteraction { get; set; }
-    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public bool AreHandsFull { get; private set; }
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public bool AreHandsFull { get; set; }
 
     private Rigidbody rb { get; set; }
 
@@ -118,6 +118,10 @@ public class CharacterInteractController : MonoBehaviour
             CurrentNearBin.DisableInteract();
             ShoveStackInTarget(CurrentNearBin.transform, CurrentNearBin, binOffset);
             CharacterAnimManager.instance.CatThrow();
+        }        
+        else if (CurrentNearCompostBox)
+        {
+            CurrentNearCompostBox.HandlePlayerInput();
         }
         else if (CurrentStackableBehaviours.Count > 0)
         {
@@ -164,10 +168,6 @@ public class CharacterInteractController : MonoBehaviour
         else if (CurrentNearMirror && collectedStack.Count == 0)
         {
             CurrentNearMirror.EnterMirror();
-        }        
-        else if (CurrentNearCompostBox && collectedStack.Count > 0 && collectedStack[0].StackableItem is CollectedIngredientBehaviour)
-        {
-            CurrentNearCompostBox.HandlePlayerInput();
         }
         else if (CurrentNearCinematicInteraction != null)
         {
@@ -386,6 +386,7 @@ public class CharacterInteractController : MonoBehaviour
     }
     public void ShovePartialStackInTarget(Transform targetTransform, IIngredientAddable targetBehaviour, CollectedStack[] partialList, Vector3 offset = default)
     {
+        Debug.Log(partialList.Length);
         for (int i = 0; i < partialList.Length; i++)
         {
             partialList[i].StackableItem.GetTransform().SetParent(targetTransform);

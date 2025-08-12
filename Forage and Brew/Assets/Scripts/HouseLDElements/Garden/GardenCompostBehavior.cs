@@ -2,24 +2,19 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GardenCompostBehavior : MonoBehaviour, IIngredientAddable
 {
-    public IngredientTypeSo mushroomType;
-    public IngredientTypeSo herbType;
-    public IngredientTypeSo mossType;
-    public IngredientTypeSo berryType;
-    public IngredientTypeSo veggieType;
-    public SeedValuesSo mushroomSeed;
-    public SeedValuesSo herbSeed;
-    public SeedValuesSo mossSeed;
-    public SeedValuesSo berrySeed;
-    public SeedValuesSo veggieSeed;
+    public CollectedSeedBehavior seedBehaviorPrefab;
     [SerializeField] private GameObject interactInputCanvasGameObject;
-    private bool compostIsFull;
+    [Foldout("Debug")] [SerializeField] private bool compostIsFull;
 
     [ReadOnly] public SeedValuesSo currentSeed;
     public List<IngredientTypeSo> storedIngredients;
+    [field: SerializeField] public bool UseEndPoint { get; set; }
+    [field: ShowIf("UseEndPoint")][field: SerializeField] public Transform EndPoint { get; set; }
+    [field: ShowIf("UseEndPoint")][field: SerializeField] public float heightShove { get; set; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -38,72 +33,83 @@ public class GardenCompostBehavior : MonoBehaviour, IIngredientAddable
         if (compostIsFull)
         {
             if (CharacterInteractController.Instance.collectedStack.Count > 0)
-            {
+            {            
+                Debug.Log("Cant add more ingredients");
+                CharacterAnimManager.instance.CatNo();
                 return;
             }
             //TODO: Compost HapticChallenge
+            CompleteCompostHapticChallenge();
             return;
         }
+
+        if (CharacterInteractController.Instance.collectedStack.Count <= 0)
+            return;
+        
+        if (CharacterInteractController.Instance.collectedStack[0].StackableItem is not CollectedIngredientBehaviour)
+            return;
+        
         var comparator =
             (CollectedIngredientBehaviour)CharacterInteractController.Instance.collectedStack[0].StackableItem;
         if (comparator.CookedForm == null)
         {
+            Debug.Log("Ingredient not cooked");
             CharacterAnimManager.instance.CatNo();
             return;
         }
         if (currentSeed == null)
         {
-            if (comparator.IngredientValuesSo.Type == mushroomType)
-            {
-                currentSeed = mushroomSeed;
-            }
-            else if (comparator.IngredientValuesSo.Type == herbType)
-            {
-                currentSeed = herbSeed;
-            }
-            else if (comparator.IngredientValuesSo.Type == mossType)
-            {
-                currentSeed = mossSeed;
-            }
-            else if (comparator.IngredientValuesSo.Type == berryType)
-            {
-                currentSeed = berrySeed;
-            }
-            else if (comparator.IngredientValuesSo.Type == veggieType)
-            {
-                currentSeed = veggieSeed;
-            }
+            Debug.Log("Started Seed making");
+            currentSeed = comparator.IngredientValuesSo.Type.AssociatedSeedValuesSo;
             TryAddIngredients();
         }
         else if (currentSeed.RequiredIngredientType == comparator.IngredientValuesSo.Type)
         {
+            Debug.Log("Added same ingredient type");
             TryAddIngredients();
         }
         else
         {
+            Debug.Log("Ingredient not valid");
             CharacterAnimManager.instance.CatNo();
         }
     }
 
+
+
     private List<CharacterInteractController.CollectedStack> temp = new();
     public void TryAddIngredients()
     {
-        for (int i = 0; i < currentSeed.RequiredIngredientTypeAmount - storedIngredients.Count; i++)
+        CharacterAnimManager.instance.CatThrow();
+        for (int i = currentSeed.RequiredIngredientTypeAmount - storedIngredients.Count - 1; i >= 0; i--)
         {
-            AddIngredient((CollectedIngredientBehaviour)CharacterInteractController.Instance.collectedStack[^1].StackableItem);
-            if (CharacterInteractController.Instance.collectedStack.Count == 0 || storedIngredients.Count == currentSeed.RequiredIngredientTypeAmount)
+            if (CharacterInteractController.Instance.collectedStack.Count == 0)
             {
-                CharacterInteractController.Instance.ShovePartialStackInTarget(transform, this, temp.ToArray());
-                compostIsFull = true;
+                CharacterInteractController.Instance.AreHandsFull = false;
                 break;
             }
+
+            AddIngredient((CollectedIngredientBehaviour)CharacterInteractController.Instance.collectedStack[i].StackableItem);
+            
+            if (storedIngredients.Count == currentSeed.RequiredIngredientTypeAmount)
+            {
+                if (CharacterInteractController.Instance.collectedStack.Count == 0)
+                    CharacterInteractController.Instance.AreHandsFull = false;
+                
+                CharacterInteractController.Instance.ShovePartialStackInTarget(transform, this, temp.ToArray());
+                CloseCompostBox();
+                temp.Clear();
+                return;
+            }
         }
+        CharacterInteractController.Instance.ShovePartialStackInTarget(transform, this, temp.ToArray());
         temp.Clear();
     }
     
     public void AddIngredient(CollectedIngredientBehaviour collectedIngredientBehaviour)
     {
         storedIngredients.Add(collectedIngredientBehaviour.IngredientValuesSo.Type);
+        temp.Add(CharacterInteractController.Instance.collectedStack[^1]);
         CharacterInteractController.Instance.collectedStack.RemoveAt( CharacterInteractController.Instance.collectedStack.Count - 1);
     }
     
@@ -124,6 +130,7 @@ public class GardenCompostBehavior : MonoBehaviour, IIngredientAddable
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
             EnableInteract();
+            characterInteractController.CurrentNearCompostBox = this;
 
         }
     }
@@ -143,13 +150,16 @@ public class GardenCompostBehavior : MonoBehaviour, IIngredientAddable
 
     void CloseCompostBox()
     {
-        
+        compostIsFull = true;
     }
 
-
-
-
-    public bool UseEndPoint { get; set; }
-    public Transform EndPoint { get; set; }
-    public float heightShove { get; set; }
+    private void CompleteCompostHapticChallenge()
+    {
+        var newSeed = Instantiate(seedBehaviorPrefab, transform.position, transform.rotation);
+        newSeed.SeedValuesSo = currentSeed;
+        currentSeed = null;
+        CharacterInteractController.Instance.AddToPile(newSeed);
+        compostIsFull = false;
+    }
+    
 }

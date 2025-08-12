@@ -17,6 +17,14 @@ public interface IPotionAddable
     float heightShove { get; set; }
 }
 
+public interface ISeedAddable
+{
+    void AddSeed(CollectedSeedBehavior collectedSeedBehaviour);
+    bool UseEndPoint { get; set; }
+    Transform EndPoint { get; set; }
+    float heightShove { get; set; }
+}
+
 
 
 public interface ICinematicInteraction
