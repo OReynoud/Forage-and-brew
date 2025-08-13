@@ -160,6 +160,15 @@ public class SpawnGroupCount
     [field: SerializeField] public int SpawnCount { get; set; }
 }
 
+[Serializable]
+public class GardenPlotData
+{
+    [field: SerializeField] public bool NeedsWatering { get; set; }
+    [field: SerializeField] public int PlantGrowthProgression { get; set; }
+    [field: SerializeField] public int RequiredProgressionToMature { get; set; }
+    [field: SerializeField] public SeedValuesSo PlantedSeed { get; set; }
+}
+
 public class StackableItem : MonoBehaviour
 {
     protected bool isBeingDroppedInTarget;

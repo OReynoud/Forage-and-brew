@@ -5,10 +5,11 @@ using UnityEngine;
 public abstract class PurchasableHouseItemBehaviour : MonoBehaviour
 {
     [Header("Purchasable House Item Values")]
-    [SerializeField] private int selfIndex;
+    [SerializeField]
+    protected int selfIndex;
     [SerializeField] protected int purchaseCost;
-    public bool CanPurchase { get; private set; }
-    public bool Unlocked { get; private set; }
+    public bool CanPurchase { get; set; }
+    public bool Unlocked { get; set; }
     
     [Header("Purchasable House Item Material")]
     [SerializeField] private List<Renderer> purchasableItemMeshRenderers;
@@ -44,7 +45,7 @@ public abstract class PurchasableHouseItemBehaviour : MonoBehaviour
     }
     
 
-    public void InitPurchasableHouseItem()
+    public virtual void InitPurchasableHouseItem()
     {
         if (GameDontDestroyOnLoadManager.Instance.WorkshopProgressionIndex == selfIndex)
         {

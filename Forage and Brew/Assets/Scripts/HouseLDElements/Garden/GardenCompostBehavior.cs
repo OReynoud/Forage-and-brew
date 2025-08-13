@@ -19,7 +19,7 @@ public class GardenCompostBehavior : MonoBehaviour, IIngredientAddable
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        GardenManager.instance.compostBox = this;
     }
 
     // Update is called once per frame

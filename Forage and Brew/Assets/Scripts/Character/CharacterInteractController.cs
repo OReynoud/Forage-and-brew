@@ -143,6 +143,10 @@ public class CharacterInteractController : MonoBehaviour
         {
             CurrentNearChargedGate.Purchase();
         }
+        else if (CurrentNearPlot && !CurrentNearPlot.Unlocked && collectedStack.Count == 0)
+        {
+            CurrentNearPlot.PurchaseItem();
+        }
         else if (CurrentNearPotionEnsemble && collectedStack.Count > 0 && collectedStack[0].StackableItem is CollectedPotionBehaviour)
         {
             ManagePotionEnsemble();
