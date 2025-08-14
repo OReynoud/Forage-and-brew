@@ -166,7 +166,21 @@ public class GardenPlotData
     [field: SerializeField] public bool NeedsWatering { get; set; }
     [field: SerializeField] public int PlantGrowthProgression { get; set; }
     [field: SerializeField] public int RequiredProgressionToMature { get; set; }
+    
+    [field: SerializeField] public bool IsWeed { get; set; }
+    
+    [field: SerializeField] [field: Range(0,1)] public float WeedSpawnChance { get; set; }
     [field: SerializeField] public SeedValuesSo PlantedSeed { get; set; }
+
+    public void UpdateData(GardenPlotBehavior plotBehavior)
+    {
+        NeedsWatering = plotBehavior.NeedsWatering;
+        PlantGrowthProgression = plotBehavior.PlantGrowthProgression;
+        RequiredProgressionToMature = plotBehavior.RequiredProgressionToMature;
+        IsWeed = plotBehavior.IsWeed;
+        WeedSpawnChance = plotBehavior.BaseWeedSpawnChance;
+        PlantedSeed = plotBehavior.PlantedSeed;
+    }
 }
 
 public class StackableItem : MonoBehaviour

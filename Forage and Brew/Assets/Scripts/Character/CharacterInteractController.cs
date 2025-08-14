@@ -143,9 +143,9 @@ public class CharacterInteractController : MonoBehaviour
         {
             CurrentNearChargedGate.Purchase();
         }
-        else if (CurrentNearPlot && !CurrentNearPlot.Unlocked && collectedStack.Count == 0)
+        else if (CurrentNearPlot)
         {
-            CurrentNearPlot.PurchaseItem();
+            CurrentNearPlot.HandlePlayerInput();
         }
         else if (CurrentNearPotionEnsemble && collectedStack.Count > 0 && collectedStack[0].StackableItem is CollectedPotionBehaviour)
         {
@@ -390,7 +390,6 @@ public class CharacterInteractController : MonoBehaviour
     }
     public void ShovePartialStackInTarget(Transform targetTransform, IIngredientAddable targetBehaviour, CollectedStack[] partialList, Vector3 offset = default)
     {
-        Debug.Log(partialList.Length);
         for (int i = 0; i < partialList.Length; i++)
         {
             partialList[i].StackableItem.GetTransform().SetParent(targetTransform);
@@ -398,6 +397,14 @@ public class CharacterInteractController : MonoBehaviour
         }
     }
 
+    public void ShovePartialStackInTarget(Transform targetTransform, ISeedAddable targetBehaviour, CollectedStack[] partialList, Vector3 offset = default)
+    {
+        for (int i = 0; i < partialList.Length; i++)
+        {
+            partialList[i].StackableItem.GetTransform().SetParent(targetTransform);
+            partialList[i].StackableItem.DropInTarget(targetBehaviour.EndPoint,targetBehaviour.UseEndPoint , offset);
+        }
+    }
     private void ShoveStackInTarget(Transform targetTransform, IPotionAddable targetBehaviour, Vector3 offset = default)
     {
         for (int i = 0; i < collectedStack.Count; i++)

@@ -38,7 +38,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
         {
             HandleGoingToSleepTransition(transform);
         }
-        
+
         SceneManager.sceneUnloaded += SceneManagerOnsceneLoaded;
         if (sceneListSo.SceneNames[0].Name != SceneManager.GetActiveScene().name)
         {
