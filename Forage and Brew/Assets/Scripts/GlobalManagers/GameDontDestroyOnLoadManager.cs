@@ -66,7 +66,7 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     public bool IsInHapticChallenge { get; set; }
     
     // Progression
-    public int WorkshopProgressionIndex { get; set; }
+    [field: SerializeField] public int WorkshopProgressionIndex { get; set; }
     public int GardenProgressionIndex { get; set; }
     public List<ChargedBiomeAreaSo> UnlockedChargedBiomeAreas { get; set; } = new();
     
