@@ -5,7 +5,6 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 [Serializable]
-
 public class Letter
 {
     [field: SerializeField] public LetterContentSo LetterContent { get; set; }
@@ -17,6 +16,7 @@ public class Letter
         LetterContent = content;
         RelatedNarrativeBlock = nBlock;
     }
+
     public Letter(LetterContentSo content, FillerBlockOfLetters fBlock)
     {
         LetterContent = content;
@@ -50,16 +50,28 @@ public class Order
 public class PotionDemand
 {
     [field: SerializeField] public bool IsSpecific { get; private set; }
-    [field: AllowNesting] [field: ShowIf("IsSpecific")] [field: SerializeField] public PotionValuesSo Potion { get; private set; }
-    [field: AllowNesting] [field: HideIf("IsSpecific")] [field: SerializeField] public string Keywords { get; private set; }
-    [field: AllowNesting] [field: HideIf("IsSpecific")] [field: SerializeField] public PotionTagSo ValidTag { get; private set; }
+
+    [field: AllowNesting]
+    [field: ShowIf("IsSpecific")]
+    [field: SerializeField]
+    public PotionValuesSo Potion { get; private set; }
+
+    [field: AllowNesting]
+    [field: HideIf("IsSpecific")]
+    [field: SerializeField]
+    public string Keywords { get; private set; }
+
+    [field: AllowNesting]
+    [field: HideIf("IsSpecific")]
+    [field: SerializeField]
+    public PotionTagSo ValidTag { get; private set; }
 
     public PotionDemand(PotionValuesSo newPotion)
     {
         Potion = newPotion;
         IsSpecific = true;
     }
-    
+
     public PotionDemand(PotionTagSo newTag, string newKeywords)
     {
         ValidTag = newTag;
@@ -72,16 +84,29 @@ public class PotionDemand
 public class NarrativeBlockOfLetters
 {
     [field: SerializeField] public NarrativeBlockOfLettersContentSo ContentSo { get; set; }
-    
-    [field: AllowNesting] [field: SerializeField] [field: ReadOnly] public int SelfProgressionIndex { get; set; }
-    [field: SerializeField] [field: HideInInspector] public bool[] CompletedLetters { get; set; }
-    [field: SerializeField] [field: HideInInspector] public bool[] InactiveLetters { get; set; }
-    [field: AllowNesting] [field: SerializeField] [field: ReadOnly] public int NewLetterCountDown { get; set; }
+
+    [field: AllowNesting]
+    [field: SerializeField]
+    [field: ReadOnly]
+    public int SelfProgressionIndex { get; set; }
+
+    [field: SerializeField]
+    [field: HideInInspector]
+    public bool[] CompletedLetters { get; set; }
+
+    [field: SerializeField]
+    [field: HideInInspector]
+    public bool[] InactiveLetters { get; set; }
+
+    [field: AllowNesting]
+    [field: SerializeField]
+    [field: ReadOnly]
+    public int NewLetterCountDown { get; set; }
 
     public NarrativeBlockOfLetters(NarrativeBlockOfLettersContentSo content)
     {
         ContentSo = content;
-        
+
         CompletedLetters = new bool [ContentSo.Content.Count];
         InactiveLetters = new bool [ContentSo.Content.Count];
     }
@@ -123,7 +148,7 @@ public class WeatherSuccessiveDays
 {
     [field: SerializeField] public WeatherStateSo WeatherStateSo { get; set; }
     [field: SerializeField] public int SuccessiveDays { get; set; }
-    
+
     public WeatherSuccessiveDays(WeatherStateSo weatherStateSo, int successiveDays)
     {
         WeatherStateSo = weatherStateSo;
@@ -134,16 +159,21 @@ public class WeatherSuccessiveDays
 [Serializable]
 public class TutorialBlock
 {
-    [field: SerializeField] [field: AllowNesting] [field: ReadOnly] public bool hasBeenTriggered { get; set; }
+    [field: SerializeField]
+    [field: AllowNesting]
+    [field: ReadOnly]
+    public bool hasBeenTriggered { get; set; }
 
-    [field: SerializeField] [field: AllowNesting] [field: ReadOnly] public TutoBlockSo data { get; set; }
+    [field: SerializeField]
+    [field: AllowNesting]
+    [field: ReadOnly]
+    public TutoBlockSo data { get; set; }
 
     public TutorialBlock(TutoBlockSo Data)
     {
         data = Data;
         hasBeenTriggered = false;
     }
-
 }
 
 [Serializable]
@@ -166,10 +196,13 @@ public class GardenPlotData
     [field: SerializeField] public bool NeedsWatering { get; set; }
     [field: SerializeField] public int PlantGrowthProgression { get; set; }
     [field: SerializeField] public int RequiredProgressionToMature { get; set; }
-    
+
     [field: SerializeField] public bool IsWeed { get; set; }
-    
-    [field: SerializeField] [field: Range(0,1)] public float WeedSpawnChance { get; set; }
+
+    [field: SerializeField]
+    [field: Range(0, 1)]
+    public float WeedSpawnChance { get; set; }
+
     [field: SerializeField] public SeedValuesSo PlantedSeed { get; set; }
 
     public void UpdateData(GardenPlotBehavior plotBehavior)
@@ -193,9 +226,18 @@ public class StackableItem : MonoBehaviour
     public float dropInTargetLerp;
     private Vector3 _dropTargetOffset;
     protected float lerp;
-    public virtual void EnableGrab(){}
-    public virtual void DisableGrab(){}
-    public virtual void GrabMethod(bool grab){}
+
+    public virtual void EnableGrab()
+    {
+    }
+
+    public virtual void DisableGrab()
+    {
+    }
+
+    public virtual void GrabMethod(bool grab)
+    {
+    }
 
     public void Update()
     {
@@ -206,19 +248,20 @@ public class StackableItem : MonoBehaviour
             StackableDropped();
             return;
         }
-        
+
         lerp += Time.deltaTime * dropInTargetLerp;
-        transform.position = Vector3.Lerp(_startPosition,_endPosition,lerp) + Vector3.up * ShoveHeightCurve.Evaluate(lerp);
-        transform.rotation = Quaternion.Lerp(Quaternion.Euler(_startRotation),Quaternion.Euler(_endRotation), ShoveRotationCurve.Evaluate(lerp) );
+        transform.position = Vector3.Lerp(_startPosition, _endPosition, lerp) +
+                             Vector3.up * ShoveHeightCurve.Evaluate(lerp);
+        transform.rotation = Quaternion.Lerp(Quaternion.Euler(_startRotation), Quaternion.Euler(_endRotation),
+            ShoveRotationCurve.Evaluate(lerp));
     }
 
     public virtual void StackableDropped()
     {
-        
     }
 
     public float StackHeight { get; protected set; }
-    
+
     public void DropInTarget(Transform target, bool randomizeEndPoint, Vector3 offset = default)
     {
         _dropTargetOffset = offset;
@@ -232,17 +275,57 @@ public class StackableItem : MonoBehaviour
         else
         {
             _startPosition = transform.position;
-            _endPosition = target.position+ _dropTargetOffset + Vector3.up + new Vector3(Random.Range(-1f, 1f), Random.value, Random.Range(-1f, 1f));
+            _endPosition = target.position + _dropTargetOffset + Vector3.up +
+                           new Vector3(Random.Range(-1f, 1f), Random.value, Random.Range(-1f, 1f));
         }
+
         lerp = 0f;
         isBeingDroppedInTarget = true;
     }
+
     public Transform GetTransform() => transform;
 
     public virtual StackableValuesSo GetStackableValuesSo()
     {
         return default;
     }
+
     [field: SerializeField] public AnimationCurve ShoveHeightCurve { get; set; }
-    [field: SerializeField] public AnimationCurve ShoveRotationCurve { get; set; } = AnimationCurve.EaseInOut(0,0,1,1);
+
+    [field: SerializeField]
+    public AnimationCurve ShoveRotationCurve { get; set; } = AnimationCurve.EaseInOut(0, 0, 1, 1);
 }
+[Serializable]
+public class WeedContainerBehavior : MonoBehaviour
+{
+    public bool canContainWeed;
+    [ShowIf("canContainWeed")][AllowNesting][SerializeField] protected WeedBehaviour weedBehaviour;
+    [ShowIf("canContainWeed")][AllowNesting][SerializeField]
+    protected bool isUiRight;
+
+    public void ChangeWeedingInputIndex(int newSliderIndex)
+    {
+        weedBehaviour.ChangeWeedingInputIndex(newSliderIndex, isUiRight);
+    }
+
+    public void ResetWeedingInputIndex()
+    {
+        weedBehaviour.ResetWeedingInputIndex(isUiRight);
+    }
+
+    public void SetWeedingValue(float value, int inputIndex)
+    {
+        weedBehaviour.SetWeedingValue(value, inputIndex, isUiRight);
+    }
+
+    public void PressWeeding()
+    {
+        weedBehaviour.PressWeeding(isUiRight);
+    }
+
+    public void ReleaseWeeding()
+    {
+        weedBehaviour.ReleaseWeeding(isUiRight);
+    }
+}
+

@@ -39,6 +39,29 @@ public static class Ex
         }
         return similes;
     }
+    
+    // public static int CheckForSameElementsIngredientSo(int index, int similes, List<CookedIngredientForm> list)
+    // {
+    //     int currentIndex = index + similes + 1;
+    //
+    //     // Check if the current index is within the bounds of the list
+    //     while (currentIndex < list.Count)
+    //     {
+    //         // Check if the current element matches the element at the starting index
+    //         if (list[index].Ingredient == list[currentIndex].Ingredient &&
+    //             list[index].IsAType == list[currentIndex].IsAType)
+    //         {
+    //             similes++;
+    //             currentIndex++;
+    //         }
+    //         else
+    //         {
+    //             break;
+    //         }
+    //     }
+    //
+    //     return similes;
+    // }
 
 
     public static Sprite HandleWritingIngredientType(CookedIngredientForm cookedIngredient, bool useLow)
