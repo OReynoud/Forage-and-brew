@@ -24,7 +24,8 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
     public Transform sproutParent;
     public GameObject wateringCheckMark;
     public GameObject seedInformationBubble;
-    public Image seedIndicator; 
+    public Image seedIndicator;
+    public GameObject buttonAObject;
     public ParticleSystem weedingVfx;
     
 
@@ -58,8 +59,11 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
             if (NeedsWatering == false)
             {
                 PlantGrowthProgression++;
+                Debug.Log("Plant has grown!");
             }
             NeedsWatering = true;
+            UpdateVisuals();
+            return;
         }
         if (IsWeed)
             return;
@@ -78,11 +82,13 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
 
     public void EnableInteract()
     {
+        buttonAObject.SetActive(true);
         interactInputCanvasGameObject.SetActive(true);
     }
 
     public void DisableInteract()
     {
+        buttonAObject.SetActive(false);
         interactInputCanvasGameObject.SetActive(false);
     }
 
@@ -92,13 +98,13 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
         {
             seedInformationBubble.SetActive(true);
             seedIndicator.sprite = PlantedSeed.SeedIcon;
+            wateringCheckMark.SetActive(!NeedsWatering);
         }
         else
         {
             seedInformationBubble.SetActive(false);
             seedIndicator.sprite = null;
         }
-        wateringCheckMark.SetActive(NeedsWatering);
     }
 
     public override void InitPurchasableHouseItem()
@@ -121,18 +127,17 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
         PlantedSeed = data.PlantedSeed;
         IsWeed = data.IsWeed;
         BaseWeedSpawnChance = data.WeedSpawnChance;
+
+        if (!IsWeed)
+        {
+            weedBehaviour.DisableWeed();
+        }
         
     }
-
-    public override void PurchaseItem()
-    {
-        base.PurchaseItem();
-
-        //GardenManager.instance.plotsData[selfIndex].;
-    }
-
+    
     public void WaterPlot()
     {
+        Debug.Log("Watered plant");
         NeedsWatering = false;
         UpdateVisuals();
 
@@ -142,10 +147,10 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
     public void AddSeed(CollectedSeedBehavior collectedSeedBehaviour)
     {
         PlantedSeed = collectedSeedBehaviour.SeedValuesSo;
+        RequiredProgressionToMature = PlantedSeed.DaysToMature;
         NeedsWatering = true;
         BaseWeedSpawnChance = 0;
         UpdateVisuals();
-
         GardenManager.instance.plotsData[selfIndex + 1].UpdateData(this);
     }
 
@@ -171,6 +176,7 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
         weedBehaviour.CollectWeed();
         weedingVfx.Play();
         IsWeed = false;
+        GardenManager.instance.plotsData[selfIndex + 1].UpdateData(this);
         //TODO: Turn on plot for planting
     }
 
@@ -195,6 +201,8 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
 
             if (CharacterInteractController.Instance.collectedStack[0].StackableItem is not CollectedSeedBehavior)
                 return;
+            
+            Debug.Log("Planted new seed");
 
             CharacterAnimManager.instance.CatThrow();
 
@@ -204,14 +212,23 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
             
             CharacterInteractController.Instance.collectedStack.RemoveAt(CharacterInteractController.Instance.collectedStack.Count - 1);
             
+            UpdateVisuals();
+            
             if (CharacterInteractController.Instance.collectedStack.Count == 0)
                 CharacterInteractController.Instance.AreHandsFull = false;
             return;
         }
 
+        
         if (PlantGrowthProgression == RequiredProgressionToMature)
         {
+            Debug.Log("Ingredient collect haptic challenge");
             //TODO: Vegetable harvest haptic challenge
+        }
+        if (NeedsWatering)
+        {
+            //TODO: Watering Animation
+            WaterPlot();
         }
     }
     
