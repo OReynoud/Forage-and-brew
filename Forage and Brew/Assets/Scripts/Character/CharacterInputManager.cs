@@ -115,8 +115,12 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.ToggleRun.performed += ToggleRunOnPerformed;
         _inputs.Player.PauseIn.performed += PauseInOnPerformed;
         _inputs.Player.PauseOut.performed += PauseOutOnPerformed;
-        _inputs.Player.PreviousOutfit.performed += PreviousOutfitOnPerformed;
-        _inputs.Player.NextOutfit.performed += NextOutfitOnPerformed;
+        _inputs.Player.PreviousOutfitCategory.performed += PreviousOutfitCategoryOnPerformed;
+        _inputs.Player.NextOutfitCategory.performed += NextOutfitCategoryOnPerformed;
+        _inputs.Player.LeftOutfit.performed += LeftOutfitOnPerformed;
+        _inputs.Player.RightOutfit.performed += RightOutfitOnPerformed;
+        _inputs.Player.UpOutfit.performed += UpOutfitOnPerformed;
+        _inputs.Player.DownOutfit.performed += DownOutfitOnPerformed;
         _inputs.Player.ExitMirror.performed += ExitMirrorOnPerformed;
         _inputs.Player.SelectOutfit.performed += SelectOutfitOnPerformed;
         _inputs.Player.PurchaseOutfit.performed += PurchaseOutfitOnPerformed;
@@ -243,8 +247,12 @@ public class CharacterInputManager : MonoBehaviour
     
     public void EnableMirrorInputs()
     {
-        _inputs.Player.PreviousOutfit.Enable();
-        _inputs.Player.NextOutfit.Enable();
+        _inputs.Player.PreviousOutfitCategory.Enable();
+        _inputs.Player.NextOutfitCategory.Enable();
+        _inputs.Player.LeftOutfit.Enable();
+        _inputs.Player.RightOutfit.Enable();
+        _inputs.Player.UpOutfit.Enable();
+        _inputs.Player.DownOutfit.Enable();
         _inputs.Player.ExitMirror.Enable();
         _inputs.Player.SelectOutfit.Enable();
         _inputs.Player.PurchaseOutfit.Enable();
@@ -357,8 +365,12 @@ public class CharacterInputManager : MonoBehaviour
     
     public void DisableMirrorInputs()
     {
-        _inputs.Player.PreviousOutfit.Disable();
-        _inputs.Player.NextOutfit.Disable();
+        _inputs.Player.PreviousOutfitCategory.Disable();
+        _inputs.Player.NextOutfitCategory.Disable();
+        _inputs.Player.LeftOutfit.Disable();
+        _inputs.Player.RightOutfit.Disable();
+        _inputs.Player.UpOutfit.Disable();
+        _inputs.Player.DownOutfit.Disable();
         _inputs.Player.ExitMirror.Disable();
         _inputs.Player.SelectOutfit.Disable();
         _inputs.Player.PurchaseOutfit.Disable();
@@ -644,18 +656,46 @@ public class CharacterInputManager : MonoBehaviour
     
     #region Mirror Input Callbacks
     
-    private void PreviousOutfitOnPerformed(InputAction.CallbackContext obj)
+    private void PreviousOutfitCategoryOnPerformed(InputAction.CallbackContext obj)
     {
         if (!CharacterInteractController.Instance.CurrentNearMirror) return;
         
-        CharacterInteractController.Instance.CurrentNearMirror.PreviousOutfit();
+        CharacterInteractController.Instance.CurrentNearMirror.PreviousOutfitCategory();
     }
     
-    private void NextOutfitOnPerformed(InputAction.CallbackContext obj)
+    private void NextOutfitCategoryOnPerformed(InputAction.CallbackContext obj)
     {
         if (!CharacterInteractController.Instance.CurrentNearMirror) return;
         
-        CharacterInteractController.Instance.CurrentNearMirror.NextOutfit();
+        CharacterInteractController.Instance.CurrentNearMirror.NextOutfitCategory();
+    }
+    
+    private void LeftOutfitOnPerformed(InputAction.CallbackContext obj)
+    {
+        if (!CharacterInteractController.Instance.CurrentNearMirror) return;
+        
+        CharacterInteractController.Instance.CurrentNearMirror.LeftOutfit();
+    }
+    
+    private void RightOutfitOnPerformed(InputAction.CallbackContext obj)
+    {
+        if (!CharacterInteractController.Instance.CurrentNearMirror) return;
+        
+        CharacterInteractController.Instance.CurrentNearMirror.RightOutfit();
+    }
+    
+    private void UpOutfitOnPerformed(InputAction.CallbackContext obj)
+    {
+        if (!CharacterInteractController.Instance.CurrentNearMirror) return;
+        
+        CharacterInteractController.Instance.CurrentNearMirror.UpOutfit();
+    }
+    
+    private void DownOutfitOnPerformed(InputAction.CallbackContext obj)
+    {
+        if (!CharacterInteractController.Instance.CurrentNearMirror) return;
+        
+        CharacterInteractController.Instance.CurrentNearMirror.DownOutfit();
     }
     
     private void ExitMirrorOnPerformed(InputAction.CallbackContext obj)
