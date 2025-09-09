@@ -160,6 +160,8 @@ public class GardenCompostBehavior : MonoBehaviour, IIngredientAddable
         currentSeed = null;
         CharacterInteractController.Instance.AddToPile(newSeed);
         compostIsFull = false;
+        
+        Debug.Log("Obtained new Seed");
     }
     
 }

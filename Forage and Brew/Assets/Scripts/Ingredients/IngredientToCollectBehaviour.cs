@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class IngredientToCollectBehaviour : MonoBehaviour
+public class IngredientToCollectBehaviour : WeedContainerBehavior
 {
     [Header("Dependencies")]
     [SerializeField] private IngredientToCollectGlobalValuesSo ingredientToCollectGlobalValuesSo;
@@ -22,7 +22,10 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     
     [Header("Weed")]
     [SerializeField] private WeedBehaviour weedBehaviour;
-    
+
+    public WeedBehaviour GetWeedBehaviour() => weedBehaviour;
+    public bool IsUiRight() => isUiRight;
+
     [Header("Obtaining Feedback")]
     [SerializeField] private RectTransform obtainingFeedbackRectTransform;
     [SerializeField] private Image obtainingFeedbackImage;
@@ -273,33 +276,8 @@ public class IngredientToCollectBehaviour : MonoBehaviour
             harvestReleaseLeftGameObject.SetActive(true);
         }
     }
-    
-    public void ChangeWeedingInputIndex(int newSliderIndex)
-    {
-        weedBehaviour.ChangeWeedingInputIndex(newSliderIndex, isUiRight);
-    }
-    
-    public void ResetWeedingInputIndex()
-    {
-        weedBehaviour.ResetWeedingInputIndex(isUiRight);
-    }
-    
-    public void SetWeedingValue(float value, int inputIndex)
-    {
-        weedBehaviour.SetWeedingValue(value, inputIndex, isUiRight);
-    }
-    
-    public void PressWeeding()
-    {
-        weedBehaviour.PressWeeding(isUiRight);
-    }
-    
-    public void ReleaseWeeding()
-    {
-        weedBehaviour.ReleaseWeeding(isUiRight);
-    }
-    
-    
+
+
     public void PlayObtainingFeedback()
     {
         _isPlayingObtainingFeedback = true;
@@ -378,7 +356,7 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     {
         if (other.TryGetComponent(out CollectHapticChallengeManager collectHapticChallengeManager))
         {
-            collectHapticChallengeManager.CurrentIngredientToCollectBehaviours.Add(this);
+            collectHapticChallengeManager.CurrentWeedableBehaviours.Add(this);
             
             if (!DoesNeedToShowUi) return;
             
@@ -404,7 +382,7 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.TryGetComponent(out CollectHapticChallengeManager collectHapticChallengeManager) &&
-            collectHapticChallengeManager.CurrentIngredientToCollectBehaviours.Contains(this))
+            collectHapticChallengeManager.CurrentWeedableBehaviours.Contains(this))
         {
             collectHapticChallengeManager.RemoveIngredientToCollectBehaviour(this);
             DisableCollect();
