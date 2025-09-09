@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class OutfitButtonBehaviour : MonoBehaviour
 {
     [Header("UI")]
+    [SerializeField] private Button outfitButton;
     [SerializeField] private Image outfitImage;
     [SerializeField] private GameObject currentSelector;
     [SerializeField] private LockBehaviour lockBehaviour;
@@ -18,23 +19,45 @@ public class OutfitButtonBehaviour : MonoBehaviour
         MirrorBehaviour = mirrorBehaviour;
         OutfitSo = outfit;
         outfitImage.sprite = outfit.OutfitSprite;
+        
+        DisableSelector();
+        DisableCheckmark();
+        DisableLock();
     }
     
-    public void OnClickSelectOutfit()
+    public void EnableSelector()
     {
-        CharacterSelectionManager.Instance.SetCurrentOutfit(OutfitSo);
-        UpdateSelectedOutline();
+        currentSelector.SetActive(true);
+        outfitButton.Select();
+    }
+    
+    public void DisableSelector()
+    {
+        currentSelector.SetActive(false);
     }
 
-    public void UpdateSelectedOutline()
+    public void EnableCheckmark()
     {
-        if (CharacterSelectionManager.Instance.CurrentOutfit == outfitSo)
-        {
-            selectedOutline.SetActive(true);
-        }
-        else
-        {
-            selectedOutline.SetActive(false);
-        }
+        selectCheckmark.SetActive(true);
+    }
+    
+    public void DisableCheckmark()
+    {
+        selectCheckmark.SetActive(false);
+    }
+
+    public void EnableLock()
+    {
+        lockBehaviour.Enable();
+    }
+    
+    public void DisableLock()
+    {
+        lockBehaviour.Disable();
+    }
+    
+    public void UnlockOutfit()
+    {
+        lockBehaviour.Unlock();
     }
 }
