@@ -5211,6 +5211,77 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6766581368212648604, guid: 02fc2ac52d44f1c42bbc10ba139ac80a, type: 3}
   m_PrefabInstance: {fileID: 7611041448714965478}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2077582120
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2077582123}
+  - component: {fileID: 2077582122}
+  - component: {fileID: 2077582121}
+  m_Layer: 0
+  m_Name: PP_InteriorHouse
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2077582121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2077582120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 0
+  priority: 0
+  blendDistance: 2.95
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 9773074c4bd138a4fb5ba99b69bb84bf, type: 2}
+--- !u!65 &2077582122
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2077582120}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &2077582123
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2077582120}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -8.85, y: 4.53, z: 8.64}
+  m_LocalScale: {x: 35.245422, y: 16.92901, z: 20.169704}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &2104566690 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 139416363064326300, guid: a958c345fbcf444489b765f91b9aacfd, type: 3}
@@ -6863,3 +6934,5 @@ SceneRoots:
   - {fileID: 506011954}
   - {fileID: 7429275522541034340}
   - {fileID: 1034546546}
+  - {fileID: 8899288401974155166}
+  - {fileID: 2077582123}
