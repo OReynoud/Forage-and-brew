@@ -38,9 +38,10 @@ public class MirrorBehaviour : MonoBehaviour
     [SerializeField] private float arrowMoveDuration = 0.1f;
     [SerializeField] private AnimationCurve arrowMoveCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
     [SerializeField] private TMP_Text outfitCategoryNameText;
+    [SerializeField] private ScrollRect outfitScrollRect;
     [SerializeField] private Transform outfitGridLayoutTransform;
     [SerializeField] private OutfitButtonBehaviour outfitButtonPrefab;
-    private List<OutfitButtonBehaviour> _outfitButtons = new();
+    private readonly List<OutfitButtonBehaviour> _outfitButtons = new();
     [SerializeField] private CanvasGroup mainButtonCanvasGroup;
     [SerializeField] private float mainButtonUnavailableAlpha = 0.5f;
     [SerializeField] private float mainButtonAvailableAlpha = 1f;
@@ -469,6 +470,7 @@ public class MirrorBehaviour : MonoBehaviour
             if (i == _currentOutfitIndex)
             {
                 outfitButton.EnableSelector();
+                outfitScrollRect.EnsureVisibility(outfitButton.GetComponent<RectTransform>());
             }
             else
             {

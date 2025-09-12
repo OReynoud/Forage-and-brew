@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public static class Ex
 {
@@ -50,5 +51,36 @@ public static class Ex
         
         return useLow ? cookedIngredient.Ingredient.iconLow : cookedIngredient.Ingredient.iconHigh;
         
+    }
+    
+    public static void EnsureVisibility(this ScrollRect scrollRect, RectTransform child, float padding=0)
+    {
+        Debug.Assert(child.parent == scrollRect.content,
+            "EnsureVisibility assumes that 'child' is directly nested in the content of 'scrollRect'");
+
+        float viewportHeight = scrollRect.viewport.rect.height;
+        Vector2 scrollPosition = scrollRect.content.anchoredPosition;
+
+        float elementTop = 0f;
+        RectTransform newChild = child;
+
+        do
+        {
+            elementTop -= newChild.anchoredPosition.y;
+            newChild = newChild.parent as RectTransform;
+        } while (newChild != scrollRect.content && newChild);
+        
+        float elementBottom = elementTop - child.rect.height;
+
+        float visibleContentTop = -scrollPosition.y - padding;
+        float visibleContentBottom = -scrollPosition.y - viewportHeight + padding;
+
+        float scrollDelta =
+            elementTop > visibleContentTop ? visibleContentTop - elementTop :
+            elementBottom < visibleContentBottom ? visibleContentBottom - elementBottom :
+            0f;
+
+        scrollPosition.y += scrollDelta;
+        scrollRect.content.anchoredPosition = scrollPosition;
     }
 }
