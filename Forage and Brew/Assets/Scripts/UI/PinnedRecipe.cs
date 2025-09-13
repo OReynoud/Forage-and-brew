@@ -10,7 +10,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 {
     private RectTransform ownTransform; //Behavior logic
     public bool isPinned { get; set; } //Behavior logic
-    public bool canShow { get; set; }
+    [field: SerializeField] public bool canShow { get; set; }
     // {
     //     get => true;
     //     set

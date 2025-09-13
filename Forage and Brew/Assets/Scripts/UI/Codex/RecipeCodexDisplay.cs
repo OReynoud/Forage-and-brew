@@ -16,6 +16,7 @@ public class RecipeCodexDisplay : PageBehavior
     [BoxGroup("Refs")] public AnimationCurve animCurveDissolve;
     [BoxGroup("Refs")] public Sprite ingredientBackground;
     [BoxGroup("Refs")] public Sprite ingredientTypeBackground;
+    [BoxGroup("Refs")] public Sprite recipeStepBackgroundSprite;
     [BoxGroup("Potion Description")] public PotionValuesSo storedPotion;
     [BoxGroup("Potion Description")] public TextMeshProUGUI potionName;
     [BoxGroup("Potion Description")] public TextMeshProUGUI potionFlavorText;
@@ -33,6 +34,7 @@ public class RecipeCodexDisplay : PageBehavior
     [BoxGroup("Brewing Steps")] public Image[] ingredientStepImage;
     [BoxGroup("Brewing Steps")] public Image[] mainActionImage;
     [BoxGroup("Brewing Steps")] public Image[] singleActionImage;
+    [BoxGroup("Brewing Steps")] public Image[] backgroundImage;
 
     public int SecondPageNumber;
 
@@ -69,7 +71,7 @@ public class RecipeCodexDisplay : PageBehavior
             ingredientStepImage[i].gameObject.SetActive(false);
             mainActionImage[i].gameObject.SetActive(false);
             singleActionImage[i].gameObject.SetActive(false);
-            stepText[i].transform.parent.gameObject.SetActive(false);
+            backgroundImage[i].gameObject.SetActive(false);
         }
         
         foreach (GameObject difficultyGameObject in potionDifficulty)
@@ -243,7 +245,8 @@ public class RecipeCodexDisplay : PageBehavior
                 writingIndex++;
             }
 
-            stepText[writingIndex].transform.parent.gameObject.SetActive(true);
+            backgroundImage[writingIndex].gameObject.SetActive(true);
+            backgroundImage[writingIndex].sprite = recipeStepBackgroundSprite;
 
             singleActionImage[writingIndex].gameObject.SetActive(true);
 

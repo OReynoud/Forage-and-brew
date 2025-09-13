@@ -83,7 +83,7 @@ public class AutoFlip : Singleton<AutoFlip>
         CharacterInputManager.Instance.OnNavigationChange.AddListener(ChangeCodexNavigationType);
         Cursor.lockState = CursorLockMode.Confined;
         proportions = new Vector2(codexProportions.rect.width, codexProportions.rect.height);
-
+        cutoutActivePos = ControledBook.pinRecipeUI.transform.parent.GetComponent<RectTransform>().anchoredPosition;
 
         GameDontDestroyOnLoadManager.Instance.OnNewIngredientCollected.AddListener(ControledBook.StoreNewIngredient);
         //ControledBook.SetupIngredientDisplays();
@@ -96,9 +96,9 @@ public class AutoFlip : Singleton<AutoFlip>
         if (removeCutout &&  cutoutTimer > 0)
         {
             cutoutTimer -= Time.deltaTime;
-            cutoutCanvasGroup.alpha = Mathf.Lerp(0, 1, cutoutAnimCurve.Evaluate(cutoutTimer / cutoutLerpTime));
-            cutoutTransform.anchoredPosition = Vector2.Lerp(Vector2.zero, cutoutActivePos, cutoutAnimCurve.Evaluate(cutoutTimer / cutoutLerpTime));
-            cutoutTransform.sizeDelta = Vector2.Lerp(cutoutBaseSize, cutoutActiveSize, cutoutAnimCurve.Evaluate(cutoutTimer / cutoutLerpTime));
+            cutoutCanvasGroup.alpha = Mathf.Lerp(0, 1, cutoutTimer * 1.5f / cutoutLerpTime);
+            cutoutTransform.anchoredPosition = Vector2.LerpUnclamped(Vector2.zero, cutoutActivePos, cutoutAnimCurve.Evaluate(cutoutTimer / cutoutLerpTime));
+            cutoutTransform.sizeDelta = Vector2.LerpUnclamped(cutoutBaseSize, cutoutActiveSize, cutoutAnimCurve.Evaluate(cutoutTimer / cutoutLerpTime));
             if (cutoutTimer < 0)
             {
                 Destroy(cutoutTransform.gameObject);
@@ -110,8 +110,8 @@ public class AutoFlip : Singleton<AutoFlip>
         {
             cutoutTimer += Time.deltaTime;
             cutoutCanvasGroup.alpha = Mathf.Lerp(0, 1, cutoutTimer / cutoutLerpTime);
-            cutoutTransform.anchoredPosition = Vector2.Lerp(Vector2.zero, cutoutActivePos, cutoutTimer / cutoutLerpTime);
-            cutoutTransform.sizeDelta = Vector2.Lerp(cutoutBaseSize, cutoutActiveSize, cutoutTimer / cutoutLerpTime);
+            cutoutTransform.anchoredPosition = Vector2.LerpUnclamped(Vector2.zero, cutoutActivePos, cutoutAnimCurve.Evaluate(cutoutTimer / cutoutLerpTime));
+            cutoutTransform.sizeDelta = Vector2.LerpUnclamped(cutoutBaseSize, cutoutActiveSize, cutoutAnimCurve.Evaluate(cutoutTimer / cutoutLerpTime));
             
         }
     }
