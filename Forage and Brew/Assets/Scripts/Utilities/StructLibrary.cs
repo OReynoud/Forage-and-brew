@@ -16,7 +16,7 @@ public struct SceneName
 public struct QuestProgressionIndexWatcher
 {
     [field: SerializeField] public int RequiredIndex { get; private set; }
-    [field: SerializeField] public int MinimumOrdersAmount { get; private set; }
+    [field: SerializeField] public int MaximumOrdersAmount { get; private set; }
 }
 [Serializable]
 public struct MusicContainer
