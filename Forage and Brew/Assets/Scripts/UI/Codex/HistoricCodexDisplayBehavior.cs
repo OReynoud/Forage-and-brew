@@ -16,6 +16,10 @@ public class HistoricCodexDisplayBehavior : PageBehavior
     public TextMeshProUGUI description2Text;
     public GameObject tampon;
     public LetterContentSo OriginLetter;
+    
+    
+    public float backGroundSpacing;
+    public float backGroundRim;
     [Range(0, 1)] public float historicPagesRatio = 0.5f; 
 
     
@@ -45,9 +49,18 @@ public class HistoricCodexDisplayBehavior : PageBehavior
     {
         if (!Application.isPlaying)
         {
-            var oui = backGround1.GetComponent<RectTransform>();
-            oui.offsetMin = new Vector2(oui.offsetMin.x,
-            Mathf.Lerp(0,1000,historicPagesRatio));
+            var backGround1Rect = backGround1.GetComponent<RectTransform>();
+            backGround1Rect.offsetMin = new Vector2(backGround1Rect.offsetMin.x,
+            Mathf.Lerp(0,1000,historicPagesRatio) - backGroundSpacing);
+            backGround1Rect.offsetMax = new Vector2(backGround1Rect.offsetMax.x,
+                -backGroundRim);
+            
+            var backGround2Rect = backGround2.GetComponent<RectTransform>();
+            backGround2Rect.offsetMax = new Vector2(backGround2Rect.offsetMax.x,
+                Mathf.Lerp(-1000,0,historicPagesRatio) + backGroundSpacing);
+            backGround2Rect.offsetMin = new Vector2(backGround2Rect.offsetMin.x,
+                backGroundRim);
+            
             //oui.sizeDelta = new Vector2(oui.sizeDelta.x, )
             // oui.rect.center = Vector2.zero;
             //     oui.rect.yMax);
@@ -56,12 +69,5 @@ public class HistoricCodexDisplayBehavior : PageBehavior
         }
     }
 
-    public void OnDrawGizmos()
-    {
-        var oui = backGround1.GetComponent<RectTransform>();
-        Handles.Label(oui.anchoredPosition, "pos");
-        Debug.Log(oui.offsetMin.y);
-        Debug.Log(oui.sizeDelta);
-        Handles.Label(oui.rect.max, "Max");
-    }
+
 }
