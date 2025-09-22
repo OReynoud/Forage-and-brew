@@ -464,7 +464,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
         }
         else
         {
-            var ingredientPage = Instantiate(ingredientDisplayPrefabRight, emptyIngredientPage);
+            var ingredientPage = Instantiate(ingredientDisplayPrefabLeft, emptyIngredientPage);
             Book.BookPage bookPage =
                 AutoFlip.instance.ControledBook.bookPages.Find(x => x.UIComponent == emptyIngredientPage);
 
