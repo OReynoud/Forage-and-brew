@@ -281,8 +281,8 @@ RectTransform:
   m_GameObject: {fileID: 5334426377335991018}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 7877143515726776887}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -457,6 +457,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86fb741481368b644b9c8c902c279932, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canContainWeed: 0
+  weedBehaviour: {fileID: 0}
+  isUiRight: 0
   selfIndex: 0
   purchaseCost: 20
   purchasableItemMeshRenderers:
@@ -505,19 +508,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3149889196812225709, guid: 7ad4286ed849d0e49ae3c85195ad6d78, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3149889196812225709, guid: 7ad4286ed849d0e49ae3c85195ad6d78, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3149889196812225709, guid: 7ad4286ed849d0e49ae3c85195ad6d78, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1.69
       objectReference: {fileID: 0}
     - target: {fileID: 3149889196812225709, guid: 7ad4286ed849d0e49ae3c85195ad6d78, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 0.845
       objectReference: {fileID: 0}
     - target: {fileID: 3149889196812225709, guid: 7ad4286ed849d0e49ae3c85195ad6d78, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -0.465
       objectReference: {fileID: 0}
     - target: {fileID: 3726655937810655259, guid: 7ad4286ed849d0e49ae3c85195ad6d78, type: 3}
       propertyPath: m_AnchorMax.y
@@ -613,6 +620,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6201001809618624839, guid: 7ad4286ed849d0e49ae3c85195ad6d78, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8497719922452077610, guid: 7ad4286ed849d0e49ae3c85195ad6d78, type: 3}
+      propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
