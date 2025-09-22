@@ -8,10 +8,12 @@ public class LetterMailBoxDisplayBehaviour : PageBehavior
     public TextMeshProUGUI clientNameText;
     public Image letterBackground;
     public Image bills;
+    public GameObject moneyIcon;
     
     public TextMeshProUGUI descriptionText;
     
-    public TextMeshProUGUI moneyText;
+    public TextMeshProUGUI moneyTextOrder;
+    public TextMeshProUGUI moneyTextThanks;
 
     private LetterContentSo letterContent;
     public List<PotionDemand> potionsDemanded = new();
@@ -53,13 +55,15 @@ public class LetterMailBoxDisplayBehaviour : PageBehavior
         
         if (letterType != LetterType.Orders)
         {
-            moneyText.transform.parent.gameObject.SetActive(false);
+            moneyTextOrder.transform.parent.gameObject.SetActive(false);
             return;
         }
 
-        bills.enabled = letterType is LetterType.Thanks or LetterType.Gift;
+        bills.gameObject.SetActive(letterType is LetterType.Thanks or LetterType.Gift);
+        moneyIcon.SetActive(letterType is LetterType.Orders);
         moneyReward = letterContent.OrderContent.MoneyReward;
-        moneyText.text = moneyReward.ToString();
+        moneyTextOrder.text = moneyReward.ToString();
+        moneyTextThanks.text = moneyReward.ToString();
         potionsDemanded.Clear();
         potionsDemanded.AddRange(letterContent.OrderContent.RequestedPotions);
 
