@@ -7,6 +7,7 @@ public class OrderCodexDisplayBehaviour : PageBehavior
 {
     public TextMeshProUGUI clientNameText;
     public Image orderBackground;
+    public TextMeshProUGUI moneyAmount;
     
     public TextMeshProUGUI descriptionText;
 
@@ -26,6 +27,7 @@ public class OrderCodexDisplayBehaviour : PageBehavior
         potionsDemanded.Clear();
         potionsDemanded.AddRange(Potions);
         orderBackground.color = client.AssociatedColor;
+        moneyAmount.text = Reward.ToString();
         
         for (int i = 0; i < potionsDemanded.Count; i++)
         {
