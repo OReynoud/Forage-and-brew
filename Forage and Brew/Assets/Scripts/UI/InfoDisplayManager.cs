@@ -53,14 +53,12 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
     [BoxGroup("Top Right")] [SerializeField]
     private Image moonCyclesDisplay;
 
+    [BoxGroup("Top Right")] [SerializeField]
+    private TextMeshProUGUI moneyText;
+    
     [BoxGroup("Top Left")] [SerializeField]
     private RectTransform tutorialPopup;
 
-    [BoxGroup("Bottom Right")] [SerializeField]
-    private RectTransform moneyUIContainer;
-
-    [BoxGroup("Bottom Right")] [SerializeField]
-    private TextMeshProUGUI moneyText;
 
     [BoxGroup("Bottom Left")] [SerializeField]
     private RectTransform codexIcon;
@@ -177,8 +175,6 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
         {
             weatherUIContainer.anchoredPosition =
                 Vector2.Lerp(weatherUIContainer.anchoredPosition, topRightShownPos, lerp);
-            moneyUIContainer.anchoredPosition =
-                Vector2.Lerp(moneyUIContainer.anchoredPosition, bottomRightShownPos, lerp);
             codexIcon.anchoredPosition = 
                 Vector2.Lerp(codexIcon.anchoredPosition, bottomLeftShownPos, lerp);
         }
@@ -186,8 +182,6 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
         {
             weatherUIContainer.anchoredPosition =
                 Vector2.Lerp(weatherUIContainer.anchoredPosition, topRightHiddenPos, lerp);
-            moneyUIContainer.anchoredPosition = Vector2.Lerp(moneyUIContainer.anchoredPosition,
-                canShowMoney ? bottomRightShownPos : bottomRightHiddenPos, lerp);
             if (!canShowCodex)
             {
                 codexIcon.anchoredPosition = Vector2.Lerp(codexIcon.anchoredPosition, bottomLeftHiddenPos, lerp);

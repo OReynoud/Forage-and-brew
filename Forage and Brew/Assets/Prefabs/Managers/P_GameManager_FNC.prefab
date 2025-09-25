@@ -278,7 +278,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -72, y: -139}
+  m_AnchoredPosition: {x: -72, y: -82.82}
   m_SizeDelta: {x: 100, y: 159.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &840915228034805711
@@ -322,9 +322,9 @@ RectTransform:
   - {fileID: 5060871510973738743}
   m_Father: {fileID: 5600620456388140953}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -3.3, y: -61.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 47.1}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3269890023211855685
@@ -812,9 +812,9 @@ RectTransform:
   - {fileID: 5159455154048968547}
   m_Father: {fileID: 5600620456388140953}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 3.6, y: -4.9}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 95.7}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1412081105726170694
@@ -1226,18 +1226,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4634158075163648741}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8033576564097041232}
   - {fileID: 2284090819953182565}
-  m_Father: {fileID: 6624481021441164494}
+  m_Father: {fileID: 8534283374375728212}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 875.5, y: 382.3}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -85, y: -53.200073}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7441225111566308846
@@ -1292,6 +1292,7 @@ RectTransform:
   m_Children:
   - {fileID: 5600620456388140953}
   - {fileID: 7227115821374654068}
+  - {fileID: 1710163016242214573}
   m_Father: {fileID: 6624481021441164494}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
@@ -1840,15 +1841,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4ca77531ddd046f4b85a61cf5fc6fc72, type: 2}
   loadOrders: 0
   OrdersToLoad: []
-  loadAllRecipes: 0
-  loadAllIngredients: 0
+  loadAllRecipes: 1
+  loadAllIngredients: 1
   loadHistoric: 0
   HistoricToLoad: []
   debugCommands: 0
   codexIsUnlocked: 1
-  hasDonePinTutorial: 0
+  hasDonePinTutorial: 1
   unlockedOnWakeUp: 1
-  moneyAmountOnStart: 1000
+  moneyAmountOnStart: 100
 --- !u!114 &8749834936499281840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1972,9 +1973,8 @@ MonoBehaviour:
   daysPassedText: {fileID: 3216875866233689992}
   weather: {fileID: 7934464893993020527}
   moonCyclesDisplay: {fileID: 6526063313419568955}
-  tutorialPopup: {fileID: 8341694340317716873}
-  moneyUIContainer: {fileID: 1710163016242214573}
   moneyText: {fileID: 8444848590338312050}
+  tutorialPopup: {fileID: 8341694340317716873}
   codexIcon: {fileID: 218538155132664950}
   crossImage: {fileID: 2700487715634161094}
   upArrow: {fileID: 21300000, guid: 54365e9fcac6eec40a5822aa3cf2179a, type: 3}
@@ -2089,7 +2089,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   compostBox: {fileID: 0}
-  plotsData: []
+  plotsData:
+  - <NeedsWatering>k__BackingField: 0
+    <PlantGrowthProgression>k__BackingField: 0
+    <RequiredProgressionToMature>k__BackingField: 0
+    <IsWeed>k__BackingField: 1
+    <WeedSpawnChance>k__BackingField: 0
+    <PlantedSeed>k__BackingField: {fileID: 0}
+  - <NeedsWatering>k__BackingField: 0
+    <PlantGrowthProgression>k__BackingField: 0
+    <RequiredProgressionToMature>k__BackingField: 0
+    <IsWeed>k__BackingField: 0
+    <WeedSpawnChance>k__BackingField: 0
+    <PlantedSeed>k__BackingField: {fileID: 0}
+  - <NeedsWatering>k__BackingField: 0
+    <PlantGrowthProgression>k__BackingField: 0
+    <RequiredProgressionToMature>k__BackingField: 0
+    <IsWeed>k__BackingField: 0
+    <WeedSpawnChance>k__BackingField: 0
+    <PlantedSeed>k__BackingField: {fileID: 0}
+  - <NeedsWatering>k__BackingField: 0
+    <PlantGrowthProgression>k__BackingField: 0
+    <RequiredProgressionToMature>k__BackingField: 0
+    <IsWeed>k__BackingField: 0
+    <WeedSpawnChance>k__BackingField: 0
+    <PlantedSeed>k__BackingField: {fileID: 0}
+  - <NeedsWatering>k__BackingField: 0
+    <PlantGrowthProgression>k__BackingField: 0
+    <RequiredProgressionToMature>k__BackingField: 0
+    <IsWeed>k__BackingField: 0
+    <WeedSpawnChance>k__BackingField: 0
+    <PlantedSeed>k__BackingField: {fileID: 0}
 --- !u!1 &6136499012256218945
 GameObject:
   m_ObjectHideFlags: 0
@@ -2504,7 +2534,6 @@ RectTransform:
   - {fileID: 2011855430412713404}
   - {fileID: 3844347317494534544}
   - {fileID: 8534283374375728212}
-  - {fileID: 1710163016242214573}
   - {fileID: 8341694340317716873}
   - {fileID: 218538155132664950}
   - {fileID: 5635242478268079092}
@@ -2663,7 +2692,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -145}
+  m_AnchoredPosition: {x: 0, y: -111}
   m_SizeDelta: {x: 306, y: 306}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &837475991748049456
@@ -3856,6 +3885,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 636597009602537026, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -65.15001
+      objectReference: {fileID: 0}
+    - target: {fileID: 636597009602537026, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 636597009602537026, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 32.575
+      objectReference: {fileID: 0}
     - target: {fileID: 758619827947552113, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
       propertyPath: GDDOL
       value: 
@@ -4148,6 +4189,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3634075927654774422, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3634075927654774422, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 909
+      objectReference: {fileID: 0}
+    - target: {fileID: 3634075927654774422, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -358
+      objectReference: {fileID: 0}
     - target: {fileID: 3658934427443796586, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4267,6 +4320,78 @@ PrefabInstance:
     - target: {fileID: 3967161297964492381, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
       propertyPath: cutoutActiveSize.y
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967161297964492381, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+      propertyPath: cutoutAnimCurve.m_Curve.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967161297964492381, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+      propertyPath: cutoutAnimCurve.m_Curve.Array.data[1].time
+      value: 0.4489861
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967161297964492381, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+      propertyPath: cutoutAnimCurve.m_Curve.Array.data[2].time
+      value: 0.8455838
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967161297964492381, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+      propertyPath: cutoutAnimCurve.m_Curve.Array.data[3].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967161297964492381, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+      propertyPath: cutoutAnimCurve.m_Curve.Array.data[1].value
+      value: 0.22123669
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967161297964492381, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+      propertyPath: cutoutAnimCurve.m_Curve.Array.data[2].value
+      value: 0.94068456
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967161297964492381, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+      propertyPath: cutoutAnimCurve.m_Curve.Array.data[3].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967161297964492381, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+      propertyPath: cutoutAnimCurve.m_Curve.Array.data[1].inSlope
+      value: 1.3454943
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967161297964492381, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+      propertyPath: cutoutAnimCurve.m_Curve.Array.data[2].inSlope
+      value: 1.4217484
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967161297964492381, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+      propertyPath: cutoutAnimCurve.m_Curve.Array.data[3].inSlope
+      value: -0.43916702
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967161297964492381, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+      propertyPath: cutoutAnimCurve.m_Curve.Array.data[1].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967161297964492381, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+      propertyPath: cutoutAnimCurve.m_Curve.Array.data[1].outSlope
+      value: 1.3454943
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967161297964492381, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+      propertyPath: cutoutAnimCurve.m_Curve.Array.data[2].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967161297964492381, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+      propertyPath: cutoutAnimCurve.m_Curve.Array.data[2].outSlope
+      value: 1.4217484
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967161297964492381, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+      propertyPath: cutoutAnimCurve.m_Curve.Array.data[3].inWeight
+      value: 0.24166667
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967161297964492381, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+      propertyPath: cutoutAnimCurve.m_Curve.Array.data[3].outSlope
+      value: -0.43916702
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967161297964492381, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+      propertyPath: cutoutAnimCurve.m_Curve.Array.data[1].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967161297964492381, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+      propertyPath: cutoutAnimCurve.m_Curve.Array.data[2].outWeight
+      value: 0.33333334
       objectReference: {fileID: 0}
     - target: {fileID: 4110965722888087654, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
       propertyPath: m_AnchorMax.y
