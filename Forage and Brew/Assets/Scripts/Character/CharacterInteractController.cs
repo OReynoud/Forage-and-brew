@@ -71,6 +71,7 @@ public class CharacterInteractController : MonoBehaviour
     
     // Animator Hashes
     private static readonly int DoNo = Animator.StringToHash("DoNo");
+    private static readonly int DoWish = Animator.StringToHash("DoWish");
     
 
     private void Awake()
