@@ -53,13 +53,11 @@ public static class Ex
         
     }
     
-    public static void EnsureVisibility(this ScrollRect scrollRect, RectTransform child, float padding=0)
+    public static void EnsureVisibilityVerticalGridLayout(this ScrollRect scrollRect, GridLayoutGroup gridLayout, RectTransform child)
     {
-        Debug.Assert(child.parent == scrollRect.content,
-            "EnsureVisibility assumes that 'child' is directly nested in the content of 'scrollRect'");
-
-        float viewportHeight = scrollRect.viewport.rect.height;
-        Vector2 scrollPosition = scrollRect.content.anchoredPosition;
+        gridLayout.GetColumnAndRowCount(out int _, out int rowCount);
+        float scrollPositionY = gridLayout.padding.vertical + gridLayout.spacing.y * rowCount + gridLayout.cellSize.y * rowCount;
+        Vector2 scrollPosition = new Vector2(scrollRect.content.anchoredPosition.x, scrollPositionY);
 
         float elementTop = 0f;
         RectTransform newChild = child;
@@ -72,15 +70,58 @@ public static class Ex
         
         float elementBottom = elementTop - child.rect.height;
 
-        float visibleContentTop = -scrollPosition.y - padding;
-        float visibleContentBottom = -scrollPosition.y - viewportHeight + padding;
+        // float visibleContentTop = -scrollPosition.y - padding;
+        // float visibleContentBottom = -scrollPosition.y - viewportHeight + padding;
 
-        float scrollDelta =
-            elementTop > visibleContentTop ? visibleContentTop - elementTop :
-            elementBottom < visibleContentBottom ? visibleContentBottom - elementBottom :
-            0f;
+        // float scrollDelta =
+        //     elementTop > visibleContentTop ? visibleContentTop - elementTop :
+        //     elementBottom < visibleContentBottom ? visibleContentBottom - elementBottom :
+        //     0f;
 
-        scrollPosition.y += scrollDelta;
+        // scrollPosition.y += scrollDelta;
         scrollRect.content.anchoredPosition = scrollPosition;
+    }
+    
+    public static void GetColumnAndRowCount(this GridLayoutGroup glg, out int column, out int row)
+    {
+        column = 0;
+        row = 0;
+
+        if (glg.transform.childCount == 0)
+            return;
+
+        //Column and row are now 1
+        column = 1;
+        row = 1;
+
+        //Get the first child GameObject of the GridLayoutGroup
+        RectTransform firstChildObj = glg.transform.
+            GetChild(0).GetComponent<RectTransform>();
+
+        Vector2 firstChildPos = firstChildObj.anchoredPosition;
+        bool stopCountingRow = false;
+
+        //Loop through the rest of the child object
+        for (int i = 1; i < glg.transform.childCount; i++)
+        {
+            //Get the next child
+            RectTransform currentChildObj = glg.transform.
+                GetChild(i).GetComponent<RectTransform>();
+
+            Vector2 currentChildPos = currentChildObj.anchoredPosition;
+
+            //if first child.x == otherchild.x, it is a column, ele it's a row
+            if (firstChildPos.x == currentChildPos.x)
+            {
+                column++;
+                //Stop couting row once we find column
+                stopCountingRow = true;
+            }
+            else
+            {
+                if (!stopCountingRow)
+                    row++;
+            }
+        }
     }
 }
