@@ -39,6 +39,7 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
     
     [BoxGroup("Run Look")] [SerializeField] private float MinTimeBetweenLooks;
     [BoxGroup("Run Look")] [SerializeField] private float MaxTimeBetweenLooks;
+    [BoxGroup("Wish An")] [SerializeField] public GameObject catCoin;
     [BoxGroup("Debug")] private float timeForNextLook;
     
     

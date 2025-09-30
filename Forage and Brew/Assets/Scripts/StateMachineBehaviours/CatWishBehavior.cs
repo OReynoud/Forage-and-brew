@@ -8,6 +8,7 @@ public class CatWishBehavior : StateMachineBehaviour
         CharacterInputManager.Instance.DisableMoveInputs();
         CharacterInputManager.Instance.DisableCodexInputs();
         CharacterInputManager.Instance.DisableInteractInputs();
+        CharacterAnimManager.instance.catCoin.SetActive(true);
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -22,6 +23,7 @@ public class CatWishBehavior : StateMachineBehaviour
         CharacterInputManager.Instance.EnableMoveInputs();
         CharacterInputManager.Instance.EnableCodexInputs();
         CharacterInputManager.Instance.EnableInteractInputs();
+        CharacterAnimManager.instance.catCoin.SetActive(false);
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

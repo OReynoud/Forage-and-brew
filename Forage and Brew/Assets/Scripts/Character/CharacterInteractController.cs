@@ -184,6 +184,9 @@ public class CharacterInteractController : MonoBehaviour
                 case ObjectToSitBehaviour couch:
                     couch.StartInteraction();
                     break;
+                case WishingWellBehavior well:
+                    well.StartInteraction();
+                    break;
             }
         }
     }
