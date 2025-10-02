@@ -470,7 +470,7 @@ public class MirrorBehaviour : MonoBehaviour
             if (i == _currentOutfitIndex)
             {
                 outfitButton.EnableSelector();
-                // outfitScrollRect.EnsureVisibility(outfitButton.GetComponent<RectTransform>());
+                outfitScrollRect.EnsureVisibilityVertical(outfitButton.GetComponent<RectTransform>(), 10f);
             }
             else
             {
