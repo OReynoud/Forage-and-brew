@@ -21,7 +21,9 @@ public class MirrorBehaviour : MonoBehaviour
     [Header("Change Outfit")]
     [SerializeField] private float outfitChangeDelay = 0.1f;
     private int _currentOutfitIndex;
+    private bool _isCurrentRainOutfit;
     private int _selectedOutfitIndex;
+    private bool _isSelectedRainOutfit;
     private bool _canBuyCurrentOutfit;
     
     [Header("UI")]
@@ -35,12 +37,16 @@ public class MirrorBehaviour : MonoBehaviour
     [SerializeField] private float arrowMoveDistance = 10f;
     [SerializeField] private float arrowMoveDuration = 0.1f;
     [SerializeField] private AnimationCurve arrowMoveCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
-    [SerializeField] private TMP_Text outfitNameText;
+    [SerializeField] private TMP_Text outfitCategoryNameText;
+    [SerializeField] private ScrollRect outfitScrollRect;
+    [SerializeField] private Transform outfitGridLayoutTransform;
+    [SerializeField] private OutfitButtonBehaviour outfitButtonPrefab;
+    private readonly List<OutfitButtonBehaviour> _outfitButtons = new();
+    [SerializeField] private CanvasGroup mainButtonCanvasGroup;
+    [SerializeField] private float mainButtonUnavailableAlpha = 0.5f;
+    [SerializeField] private float mainButtonAvailableAlpha = 1f;
     [SerializeField] private GameObject selectLayout;
-    [SerializeField] private CanvasGroup purchaseLayoutCanvasGroup;
-    [SerializeField] private float purchaseLayoutUnavailableAlpha = 0.5f;
-    [SerializeField] private float purchaseLayoutAvailableAlpha = 1f;
-    [SerializeField] private GameObject purchaseButtonGameObject;
+    [SerializeField] private GameObject purchaseLayout;
     [SerializeField] private RectTransform moneyCostLayoutRectTransform;
     [SerializeField] private TMP_Text moneyCostText;
     [SerializeField] private GameObject ingredientCostsLayout;
@@ -65,6 +71,8 @@ public class MirrorBehaviour : MonoBehaviour
         
         _leftArrowStartX = leftArrowRectTransform.anchoredPosition.x;
         _rightArrowStartX = rightArrowRectTransform.anchoredPosition.x;
+        
+        RegenerateOutfitUI();
     }
 
 
@@ -87,8 +95,10 @@ public class MirrorBehaviour : MonoBehaviour
         
         // Mirror variables
         _isUsingMirror = true;
-        _selectedOutfitIndex = _currentOutfitIndex =
-            outfitListSo.Outfits.IndexOf(GameDontDestroyOnLoadManager.Instance.CurrentOutfitSo);
+        _isSelectedRainOutfit = _isCurrentRainOutfit = GameDontDestroyOnLoadManager.Instance.CurrentOutfitSo.IsRainOutfit;
+        _selectedOutfitIndex = _currentOutfitIndex = (_isSelectedRainOutfit ? 
+                outfitListSo.RainOutfits : outfitListSo.CasualOutfits)
+            .IndexOf(GameDontDestroyOnLoadManager.Instance.CurrentOutfitSo);
         
         // Inputs
         CharacterInputManager.Instance.DisableInputs();
@@ -122,7 +132,7 @@ public class MirrorBehaviour : MonoBehaviour
         mirrorInterfaceCanvas.SetActive(true);
         leftArrowRectTransform.anchoredPosition = new Vector2(_leftArrowStartX, leftArrowRectTransform.anchoredPosition.y);
         rightArrowRectTransform.anchoredPosition = new Vector2(_rightArrowStartX, rightArrowRectTransform.anchoredPosition.y);
-        UpdateOutfitUI();
+        RegenerateOutfitUI();
         UpdateLockUI();
         
         // Inputs
@@ -141,7 +151,8 @@ public class MirrorBehaviour : MonoBehaviour
         // Set selected outfit
         if (_selectedOutfitIndex != _currentOutfitIndex)
         {
-            StartCoroutine(ChangeOutfit(outfitListSo.Outfits[_selectedOutfitIndex]));
+            StartCoroutine(ChangeOutfitCoroutine(_isSelectedRainOutfit ? outfitListSo.RainOutfits[_selectedOutfitIndex] : 
+                outfitListSo.CasualOutfits[_selectedOutfitIndex]));
         }
         
         // Mirror variables
@@ -187,44 +198,137 @@ public class MirrorBehaviour : MonoBehaviour
 
     #region Mirror Interface
 
-    public void PreviousOutfit()
+    public void PreviousOutfitCategory()
     {
         if (!_isUsingMirror) return;
         
-        _currentOutfitIndex--;
+        _isCurrentRainOutfit = !_isCurrentRainOutfit;
         
-        if (_currentOutfitIndex < 0)
+        if (_currentOutfitIndex >= (_isCurrentRainOutfit ? outfitListSo.RainOutfits : outfitListSo.CasualOutfits).Count)
         {
-            _currentOutfitIndex = outfitListSo.Outfits.Count - 1; // Loop back to the last outfit
+            _currentOutfitIndex = 0; // Loop back to the first outfit
         }
         
-        StartCoroutine(ChangeOutfit(outfitListSo.Outfits[_currentOutfitIndex]));
+        StartCoroutine(ChangeOutfitCoroutine(_isCurrentRainOutfit ? outfitListSo.RainOutfits[_currentOutfitIndex] : 
+            outfitListSo.CasualOutfits[_currentOutfitIndex]));
         
         // TODO: UI behaviour to show outfit change success
         leftArrowRectTransform.DOAnchorPosX(_leftArrowStartX - arrowMoveDistance, arrowMoveDuration)
             .SetEase(arrowMoveCurve).SetLoops(2, LoopType.Yoyo);
         
         // Update UI for outfit selection
-        UpdateOutfitUI();
+        UpdateOutfitCategoryUI();
         UpdateLockUI();
     }
 
-    public void NextOutfit()
+    public void NextOutfitCategory()
     {
         if (!_isUsingMirror) return;
         
-        _currentOutfitIndex++;
+        _isCurrentRainOutfit = !_isCurrentRainOutfit;
         
-        if (_currentOutfitIndex >= outfitListSo.Outfits.Count)
+        if (_currentOutfitIndex >= (_isCurrentRainOutfit ? outfitListSo.RainOutfits : outfitListSo.CasualOutfits).Count)
         {
             _currentOutfitIndex = 0; // Loop back to the first outfit
         }
         
-        StartCoroutine(ChangeOutfit(outfitListSo.Outfits[_currentOutfitIndex]));
+        StartCoroutine(ChangeOutfitCoroutine(_isCurrentRainOutfit ? outfitListSo.RainOutfits[_currentOutfitIndex] : 
+            outfitListSo.CasualOutfits[_currentOutfitIndex]));
         
         // TODO: UI behaviour to show outfit change success
         rightArrowRectTransform.DOAnchorPosX(_rightArrowStartX + arrowMoveDistance, arrowMoveDuration)
             .SetEase(arrowMoveCurve).SetLoops(2, LoopType.Yoyo);
+        
+        // Update UI for outfit selection
+        UpdateOutfitCategoryUI();
+        UpdateLockUI();
+    }
+
+    public void LeftOutfit()
+    {
+        if (!_isUsingMirror) return;
+
+        _currentOutfitIndex += _currentOutfitIndex % 2 == 1 ? -1 : 1;
+        
+        if (_currentOutfitIndex >= (_isCurrentRainOutfit ? outfitListSo.RainOutfits : outfitListSo.CasualOutfits).Count)
+        {
+            _currentOutfitIndex--; // Go back to the last valid outfit
+        }
+        else
+        {
+            StartCoroutine(ChangeOutfitCoroutine(_isCurrentRainOutfit ? outfitListSo.RainOutfits[_currentOutfitIndex] : 
+                outfitListSo.CasualOutfits[_currentOutfitIndex]));
+        }
+        
+        // TODO: UI behaviour to show outfit change success
+        
+        // Update UI for outfit selection
+        UpdateOutfitUI();
+        UpdateLockUI();
+    }
+    
+    public void RightOutfit()
+    {
+        if (!_isUsingMirror) return;
+        
+        _currentOutfitIndex += _currentOutfitIndex % 2 == 1 ? -1 : 1;
+        
+        if (_currentOutfitIndex >= (_isCurrentRainOutfit ? outfitListSo.RainOutfits : outfitListSo.CasualOutfits).Count)
+        {
+            _currentOutfitIndex--; // Go back to the last valid outfit
+        }
+        else
+        {
+            StartCoroutine(ChangeOutfitCoroutine(_isCurrentRainOutfit ? outfitListSo.RainOutfits[_currentOutfitIndex] : 
+                outfitListSo.CasualOutfits[_currentOutfitIndex]));
+        }
+        
+        // TODO: UI behaviour to show outfit change success
+        
+        // Update UI for outfit selection
+        UpdateOutfitUI();
+        UpdateLockUI();
+    }
+    
+    public void UpOutfit()
+    {
+        if (!_isUsingMirror) return;
+
+        _currentOutfitIndex -= 2;
+        
+        if (_currentOutfitIndex < 0)
+        {
+            int newCurrentOutfitIndex = (_isCurrentRainOutfit ? outfitListSo.RainOutfits : outfitListSo.CasualOutfits)
+                                        .Count - 1; // Loop back to the last outfit
+            _currentOutfitIndex = newCurrentOutfitIndex % 2 == _currentOutfitIndex % 2 ?
+                newCurrentOutfitIndex : newCurrentOutfitIndex - 1;
+        }
+        
+        StartCoroutine(ChangeOutfitCoroutine(_isCurrentRainOutfit ? outfitListSo.RainOutfits[_currentOutfitIndex] : 
+            outfitListSo.CasualOutfits[_currentOutfitIndex]));
+        
+        // TODO: UI behaviour to show outfit change success
+        
+        // Update UI for outfit selection
+        UpdateOutfitUI();
+        UpdateLockUI();
+    }
+    
+    public void DownOutfit()
+    {
+        if (!_isUsingMirror) return;
+
+        _currentOutfitIndex += 2;
+        
+        if (_currentOutfitIndex >= (_isCurrentRainOutfit ? outfitListSo.RainOutfits : outfitListSo.CasualOutfits).Count)
+        {
+            _currentOutfitIndex = _currentOutfitIndex % 2 == 0 ? 0 : 1; // Loop back to the first or second outfit
+        }
+        
+        StartCoroutine(ChangeOutfitCoroutine(_isCurrentRainOutfit ? outfitListSo.RainOutfits[_currentOutfitIndex] : 
+            outfitListSo.CasualOutfits[_currentOutfitIndex]));
+        
+        // TODO: UI behaviour to show outfit change success
         
         // Update UI for outfit selection
         UpdateOutfitUI();
@@ -235,9 +339,11 @@ public class MirrorBehaviour : MonoBehaviour
     {
         if (!_isUsingMirror) return;
         
-        if (!GameDontDestroyOnLoadManager.Instance.UnlockedOutfits.Contains(outfitListSo.Outfits[_currentOutfitIndex])) return;
+        if (!GameDontDestroyOnLoadManager.Instance.UnlockedOutfits.Contains(_isCurrentRainOutfit ?
+                outfitListSo.RainOutfits[_currentOutfitIndex] : outfitListSo.CasualOutfits[_currentOutfitIndex])) return;
         
         _selectedOutfitIndex = _currentOutfitIndex;
+        _isSelectedRainOutfit = _isCurrentRainOutfit;
         
         // TODO: UI behaviour to show outfit selection success
         
@@ -248,7 +354,8 @@ public class MirrorBehaviour : MonoBehaviour
     {
         if (!_isUsingMirror) return;
         
-        CharacterOutfitSo outfit = outfitListSo.Outfits[_currentOutfitIndex];
+        CharacterOutfitSo outfit = _isCurrentRainOutfit ? outfitListSo.RainOutfits[_currentOutfitIndex] : 
+            outfitListSo.CasualOutfits[_currentOutfitIndex];
         
         if (GameDontDestroyOnLoadManager.Instance.UnlockedOutfits.Contains(outfit)) return;
         
@@ -284,6 +391,7 @@ public class MirrorBehaviour : MonoBehaviour
         // TODO: UI behaviour to show outfit purchase success
         
         lockBehaviour.Unlock();
+        _outfitButtons[_currentOutfitIndex].UnlockOutfit();
         
         StartCoroutine(UnlockOutfitCoroutine());
     }
@@ -294,13 +402,14 @@ public class MirrorBehaviour : MonoBehaviour
         yield return new WaitForEndOfFrame();
         
         // Unlock the outfit
-        GameDontDestroyOnLoadManager.Instance.UnlockedOutfits.Add(outfitListSo.Outfits[_currentOutfitIndex]);
+        GameDontDestroyOnLoadManager.Instance.UnlockedOutfits.Add(_isCurrentRainOutfit ?
+            outfitListSo.RainOutfits[_currentOutfitIndex] : outfitListSo.CasualOutfits[_currentOutfitIndex]);
         
         // Update the current outfit UI
         UpdateOutfitUI();
     }
 
-    private IEnumerator ChangeOutfit(CharacterOutfitSo outfit)
+    private IEnumerator ChangeOutfitCoroutine(CharacterOutfitSo outfit)
     {
         CharacterVfxManager.Instance.PlayPuffVfx();
         
@@ -309,41 +418,101 @@ public class MirrorBehaviour : MonoBehaviour
         CharacterAnimManager.instance.SetOutfit(outfit);
     }
 
+    private void RegenerateOutfitUI()
+    {
+        // Clear existing buttons
+        foreach (Transform outfitButton in outfitGridLayoutTransform)
+        {
+            Destroy(outfitButton.gameObject);
+        }
+        
+        _outfitButtons.Clear();
+
+        List<CharacterOutfitSo> outfitList = _isCurrentRainOutfit ? outfitListSo.RainOutfits : outfitListSo.CasualOutfits;
+        
+        // Create new buttons
+        foreach (CharacterOutfitSo outfit in outfitList)
+        {
+            OutfitButtonBehaviour outfitButton = Instantiate(outfitButtonPrefab, outfitGridLayoutTransform);
+            outfitButton.Initialize(this, outfit);
+            _outfitButtons.Add(outfitButton);
+        }
+
+        // Ensure current outfit index is within bounds
+        if (_currentOutfitIndex >= outfitList.Count)
+        {
+            _currentOutfitIndex = outfitList.Count - 1;
+        }
+        
+        UpdateOutfitUI();
+    }
+
+    private void UpdateOutfitCategoryUI()
+    {
+        // Update category name
+        outfitCategoryNameText.text = _isCurrentRainOutfit ? "Rain Outfits" : "Casual Outfits";
+
+        // Regenerate outfit buttons
+        RegenerateOutfitUI();
+    }
+
     private void UpdateOutfitUI()
     {
-        CharacterOutfitSo outfit = outfitListSo.Outfits[_currentOutfitIndex];
+        List<CharacterOutfitSo> outfitList = _isCurrentRainOutfit ? outfitListSo.RainOutfits : outfitListSo.CasualOutfits;
         
-        outfitNameText.text = outfit.OutfitName;
-        outfitNameText.color = outfit.OutfitColor;
+        CharacterOutfitSo currentOutfit = outfitList[_currentOutfitIndex];
         
-        checkmarkGameObject.SetActive(_currentOutfitIndex == _selectedOutfitIndex);
-        
-        if (GameDontDestroyOnLoadManager.Instance.UnlockedOutfits.Contains(outfit))
+        // Update outfit buttons
+        for (int i = 0; i < _outfitButtons.Count; i++)
         {
-            selectLayout.SetActive(_currentOutfitIndex != _selectedOutfitIndex);
-            
-            purchaseLayoutCanvasGroup.gameObject.SetActive(false);
+            OutfitButtonBehaviour outfitButton = _outfitButtons[i];
+
+            if (i == _currentOutfitIndex)
+            {
+                outfitButton.EnableSelector();
+                outfitScrollRect.EnsureVisibilityVertical(outfitButton.GetComponent<RectTransform>(), 10f);
+            }
+            else
+            {
+                outfitButton.DisableSelector();
+            }
+
+            if (i == _selectedOutfitIndex)
+            {
+                outfitButton.EnableCheckmark();
+            }
+            else
+            {
+                outfitButton.DisableCheckmark();
+            }
+        }
+        
+        // Update main button and layouts
+        if (GameDontDestroyOnLoadManager.Instance.UnlockedOutfits.Contains(currentOutfit))
+        {
+            mainButtonCanvasGroup.alpha = _currentOutfitIndex != _selectedOutfitIndex ?
+                mainButtonAvailableAlpha : mainButtonUnavailableAlpha;
+            purchaseLayout.SetActive(false);
+            selectLayout.SetActive(true);
         }
         else
         {
-            selectLayout.SetActive(false);
-            
-            _canBuyCurrentOutfit = !(MoneyManager.Instance.MoneyAmount < outfit.OutfitMoneyCost ||
-                                    outfit.IngredientCosts.Any(ingredientCost =>
+            _canBuyCurrentOutfit = !(MoneyManager.Instance.MoneyAmount < currentOutfit.OutfitMoneyCost ||
+                                    currentOutfit.IngredientCosts.Any(ingredientCost =>
                                         GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Count(ingredient =>
                                             ingredientCost.Ingredient == ingredient) +
                                         GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients.Count(collectedIngredient =>
                                             ingredientCost.Ingredient == collectedIngredient.IngredientValuesSo)
                                         < ingredientCost.Amount));
             
-            purchaseLayoutCanvasGroup.gameObject.SetActive(true);
-            purchaseLayoutCanvasGroup.alpha = _canBuyCurrentOutfit ? purchaseLayoutAvailableAlpha : purchaseLayoutUnavailableAlpha;
-            purchaseButtonGameObject.SetActive(_canBuyCurrentOutfit);
+            mainButtonCanvasGroup.alpha = _canBuyCurrentOutfit ? mainButtonAvailableAlpha : mainButtonUnavailableAlpha;
+            purchaseLayout.SetActive(true);
+            selectLayout.SetActive(false);
             
-            moneyCostText.text = outfit.OutfitMoneyCost.ToString();
+            moneyCostText.text = currentOutfit.OutfitMoneyCost.ToString();
             LayoutRebuilder.ForceRebuildLayoutImmediate(moneyCostLayoutRectTransform);
             
-            if (outfit.IngredientCosts.Count == 0)
+            if (currentOutfit.IngredientCosts.Count == 0)
             {
                 ingredientCostsLayout.SetActive(false);
             }
@@ -356,9 +525,9 @@ public class MirrorBehaviour : MonoBehaviour
                     ingredientCostLayouts[i].SetActive(false);
                 }
 
-                for (int i = 0; i < outfit.IngredientCosts.Count; i++)
+                for (int i = 0; i < currentOutfit.IngredientCosts.Count; i++)
                 {
-                    IngredientCost ingredientCost = outfit.IngredientCosts[i];
+                    IngredientCost ingredientCost = currentOutfit.IngredientCosts[i];
                     ingredientCostLayouts[i].SetActive(true);
                     ingredientCostTexts[i].text = ingredientCost.Amount.ToString();
                     ingredientCostImages[i].sprite = ingredientCost.Ingredient.iconLow;
@@ -371,7 +540,23 @@ public class MirrorBehaviour : MonoBehaviour
 
     private void UpdateLockUI()
     {
-        if (GameDontDestroyOnLoadManager.Instance.UnlockedOutfits.Contains(outfitListSo.Outfits[_currentOutfitIndex]))
+        // Update outfit buttons
+        for (int i = 0; i < _outfitButtons.Count; i++)
+        {
+            OutfitButtonBehaviour outfitButton = _outfitButtons[i];
+            
+            if (!GameDontDestroyOnLoadManager.Instance.UnlockedOutfits.Contains(outfitButton.OutfitSo))
+            {
+                outfitButton.EnableLock();
+            }
+            else
+            {
+                outfitButton.DisableLock();
+            }
+        }
+        
+        if (GameDontDestroyOnLoadManager.Instance.UnlockedOutfits.Contains(_isCurrentRainOutfit ?
+                outfitListSo.RainOutfits[_currentOutfitIndex] : outfitListSo.CasualOutfits[_currentOutfitIndex]))
         {
             lockBehaviour.Disable();
         }

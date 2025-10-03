@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public static class Ex
 {
@@ -73,5 +74,27 @@ public static class Ex
         
         return useLow ? cookedIngredient.Ingredient.iconLow : cookedIngredient.Ingredient.iconHigh;
         
+    }
+
+    public static void EnsureVisibilityVertical(this ScrollRect scrollRect, RectTransform child, float padding)
+    {
+        float viewportHeight = scrollRect.viewport.rect.height;
+        if (-child.anchoredPosition.y - padding < scrollRect.content.anchoredPosition.y)
+        {
+            // Element is above the visible area, scroll up
+            float scrollPositionY = -child.anchoredPosition.y - padding;
+            scrollPositionY = Mathf.Max(scrollPositionY, 0f);
+            Vector2 scrollPosition = new(scrollRect.content.anchoredPosition.x, scrollPositionY);
+            scrollRect.content.anchoredPosition = scrollPosition;
+        }
+        else if (-child.anchoredPosition.y + child.rect.height + padding >
+                 scrollRect.content.anchoredPosition.y + viewportHeight)
+        {
+            // Element is below the visible area, scroll down
+            float scrollPositionY = -child.anchoredPosition.y + child.rect.height + padding - viewportHeight;
+            scrollPositionY = Mathf.Min(scrollPositionY, scrollRect.content.rect.height - viewportHeight);
+            Vector2 scrollPosition = new(scrollRect.content.anchoredPosition.x, scrollPositionY);
+            scrollRect.content.anchoredPosition = scrollPosition;
+        }
     }
 }

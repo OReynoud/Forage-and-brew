@@ -453,7 +453,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""PreviousOutfit"",
+                    ""name"": ""PreviousOutfitCategory"",
                     ""type"": ""Button"",
                     ""id"": ""003fc252-24ae-476e-8444-ebc3b35ec663"",
                     ""expectedControlType"": """",
@@ -462,9 +462,45 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""NextOutfit"",
+                    ""name"": ""NextOutfitCategory"",
                     ""type"": ""Button"",
                     ""id"": ""ee80f06f-a25b-4f56-9437-b4b907505348"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LeftOutfit"",
+                    ""type"": ""Button"",
+                    ""id"": ""bf1d3466-b558-453d-86d8-eef0e013daf2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RightOutfit"",
+                    ""type"": ""Button"",
+                    ""id"": ""795cf64d-3878-450b-acab-5b6215e1c37d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""UpOutfit"",
+                    ""type"": ""Button"",
+                    ""id"": ""cd798cb9-eff6-42b7-b6ee-584e496d5241"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DownOutfit"",
+                    ""type"": ""Button"",
+                    ""id"": ""0cedbb29-6bd7-486d-8d2a-2a78ff39b831"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -1548,34 +1584,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""d8f16670-3e5d-4723-a11b-8f4244c4b8ed"",
-                    ""path"": ""<Gamepad>/leftStick/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""PreviousOutfit"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""9ddc77cb-a627-49e1-a165-7477bb115811"",
-                    ""path"": ""<Gamepad>/dpad/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""PreviousOutfit"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""d0346387-b4d8-4833-9634-0a32681183e2"",
                     ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""PreviousOutfit"",
+                    ""action"": ""PreviousOutfitCategory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1586,18 +1600,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""PreviousOutfit"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""66edc48f-dbd6-4d11-a4c2-b126eddbd87c"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""PreviousOutfit"",
+                    ""action"": ""PreviousOutfitCategory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1608,29 +1611,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""PreviousOutfit"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""4d6937f0-92a9-4f47-9c2f-af8184da7e1c"",
-                    ""path"": ""<Gamepad>/leftStick/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""NextOutfit"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c1719bf1-049c-4b4c-a8ed-9783446653fd"",
-                    ""path"": ""<Gamepad>/dpad/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""NextOutfit"",
+                    ""action"": ""PreviousOutfitCategory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1641,7 +1622,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""NextOutfit"",
+                    ""action"": ""NextOutfitCategory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1652,18 +1633,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""NextOutfit"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""5add2eea-ba53-4e78-b08e-353a43773ccd"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""NextOutfit"",
+                    ""action"": ""NextOutfitCategory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1674,7 +1644,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""NextOutfit"",
+                    ""action"": ""NextOutfitCategory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1741,6 +1711,94 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""ExitMirror"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3d045919-f1d7-4123-93aa-faa38627ca8a"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""LeftOutfit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dbddee79-df5e-4d60-b908-7cd81f2457be"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""LeftOutfit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4c4d00c4-702a-4e66-859b-3d75a9fb3f6c"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""RightOutfit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4cc2326d-db17-41d2-bce9-243e723f6d33"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""RightOutfit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""54b21bcd-06c8-4d76-a7a2-d169d113fcfd"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""UpOutfit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3bd51b14-668a-4b5f-a8d0-cadb87619c0f"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""UpOutfit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e45a6e9f-63a4-40ac-b4ec-7bf3c68e7547"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""DownOutfit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cc89bead-655a-418a-a83c-5341d542916b"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""DownOutfit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2368,8 +2426,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_PauseOut = m_Player.FindAction("PauseOut", throwIfNotFound: true);
         m_Player_DEBUG_SkipDiscoveryAnimation = m_Player.FindAction("DEBUG_SkipDiscoveryAnimation", throwIfNotFound: true);
         m_Player_ExitMirror = m_Player.FindAction("ExitMirror", throwIfNotFound: true);
-        m_Player_PreviousOutfit = m_Player.FindAction("PreviousOutfit", throwIfNotFound: true);
-        m_Player_NextOutfit = m_Player.FindAction("NextOutfit", throwIfNotFound: true);
+        m_Player_PreviousOutfitCategory = m_Player.FindAction("PreviousOutfitCategory", throwIfNotFound: true);
+        m_Player_NextOutfitCategory = m_Player.FindAction("NextOutfitCategory", throwIfNotFound: true);
+        m_Player_LeftOutfit = m_Player.FindAction("LeftOutfit", throwIfNotFound: true);
+        m_Player_RightOutfit = m_Player.FindAction("RightOutfit", throwIfNotFound: true);
+        m_Player_UpOutfit = m_Player.FindAction("UpOutfit", throwIfNotFound: true);
+        m_Player_DownOutfit = m_Player.FindAction("DownOutfit", throwIfNotFound: true);
         m_Player_SelectOutfit = m_Player.FindAction("SelectOutfit", throwIfNotFound: true);
         m_Player_PurchaseOutfit = m_Player.FindAction("PurchaseOutfit", throwIfNotFound: true);
         // UI
@@ -2505,8 +2567,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_PauseOut;
     private readonly InputAction m_Player_DEBUG_SkipDiscoveryAnimation;
     private readonly InputAction m_Player_ExitMirror;
-    private readonly InputAction m_Player_PreviousOutfit;
-    private readonly InputAction m_Player_NextOutfit;
+    private readonly InputAction m_Player_PreviousOutfitCategory;
+    private readonly InputAction m_Player_NextOutfitCategory;
+    private readonly InputAction m_Player_LeftOutfit;
+    private readonly InputAction m_Player_RightOutfit;
+    private readonly InputAction m_Player_UpOutfit;
+    private readonly InputAction m_Player_DownOutfit;
     private readonly InputAction m_Player_SelectOutfit;
     private readonly InputAction m_Player_PurchaseOutfit;
     /// <summary>
@@ -2858,12 +2924,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ExitMirror.started += instance.OnExitMirror;
             @ExitMirror.performed += instance.OnExitMirror;
             @ExitMirror.canceled += instance.OnExitMirror;
-            @PreviousOutfit.started += instance.OnPreviousOutfit;
-            @PreviousOutfit.performed += instance.OnPreviousOutfit;
-            @PreviousOutfit.canceled += instance.OnPreviousOutfit;
-            @NextOutfit.started += instance.OnNextOutfit;
-            @NextOutfit.performed += instance.OnNextOutfit;
-            @NextOutfit.canceled += instance.OnNextOutfit;
+            @PreviousOutfitCategory.started += instance.OnPreviousOutfitCategory;
+            @PreviousOutfitCategory.performed += instance.OnPreviousOutfitCategory;
+            @PreviousOutfitCategory.canceled += instance.OnPreviousOutfitCategory;
+            @NextOutfitCategory.started += instance.OnNextOutfitCategory;
+            @NextOutfitCategory.performed += instance.OnNextOutfitCategory;
+            @NextOutfitCategory.canceled += instance.OnNextOutfitCategory;
+            @LeftOutfit.started += instance.OnLeftOutfit;
+            @LeftOutfit.performed += instance.OnLeftOutfit;
+            @LeftOutfit.canceled += instance.OnLeftOutfit;
+            @RightOutfit.started += instance.OnRightOutfit;
+            @RightOutfit.performed += instance.OnRightOutfit;
+            @RightOutfit.canceled += instance.OnRightOutfit;
+            @UpOutfit.started += instance.OnUpOutfit;
+            @UpOutfit.performed += instance.OnUpOutfit;
+            @UpOutfit.canceled += instance.OnUpOutfit;
+            @DownOutfit.started += instance.OnDownOutfit;
+            @DownOutfit.performed += instance.OnDownOutfit;
+            @DownOutfit.canceled += instance.OnDownOutfit;
             @SelectOutfit.started += instance.OnSelectOutfit;
             @SelectOutfit.performed += instance.OnSelectOutfit;
             @SelectOutfit.canceled += instance.OnSelectOutfit;
@@ -3001,12 +3079,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ExitMirror.started -= instance.OnExitMirror;
             @ExitMirror.performed -= instance.OnExitMirror;
             @ExitMirror.canceled -= instance.OnExitMirror;
-            @PreviousOutfit.started -= instance.OnPreviousOutfit;
-            @PreviousOutfit.performed -= instance.OnPreviousOutfit;
-            @PreviousOutfit.canceled -= instance.OnPreviousOutfit;
-            @NextOutfit.started -= instance.OnNextOutfit;
-            @NextOutfit.performed -= instance.OnNextOutfit;
-            @NextOutfit.canceled -= instance.OnNextOutfit;
+            @PreviousOutfitCategory.started -= instance.OnPreviousOutfitCategory;
+            @PreviousOutfitCategory.performed -= instance.OnPreviousOutfitCategory;
+            @PreviousOutfitCategory.canceled -= instance.OnPreviousOutfitCategory;
+            @NextOutfitCategory.started -= instance.OnNextOutfitCategory;
+            @NextOutfitCategory.performed -= instance.OnNextOutfitCategory;
+            @NextOutfitCategory.canceled -= instance.OnNextOutfitCategory;
+            @LeftOutfit.started -= instance.OnLeftOutfit;
+            @LeftOutfit.performed -= instance.OnLeftOutfit;
+            @LeftOutfit.canceled -= instance.OnLeftOutfit;
+            @RightOutfit.started -= instance.OnRightOutfit;
+            @RightOutfit.performed -= instance.OnRightOutfit;
+            @RightOutfit.canceled -= instance.OnRightOutfit;
+            @UpOutfit.started -= instance.OnUpOutfit;
+            @UpOutfit.performed -= instance.OnUpOutfit;
+            @UpOutfit.canceled -= instance.OnUpOutfit;
+            @DownOutfit.started -= instance.OnDownOutfit;
+            @DownOutfit.performed -= instance.OnDownOutfit;
+            @DownOutfit.canceled -= instance.OnDownOutfit;
             @SelectOutfit.started -= instance.OnSelectOutfit;
             @SelectOutfit.performed -= instance.OnSelectOutfit;
             @SelectOutfit.canceled -= instance.OnSelectOutfit;
