@@ -804,7 +804,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 3010747782147503782, guid: 732473d1fc60b004aa2a7bcc74502194, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 8bc82242a99d7ac418bce47bf6faa502, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 8bc82242a99d7ac418bce47bf6faa502, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -2242,6 +2242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Container: {fileID: 9156968419915985412}
+  m_TargetMesh: {fileID: 0}
   m_RebuildOnSplineChange: 0
   m_RebuildFrequency: 60
   m_UpdateColliders: 0
@@ -2784,7 +2785,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 5946768103358383669, guid: 732473d1fc60b004aa2a7bcc74502194, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 0e497260a392572499ed09cd0c893c44, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 0e497260a392572499ed09cd0c893c44, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.8
@@ -4633,6 +4634,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Container: {fileID: 7647532141367504078}
+  m_TargetMesh: {fileID: 0}
   m_RebuildOnSplineChange: 0
   m_RebuildFrequency: 30
   m_UpdateColliders: 0
@@ -5385,6 +5387,7 @@ MonoBehaviour:
   layerIndexesToCheckForAfk: 000000000100000002000000060000000a0000000c0000000e000000
   MinTimeBetweenLooks: 7
   MaxTimeBetweenLooks: 10
+  catCoin: {fileID: 0}
   _currentTimeBeforeAfk: 0
 --- !u!114 &719871899960714664
 MonoBehaviour:
@@ -5748,7 +5751,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 5946768103358383669, guid: 732473d1fc60b004aa2a7bcc74502194, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 0e497260a392572499ed09cd0c893c44, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 0e497260a392572499ed09cd0c893c44, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.8
@@ -6338,7 +6341,15 @@ PrefabInstance:
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2928034589414201850, guid: 284d4f6853012f44c93d95c6a2559b4d, type: 3}
+      propertyPath: randomSeed
+      value: 1188981794
+      objectReference: {fileID: 0}
+    - target: {fileID: 2928034589414201850, guid: 284d4f6853012f44c93d95c6a2559b4d, type: 3}
       propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2928034589414201850, guid: 284d4f6853012f44c93d95c6a2559b4d, type: 3}
+      propertyPath: autoRandomSeed
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2928034589414201850, guid: 284d4f6853012f44c93d95c6a2559b4d, type: 3}
@@ -6407,6 +6418,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5867568076002655562, guid: 284d4f6853012f44c93d95c6a2559b4d, type: 3}
       propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5867568076002655562, guid: 284d4f6853012f44c93d95c6a2559b4d, type: 3}
+      propertyPath: autoRandomSeed
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8518693649691423588, guid: 284d4f6853012f44c93d95c6a2559b4d, type: 3}

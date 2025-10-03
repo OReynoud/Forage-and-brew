@@ -39,6 +39,9 @@ public class MirrorBehaviour : MonoBehaviour
     [SerializeField] private AnimationCurve arrowMoveCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
     [SerializeField] private TMP_Text outfitCategoryNameText;
     [SerializeField] private ScrollRect outfitScrollRect;
+    [SerializeField] private float outfitScrollPadding = 10f;
+    [SerializeField] private float outfitScrollDuration = 0.2f;
+    [SerializeField] private AnimationCurve outfitScrollCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
     [SerializeField] private Transform outfitGridLayoutTransform;
     [SerializeField] private OutfitButtonBehaviour outfitButtonPrefab;
     private readonly List<OutfitButtonBehaviour> _outfitButtons = new();
@@ -470,14 +473,15 @@ public class MirrorBehaviour : MonoBehaviour
             if (i == _currentOutfitIndex)
             {
                 outfitButton.EnableSelector();
-                outfitScrollRect.EnsureVisibilityVertical(outfitButton.GetComponent<RectTransform>(), 10f);
+                StartCoroutine(UpdateOutfitUIScrollCoroutine(outfitButton));
             }
             else
             {
                 outfitButton.DisableSelector();
             }
 
-            if (i == _selectedOutfitIndex)
+            if (i == _selectedOutfitIndex && 
+                ((_isSelectedRainOutfit && _isCurrentRainOutfit) || (!_isSelectedRainOutfit && !_isCurrentRainOutfit)))
             {
                 outfitButton.EnableCheckmark();
             }
@@ -520,7 +524,7 @@ public class MirrorBehaviour : MonoBehaviour
             {
                 ingredientCostsLayout.SetActive(true);
                 
-                for (int i = 0; i < ingredientCostsLayout.transform.childCount; i++)
+                for (int i = 0; i < ingredientCostLayouts.Count; i++)
                 {
                     ingredientCostLayouts[i].SetActive(false);
                 }
@@ -536,6 +540,16 @@ public class MirrorBehaviour : MonoBehaviour
                 LayoutRebuilder.ForceRebuildLayoutImmediate(ingredientCostsLayoutRectTransform);
             }
         }
+    }
+    
+    private IEnumerator UpdateOutfitUIScrollCoroutine(OutfitButtonBehaviour outfitButton)
+    {
+        yield return new WaitForEndOfFrame();
+        
+        Vector2 endPosition = outfitScrollRect.GetPositionEnsureVisibilityVertical(outfitButton.GetComponent<RectTransform>(), outfitScrollPadding);
+
+        outfitScrollRect.content.DOKill();
+        outfitScrollRect.content.DOAnchorPosY(endPosition.y, outfitScrollDuration).SetEase(outfitScrollCurve);
     }
 
     private void UpdateLockUI()
