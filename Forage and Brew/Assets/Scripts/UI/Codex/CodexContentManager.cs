@@ -449,7 +449,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
 
             ingredientPages.Add(ingredientPage);
-            ingredientPage.InitIngredient(ingredient);
+            ingredientPage.InitIngredient(ingredient, leftIngredientPage[pageChoser]);
             emptyIngredientPage.name = "Empty ingredient page " +
                                        (AutoFlip.instance.ControledBook.bookMarks[2].index + ingredientPages.Count);
             for (int i = 3; i < AutoFlip.instance.ControledBook.bookMarks.Length; i++)
@@ -474,7 +474,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
             AutoFlip.instance.ControledBook.bookPages.Insert(ingredientIndex, bookPage);
             ingredientPages.Add(ingredientPage);
-            ingredientPage.InitIngredient(ingredient);
+            ingredientPage.InitIngredient(ingredient, rightIngredientPage[pageChoser]);
             emptyIngredientPage.name = ingredient.Name;
             emptyIngredientPage = null;
         }

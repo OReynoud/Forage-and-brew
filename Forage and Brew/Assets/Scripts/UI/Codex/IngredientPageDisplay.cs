@@ -11,6 +11,8 @@ public class IngredientPageDisplay : PageBehavior
     public IngredientCounterContainer ingredientCounter;
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI descriptionText;
+    
+    public Image backgroundImage;
     public Image ingredientImage;
     public Image[] biomeImages;
     public Image typeImage;
@@ -80,9 +82,13 @@ public class IngredientPageDisplay : PageBehavior
     }
 
     private string storedText;
-    public override void InitIngredient(IngredientValuesSo ingredientToDisplay)
+    public override void InitIngredient(IngredientValuesSo ingredientToDisplay, Sprite backgroundSprite = null)
     {
         associatedIngredient = ingredientToDisplay;
+        if (backgroundSprite != null)
+        {
+            backgroundImage.sprite = backgroundSprite;
+        }
         nameText.text = associatedIngredient.Name;
         descriptionText.text = associatedIngredient.Description;
         ingredientImage.sprite = associatedIngredient.iconHigh;
