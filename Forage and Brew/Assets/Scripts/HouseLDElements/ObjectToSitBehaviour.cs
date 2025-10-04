@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using NaughtyAttributes;
 using UnityEditor;
@@ -42,6 +43,10 @@ public class ObjectToSitBehaviour : MonoBehaviour, ICinematicInteraction
     }
 #endif
 
+    private void Awake()
+    {
+        animator = CharacterAnimManager.instance.animator;
+    }
 
 
     private void Update()
