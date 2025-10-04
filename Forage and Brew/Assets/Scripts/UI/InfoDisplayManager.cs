@@ -49,10 +49,14 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
 
     [BoxGroup("Top Right")] [SerializeField]
     private Image weather;
+    [BoxGroup("Top Right")] [SerializeField]
+    private TextMeshProUGUI weatherText;
 
     [BoxGroup("Top Right")] [SerializeField]
     private Image moonCyclesDisplay;
-
+    [BoxGroup("Top Right")] [SerializeField]
+    private TextMeshProUGUI moonCyclesText;
+    
     [BoxGroup("Top Right")] [SerializeField]
     private TextMeshProUGUI moneyText;
     
@@ -220,6 +224,7 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
     {
         weather.sprite = WeatherManager.Instance.CurrentWeatherState.WeatherStateSo.Icon;
         weather.color = WeatherManager.Instance.CurrentWeatherState.WeatherStateSo.Color;
+        weatherText.text = WeatherManager.Instance.CurrentWeatherState.WeatherStateSo.Name;
     }
     
 
@@ -237,6 +242,7 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
     {
         moonCyclesDisplay.sprite = LunarCycleManager.Instance.CurrentLunarCycleState.Icon;
         moonCyclesDisplay.color = LunarCycleManager.Instance.CurrentLunarCycleState.Color;
+        moonCyclesText.text = LunarCycleManager.Instance.CurrentLunarCycleState.Name;
     }
 
     public void ShowBackground()
