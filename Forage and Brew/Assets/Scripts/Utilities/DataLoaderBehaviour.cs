@@ -8,6 +8,8 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
+#if UNITY_EDITOR
+
 public class DataLoaderBehaviour : MonoBehaviour
 {
     [SerializeField] private Object narrativeBlockDataCsv;
@@ -415,3 +417,4 @@ public class DataLoaderBehaviour : MonoBehaviour
         csvElementList.RemoveAt(0); // Remove the first line which contains headers
     }
 }
+#endif

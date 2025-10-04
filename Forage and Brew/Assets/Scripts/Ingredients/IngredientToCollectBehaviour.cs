@@ -19,9 +19,6 @@ public class IngredientToCollectBehaviour : WeedContainerBehavior
     [SerializeField] private IngredientTypeSo unearthingIngredientType;
     [SerializeField] private IngredientTypeSo scrapingIngredientType;
     [SerializeField] private IngredientTypeSo harvestIngredientType;
-    
-    [Header("Weed")]
-    [SerializeField] private WeedBehaviour weedBehaviour;
 
     public WeedBehaviour GetWeedBehaviour() => weedBehaviour;
     public bool IsUiRight() => isUiRight;
@@ -34,7 +31,6 @@ public class IngredientToCollectBehaviour : WeedContainerBehavior
     private float _obtainingFeedbackCurrentTime;
     
     [Header("UI")]
-    [SerializeField] private bool isUiRight;
     [SerializeField] private GameObject collectInputCanvasGameObject;
     [SerializeField] private GameObject scythingInputLeftGameObject;
     [SerializeField] private GameObject scythingInputRightGameObject;

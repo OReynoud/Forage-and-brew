@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
 {
+    private static readonly int DoWater = Animator.StringToHash("DoWatering");
     [field: BoxGroup("Plot Data")] [field: SerializeField] public bool NeedsWatering { get; set; }
     [field: BoxGroup("Plot Data")] [field: SerializeField] public int PlantGrowthProgression { get; set; }
     [field: BoxGroup("Plot Data")] [field: SerializeField] public int RequiredProgressionToMature { get; set; }
@@ -140,6 +141,10 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
         Debug.Log("Watered plant");
         NeedsWatering = false;
         UpdateVisuals();
+        CharacterAnimManager.instance.animator.SetTrigger(DoWater);
+        Vector3 posToLook = new Vector3(transform.position.x,
+            CharacterAnimManager.instance.transform.position.y, transform.position.z);
+        CharacterAnimManager.instance.transform.LookAt(posToLook);
 
         GardenManager.instance.plotsData[selfIndex + 1].UpdateData(this);
     }

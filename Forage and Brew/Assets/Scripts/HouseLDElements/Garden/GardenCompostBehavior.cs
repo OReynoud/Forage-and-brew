@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using NaughtyAttributes;
-using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class GardenCompostBehavior : MonoBehaviour, IIngredientAddable
 {

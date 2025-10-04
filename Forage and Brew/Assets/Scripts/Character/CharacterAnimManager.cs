@@ -20,7 +20,6 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
     [SerializeField] private GameObject defaultClothes;
     [SerializeField] private GameObject rainClothes;
     
-    [SerializeField] public GameObject catPelvis;
 
     [BoxGroup("Blinking Animation")] [SerializeField] private float minTimeBetweenBlinks;
     [BoxGroup("Blinking Animation")] [SerializeField] private float maxTimeBetweenBlinks;
@@ -39,7 +38,9 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
     
     [BoxGroup("Run Look")] [SerializeField] private float MinTimeBetweenLooks;
     [BoxGroup("Run Look")] [SerializeField] private float MaxTimeBetweenLooks;
-    [BoxGroup("Wish An")] [SerializeField] public GameObject catCoin;
+    [BoxGroup("Wish Anim")] [SerializeField] public GameObject catCoin;
+    [BoxGroup("Watering Anim")] [SerializeField] public GameObject wateringCan;
+    [BoxGroup("Watering Anim")] [SerializeField] public GameObject wateringCanVfx;
     [BoxGroup("Debug")] private float timeForNextLook;
     
     
