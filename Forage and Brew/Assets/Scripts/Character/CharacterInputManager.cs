@@ -597,8 +597,6 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.CodexLeave.Disable();
         _inputs.Player.CodexEnter.Enable();
         
-        EnableInteractInputs();
-        EnableHapticChallengeInputs();
     }
     
     private void BookMarkLeftOnPerformed(InputAction.CallbackContext obj)

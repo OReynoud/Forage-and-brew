@@ -25,7 +25,11 @@ public class CodexCloseEndStateBehavior : StateMachineBehaviour
         {
             isExitTriggered = true;
             CharacterAnimManager.instance.codexObject.SetActive(false);
+            
+            CharacterInputManager.Instance.EnableInteractInputs();
+            CharacterInputManager.Instance.EnableHapticChallengeInputs(); 
             CharacterInputManager.Instance.EnableCodexInputs();
+            
 
         }
     }

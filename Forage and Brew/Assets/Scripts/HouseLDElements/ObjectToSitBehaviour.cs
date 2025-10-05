@@ -43,7 +43,7 @@ public class ObjectToSitBehaviour : MonoBehaviour, ICinematicInteraction
     }
 #endif
 
-    private void Awake()
+    private void Start()
     {
         animator = CharacterAnimManager.instance.animator;
     }
