@@ -12,7 +12,6 @@ public class TutorialDissolveBehavior : MonoBehaviour
     [ReadOnly]public bool doDissolve;
     private float dissolveTimer;
     public AnimationCurve animCurveDissolve;
-    [ReadOnly] [SerializeField] private bool isDissolved;
     public bool pairedDissolve;
     public int pageToCheck;
     [ShowIf("pairedDissolve")] public TutorialDissolveBehavior pairedBehavior;
@@ -67,7 +66,6 @@ public class TutorialDissolveBehavior : MonoBehaviour
         {
             doDissolve = false;
             AutoFlip.instance.isDissolving = false;
-            isDissolved = true;
             
             //CodexContentManager.instance.tutorialDissolves.Remove(dissolveID);
             Destroy(gameObject,4.0f);

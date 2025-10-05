@@ -10,7 +10,7 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
     [SerializeField] private Transform locationToWalk;
     [SerializeField] private GameObject localCanvas;
     [SerializeField] private List<ParticleSystem> sparkleEffects;
-    [SerializeField] private AudioSource audio;
+    [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioSource audioPages;
     [SerializeField] private CanvasGroup tutorialBackground;
     [SerializeField] private float timeBeforeLerp;
@@ -127,8 +127,8 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
         {
             sparkleEffect.Play();
         }
-        audio.Stop();
-        audio.Play();
+        audioSource.Stop();
+        audioSource.Play();
         audioPages.Stop();
         audioPages.PlayDelayed(0.4f);
     }
@@ -147,8 +147,8 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
         {
             sparkleEffect.Stop();
         }
-        audio.Stop();
-        audio.PlayDelayed(0.8f);
+        audioSource.Stop();
+        audioSource.PlayDelayed(0.8f);
         audioPages.Stop();
         audioPages.PlayDelayed(0.6f);
     }

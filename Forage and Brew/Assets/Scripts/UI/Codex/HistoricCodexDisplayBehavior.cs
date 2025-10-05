@@ -29,7 +29,6 @@ public class HistoricCodexDisplayBehavior : PageBehavior
         backGround1.color = backGround2.color = originLetter.Client.AssociatedColor;
         OriginLetter = originLetter;
         historicPagesRatio = 0.5f + (float)(description1Text.text.Length - description2Text.text.Length) / (description1Text.text.Length + description2Text.text.Length);
-        Debug.Log(description1Text.text.Length + "\n" + description2Text.text.Length);
         AdjustBackgrounds();
     }
 

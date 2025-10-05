@@ -4,7 +4,7 @@ using UnityEngine;
 public class HouseCameraSettingsBehavior : MonoBehaviour
 {
     public HouseCameraSetting settings;
-    public SphereCollider collider;
+    public SphereCollider col;
     
 
     #if UNITY_EDITOR
@@ -18,7 +18,7 @@ public class HouseCameraSettingsBehavior : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        collider.radius = settings.triggerDistance;
+        col.radius = settings.triggerDistance;
     }
 
     private void OnTriggerEnter(Collider other)

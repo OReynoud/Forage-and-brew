@@ -50,7 +50,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     [BoxGroup("LetterAnimation")] public AnimationCurve animCurve;
     [BoxGroup("LetterAnimation")] public float animSpeed;
     [BoxGroup("LetterAnimation")] public GameObject blink;
-    [BoxGroup("LetterAnimation")] public AudioSource audio;
+    [BoxGroup("LetterAnimation")] public AudioSource audioSource;
     
     // Animator Hashes
     private static readonly int IsOpen = Animator.StringToHash("IsOpen");
@@ -297,7 +297,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         CharacterAnimManager.instance.animator.SetTrigger(StartRead);
         CharacterAnimManager.instance.animator.SetBool(ReadingLetters, true);
         
-        audio.Play();
+        audioSource.Play();
         letterBoxAnimator.SetBool(IsOpen, true);
         blink.SetActive(false);
         StartCoroutine(HandleMultipleExecutions()); // Wait to be able to pass to next letter
@@ -380,8 +380,8 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         CharacterInteractController.Instance.CurrentNearMailBoxBehaviour = null;
         GameDontDestroyOnLoadManager.Instance.MailBoxLetters.Clear();
         AutoFlip.instance.HandleNewRecipes();
-        audio.Stop();
-        audio.Play();
+        audioSource.Stop();
+        audioSource.Play();
         
         CharacterAnimManager.instance.animator.SetBool(ReadingLetters, false);
         

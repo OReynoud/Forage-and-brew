@@ -96,7 +96,9 @@ public class PageLoader : MonoBehaviour
         Ingredient
     }
 
+#pragma warning disable CS0414 // Field is assigned but its value is never used
     private ContentType currentContent;
+#pragma warning restore CS0414 // Field is assigned but its value is never used
 
 
     public void OnValidate()
