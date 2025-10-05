@@ -42,30 +42,19 @@ public class HistoricCodexDisplayBehavior : PageBehavior
         backGround1.transform.rotation = Quaternion.identity;
         tampon.SetActive(false);
         OriginLetter = originLetter;
-        var backGround1Rect = backGround1.GetComponent<RectTransform>();
-        backGround1Rect.offsetMin = new Vector2(backGround1Rect.offsetMin.x,
-            Mathf.Lerp(0, 1000, historicPagesRatio) - backGroundSpacing);
-        backGround1Rect.offsetMax = new Vector2(backGround1Rect.offsetMax.x,
-            -backGroundRim);
-
-        var backGround2Rect = backGround2.GetComponent<RectTransform>();
-        backGround2Rect.offsetMax = new Vector2(backGround2Rect.offsetMax.x,
-            Mathf.Lerp(-1000, 0, historicPagesRatio) + backGroundSpacing);
-        backGround2Rect.offsetMin = new Vector2(backGround2Rect.offsetMin.x,
-            backGroundRim);
     }
 
     private void OnValidate()
     {
         var backGround1Rect = backGround1.GetComponent<RectTransform>();
         backGround1Rect.offsetMin = new Vector2(backGround1Rect.offsetMin.x,
-            Mathf.Lerp(0, 1000, historicPagesRatio) - backGroundSpacing);
+            Mathf.Lerp(0, -1000, historicPagesRatio) - backGroundSpacing);
         backGround1Rect.offsetMax = new Vector2(backGround1Rect.offsetMax.x,
             -backGroundRim);
 
         var backGround2Rect = backGround2.GetComponent<RectTransform>();
         backGround2Rect.offsetMax = new Vector2(backGround2Rect.offsetMax.x,
-            Mathf.Lerp(-1000, 0, historicPagesRatio) + backGroundSpacing);
+            Mathf.Lerp(1000, 0, historicPagesRatio) + backGroundSpacing);
         backGround2Rect.offsetMin = new Vector2(backGround2Rect.offsetMin.x,
             backGroundRim);
 

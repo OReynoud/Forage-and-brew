@@ -21,7 +21,7 @@ public class PotionEnsembleBehaviour : MonoBehaviour, IPotionAddable
     [SerializeField] private TMP_Text potionEnsembleNameText;
     [SerializeField] private PotionDemandElementBehaviour potionElementPrefab;
     [SerializeField] private Transform potionElementParentTransform;
-    private readonly List<PotionDemandElementBehaviour> _potionElements = new();
+    private readonly List<PotionDemandElementBehaviour> _potionElements = new List<PotionDemandElementBehaviour>();
     [SerializeField] private TMP_Text priceText;
     
     [field: SerializeField] public bool UseEndPoint { get; set; }
