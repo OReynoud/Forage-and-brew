@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using DG.Tweening;
 using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddable
 {
@@ -24,7 +22,6 @@ public class CauldronBehaviour : Singleton<CauldronBehaviour>, IIngredientAddabl
     [field: ShowIf("UseEndPoint")][field: SerializeField] public Transform EndPoint { get; set; }
     [field: ShowIf("UseEndPoint")][field: SerializeField] public float heightShove { get; set; }
 
-    
     
     private void Start()
     {
