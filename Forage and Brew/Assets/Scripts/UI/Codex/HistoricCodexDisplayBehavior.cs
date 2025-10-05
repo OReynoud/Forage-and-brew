@@ -28,6 +28,9 @@ public class HistoricCodexDisplayBehavior : PageBehavior
         description2Text.text = successLetter ? successLetter.TextContent : "";
         backGround1.color = backGround2.color = originLetter.Client.AssociatedColor;
         OriginLetter = originLetter;
+        historicPagesRatio = 0.5f + (float)(description1Text.text.Length - description2Text.text.Length) / (description1Text.text.Length + description2Text.text.Length);
+        Debug.Log(description1Text.text.Length + "\n" + description2Text.text.Length);
+        AdjustBackgrounds();
     }
 
     public void InitHistoric(LetterContentSo originLetter)
@@ -42,9 +45,22 @@ public class HistoricCodexDisplayBehavior : PageBehavior
         backGround1.transform.rotation = Quaternion.identity;
         tampon.SetActive(false);
         OriginLetter = originLetter;
+        historicPagesRatio = 0.8f;
+        AdjustBackgrounds();
     }
 
     private void OnValidate()
+    {
+        AdjustBackgrounds();
+
+        //oui.sizeDelta = new Vector2(oui.sizeDelta.x, )
+        // oui.rect.center = Vector2.zero;
+        //     oui.rect.yMax);
+        // oui.;
+        // Debug.Log(oui.rect.yMin);
+    }
+
+    private void AdjustBackgrounds()
     {
         var backGround1Rect = backGround1.GetComponent<RectTransform>();
         backGround1Rect.offsetMin = new Vector2(backGround1Rect.offsetMin.x,
@@ -57,11 +73,5 @@ public class HistoricCodexDisplayBehavior : PageBehavior
             Mathf.Lerp(1000, 0, historicPagesRatio) + backGroundSpacing);
         backGround2Rect.offsetMin = new Vector2(backGround2Rect.offsetMin.x,
             backGroundRim);
-
-        //oui.sizeDelta = new Vector2(oui.sizeDelta.x, )
-        // oui.rect.center = Vector2.zero;
-        //     oui.rect.yMax);
-        // oui.;
-        // Debug.Log(oui.rect.yMin);
     }
 }
