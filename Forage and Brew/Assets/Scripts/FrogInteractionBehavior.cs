@@ -1,18 +1,17 @@
 using UnityEngine;
 
-public class WishingWellBehavior : MonoBehaviour, ICinematicInteraction
+public class FrogInteractionBehavior : MonoBehaviour, ICinematicInteraction
 {
-    private static readonly int DoWish = Animator.StringToHash("DoWish");
-    public float distance;
-    public GameObject localCanvas;
-    private bool doneWish = false;
 
+    public Animator animator;
+
+    public float distance;
+    public ParticleSystem particleSystem;
+
+    public GameObject localCanvas;
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void OnTriggerEnter(Collider other)
     {
-        if (doneWish)
-        {
-            return;
-        }
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
             characterInteractController.CurrentNearCinematicInteraction = this;
@@ -22,10 +21,6 @@ public class WishingWellBehavior : MonoBehaviour, ICinematicInteraction
 
     private void OnTriggerExit(Collider other)
     {        
-        if (doneWish)
-        {
-            return;
-        }
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
             if (characterInteractController.CurrentNearCinematicInteraction == (ICinematicInteraction)this)
@@ -37,24 +32,25 @@ public class WishingWellBehavior : MonoBehaviour, ICinematicInteraction
     }
 
     public void StartInteraction()
-    {         
-        if (doneWish)
-        {
-            return;
-        }
+    {
+        CharacterInputManager.Instance.DisableMoveInputs();
+        CharacterInputManager.Instance.DisableInteractInputs();
+        CharacterInputManager.Instance.DisableCodexInputs();
+        
         Vector3 posToLook = new Vector3(transform.position.x,
             CharacterAnimManager.instance.transform.position.y, transform.position.z);
         CharacterAnimManager.instance.transform.LookAt(posToLook);
         CharacterMovementController.Instance.TriggerWalkTransition(posToLook - CharacterAnimManager.instance.transform.forward * distance);
-        CharacterMovementController.Instance.FinishWalkToLocation.AddListener(Wish);
+        CharacterMovementController.Instance.FinishWalkToLocation.AddListener(PlayerPet);
         localCanvas.SetActive(false);
-        doneWish = true;
-        this.enabled = false;
     }
 
-    void Wish()
+    void PlayerPet()
     {
-        CharacterAnimManager.instance.animator.SetTrigger(DoWish);
-        CharacterMovementController.Instance.FinishWalkToLocation.RemoveListener(Wish);
+        CharacterAnimManager.instance.animator.SetTrigger(CharacterAnimManager.DoPet);
+        particleSystem.Stop();
+        particleSystem.Play();
+        animator.SetTrigger(CharacterAnimManager.DoPet);
+        CharacterMovementController.Instance.FinishWalkToLocation.RemoveListener(PlayerPet);
     }
 }

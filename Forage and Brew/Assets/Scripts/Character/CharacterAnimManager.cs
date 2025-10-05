@@ -57,6 +57,7 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
     private static readonly int DoCodexClose = Animator.StringToHash("DoCodexClose");
     private static readonly int DoLookRun = Animator.StringToHash("DoLookRun");
     private static readonly int DoThrow = Animator.StringToHash("DoThrow");
+    public static readonly int DoPet = Animator.StringToHash("DoPet");
 
 
     private void Start()

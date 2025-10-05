@@ -187,6 +187,9 @@ public class CharacterInteractController : MonoBehaviour
                 case WishingWellBehavior well:
                     well.StartInteraction();
                     break;
+                case FrogInteractionBehavior frog:
+                    frog.StartInteraction();
+                    break;
             }
         }
     }
