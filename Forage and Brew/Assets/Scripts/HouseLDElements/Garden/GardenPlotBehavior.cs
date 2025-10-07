@@ -22,12 +22,16 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
     [field: BoxGroup("Plot Data")] [SerializeField] private float effectiveWeedSpawnChance;
     [field: BoxGroup("Plot Data")] [field: SerializeField] public SeedValuesSo PlantedSeed { get; set; }
     
-    public Transform sproutParent;
-    public GameObject wateringCheckMark;
-    public GameObject seedInformationBubble;
-    public Image seedIndicator;
-    public GameObject buttonAObject;
-    public ParticleSystem weedingVfx;
+    [BoxGroup("Refs")]public MeshRenderer parcelMesh;
+    [BoxGroup("Refs")]public Material dryParcelMat;
+    [BoxGroup("Refs")]public Material wetParcelMat;
+    [BoxGroup("Refs")]public GameObject sproutMesh;
+    [BoxGroup("Refs")]public GameObject wateringCheckMark;
+    [BoxGroup("Refs")]private GameObject fullyGrownPlantMesh;
+    [BoxGroup("Refs")] public GameObject seedInformationBubble;
+    [BoxGroup("Refs")]public Image seedIndicator;
+    [BoxGroup("Refs")]public GameObject buttonAObject;
+    [BoxGroup("Refs")]public ParticleSystem weedingVfx;
     
 
 
@@ -47,7 +51,7 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
         SceneTransitionManager.instance.OnSleep.AddListener(ProgressDay);
         if (!GameDontDestroyOnLoadManager.Instance.codexIsUnlocked)
         {
-            sproutParent.gameObject.SetActive(false);
+            sproutMesh.SetActive(false);
             EnableWeed();
         }
         UpdateVisuals();
@@ -100,6 +104,15 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
             seedInformationBubble.SetActive(true);
             seedIndicator.sprite = PlantedSeed.SeedIcon;
             wateringCheckMark.SetActive(!NeedsWatering);
+            parcelMesh.material = NeedsWatering ? dryParcelMat : wetParcelMat;
+            if (PlantGrowthProgression == PlantedSeed.DaysToMature && fullyGrownPlantMesh == null)
+            {
+                fullyGrownPlantMesh = Instantiate(PlantedSeed.MeshGameObject,new Vector3(0,-0.5f,0), Quaternion.identity, sproutMesh.transform.parent);
+            }
+            else if(PlantGrowthProgression > 0 && PlantGrowthProgression < PlantedSeed.DaysToMature)
+            {
+                sproutMesh.gameObject.SetActive(true);
+            }
         }
         else
         {
@@ -182,7 +195,7 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
         weedingVfx.Play();
         IsWeed = false;
         GardenManager.instance.plotsData[selfIndex + 1].UpdateData(this);
-        //TODO: Turn on plot for planting
+        parcelMesh.gameObject.SetActive(true);
     }
 
     public void HandlePlayerInput()
