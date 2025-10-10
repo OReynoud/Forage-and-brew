@@ -14,6 +14,8 @@ public class InvisibleWallTurnBackBehaviour : MonoBehaviour, ICinematicInteracti
         {
             gameObject.SetActive(false);
         }
+
+        animator = CharacterAnimManager.instance.animator;
     }
 
     // Update is called once per frame
