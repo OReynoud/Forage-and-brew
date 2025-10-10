@@ -14,16 +14,10 @@ public class GardenCompostBehavior : MonoBehaviour, IIngredientAddable
     [field: ShowIf("UseEndPoint")][field: SerializeField] public Transform EndPoint { get; set; }
     [field: ShowIf("UseEndPoint")][field: SerializeField] public float heightShove { get; set; }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    
     void Start()
     {
         GardenManager.instance.compostBox = this;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
     
     public void HandlePlayerInput()
@@ -151,7 +145,7 @@ public class GardenCompostBehavior : MonoBehaviour, IIngredientAddable
         compostIsFull = true;
     }
 
-    private void CompleteCompostHapticChallenge()
+    public void CompleteCompostHapticChallenge()
     {
         var newSeed = Instantiate(seedBehaviorPrefab, transform.position, transform.rotation);
         newSeed.SeedValuesSo = currentSeed;
