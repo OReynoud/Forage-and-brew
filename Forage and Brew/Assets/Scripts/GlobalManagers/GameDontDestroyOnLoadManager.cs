@@ -21,6 +21,7 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     // Collected Ingredients and Potions
     public List<IngredientValuesSo> CollectedIngredients { get; private set; } = new();
     public List<CollectedIngredientBehaviour> OutCollectedIngredients { get; private set; } = new();
+    public List<CollectedSeedBehaviour> OutSeeds { get; private set; } = new();
     public List<FloorIngredient> FloorCollectedIngredients { get; private set; } = new();
     public List<CollectedPotionBehaviour> OutCookedPotions { get; private set; } = new();
     public List<FloorCookedPotion> FloorCookedPotions { get; private set; } = new();

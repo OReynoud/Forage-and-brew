@@ -291,6 +291,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""ChoppingHapticChallenge4"",
+                    ""type"": ""Button"",
+                    ""id"": ""2c4caa15-482d-49b9-bc4b-6d441b37030e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChoppingHapticChallenge5"",
+                    ""type"": ""Button"",
+                    ""id"": ""b844e5ca-081f-4654-87ea-81da82796ee6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""PreviousBasketSet"",
                     ""type"": ""Button"",
                     ""id"": ""500b7e45-8ebd-4a73-b662-6549fea826de"",
@@ -366,24 +384,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""name"": ""PushBellows"",
                     ""type"": ""Button"",
                     ""id"": ""4c6ea8b3-1ad6-4ed4-a35d-2f87f1510db3"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""ChoppingHapticChallenge4"",
-                    ""type"": ""Button"",
-                    ""id"": ""2c4caa15-482d-49b9-bc4b-6d441b37030e"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""ChoppingHapticChallenge5"",
-                    ""type"": ""Button"",
-                    ""id"": ""b844e5ca-081f-4654-87ea-81da82796ee6"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -519,6 +519,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""name"": ""PurchaseOutfit"",
                     ""type"": ""Button"",
                     ""id"": ""1f28c3fd-5626-48fc-9451-c97b9d91724a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CompostHapticChallenge1"",
+                    ""type"": ""Button"",
+                    ""id"": ""b059d598-e9d6-435b-be03-606516cb6496"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CompostHapticChallenge2"",
+                    ""type"": ""Button"",
+                    ""id"": ""c3346366-2646-4345-b232-6944259b37c0"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -1801,6 +1819,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""DownOutfit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""331250cf-aeb7-4bae-8540-6763528009be"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""CompostHapticChallenge1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f2b36b1b-d0d7-4c16-9ede-c7dcfdf596f8"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""CompostHapticChallenge2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -2408,6 +2448,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_ChoppingHapticChallenge1 = m_Player.FindAction("ChoppingHapticChallenge1", throwIfNotFound: true);
         m_Player_ChoppingHapticChallenge2 = m_Player.FindAction("ChoppingHapticChallenge2", throwIfNotFound: true);
         m_Player_ChoppingHapticChallenge3 = m_Player.FindAction("ChoppingHapticChallenge3", throwIfNotFound: true);
+        m_Player_ChoppingHapticChallenge4 = m_Player.FindAction("ChoppingHapticChallenge4", throwIfNotFound: true);
+        m_Player_ChoppingHapticChallenge5 = m_Player.FindAction("ChoppingHapticChallenge5", throwIfNotFound: true);
         m_Player_PreviousBasketSet = m_Player.FindAction("PreviousBasketSet", throwIfNotFound: true);
         m_Player_NextBasketSet = m_Player.FindAction("NextBasketSet", throwIfNotFound: true);
         m_Player_ToggleRun = m_Player.FindAction("ToggleRun", throwIfNotFound: true);
@@ -2417,8 +2459,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Harvest = m_Player.FindAction("Harvest", throwIfNotFound: true);
         m_Player_Weeding = m_Player.FindAction("Weeding", throwIfNotFound: true);
         m_Player_PushBellows = m_Player.FindAction("PushBellows", throwIfNotFound: true);
-        m_Player_ChoppingHapticChallenge4 = m_Player.FindAction("ChoppingHapticChallenge4", throwIfNotFound: true);
-        m_Player_ChoppingHapticChallenge5 = m_Player.FindAction("ChoppingHapticChallenge5", throwIfNotFound: true);
         m_Player_GrindingHapticChallenge1 = m_Player.FindAction("GrindingHapticChallenge1", throwIfNotFound: true);
         m_Player_GrindingHapticChallenge2 = m_Player.FindAction("GrindingHapticChallenge2", throwIfNotFound: true);
         m_Player_QuitHapticChallenge = m_Player.FindAction("QuitHapticChallenge", throwIfNotFound: true);
@@ -2434,6 +2474,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_DownOutfit = m_Player.FindAction("DownOutfit", throwIfNotFound: true);
         m_Player_SelectOutfit = m_Player.FindAction("SelectOutfit", throwIfNotFound: true);
         m_Player_PurchaseOutfit = m_Player.FindAction("PurchaseOutfit", throwIfNotFound: true);
+        m_Player_CompostHapticChallenge1 = m_Player.FindAction("CompostHapticChallenge1", throwIfNotFound: true);
+        m_Player_CompostHapticChallenge2 = m_Player.FindAction("CompostHapticChallenge2", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -2549,6 +2591,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ChoppingHapticChallenge1;
     private readonly InputAction m_Player_ChoppingHapticChallenge2;
     private readonly InputAction m_Player_ChoppingHapticChallenge3;
+    private readonly InputAction m_Player_ChoppingHapticChallenge4;
+    private readonly InputAction m_Player_ChoppingHapticChallenge5;
     private readonly InputAction m_Player_PreviousBasketSet;
     private readonly InputAction m_Player_NextBasketSet;
     private readonly InputAction m_Player_ToggleRun;
@@ -2558,8 +2602,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Harvest;
     private readonly InputAction m_Player_Weeding;
     private readonly InputAction m_Player_PushBellows;
-    private readonly InputAction m_Player_ChoppingHapticChallenge4;
-    private readonly InputAction m_Player_ChoppingHapticChallenge5;
     private readonly InputAction m_Player_GrindingHapticChallenge1;
     private readonly InputAction m_Player_GrindingHapticChallenge2;
     private readonly InputAction m_Player_QuitHapticChallenge;
@@ -2575,6 +2617,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_DownOutfit;
     private readonly InputAction m_Player_SelectOutfit;
     private readonly InputAction m_Player_PurchaseOutfit;
+    private readonly InputAction m_Player_CompostHapticChallenge1;
+    private readonly InputAction m_Player_CompostHapticChallenge2;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -2675,6 +2719,14 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @ChoppingHapticChallenge3 => m_Wrapper.m_Player_ChoppingHapticChallenge3;
         /// <summary>
+        /// Provides access to the underlying input action "Player/ChoppingHapticChallenge4".
+        /// </summary>
+        public InputAction @ChoppingHapticChallenge4 => m_Wrapper.m_Player_ChoppingHapticChallenge4;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/ChoppingHapticChallenge5".
+        /// </summary>
+        public InputAction @ChoppingHapticChallenge5 => m_Wrapper.m_Player_ChoppingHapticChallenge5;
+        /// <summary>
         /// Provides access to the underlying input action "Player/PreviousBasketSet".
         /// </summary>
         public InputAction @PreviousBasketSet => m_Wrapper.m_Player_PreviousBasketSet;
@@ -2710,14 +2762,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/PushBellows".
         /// </summary>
         public InputAction @PushBellows => m_Wrapper.m_Player_PushBellows;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/ChoppingHapticChallenge4".
-        /// </summary>
-        public InputAction @ChoppingHapticChallenge4 => m_Wrapper.m_Player_ChoppingHapticChallenge4;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/ChoppingHapticChallenge5".
-        /// </summary>
-        public InputAction @ChoppingHapticChallenge5 => m_Wrapper.m_Player_ChoppingHapticChallenge5;
         /// <summary>
         /// Provides access to the underlying input action "Player/GrindingHapticChallenge1".
         /// </summary>
@@ -2778,6 +2822,14 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/PurchaseOutfit".
         /// </summary>
         public InputAction @PurchaseOutfit => m_Wrapper.m_Player_PurchaseOutfit;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/CompostHapticChallenge1".
+        /// </summary>
+        public InputAction @CompostHapticChallenge1 => m_Wrapper.m_Player_CompostHapticChallenge1;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/CompostHapticChallenge2".
+        /// </summary>
+        public InputAction @CompostHapticChallenge2 => m_Wrapper.m_Player_CompostHapticChallenge2;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -2870,6 +2922,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ChoppingHapticChallenge3.started += instance.OnChoppingHapticChallenge3;
             @ChoppingHapticChallenge3.performed += instance.OnChoppingHapticChallenge3;
             @ChoppingHapticChallenge3.canceled += instance.OnChoppingHapticChallenge3;
+            @ChoppingHapticChallenge4.started += instance.OnChoppingHapticChallenge4;
+            @ChoppingHapticChallenge4.performed += instance.OnChoppingHapticChallenge4;
+            @ChoppingHapticChallenge4.canceled += instance.OnChoppingHapticChallenge4;
+            @ChoppingHapticChallenge5.started += instance.OnChoppingHapticChallenge5;
+            @ChoppingHapticChallenge5.performed += instance.OnChoppingHapticChallenge5;
+            @ChoppingHapticChallenge5.canceled += instance.OnChoppingHapticChallenge5;
             @PreviousBasketSet.started += instance.OnPreviousBasketSet;
             @PreviousBasketSet.performed += instance.OnPreviousBasketSet;
             @PreviousBasketSet.canceled += instance.OnPreviousBasketSet;
@@ -2897,12 +2955,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @PushBellows.started += instance.OnPushBellows;
             @PushBellows.performed += instance.OnPushBellows;
             @PushBellows.canceled += instance.OnPushBellows;
-            @ChoppingHapticChallenge4.started += instance.OnChoppingHapticChallenge4;
-            @ChoppingHapticChallenge4.performed += instance.OnChoppingHapticChallenge4;
-            @ChoppingHapticChallenge4.canceled += instance.OnChoppingHapticChallenge4;
-            @ChoppingHapticChallenge5.started += instance.OnChoppingHapticChallenge5;
-            @ChoppingHapticChallenge5.performed += instance.OnChoppingHapticChallenge5;
-            @ChoppingHapticChallenge5.canceled += instance.OnChoppingHapticChallenge5;
             @GrindingHapticChallenge1.started += instance.OnGrindingHapticChallenge1;
             @GrindingHapticChallenge1.performed += instance.OnGrindingHapticChallenge1;
             @GrindingHapticChallenge1.canceled += instance.OnGrindingHapticChallenge1;
@@ -2948,6 +3000,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @PurchaseOutfit.started += instance.OnPurchaseOutfit;
             @PurchaseOutfit.performed += instance.OnPurchaseOutfit;
             @PurchaseOutfit.canceled += instance.OnPurchaseOutfit;
+            @CompostHapticChallenge1.started += instance.OnCompostHapticChallenge1;
+            @CompostHapticChallenge1.performed += instance.OnCompostHapticChallenge1;
+            @CompostHapticChallenge1.canceled += instance.OnCompostHapticChallenge1;
+            @CompostHapticChallenge2.started += instance.OnCompostHapticChallenge2;
+            @CompostHapticChallenge2.performed += instance.OnCompostHapticChallenge2;
+            @CompostHapticChallenge2.canceled += instance.OnCompostHapticChallenge2;
         }
 
         /// <summary>
@@ -3025,6 +3083,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ChoppingHapticChallenge3.started -= instance.OnChoppingHapticChallenge3;
             @ChoppingHapticChallenge3.performed -= instance.OnChoppingHapticChallenge3;
             @ChoppingHapticChallenge3.canceled -= instance.OnChoppingHapticChallenge3;
+            @ChoppingHapticChallenge4.started -= instance.OnChoppingHapticChallenge4;
+            @ChoppingHapticChallenge4.performed -= instance.OnChoppingHapticChallenge4;
+            @ChoppingHapticChallenge4.canceled -= instance.OnChoppingHapticChallenge4;
+            @ChoppingHapticChallenge5.started -= instance.OnChoppingHapticChallenge5;
+            @ChoppingHapticChallenge5.performed -= instance.OnChoppingHapticChallenge5;
+            @ChoppingHapticChallenge5.canceled -= instance.OnChoppingHapticChallenge5;
             @PreviousBasketSet.started -= instance.OnPreviousBasketSet;
             @PreviousBasketSet.performed -= instance.OnPreviousBasketSet;
             @PreviousBasketSet.canceled -= instance.OnPreviousBasketSet;
@@ -3052,12 +3116,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @PushBellows.started -= instance.OnPushBellows;
             @PushBellows.performed -= instance.OnPushBellows;
             @PushBellows.canceled -= instance.OnPushBellows;
-            @ChoppingHapticChallenge4.started -= instance.OnChoppingHapticChallenge4;
-            @ChoppingHapticChallenge4.performed -= instance.OnChoppingHapticChallenge4;
-            @ChoppingHapticChallenge4.canceled -= instance.OnChoppingHapticChallenge4;
-            @ChoppingHapticChallenge5.started -= instance.OnChoppingHapticChallenge5;
-            @ChoppingHapticChallenge5.performed -= instance.OnChoppingHapticChallenge5;
-            @ChoppingHapticChallenge5.canceled -= instance.OnChoppingHapticChallenge5;
             @GrindingHapticChallenge1.started -= instance.OnGrindingHapticChallenge1;
             @GrindingHapticChallenge1.performed -= instance.OnGrindingHapticChallenge1;
             @GrindingHapticChallenge1.canceled -= instance.OnGrindingHapticChallenge1;
@@ -3103,6 +3161,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @PurchaseOutfit.started -= instance.OnPurchaseOutfit;
             @PurchaseOutfit.performed -= instance.OnPurchaseOutfit;
             @PurchaseOutfit.canceled -= instance.OnPurchaseOutfit;
+            @CompostHapticChallenge1.started -= instance.OnCompostHapticChallenge1;
+            @CompostHapticChallenge1.performed -= instance.OnCompostHapticChallenge1;
+            @CompostHapticChallenge1.canceled -= instance.OnCompostHapticChallenge1;
+            @CompostHapticChallenge2.started -= instance.OnCompostHapticChallenge2;
+            @CompostHapticChallenge2.performed -= instance.OnCompostHapticChallenge2;
+            @CompostHapticChallenge2.canceled -= instance.OnCompostHapticChallenge2;
         }
 
         /// <summary>
@@ -3558,6 +3622,20 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnChoppingHapticChallenge3(InputAction.CallbackContext context);
         /// <summary>
+        /// Method invoked when associated input action "ChoppingHapticChallenge4" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnChoppingHapticChallenge4(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ChoppingHapticChallenge5" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnChoppingHapticChallenge5(InputAction.CallbackContext context);
+        /// <summary>
         /// Method invoked when associated input action "PreviousBasketSet" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
@@ -3620,20 +3698,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPushBellows(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "ChoppingHapticChallenge4" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnChoppingHapticChallenge4(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "ChoppingHapticChallenge5" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnChoppingHapticChallenge5(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "GrindingHapticChallenge1" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
@@ -3739,6 +3803,20 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPurchaseOutfit(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "CompostHapticChallenge1" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnCompostHapticChallenge1(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "CompostHapticChallenge2" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnCompostHapticChallenge2(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

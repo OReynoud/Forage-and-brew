@@ -2,9 +2,12 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
 
-public class GardenCompostBehavior : MonoBehaviour, IIngredientAddable
+public class GardenCompostBehaviour : MonoBehaviour, IIngredientAddable
 {
-    public CollectedSeedBehavior seedBehaviorPrefab;
+    // Singleton
+    public static GardenCompostBehaviour Instance { get; private set; }
+    
+    public CollectedSeedBehaviour seedBehaviourPrefab;
     [SerializeField] private GameObject interactInputCanvasGameObject;
     [Foldout("Debug")] [SerializeField] private bool compostIsFull;
 
@@ -14,6 +17,11 @@ public class GardenCompostBehavior : MonoBehaviour, IIngredientAddable
     [field: ShowIf("UseEndPoint")][field: SerializeField] public Transform EndPoint { get; set; }
     [field: ShowIf("UseEndPoint")][field: SerializeField] public float heightShove { get; set; }
 
+    
+    private void Awake()
+    {
+        Instance = this;
+    }
     
     void Start()
     {
@@ -28,10 +36,8 @@ public class GardenCompostBehavior : MonoBehaviour, IIngredientAddable
             {            
                 Debug.Log("Cant add more ingredients");
                 CharacterAnimManager.instance.CatNo();
-                return;
             }
-            //TODO: Compost HapticChallenge
-            CompleteCompostHapticChallenge();
+            
             return;
         }
 
@@ -66,14 +72,28 @@ public class GardenCompostBehavior : MonoBehaviour, IIngredientAddable
             CharacterAnimManager.instance.CatNo();
         }
     }
-
-
+    
+    public void HandlePlayerInputHapticChallenge()
+    {
+        if (!compostIsFull) return;
+        
+        if (CharacterInteractController.Instance.collectedStack.Count > 0)
+        {            
+            Debug.Log("Cant add more ingredients");
+            CharacterAnimManager.instance.CatNo();
+            return;
+        }
+        
+        CompostHapticChallengeManager.Instance.StartCompostChallenge();
+    }
+    
 
     private List<CharacterInteractController.CollectedStack> temp = new();
     public void TryAddIngredients()
     {
         CharacterAnimManager.instance.CatThrow();
-        for (int i = currentSeed.RequiredIngredientTypeAmount - storedIngredients.Count - 1; i >= 0; i--)
+        for (int i = Mathf.Min(currentSeed.RequiredIngredientTypeAmount - storedIngredients.Count,
+                 CharacterInteractController.Instance.collectedStack.Count) - 1; i >= 0; i--)
         {
             if (CharacterInteractController.Instance.collectedStack.Count == 0)
             {
@@ -116,20 +136,26 @@ public class GardenCompostBehavior : MonoBehaviour, IIngredientAddable
     }
     
     
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out CharacterInteractController characterInteractController))
+        if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
+            other.TryGetComponent(out CompostHapticChallengeManager compostHapticChallengeManager))
         {
-            EnableInteract();
+            if (characterInteractController.collectedStack.Count <= 0) return;
+            
             characterInteractController.CurrentNearCompostBox = this;
-
+            compostHapticChallengeManager.CurrentCompost = this;
+            
+            if (compostIsFull) return;
+            
+            EnableInteract();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out CharacterInteractController characterInteractController))
+        if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
+            other.TryGetComponent(out CompostHapticChallengeManager compostHapticChallengeManager))
         {
             DisableInteract();
             
@@ -137,17 +163,23 @@ public class GardenCompostBehavior : MonoBehaviour, IIngredientAddable
             {
                 characterInteractController.CurrentNearCompostBox = null;
             }
+            
+            if (compostHapticChallengeManager.CurrentCompost == this)
+            {
+                compostHapticChallengeManager.CurrentCompost = null;
+            }
         }
     }
 
-    void CloseCompostBox()
+
+    private void CloseCompostBox()
     {
         compostIsFull = true;
     }
 
     public void CompleteCompostHapticChallenge()
     {
-        var newSeed = Instantiate(seedBehaviorPrefab, transform.position, transform.rotation);
+        CollectedSeedBehaviour newSeed = Instantiate(seedBehaviourPrefab, transform.position, transform.rotation);
         newSeed.SeedValuesSo = currentSeed;
         currentSeed = null;
         CharacterInteractController.Instance.AddToPile(newSeed);
@@ -155,5 +187,4 @@ public class GardenCompostBehavior : MonoBehaviour, IIngredientAddable
         
         Debug.Log("Obtained new Seed");
     }
-    
 }

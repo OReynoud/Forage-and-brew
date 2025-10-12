@@ -97,6 +97,8 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.GrindingHapticChallenge1.performed += GrindingHapticChallenge1OnPerformed;
         _inputs.Player.GrindingHapticChallenge2.performed += GrindingHapticChallenge2OnPerformed;
         _inputs.Player.PushBellows.performed += PushBellowsOnPerformed;
+        _inputs.Player.CompostHapticChallenge1.performed += CompostHapticChallenge1OnPerformed;
+        _inputs.Player.CompostHapticChallenge2.performed += CompostHapticChallenge2OnPerformed;
         _inputs.Player.HapticChallengeJoystick.performed += HapticChallengeJoystickOnPerformed;
         _inputs.Player.HapticChallengeJoystick.canceled += HapticChallengeJoystickOnPerformed;
         _inputs.Player.HapticChallengeJoystickHorizontalAxis.performed += HapticChallengeJoystickHorizontalAxisOnPerformed;
@@ -175,6 +177,7 @@ public class CharacterInputManager : MonoBehaviour
         EnableChoppingHapticChallengeInputs();
         EnableGrindingHapticChallengeInputs();
         EnableTemperatureHapticChallengeInputs();
+        EnableCompostHapticChallengeInputs();
     }
     
     public void EnableQuitHapticChallengeInputs()
@@ -201,6 +204,12 @@ public class CharacterInputManager : MonoBehaviour
     public void EnableTemperatureHapticChallengeInputs()
     {
         _inputs.Player.PushBellows.Enable();
+    }
+    
+    public void EnableCompostHapticChallengeInputs()
+    {
+        _inputs.Player.CompostHapticChallenge1.Enable();
+        _inputs.Player.CompostHapticChallenge2.Enable();
     }
     
     public void EnableHapticChallengeJoystickInputs()
@@ -305,6 +314,7 @@ public class CharacterInputManager : MonoBehaviour
         DisableChoppingHapticChallengeInputs();
         DisableGrindingHapticChallengeInputs();
         DisableTemperatureHapticChallengeInputs();
+        DisableCompostHapticChallengeInputs();
     }
     
     public void DisableQuitHapticChallengeInputs()
@@ -331,6 +341,12 @@ public class CharacterInputManager : MonoBehaviour
     public void DisableTemperatureHapticChallengeInputs()
     {
         _inputs.Player.PushBellows.Disable();
+    }
+    
+    public void DisableCompostHapticChallengeInputs()
+    {
+        _inputs.Player.CompostHapticChallenge1.Disable();
+        _inputs.Player.CompostHapticChallenge2.Disable();
     }
     
     public void DisableHapticChallengeJoystickInputs()
@@ -432,6 +448,7 @@ public class CharacterInputManager : MonoBehaviour
     {
         TemperatureHapticChallengeManager.Instance.StartTemperatureChallenge();
         CharacterInteractController.Instance.DropIngredientsInChoppingCountertop();
+        GardenCompostBehaviour.Instance.HandlePlayerInputHapticChallenge();
     }
 
     private void HapticChallengeSecondOnPerformed(InputAction.CallbackContext obj)
@@ -529,6 +546,16 @@ public class CharacterInputManager : MonoBehaviour
     private void PushBellowsOnPerformed(InputAction.CallbackContext obj)
     {
         TemperatureHapticChallengeManager.Instance.IncreaseTemperature();
+    }
+    
+    private void CompostHapticChallenge1OnPerformed(InputAction.CallbackContext obj)
+    {
+        CompostHapticChallengeManager.Instance.CheckInputCompostChallenge(1);
+    }
+    
+    private void CompostHapticChallenge2OnPerformed(InputAction.CallbackContext obj)
+    {
+        CompostHapticChallengeManager.Instance.CheckInputCompostChallenge(2);
     }
     
     private void HapticChallengeJoystickOnPerformed(InputAction.CallbackContext obj)
