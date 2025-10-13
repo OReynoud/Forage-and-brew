@@ -162,7 +162,7 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
         GardenManager.instance.plotsData[selfIndex + 1].UpdateData(this);
     }
 
-    public void AddSeed(CollectedSeedBehavior collectedSeedBehaviour)
+    public void AddSeed(CollectedSeedBehaviour collectedSeedBehaviour)
     {
         PlantedSeed = collectedSeedBehaviour.SeedValuesSo;
         RequiredProgressionToMature = PlantedSeed.DaysToMature;
@@ -217,7 +217,7 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
             if (CharacterInteractController.Instance.collectedStack.Count == 0)
                 return;
 
-            if (CharacterInteractController.Instance.collectedStack[0].StackableItem is not CollectedSeedBehavior)
+            if (CharacterInteractController.Instance.collectedStack[0].StackableItem is not CollectedSeedBehaviour)
                 return;
             
             Debug.Log("Planted new seed");
@@ -226,7 +226,7 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
 
             CharacterInteractController.Instance.ShovePartialStackInTarget(transform, this, new []{CharacterInteractController.Instance.collectedStack[^1]});
 
-            AddSeed((CollectedSeedBehavior)CharacterInteractController.Instance.collectedStack[^1].StackableItem);
+            AddSeed((CollectedSeedBehaviour)CharacterInteractController.Instance.collectedStack[^1].StackableItem);
             
             CharacterInteractController.Instance.collectedStack.RemoveAt(CharacterInteractController.Instance.collectedStack.Count - 1);
             

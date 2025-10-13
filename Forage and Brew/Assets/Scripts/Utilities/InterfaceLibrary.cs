@@ -21,7 +21,7 @@ public interface IPotionAddable
 
 public interface ISeedAddable
 {
-    void AddSeed(CollectedSeedBehavior collectedSeedBehaviour);
+    void AddSeed(CollectedSeedBehaviour collectedSeedBehaviour);
     bool UseEndPoint { get; set; }
     Transform EndPoint { get; set; }
     float heightShove { get; set; }

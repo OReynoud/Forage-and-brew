@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
-public class CollectedSeedBehavior : StackableItem
+public class CollectedSeedBehaviour : StackableItem
 {
     [Header("Dependencies")]
     [SerializeField] private CollectedIngredientGlobalValuesSo collectedIngredientGlobalValuesSo;

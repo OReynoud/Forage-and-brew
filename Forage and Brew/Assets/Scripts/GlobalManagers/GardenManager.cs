@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GardenManager : Singleton<GardenManager>
 {
-    public GardenCompostBehavior compostBox;
+    public GardenCompostBehaviour compostBox;
 
     public GardenPlotData[] plotsData;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
