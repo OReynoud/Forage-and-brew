@@ -12,12 +12,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 412986ee3e71df144b8340841251e512, type: 3}
   m_Name: TemperatureChallengeCamera
   m_EditorClassIdentifier: 
-  cameraOffset: {x: 1.2, y: 0.3, z: 4.6}
-  cameraRotation: {x: 20, y: -25.958, z: 0}
-  targetFocalLength: 25
+  groupColor: {r: 1, g: 1, b: 1, a: 1}
+  isFixedCameraPos: 0
+  isFixedCameraRotation: 1
+  cameraOffset: {x: -2, y: 2, z: 0}
+  cameraRotation: {x: 30, y: 0, z: 0}
+  targetFocalLength: 10
   distanceFromPlayer: 10
   positionLerp: 0.35
   rotationLerp: 0.2
   focalLerp: 0.35
-  posMaxClamp: {x: 0, y: 0}
-  posMinClamp: {x: 0, y: 0}
+  posMaxClamp: {x: 0, y: 0, z: 100}
+  posMinClamp: {x: 0, y: 0, z: -100}
+  transitionCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
