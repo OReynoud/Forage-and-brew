@@ -7,6 +7,7 @@ public class TutorialManager : Singleton<TutorialManager>
 {
     [field: SerializeField] [field: Expandable] public List<TutoBlockSo> ContentSo { get; set; } = new();
     [field: SerializeField] public List<TutorialBlock> TutorialPopups { get; set; } = new();
+    public IngredientValuesSo brownCapValuesSo;
     public TextMeshProUGUI headText;
     public TextMeshProUGUI bodyText;
 
@@ -21,12 +22,37 @@ public class TutorialManager : Singleton<TutorialManager>
 
     public void NotifyFromZoneTrigger(string triggerID)
     {
-
+        if (!CodexContentManager.instance.tutorialDissolves.ContainsKey(triggerID)) return;
+        
+        if (GameDontDestroyOnLoadManager.Instance.CollectedIngredients.FindAll(x => x == brownCapValuesSo).Count >= 2 && triggerID == "PotionTuto")
+        {
+            CodexContentManager.instance.pageIndexesToCheck.Insert(0, CodexContentManager.instance.tutorialDissolves[triggerID].pageToCheck);
+            CodexContentManager.instance.tutorialDissolvesToCheck.Add(triggerID);
+            CharacterInputManager.Instance.EnterCodexMethod();
+            CharacterInputManager.Instance.DisableCodexInputs();
+            CharacterInputManager.Instance.DisableInputs();
+        
+            AutoFlip.instance.ContinuePageDiscovery(true);
+            return;
+        }
     }
 
 
     public void NotifyFromIngredientReceived()
     {
+        if (CodexContentManager.instance.tutorialDissolves.ContainsKey("2BrownCap"))
+        {
+            if (GameDontDestroyOnLoadManager.Instance.CollectedIngredients.FindAll(x => x == brownCapValuesSo).Count >= 2)
+            {
+                CodexContentManager.instance.pageIndexesToCheck.Insert(0, CodexContentManager.instance.tutorialDissolves["2BrownCap"].pageToCheck);
+                CodexContentManager.instance.tutorialDissolvesToCheck.Add("2BrownCap");
+                CharacterInputManager.Instance.EnterCodexMethod();
+                CharacterInputManager.Instance.DisableCodexInputs();
+                CharacterInputManager.Instance.DisableInputs();
+        
+                AutoFlip.instance.ContinuePageDiscovery(true);
+            }
+        }
 
     }
     public void NotifyFromRecipeReceived(string workshop)
@@ -39,7 +65,25 @@ public class TutorialManager : Singleton<TutorialManager>
     }
     public void NotifyFromCompletePotion()
     {
-
+        if (!CodexContentManager.instance.tutorialDissolves.ContainsKey("CompletePotion"))
+            return;
+        CodexContentManager.instance.pageIndexesToCheck.Add(CodexContentManager.instance.tutorialDissolves["CompletePotion"].pageToCheck);
+        if (CodexContentManager.instance.pageIndexesToCheck[^1] % 2 == 1)
+        {
+            AutoFlip.instance.ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1] + 1);
+        }
+        else
+        {
+            AutoFlip.instance.ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1]);
+        }
+        CharacterInputManager.Instance.EnterCodexMethod();
+        
+        
+        CodexContentManager.instance.tutorialDissolvesToCheck.Add("CompletePotion");
+        CharacterInputManager.Instance.DisableCodexInputs();
+        CharacterInputManager.Instance.DisableInputs();
+        
+        AutoFlip.instance.ContinuePageDiscovery(true);
     }
 
     public void NotifyFromCompleteOrder()
@@ -63,6 +107,32 @@ public class TutorialManager : Singleton<TutorialManager>
         CharacterInputManager.Instance.DisableInputs();
         
         AutoFlip.instance.ContinuePageDiscovery(true);
+    }
+
+    public void NotifyFromLetterBoxOpen()
+    {
+        if (GameDontDestroyOnLoadManager.Instance.DayPassed == 2)
+        {
+            if (!CodexContentManager.instance.tutorialDissolves.ContainsKey("SpendMoney"))
+                return;
+            CodexContentManager.instance.pageIndexesToCheck.Add(CodexContentManager.instance.tutorialDissolves["SpendMoney"].pageToCheck);
+            if (CodexContentManager.instance.pageIndexesToCheck[^1] % 2 == 1)
+            {
+                AutoFlip.instance.ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1] + 1);
+            }
+            else
+            {
+                AutoFlip.instance.ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1]);
+            }
+            CharacterInputManager.Instance.EnterCodexMethod();
+        
+        
+            CodexContentManager.instance.tutorialDissolvesToCheck.Add("SpendMoney");
+            CharacterInputManager.Instance.DisableCodexInputs();
+            CharacterInputManager.Instance.DisableInputs();
+        
+            AutoFlip.instance.ContinuePageDiscovery(true);
+        }
     }
 
     public void NotifyFromNewDay()
