@@ -619,9 +619,9 @@ public class CollectHapticChallengeManager : MonoBehaviour
     public void OnCollectAnimationEnd()
     {
         CharacterInputManager.Instance.EnableMoveInputs();
+        TutorialManager.instance.NotifyFromIngredientReceived();
         if (_callCodexOnAnimationEnd)
         {
-            TutorialManager.instance.NotifyFromIngredientReceived();
             AutoFlip.instance.ControledBook.DisplayNewIngredient();
             _callCodexOnAnimationEnd = false;
         }

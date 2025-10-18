@@ -32,7 +32,7 @@ public class TutorialDissolveBehavior : MonoBehaviour
 
         mat.SetFloat(Ex.CutoffHeight, 0);
         DissolveImage.material = mat;
-        
+
         CodexContentManager.instance.tutorialDissolves.Add(dissolveID, this);
         
         if (autoAdd)

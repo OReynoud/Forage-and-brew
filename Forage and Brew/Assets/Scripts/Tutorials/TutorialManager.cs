@@ -62,6 +62,16 @@ public class TutorialManager : Singleton<TutorialManager>
         
         CodexContentManager.instance.pageIndexesToCheck.Insert(0, CodexContentManager.instance.tutorialDissolves[workshop].pageToCheck);
         CodexContentManager.instance.tutorialDissolvesToCheck.Add(workshop);
+        var temp = CodexContentManager.instance.pageIndexesToCheck.Count -
+                   CodexContentManager.instance.tutorialDissolvesToCheck.Count;
+        if (temp >= 1)
+        {
+            for (int i = 0; i < temp; i++)
+            {
+                CodexContentManager.instance.tutorialDissolvesToCheck.Add("");
+            }
+        }
+
     }
     public void NotifyFromCompletePotion()
     {
@@ -111,7 +121,7 @@ public class TutorialManager : Singleton<TutorialManager>
 
     public void NotifyFromLetterBoxOpen()
     {
-        if (GameDontDestroyOnLoadManager.Instance.DayPassed == 2)
+        if (GameDontDestroyOnLoadManager.Instance.DayPassed == 1)
         {
             if (!CodexContentManager.instance.tutorialDissolves.ContainsKey("SpendMoney"))
                 return;

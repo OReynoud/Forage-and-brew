@@ -108,7 +108,6 @@ RectTransform:
   - {fileID: 1429117927824868207}
   - {fileID: 1672471664389764251}
   - {fileID: 1397956055136075486}
-  - {fileID: 752433078237869439}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -292,7 +291,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8628658791060460579
 RectTransform:
   m_ObjectHideFlags: 0
@@ -362,7 +361,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd963d11dcf42b49a5eddd4c33498cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dissolveID: PotionEnsemble
+  dissolveID: PotionTuto
   DissolveImage: {fileID: 4466632408501319122}
   autoAdd: 0
   doDissolve: 0
@@ -391,7 +390,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   pairedDissolve: 0
-  pageToCheck: 0
+  pageToCheck: 2
   pairedBehavior: {fileID: 0}
 --- !u!1 &5090261246522668354
 GameObject:
@@ -557,10 +556,10 @@ RectTransform:
   m_GameObject: {fileID: 6428994098853296092}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.98999995, y: 0.98999995, z: 0.98999995}
+  m_LocalScale: {x: 0.99, y: 0.99, z: 0.99}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 2495977150196656858}
+  m_Father: {fileID: 1672471664389764251}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -617,7 +616,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd963d11dcf42b49a5eddd4c33498cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dissolveID: MoneyRewards
+  dissolveID: 2BrownCap
   DissolveImage: {fileID: 4065959694140300915}
   autoAdd: 0
   doDissolve: 0
@@ -646,7 +645,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   pairedDissolve: 0
-  pageToCheck: 0
+  pageToCheck: 2
   pairedBehavior: {fileID: 0}
 --- !u!1 &6789457014085045449
 GameObject:
@@ -676,11 +675,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2410762946428030188}
-  - {fileID: 9130064554100521411}
-  - {fileID: 8628658791060460579}
   - {fileID: 4070951785716729694}
   - {fileID: 948733945051921509}
+  - {fileID: 8628658791060460579}
+  - {fileID: 2410762946428030188}
+  - {fileID: 9130064554100521411}
+  - {fileID: 752433078237869439}
   m_Father: {fileID: 2495977150196656858}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}

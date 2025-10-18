@@ -33,7 +33,6 @@ RectTransform:
   - {fileID: 1429117927824868207}
   - {fileID: 8682805748972212375}
   - {fileID: 1397956055136075486}
-  - {fileID: 8434196576921958487}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -499,10 +498,10 @@ RectTransform:
   m_GameObject: {fileID: 3597161436317282890}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.98999995, y: 0.98999995, z: 0.98999995}
+  m_LocalScale: {x: 0.99, y: 0.99, z: 0.99}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 2495977150196656858}
+  m_Father: {fileID: 8682805748972212375}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -559,7 +558,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd963d11dcf42b49a5eddd4c33498cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dissolveID: RecipePreparation
+  dissolveID: GardenTuto
   DissolveImage: {fileID: 2450860664050605534}
   autoAdd: 0
   doDissolve: 0
@@ -618,11 +617,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6462406200720467874}
-  - {fileID: 3203449360700658989}
-  - {fileID: 8262077135813470409}
   - {fileID: 5807747232833402546}
   - {fileID: 1025040007484124467}
+  - {fileID: 8262077135813470409}
+  - {fileID: 6462406200720467874}
+  - {fileID: 3203449360700658989}
+  - {fileID: 8434196576921958487}
   m_Father: {fileID: 2495977150196656858}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -648,7 +648,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8262077135813470409
 RectTransform:
   m_ObjectHideFlags: 0
@@ -718,7 +718,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd963d11dcf42b49a5eddd4c33498cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dissolveID: CleanUp
+  dissolveID: WaterSeeds
   DissolveImage: {fileID: 1629144764687847218}
   autoAdd: 0
   doDissolve: 0

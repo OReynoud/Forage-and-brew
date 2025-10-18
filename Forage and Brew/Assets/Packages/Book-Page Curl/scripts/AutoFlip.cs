@@ -375,7 +375,7 @@ public class AutoFlip : Singleton<AutoFlip>
 
     public void TutorialPagesDiscoveryStart()
     {
-        CodexContentManager.instance.pageIndexesToCheck.AddRange(new[] {6, 4, 2, 0 });
+        CodexContentManager.instance.pageIndexesToCheck.AddRange(new[] {2, 0 });
 
         CharacterInputManager.Instance.DisableCodexInputs();
         CharacterInputManager.Instance.DisableInputs();

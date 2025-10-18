@@ -28,11 +28,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 7588186458173962828}
+  - {fileID: 1443708624667074366}
+  - {fileID: 64705425897653942}
   - {fileID: 2802961458168135350}
   - {fileID: 5872733499018111717}
   - {fileID: 123594787247793298}
-  - {fileID: 7588186458173962828}
-  - {fileID: 1443708624667074366}
   m_Father: {fileID: 6648298972244044942}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -405,7 +406,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &123594787247793298
 RectTransform:
   m_ObjectHideFlags: 0
@@ -475,7 +476,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd963d11dcf42b49a5eddd4c33498cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dissolveID: IngredientApparition
+  dissolveID: CompletePotion
   DissolveImage: {fileID: 3548590392289904808}
   autoAdd: 0
   doDissolve: 0
@@ -609,10 +610,10 @@ RectTransform:
   m_GameObject: {fileID: 7288913307947076645}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.98999995, y: 0.98999995, z: 0.98999995}
+  m_LocalScale: {x: 0.99, y: 0.99, z: 0.99}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 6648298972244044942}
+  m_Father: {fileID: 5336293763268157544}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -669,7 +670,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd963d11dcf42b49a5eddd4c33498cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dissolveID: 
+  dissolveID: CompleteOrder
   DissolveImage: {fileID: 7977875790442311317}
   autoAdd: 1
   doDissolve: 0
@@ -733,7 +734,6 @@ RectTransform:
   - {fileID: 2956312551515572992}
   - {fileID: 5336293763268157544}
   - {fileID: 1832214675166998161}
-  - {fileID: 64705425897653942}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}

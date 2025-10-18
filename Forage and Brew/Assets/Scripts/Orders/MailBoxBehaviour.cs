@@ -379,10 +379,15 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 
         CharacterInteractController.Instance.CurrentNearMailBoxBehaviour = null;
         GameDontDestroyOnLoadManager.Instance.MailBoxLetters.Clear();
-        if (GameDontDestroyOnLoadManager.Instance.DayPassed == 1)
+        if (GameDontDestroyOnLoadManager.Instance.DayPassed == 0)
         {
             TutorialManager.instance.NotifyFromRecipeReceived("AfterLetter1");
         }
+        if (GameDontDestroyOnLoadManager.Instance.DayPassed == 1)
+        {
+            TutorialManager.instance.NotifyFromRecipeReceived("SpendMoney");
+        }
+        
         AutoFlip.instance.HandleNewRecipes();
         audioSource.Stop();
         audioSource.Play();
