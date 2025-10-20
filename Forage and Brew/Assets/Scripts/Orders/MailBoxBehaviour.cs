@@ -387,6 +387,10 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         {
             TutorialManager.instance.NotifyFromRecipeReceived("SpendMoney");
         }
+        if (GameDontDestroyOnLoadManager.Instance.DayPassed == 6)
+        {
+            TutorialManager.instance.NotifyFromRecipeReceived("GardenTuto");
+        }
         
         AutoFlip.instance.HandleNewRecipes();
         audioSource.Stop();

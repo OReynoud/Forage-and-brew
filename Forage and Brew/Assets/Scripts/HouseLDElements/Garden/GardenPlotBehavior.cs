@@ -170,6 +170,8 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
         BaseWeedSpawnChance = 0;
         UpdateVisuals();
         GardenManager.instance.plotsData[selfIndex + 1].UpdateData(this);
+        
+        TutorialManager.instance.NotifyFromRecipeReceived("WaterSeeds");
     }
 
 

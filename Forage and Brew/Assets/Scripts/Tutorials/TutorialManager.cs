@@ -119,31 +119,7 @@ public class TutorialManager : Singleton<TutorialManager>
         AutoFlip.instance.ContinuePageDiscovery(true);
     }
 
-    public void NotifyFromLetterBoxOpen()
-    {
-        if (GameDontDestroyOnLoadManager.Instance.DayPassed == 1)
-        {
-            if (!CodexContentManager.instance.tutorialDissolves.ContainsKey("SpendMoney"))
-                return;
-            CodexContentManager.instance.pageIndexesToCheck.Add(CodexContentManager.instance.tutorialDissolves["SpendMoney"].pageToCheck);
-            if (CodexContentManager.instance.pageIndexesToCheck[^1] % 2 == 1)
-            {
-                AutoFlip.instance.ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1] + 1);
-            }
-            else
-            {
-                AutoFlip.instance.ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1]);
-            }
-            CharacterInputManager.Instance.EnterCodexMethod();
-        
-        
-            CodexContentManager.instance.tutorialDissolvesToCheck.Add("SpendMoney");
-            CharacterInputManager.Instance.DisableCodexInputs();
-            CharacterInputManager.Instance.DisableInputs();
-        
-            AutoFlip.instance.ContinuePageDiscovery(true);
-        }
-    }
+
 
     public void NotifyFromNewDay()
     {
