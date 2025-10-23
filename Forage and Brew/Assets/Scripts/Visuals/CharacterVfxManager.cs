@@ -12,6 +12,7 @@ public class CharacterVfxManager : MonoBehaviour
 
     [Header("Puff")]
     [SerializeField] private ParticleSystem puffVfxParticleSystem;
+    [SerializeField] private MagicPuffSoundBehaviour magicPuffSoundBehaviour;
 
     
     private void Awake()
@@ -66,6 +67,7 @@ public class CharacterVfxManager : MonoBehaviour
     public void PlayPuffVfx()
     {
         puffVfxParticleSystem.Play();
+        magicPuffSoundBehaviour.PlayMagicPuffSound();
     }
 
     #endregion
