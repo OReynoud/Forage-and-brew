@@ -42,7 +42,10 @@ public class TutorialManager : Singleton<TutorialManager>
     {
         if (CodexContentManager.instance.tutorialDissolves.ContainsKey("2BrownCap"))
         {
-            if (GameDontDestroyOnLoadManager.Instance.CollectedIngredients.FindAll(x => x == brownCapValuesSo).Count >= 2)
+            if (GameDontDestroyOnLoadManager.Instance.CollectedIngredients.FindAll(x => x == brownCapValuesSo).Count + 
+                GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients.FindAll(x => x.IngredientValuesSo == brownCapValuesSo).Count +
+                GameDontDestroyOnLoadManager.Instance.FloorCollectedIngredients.FindAll(x => x.Ingredient == brownCapValuesSo).Count
+                >= 2)
             {
                 CodexContentManager.instance.pageIndexesToCheck.Insert(0, CodexContentManager.instance.tutorialDissolves["2BrownCap"].pageToCheck);
                 CodexContentManager.instance.tutorialDissolvesToCheck.Add("2BrownCap");
