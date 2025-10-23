@@ -45,6 +45,7 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
     {
         if (!state)
         {
+            CharacterInputManager.Instance.EnableMoveInputs();
 
             DOTween.To(() => tutorialBackground.alpha, x => tutorialBackground.alpha = x, 0,
                 0.2f).OnComplete((() =>
@@ -65,8 +66,11 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
             tutorialBackground.alpha = Mathf.Lerp(0, 1, timer / lerpTime);
             if (timer > lerpTime)
             {
-                startDelay = false;
                 startBackGroundLerp = false;
+                doTutorialPages = false;
+                InfoDisplayManager.instance.canShowCodex = true;
+                CharacterInputManager.Instance.EnableCodexInputs();
+                CharacterInputManager.Instance.EnableCodexExit();
             }
             return;
         }
@@ -75,10 +79,7 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
             timer += Time.deltaTime;
             if (timer > timeBeforeLerp)
             {
-                doTutorialPages = false;
-                InfoDisplayManager.instance.canShowCodex = true;
-                CharacterInputManager.Instance.EnableCodexInputs();
-                CharacterInputManager.Instance.EnableCodexExit();
+                startDelay = false;
                 startBackGroundLerp = true;
                 timer = 0;
             }

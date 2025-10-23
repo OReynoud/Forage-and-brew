@@ -48,8 +48,8 @@ public class WishingWellBehavior : MonoBehaviour, ICinematicInteraction
         CharacterMovementController.Instance.TriggerWalkTransition(posToLook - CharacterAnimManager.instance.transform.forward * distance);
         CharacterMovementController.Instance.FinishWalkToLocation.AddListener(Wish);
         localCanvas.SetActive(false);
-        doneWish = true;
-        this.enabled = false;
+        //doneWish = true;
+        //enabled = false;
     }
 
     void Wish()
