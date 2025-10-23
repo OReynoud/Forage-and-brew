@@ -53,7 +53,10 @@ public class WishingWellBehavior : MonoBehaviour, ICinematicInteraction
     }
 
     void Wish()
-    {
+    {        
+        Vector3 posToLook = new Vector3(transform.position.x,
+            CharacterAnimManager.instance.transform.position.y, transform.position.z);
+        CharacterAnimManager.instance.transform.LookAt(posToLook);
         CharacterAnimManager.instance.animator.SetTrigger(DoWish);
         CharacterMovementController.Instance.FinishWalkToLocation.RemoveListener(Wish);
     }
