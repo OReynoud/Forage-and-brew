@@ -29,8 +29,7 @@ public class CodexCloseEndStateBehavior : StateMachineBehaviour
             CharacterInputManager.Instance.EnableInteractInputs();
             CharacterInputManager.Instance.EnableHapticChallengeInputs(); 
             CharacterInputManager.Instance.EnableCodexInputs();
-            
-
+            TutorialManager.instance.OnCodexClose.Invoke();
         }
     }
 

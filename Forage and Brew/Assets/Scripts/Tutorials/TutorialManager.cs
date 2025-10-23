@@ -1,7 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class TutorialManager : Singleton<TutorialManager>
 {
@@ -10,6 +12,9 @@ public class TutorialManager : Singleton<TutorialManager>
     public IngredientValuesSo brownCapValuesSo;
     public TextMeshProUGUI headText;
     public TextMeshProUGUI bodyText;
+    public float potionCompleteDelay = 1f;
+
+    public UnityEvent OnCodexClose { get; set; } = new UnityEvent();
 
     public override void Awake()
     {
@@ -80,7 +85,17 @@ public class TutorialManager : Singleton<TutorialManager>
     {
         if (!CodexContentManager.instance.tutorialDissolves.ContainsKey("CompletePotion"))
             return;
-        CodexContentManager.instance.pageIndexesToCheck.Add(CodexContentManager.instance.tutorialDissolves["CompletePotion"].pageToCheck);
+        StartCoroutine(CompletePotionRoutine());
+
+    }
+
+    private IEnumerator CompletePotionRoutine()
+    {
+        yield return new WaitForSeconds(potionCompleteDelay);
+        OnCodexClose.AddListener(FinishNotifyFromPotion);
+        CharacterAnimManager.instance.animator.SetLayerWeight(1, 0);
+        CodexContentManager.instance.pageIndexesToCheck.Add(CodexContentManager.instance.tutorialDissolves["CompletePotion"]
+            .pageToCheck);
         if (CodexContentManager.instance.pageIndexesToCheck[^1] % 2 == 1)
         {
             AutoFlip.instance.ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1] + 1);
@@ -89,15 +104,23 @@ public class TutorialManager : Singleton<TutorialManager>
         {
             AutoFlip.instance.ControledBook.JumpToPage(CodexContentManager.instance.pageIndexesToCheck[^1]);
         }
+
         CharacterInputManager.Instance.EnterCodexMethod();
-        
-        
+
+
         CodexContentManager.instance.tutorialDissolvesToCheck.Add("CompletePotion");
         CharacterInputManager.Instance.DisableCodexInputs();
         CharacterInputManager.Instance.DisableInputs();
-        
+
         AutoFlip.instance.ContinuePageDiscovery(true);
     }
+
+    public void FinishNotifyFromPotion()
+    {
+        OnCodexClose.RemoveListener(FinishNotifyFromPotion);
+        CharacterAnimManager.instance.animator.SetLayerWeight(1, 1);
+    }
+    
 
     public void NotifyFromCompleteOrder()
     {
