@@ -501,7 +501,9 @@ public class AutoFlip : Singleton<AutoFlip>
             recipeToPin = null;
             tempIngredientsHigh.Clear();
         }
-        
+
+        if (CodexPickUpBehaviour.doTutorialPages)
+            yield break;
         CharacterInputManager.Instance.EnableMoveInputs();
         CharacterInputManager.Instance.EnableCodexInputs();
         CharacterInputManager.Instance.EnableCodexExitInput();
