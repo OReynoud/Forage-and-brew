@@ -6,6 +6,6 @@ public class MagicPuffSoundBehaviour : MonoBehaviour
     
     public void PlayMagicPuffSound()
     {
-        magicPuffAudioSource.PlayOneShot(magicPuffAudioSource.clip);
+        magicPuffAudioSource.Play();
     }
 }
