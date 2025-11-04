@@ -126,6 +126,12 @@ public class SaveManager : MonoBehaviour
         // Orders
         data.CurrentOrders = orderManager.CurrentOrders;
         
+        //Tutorial progression
+        data.CodexIsUnlocked = gameDontDestroyOnLoadManager.codexIsUnlocked;
+        data.HasDonePinTutorial = gameDontDestroyOnLoadManager.hasDonePinTutorial;
+        
+        data.UnlockedTutorials = gameDontDestroyOnLoadManager.UnlockedTutorials;
+        
         // Save Data
         string jsonData = JsonUtility.ToJson(data, true);
         File.WriteAllText(FilePath, jsonData, _encoding);
@@ -212,6 +218,12 @@ public class SaveManager : MonoBehaviour
         
         // Orders
         orderManager.CurrentOrders.AddRange(data.CurrentOrders);
+        
+        // Tutorial progression
+        gameDontDestroyOnLoadManager.codexIsUnlocked = data.CodexIsUnlocked;
+        gameDontDestroyOnLoadManager.hasDonePinTutorial = data.HasDonePinTutorial;
+        
+        gameDontDestroyOnLoadManager.UnlockedTutorials = data.UnlockedTutorials;
     }
     
     public static void DeleteSave(bool isOnMainMenu)
@@ -248,6 +260,7 @@ public class SaveManager : MonoBehaviour
         
         [field: SerializeField] public List<IngredientValuesSo> UnlockedIngredients { get; set; }
         [field: SerializeField] public List<PotionValuesSo> UnlockedRecipes { get; set; }
+        [field: SerializeField] public List<TutorialDissolveBehavior> UnlockedTutorials { get; set; }
         
         [field: SerializeField] public bool HasChosenIngredientsToday { get; set; }
         [field: SerializeField] public List<int> RemainingIngredientToCollectBehavioursKeys { get; set; }
@@ -266,8 +279,10 @@ public class SaveManager : MonoBehaviour
         [field: SerializeField] public int CurrentLunarCycleStateIndex { get; set; }
         
         [field: SerializeField] public int MoneyAmount { get; set; }
-        
         [field: SerializeField] public List<Order> CurrentOrders { get; set; }
+        
+        [field: SerializeField] public bool CodexIsUnlocked { get; set; }
+        [field: SerializeField] public bool HasDonePinTutorial { get; set; }
     
     }
 }

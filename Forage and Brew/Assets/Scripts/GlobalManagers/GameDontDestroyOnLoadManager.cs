@@ -33,6 +33,7 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     // Unlocked Ingredients and Recipes
     [SerializeField] public List<IngredientValuesSo> UnlockedIngredients = new();
     [SerializeField] public List<PotionValuesSo> UnlockedRecipes = new();
+    [SerializeField] public List<TutorialDissolveBehavior> UnlockedTutorials = new();
     public UnityEvent<IngredientValuesSo> OnNewIngredientCollected { get; private set; } = new();
     public UnityEvent<PotionValuesSo> OnNewRecipeReceived { get; private set; } = new();
     
