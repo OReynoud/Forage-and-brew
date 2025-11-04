@@ -11,9 +11,9 @@ public class CharacterMovementController : MonoBehaviour
     
     [Header("Dependencies")]
     [SerializeField] private Animator animator;
-    [SerializeField] private AudioSource walkAudioSource;
-    [SerializeField] private AudioResource walkHome;
-    [SerializeField] private AudioResource walkForest;
+    [SerializeField] public AudioSource walkAudioSource;
+    [SerializeField] public AudioResource walkHome;
+    [SerializeField] public AudioResource walkForest;
     [SerializeField] private AudioResource walkSwamp;
     [SerializeField] private Collider coll;
     

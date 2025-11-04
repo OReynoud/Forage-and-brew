@@ -18,7 +18,15 @@ public class IndoorOutdoorTrigger : MonoBehaviour
         {
             PinnedRecipe.instance.PinRecipe();
         }
-        MusicManager.Instance.PlaySceneMucic(Scene.HouseOutdoor);
 
+        if (!inHouse)
+        {
+            MusicManager.Instance.PlaySceneMucic(Scene.HouseOutdoor, true);
+            CharacterMovementController.Instance.walkAudioSource.resource = CharacterMovementController.Instance.walkForest;
+        }
+        else
+        {
+            CharacterMovementController.Instance.walkAudioSource.resource = CharacterMovementController.Instance.walkHome;
+        }
     }
 }

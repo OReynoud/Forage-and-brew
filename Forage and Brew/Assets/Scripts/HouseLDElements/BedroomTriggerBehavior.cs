@@ -11,5 +11,9 @@ public class BedroomTriggerBehavior : MonoBehaviour
         
         PinnedRecipe.instance.isInBedroom = toBedroom;
         PinnedRecipe.instance.InverseChangePos(toBedroom);
+        if (toBedroom)
+        {
+            MusicManager.Instance.PlaySceneMucic(Scene.HouseOutdoor);
+        }
     }
 }

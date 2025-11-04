@@ -33,20 +33,24 @@ public class MusicManager : MonoBehaviour
     }
     
     
-    public void PlaySceneMucic(Scene scene)
+    public void PlaySceneMucic(Scene scene, bool playOutdoorMusic = false)
     {
         switch (scene)
         {
             case Scene.HouseOutdoor:
-                if (PinnedRecipe.instance.isInHouse)
+                if (!playOutdoorMusic)
                 {
+                    if (musicSource.resource == allMusics.Find(x => x.playsInHouse).Music)
+                    {
+                        return;
+                    }
                     musicSource.resource = allMusics.Find(x => x.playsInHouse).Music;
+                        
                 }
                 else
                 {
                     musicSource.resource = allMusics.Find(x => x.playsInHouse == false && x.Scene == Scene.HouseOutdoor).Music;
                 }
-                musicSource.Play();
                 break;
             case Scene.Biome1:
                 if (WeatherManager.Instance.CurrentWeatherState.WeatherStateSo == cloudyWeatherState)
