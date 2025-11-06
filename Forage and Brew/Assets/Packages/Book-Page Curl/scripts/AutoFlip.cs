@@ -326,18 +326,6 @@ public class AutoFlip : Singleton<AutoFlip>
 
     public void HandleNewRecipes()
     {
-        foreach (var recipe in CodexContentManager.instance.recipes)
-        {
-            if (!recipe.isDissolved)
-            {
-                CodexContentManager.instance.pageIndexesToCheck.Insert(0, recipe.PageNumber);
-                if (Array.Exists(recipe.storedPotion.TemperatureChallengeIngredients, x => x.Temperature != Temperature.None))
-                {
-                    Debug.Log("Add Bellows Tutorial");
-                    TutorialManager.instance.NotifyFromRecipeReceived("Bellows");
-                }
-            }
-        }
 
         if (CodexContentManager.instance.pageIndexesToCheck.Count == 0)
         {
@@ -393,7 +381,7 @@ public class AutoFlip : Singleton<AutoFlip>
     {
         if (startupDelay)
             yield return new WaitWhile(() => !CharacterInputManager.Instance.showCodex);
-
+        
         CharacterInputManager.Instance.DisableMoveInputs();
         PageFlipIndication.gameObject.SetActive(false);
         if (CodexContentManager.instance.pageIndexesToCheck.Count > 0)
@@ -441,6 +429,7 @@ public class AutoFlip : Singleton<AutoFlip>
             CharacterInputManager.Instance.EnableMoveInputs();
             CodexContentManager.instance.pageIndexesToCheck.RemoveAt(CodexContentManager.instance.pageIndexesToCheck
                 .Count - 1);
+            Debug.Log("Removed Page to check");
 
             if (CodexContentManager.instance.pageIndexesToCheck.Count == 0)
             {

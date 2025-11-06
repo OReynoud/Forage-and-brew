@@ -347,6 +347,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         moneyDisplayGameObject.SetActive(false);
         _letterPileTargetPosition = letterPileHiddenPosition;
         _backgroundTargetFadeValue = backgroundHiddenFadeValue;
+        int newOrdersCounter = 0;
 
         foreach (var letter in GameDontDestroyOnLoadManager.Instance.ChosenLetters)
         {
@@ -363,6 +364,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                         }
                     }
                     OrderManager.Instance.CreateNewOrder(letter.Item1);
+                    newOrdersCounter++;
                     break;
                 case LetterType.Thanks:
                     if (!CodexContentManager.instance.historicPages.Find(x => x.OriginLetter))
@@ -379,6 +381,8 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 
         CharacterInteractController.Instance.CurrentNearMailBoxBehaviour = null;
         GameDontDestroyOnLoadManager.Instance.MailBoxLetters.Clear();
+        
+        
         if (GameDontDestroyOnLoadManager.Instance.DayPassed == 0)
         {
             TutorialManager.instance.NotifyFromRecipeReceived("AfterLetter1");
@@ -392,6 +396,35 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
             TutorialManager.instance.NotifyFromRecipeReceived("GardenTuto");
         }
         
+        foreach (var recipe in CodexContentManager.instance.recipes)
+        {
+            if (!recipe.isDissolved)
+            {
+                CodexContentManager.instance.pageIndexesToCheck.Insert(0, recipe.PageNumber);
+                if (Array.Exists(recipe.storedPotion.TemperatureChallengeIngredients, x => x.Temperature != Temperature.None))
+                {
+                    Debug.Log("Add Bellows Tutorial");
+                    TutorialManager.instance.NotifyFromRecipeReceived("Bellows");
+                }
+            }
+        }
+
+        newOrdersCounter = Mathf.FloorToInt(newOrdersCounter * 0.5f);
+        for (int i = 0; i < newOrdersCounter; i++)
+        {
+            CodexContentManager.instance.tutorialDissolvesToCheck.Insert(0, "");
+        }
+        
+        var temp = CodexContentManager.instance.pageIndexesToCheck.Count -
+                   CodexContentManager.instance.tutorialDissolvesToCheck.Count;
+        Debug.Log(temp);
+        if (temp >= 1)
+        {
+            for (int i = 1; i < temp; i++)
+            {
+                CodexContentManager.instance.tutorialDissolvesToCheck.Add("");
+            }
+        }
         AutoFlip.instance.HandleNewRecipes();
         audioSource.Stop();
         audioSource.Play();

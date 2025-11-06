@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -58,11 +59,12 @@ public class CodexContentManager : Singleton<CodexContentManager>
     [Foldout("Debug")] private List<Sprite> tempIngredientsHigh = new();
     public Dictionary<string, TutorialDissolveBehavior> tutorialDissolves = new();
 
-    public List<int> pageIndexesToCheck = new();
+    [field : SerializeField] public List<int> pageIndexesToCheck { get; set; } = new();
     public List<string> tutorialDissolvesToCheck = new();
     private int pageChoser;
 
     public bool isDiscoveringNewIngredient { get; set; }
+    public UnityEvent OnStartingRoutineFinished { get; set; } = new UnityEvent();
 
     public override void Awake()
     {
@@ -135,6 +137,8 @@ public class CodexContentManager : Singleton<CodexContentManager>
         }
 
         AutoFlip.instance.ControledBook.UpdatePageNumbers();
+        if (OnStartingRoutineFinished != null)
+            OnStartingRoutineFinished.Invoke();
     }
 
     private void CreateNewRecipePage(PotionValuesSo newRecipeValues)

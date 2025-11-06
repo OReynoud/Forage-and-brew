@@ -7,6 +7,7 @@ public class TutorialDissolveBehavior : MonoBehaviour
     public string dissolveID;
 
 
+    public PageBehavior parentPage;
     public Image DissolveImage;
     public bool autoAdd;
     [ReadOnly]public bool doDissolve;
@@ -30,6 +31,7 @@ public class TutorialDissolveBehavior : MonoBehaviour
             return;
         }
 
+        CodexContentManager.instance.OnStartingRoutineFinished.AddListener(SetPageToCheckNumber);
         mat.SetFloat(Ex.CutoffHeight, 0);
         DissolveImage.material = mat;
 
@@ -38,6 +40,15 @@ public class TutorialDissolveBehavior : MonoBehaviour
         if (autoAdd)
         {
             CodexContentManager.instance.tutorialDissolvesToCheck.Insert(1, dissolveID);
+        }
+    }
+
+    private void SetPageToCheckNumber()
+    {
+        pageToCheck = parentPage.PageNumber;
+        if (parentPage.PageNumber % 2 == 1)
+        {
+            pageToCheck--;
         }
     }
 
