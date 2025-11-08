@@ -10,16 +10,6 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
     [field: BoxGroup("Plot Data")] [field: SerializeField] public bool NeedsWatering { get; set; }
     [field: BoxGroup("Plot Data")] [field: SerializeField] public int PlantGrowthProgression { get; set; }
     [field: BoxGroup("Plot Data")] [field: SerializeField] public int RequiredProgressionToMature { get; set; }
-    [field: BoxGroup("Plot Data")] [field: SerializeField] public bool IsWeed { get; set; }
-
-    [field: SerializeField]
-    [field: Range(0, 1)]
-    [field: BoxGroup("Plot Data")] public float BaseWeedSpawnChance { get; set; }
-    
-    [field: SerializeField]
-    [field: Range(0, 1)]
-    [field: BoxGroup("Plot Data")] public float WeedSpawnChanceIncrease { get; set; }
-    [field: BoxGroup("Plot Data")] [SerializeField] private float effectiveWeedSpawnChance;
     [field: BoxGroup("Plot Data")] [field: SerializeField] public SeedValuesSo PlantedSeed { get; set; }
     
     [BoxGroup("Refs")]public MeshRenderer parcelMesh;
@@ -31,9 +21,6 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
     [BoxGroup("Refs")] public GameObject seedInformationBubble;
     [BoxGroup("Refs")]public Image seedIndicator;
     [BoxGroup("Refs")]public GameObject buttonAObject;
-    [BoxGroup("Refs")]public ParticleSystem weedingVfx;
-    
-
 
     [field: SerializeField] public bool UseEndPoint { get; set; }
     [field: SerializeField] public Transform EndPoint { get; set; }
@@ -47,12 +34,10 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
         base.Start();
         InitPurchasableHouseItem();
         DisableInteract();
-        weedBehaviour.DisableUI();
         SceneTransitionManager.instance.OnSleep.AddListener(ProgressDay);
         if (!GameDontDestroyOnLoadManager.Instance.codexIsUnlocked)
         {
             sproutMesh.SetActive(false);
-            EnableWeed();
         }
         UpdateVisuals();
     }
@@ -69,18 +54,6 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
             NeedsWatering = true;
             UpdateVisuals();
             return;
-        }
-        if (IsWeed)
-            return;
-
-        if (Random.value < effectiveWeedSpawnChance)
-        {
-            effectiveWeedSpawnChance = BaseWeedSpawnChance;
-            EnableWeed();
-        }
-        else
-        {
-            effectiveWeedSpawnChance += WeedSpawnChanceIncrease;
         }
     }
 
@@ -139,14 +112,6 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
         PlantGrowthProgression = data.PlantGrowthProgression;
         RequiredProgressionToMature = data.RequiredProgressionToMature;
         PlantedSeed = data.PlantedSeed;
-        IsWeed = data.IsWeed;
-        BaseWeedSpawnChance = data.WeedSpawnChance;
-
-        if (!IsWeed)
-        {
-            weedBehaviour.DisableWeed();
-        }
-        
     }
     
     public void WaterPlot()
@@ -167,37 +132,10 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
         PlantedSeed = collectedSeedBehaviour.SeedValuesSo;
         RequiredProgressionToMature = PlantedSeed.DaysToMature;
         NeedsWatering = true;
-        BaseWeedSpawnChance = 0;
         UpdateVisuals();
         GardenManager.instance.plotsData[selfIndex + 1].UpdateData(this);
         
         TutorialManager.instance.NotifyFromRecipeReceived("WaterSeeds");
-    }
-
-
-    public void EnableWeed()
-    {
-        weedBehaviour.EnableWeed();
-        IsWeed = true;
-        GardenManager.instance.plotsData[selfIndex + 1].UpdateData(this);
-    }
-
-    public void DisableWeed()
-    {
-        weedBehaviour.DisableWeed();
-        IsWeed = false;
-        GardenManager.instance.plotsData[selfIndex + 1].UpdateData(this);
-    }
-
-    public void RemoveWeed()
-    {
-
-        weedBehaviour.DisableUI();
-        weedBehaviour.CollectWeed();
-        weedingVfx.Play();
-        IsWeed = false;
-        GardenManager.instance.plotsData[selfIndex + 1].UpdateData(this);
-        parcelMesh.gameObject.SetActive(true);
     }
 
     public void HandlePlayerInput()
@@ -209,9 +147,6 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
         }
 
         if (!Unlocked)
-            return;
-        
-        if (IsWeed)
             return;
         
         if (!PlantedSeed)
@@ -274,17 +209,7 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
 
                 characterInteractController.CurrentNearPlot = this;
 
-                if (IsWeed)
-                {
-                    interactInputCanvasGameObject.SetActive(true);
-                    weedBehaviour.EnableCollect(isUiRight);   
-                    if (other.TryGetComponent(out CollectHapticChallengeManager collectHapticChallengeManager))
-                        collectHapticChallengeManager.CurrentWeedableBehaviours.Add(this);
-                }
-                else
-                {
-                    EnableInteract();
-                }
+                EnableInteract();
             }
         }
     }
@@ -305,20 +230,7 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
             characterInteractController.CurrentNearPlot = null;
         }
 
-        if (IsWeed)
-        {   
-            interactInputCanvasGameObject.SetActive(false);
-            weedBehaviour.DisableUI();   
-            if (other.TryGetComponent(out CollectHapticChallengeManager collectHapticChallengeManager) &&
-                collectHapticChallengeManager.CurrentWeedableBehaviours.Contains(this))
-            {
-                collectHapticChallengeManager.RemoveGardenPlotBehavior(this);
-            }
-        }
-        else
-        {
-            DisableInteract();
-        }
+        DisableInteract();
         pricePopUpBehaviour.HidePrice();
     }
 

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public abstract class PurchasableHouseItemBehaviour : WeedContainerBehavior
+public abstract class PurchasableHouseItemBehaviour : CollectibleBehaviour
 {
     [Header("Purchasable House Item Values")]
     [SerializeField]

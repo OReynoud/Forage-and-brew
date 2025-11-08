@@ -11,7 +11,6 @@ public class CollectHapticChallengeManager : MonoBehaviour
     [SerializeField] private UnearthingHapticChallengeSo unearthingHapticChallengeSo;
     [SerializeField] private ScrapingHapticChallengeSo scrapingHapticChallengeSo;
     [SerializeField] private HarvestHapticChallengeSo harvestHapticChallengeSo;
-    [SerializeField] private WeedingHapticChallengeSo weedingHapticChallengeSo;
     [SerializeField] private Animator characterAnimator;
 
     [Header("Ingredient Types")]
@@ -25,7 +24,6 @@ public class CollectHapticChallengeManager : MonoBehaviour
     [SerializeField] private float characterUnearthingDistance = 1f;
     [SerializeField] private float characterScrapingDistance = 1f;
     [SerializeField] private float characterHarvestDistance = 1f;
-    [SerializeField] private float characterWeedingDistance = 1f;
     
     [Header("Audio")]
     [SerializeField] private AudioSource collectAudioSource;
@@ -34,7 +32,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
     
     // Global variables
     private bool _callCodexOnAnimationEnd;
-    public List<WeedContainerBehavior> CurrentWeedableBehaviours { get; } = new();
+    public List<CollectibleBehaviour> CurrentCollectibleBehaviours { get; } = new();
     private IngredientToCollectBehaviour _currentIngredientToCollectBehaviour;
     private GardenPlotBehavior _currentGardenPlotBehaviour;
     public Vector2 JoystickInputValue { get; set; }
@@ -54,12 +52,6 @@ public class CollectHapticChallengeManager : MonoBehaviour
     // Harvest
     private float _currentHarvestTime;
     private bool _canValidateHarvest;
-    
-    // Weeding
-    private bool _isWeedingHapticChallengeActive;
-    private int _currentWeedingInputIndex;
-    private float _currentWeedingTime;
-    private bool _canValidateWeeding;
     
     // Animator Hashes
     private static readonly int DoBuildUpHarvest = Animator.StringToHash("DoBuildUpHarvest");
@@ -84,15 +76,13 @@ public class CollectHapticChallengeManager : MonoBehaviour
 
     private void Update()
     {
-        if (CurrentWeedableBehaviours.Count == 0) return;
+        if (CurrentCollectibleBehaviours.Count == 0) return;
         
         UpdateUnearthing();
         
         UpdateScraping();
         
         UpdateHarvest();
-        
-        UpdateWeeding();
     }
 
 
@@ -101,9 +91,9 @@ public class CollectHapticChallengeManager : MonoBehaviour
     public void CheckScythingInput()
     {
         SortIngredientsByDistance();
-        foreach (var weedable in CurrentWeedableBehaviours)
+        foreach (CollectibleBehaviour collectibleBehaviour in CurrentCollectibleBehaviours)
         {
-            if (weedable is not IngredientToCollectBehaviour ingredientToCollectBehaviour)continue;
+            if (collectibleBehaviour is not IngredientToCollectBehaviour ingredientToCollectBehaviour)continue;
             
             if (!ingredientToCollectBehaviour.IngredientValuesSo) continue;
 
@@ -160,11 +150,9 @@ public class CollectHapticChallengeManager : MonoBehaviour
         {
             SortIngredientsByDistance();
         
-            foreach (var weedable in CurrentWeedableBehaviours)
+            foreach (CollectibleBehaviour collectibleBehaviour in CurrentCollectibleBehaviours)
             {
-                if (weedable is not IngredientToCollectBehaviour ingredientToCollectBehaviour)continue;
-                
-                if (ingredientToCollectBehaviour.IsWeed) continue;
+                if (collectibleBehaviour is not IngredientToCollectBehaviour ingredientToCollectBehaviour)continue;
                 
                 if (ingredientToCollectBehaviour.IngredientValuesSo.Type != unearthingIngredientType) continue;
             
@@ -249,9 +237,9 @@ public class CollectHapticChallengeManager : MonoBehaviour
             {
                 SortIngredientsByDistance();
         
-                foreach (var weedable in CurrentWeedableBehaviours)
+                foreach (CollectibleBehaviour collectibleBehaviour in CurrentCollectibleBehaviours)
                 {
-                    if (weedable is not IngredientToCollectBehaviour ingredientToCollectBehaviour)continue;
+                    if (collectibleBehaviour is not IngredientToCollectBehaviour ingredientToCollectBehaviour)continue;
                     if (!ingredientToCollectBehaviour.IngredientValuesSo) continue;
 
                     if (ingredientToCollectBehaviour.IngredientValuesSo.Type != scrapingIngredientType) continue;
@@ -315,9 +303,9 @@ public class CollectHapticChallengeManager : MonoBehaviour
     {
         SortIngredientsByDistance();
         
-        foreach (var weedable in CurrentWeedableBehaviours)
+        foreach (CollectibleBehaviour collectibleBehaviour in CurrentCollectibleBehaviours)
         {
-            if (weedable is not IngredientToCollectBehaviour ingredientToCollectBehaviour)continue;
+            if (collectibleBehaviour is not IngredientToCollectBehaviour ingredientToCollectBehaviour)continue;
             if (!ingredientToCollectBehaviour.IngredientValuesSo) continue;
 
             if (ingredientToCollectBehaviour.IngredientValuesSo.Type != harvestIngredientType) continue;
@@ -363,175 +351,16 @@ public class CollectHapticChallengeManager : MonoBehaviour
     #endregion
     
     
-    #region Weeding
-    
-    private void UpdateWeeding()
-    {
-        if (_currentWeedingTime <= 0f) return;
-        
-        _currentWeedingTime -= Time.deltaTime;
-        if (_currentIngredientToCollectBehaviour)
-        {
-            _currentIngredientToCollectBehaviour.SetWeedingValue(1f - _currentWeedingTime /
-                weedingHapticChallengeSo.InputReleaseDelayTolerances[_currentWeedingInputIndex],
-                _currentWeedingInputIndex);
-        }
-        else
-        {
-            _currentGardenPlotBehaviour.SetWeedingValue(1f - _currentWeedingTime /
-                weedingHapticChallengeSo.InputReleaseDelayTolerances[_currentWeedingInputIndex],
-                _currentWeedingInputIndex);
-        }
-
-        
-        if (_currentWeedingTime <= 0f)
-        {
-            _canValidateWeeding = true;
-            
-            RumbleManager.Instance.PlayRumble(weedingHapticChallengeSo.InputReleaseVibrationDuration,
-                weedingHapticChallengeSo.InputReleaseVibrationPower);
-
-            if (_currentIngredientToCollectBehaviour)
-            {
-                _currentIngredientToCollectBehaviour.ReleaseWeeding();
-            }
-            else
-            {
-                _currentGardenPlotBehaviour.ReleaseWeeding();
-            }
-
-        }
-    }
-    
-    public void CheckWeedingInputPressed()
-    {
-        if (!_isWeedingHapticChallengeActive)
-        {
-            SortIngredientsByDistance();
-        
-            foreach (var weedable in CurrentWeedableBehaviours)
-            {
-                switch (weedable)
-                {
-                    case IngredientToCollectBehaviour ingredientToCollectBehaviour:
-                        if (!ingredientToCollectBehaviour.IsWeed) continue;
-                                        
-                        _isWeedingHapticChallengeActive = true;
-            
-                        _currentIngredientToCollectBehaviour = ingredientToCollectBehaviour; 
-                        
-                        FaceIngredient(characterWeedingDistance, _currentIngredientToCollectBehaviour.transform);
-                        break;
-                    case GardenPlotBehavior gardenPlotBehavior:
-                        if (!gardenPlotBehavior.IsWeed) continue;
-                                        
-                        _isWeedingHapticChallengeActive = true;
-            
-                        _currentGardenPlotBehaviour = gardenPlotBehavior; 
-                        
-                        FaceIngredient(characterWeedingDistance, gardenPlotBehavior.transform);
-                        break;
-                }
-                break;
-            }
-            
-            if (!_isWeedingHapticChallengeActive) return;
-        }
-        
-        _currentWeedingTime = weedingHapticChallengeSo.InputReleaseDelayTolerances[_currentWeedingInputIndex];
-        
-        CharacterInputManager.Instance.DisableMoveInputs();
-        CharacterInputManager.Instance.DisableCodexInputs();
-        characterAnimator.SetTrigger(DoBuildUpHarvest);
-    }
-    
-    public void CheckWeedingInputReleased()
-    {
-        if (_currentWeedingTime == 0f && !_canValidateWeeding) return;
-        
-        _currentWeedingTime = 0f;
-        
-        CharacterInputManager.Instance.EnableCodexInputs();
-        
-        if (!_canValidateWeeding)
-        {
-            if (_currentIngredientToCollectBehaviour)
-            {
-                _currentIngredientToCollectBehaviour.SetWeedingValue(0f, _currentWeedingInputIndex);
-            }
-            else
-            {
-                _currentGardenPlotBehaviour.SetWeedingValue(0f, _currentWeedingInputIndex);
-            }
-            characterAnimator.SetTrigger(DoCancelHarvest);
-            CharacterInputManager.Instance.EnableMoveInputs();
-            return;
-        }
-        
-        _canValidateWeeding = false;
-        
-        if (_currentIngredientToCollectBehaviour)
-        {
-            _currentIngredientToCollectBehaviour.PressWeeding();
-        }
-        else
-        {
-            _currentGardenPlotBehaviour.PressWeeding();
-        }
-        
-        characterAnimator.SetTrigger(DoHarvest);
-        
-        _currentWeedingInputIndex++;
-        
-        if (_currentWeedingInputIndex >= weedingHapticChallengeSo.InputReleaseDelayTolerances.Count)
-        {
-    
-            _isWeedingHapticChallengeActive = false;
-            if (_currentIngredientToCollectBehaviour)
-            {
-                ResetWeeding(_currentIngredientToCollectBehaviour);
-                _currentIngredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayWeedingVfx();
-            }
-            else
-            {
-                ResetWeeding(_currentGardenPlotBehaviour);
-            }
-        
-            CollectIngredient(true);
-        }
-        else
-        {
-
-            if (_currentIngredientToCollectBehaviour)
-            {
-                _currentIngredientToCollectBehaviour.ChangeWeedingInputIndex(_currentWeedingInputIndex);
-            }
-            else
-            {
-                _currentGardenPlotBehaviour.ChangeWeedingInputIndex(_currentWeedingInputIndex);
-            }
-        }
-    }
-    
-    public void ResetWeeding(WeedContainerBehavior weedContainerBehavior)
-    {
-        _currentWeedingInputIndex = 0;
-        weedContainerBehavior.ResetWeedingInputIndex();
-    }
-    
-    #endregion
-    
-    
     private void SortIngredientsByDistance()
     {
-        CurrentWeedableBehaviours.Sort((a, b) => Vector3.Distance(transform.position, a.transform.position)
+        CurrentCollectibleBehaviours.Sort((a, b) => Vector3.Distance(transform.position, a.transform.position)
             .CompareTo(Vector3.Distance(transform.position, b.transform.position)));
     }
 
-    private void FaceIngredient(float characterDistance, Transform weedTransform)
+    private void FaceIngredient(float characterDistance, Transform ingredientTransform)
     {
-        Vector3 ingredientPosition = new(weedTransform.position.x,
-            transform.position.y, weedTransform.position.z);
+        Vector3 ingredientPosition = new(ingredientTransform.position.x,
+            transform.position.y, ingredientTransform.position.z);
         transform.LookAt(ingredientPosition);
         CharacterInputManager.Instance.DisableMoveInputs();
         CharacterMovementController.Instance.TriggerWalkTransition(ingredientPosition - transform.forward * characterDistance);
@@ -557,61 +386,43 @@ public class CollectHapticChallengeManager : MonoBehaviour
         transform.LookAt(ingredientPosition);
     }
 
-    private void CollectIngredient(bool isWeed = false)
+    private void CollectIngredient()
     {
         // Audio
         collectAudioSource.Play();
 
-        if (isWeed)
+        if (_currentIngredientToCollectBehaviour)
         {
-            if (_currentIngredientToCollectBehaviour)
-            {
-                _currentIngredientToCollectBehaviour.RemoveWeed();
-            }
-            else
-            {
-                _currentGardenPlotBehaviour.RemoveWeed();
-            }
+            _currentIngredientToCollectBehaviour.Collect();
+            UpdateCounters.Invoke(_currentIngredientToCollectBehaviour.IngredientValuesSo);
+            CurrentCollectibleBehaviours.Remove(_currentIngredientToCollectBehaviour);
+            _currentIngredientToCollectBehaviour = null;
         }
         else
         {
-            if (_currentIngredientToCollectBehaviour)
-            {
-                _currentIngredientToCollectBehaviour.Collect();
-                UpdateCounters.Invoke(_currentIngredientToCollectBehaviour.IngredientValuesSo);
-                CurrentWeedableBehaviours.Remove(_currentIngredientToCollectBehaviour);
-                _currentIngredientToCollectBehaviour = null;
-            }
-            else
-            {
-                CurrentWeedableBehaviours.Remove(_currentGardenPlotBehaviour);
-                _currentGardenPlotBehaviour = null;
-            }
+            CurrentCollectibleBehaviours.Remove(_currentGardenPlotBehaviour);
+            _currentGardenPlotBehaviour = null;
         }
     }
     
     public void RemoveIngredientToCollectBehaviour(IngredientToCollectBehaviour ingredientToCollectBehaviour)
     {
-        CurrentWeedableBehaviours.Remove(ingredientToCollectBehaviour);
+        CurrentCollectibleBehaviours.Remove(ingredientToCollectBehaviour);
         
         if (_currentIngredientToCollectBehaviour == ingredientToCollectBehaviour)
         {
-            ResetWeeding(ingredientToCollectBehaviour);
             _currentIngredientToCollectBehaviour = null;
             _isScrapingHapticChallengeActive = false;
-            _isWeedingHapticChallengeActive = false;
         }
     }
     
     public void RemoveGardenPlotBehavior(GardenPlotBehavior gardenPlotBehavior)
     {
-        CurrentWeedableBehaviours.Remove(gardenPlotBehavior);
+        CurrentCollectibleBehaviours.Remove(gardenPlotBehavior);
         
         if (_currentGardenPlotBehaviour == gardenPlotBehavior)
         {
-            ResetWeeding(gardenPlotBehavior);
             _currentGardenPlotBehaviour = null;
-            _isWeedingHapticChallengeActive = false;
         }
     }
 

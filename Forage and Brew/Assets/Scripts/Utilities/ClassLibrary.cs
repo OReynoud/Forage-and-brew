@@ -197,12 +197,6 @@ public class GardenPlotData
     [field: SerializeField] public int PlantGrowthProgression { get; set; }
     [field: SerializeField] public int RequiredProgressionToMature { get; set; }
 
-    [field: SerializeField] public bool IsWeed { get; set; }
-
-    [field: SerializeField]
-    [field: Range(0, 1)]
-    public float WeedSpawnChance { get; set; }
-
     [field: SerializeField] public SeedValuesSo PlantedSeed { get; set; }
 
     public void UpdateData(GardenPlotBehavior plotBehavior)
@@ -210,8 +204,6 @@ public class GardenPlotData
         NeedsWatering = plotBehavior.NeedsWatering;
         PlantGrowthProgression = plotBehavior.PlantGrowthProgression;
         RequiredProgressionToMature = plotBehavior.RequiredProgressionToMature;
-        IsWeed = plotBehavior.IsWeed;
-        WeedSpawnChance = plotBehavior.BaseWeedSpawnChance;
         PlantedSeed = plotBehavior.PlantedSeed;
     }
 }
@@ -295,37 +287,6 @@ public class StackableItem : MonoBehaviour
     [field: SerializeField]
     public AnimationCurve ShoveRotationCurve { get; set; } = AnimationCurve.EaseInOut(0, 0, 1, 1);
 }
+
 [Serializable]
-public class WeedContainerBehavior : MonoBehaviour
-{
-    public bool canContainWeed;
-    [ShowIf("canContainWeed")][AllowNesting][SerializeField] protected WeedBehaviour weedBehaviour;
-    [ShowIf("canContainWeed")][AllowNesting][SerializeField]
-    protected bool isUiRight;
-
-    public void ChangeWeedingInputIndex(int newSliderIndex)
-    {
-        weedBehaviour.ChangeWeedingInputIndex(newSliderIndex, isUiRight);
-    }
-
-    public void ResetWeedingInputIndex()
-    {
-        weedBehaviour.ResetWeedingInputIndex(isUiRight);
-    }
-
-    public void SetWeedingValue(float value, int inputIndex)
-    {
-        weedBehaviour.SetWeedingValue(value, inputIndex, isUiRight);
-    }
-
-    public void PressWeeding()
-    {
-        weedBehaviour.PressWeeding(isUiRight);
-    }
-
-    public void ReleaseWeeding()
-    {
-        weedBehaviour.ReleaseWeeding(isUiRight);
-    }
-}
-
+public class CollectibleBehaviour : MonoBehaviour { }

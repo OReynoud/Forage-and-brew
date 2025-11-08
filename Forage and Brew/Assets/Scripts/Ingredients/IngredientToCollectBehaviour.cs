@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class IngredientToCollectBehaviour : WeedContainerBehavior
+public class IngredientToCollectBehaviour : CollectibleBehaviour
 {
     [Header("Dependencies")]
     [SerializeField] private IngredientToCollectGlobalValuesSo ingredientToCollectGlobalValuesSo;
@@ -20,8 +20,7 @@ public class IngredientToCollectBehaviour : WeedContainerBehavior
     [SerializeField] private IngredientTypeSo scrapingIngredientType;
     [SerializeField] private IngredientTypeSo harvestIngredientType;
 
-    public WeedBehaviour GetWeedBehaviour() => weedBehaviour;
-    public bool IsUiRight() => isUiRight;
+    [SerializeField] public bool isUiRight;
 
     [Header("Obtaining Feedback")]
     [SerializeField] private RectTransform obtainingFeedbackRectTransform;
@@ -57,7 +56,6 @@ public class IngredientToCollectBehaviour : WeedContainerBehavior
     [SerializeField] private GameObject harvestGaugeRightGameObject;
     [SerializeField] private Slider harvestGaugeRightSlider;
 
-    public bool IsWeed { get; set; }
     public bool DoesNeedToShowUi { get; set; } = true;
     private float _currentTriggerTime;
 
@@ -83,8 +81,6 @@ public class IngredientToCollectBehaviour : WeedContainerBehavior
 
     public void SpawnMesh()
     {
-        weedBehaviour.DisableWeed();
-        
         for (int i = 0; i < meshParentTransform.childCount; i++)
         {
             Destroy(meshParentTransform.GetChild(i).gameObject);
@@ -98,30 +94,10 @@ public class IngredientToCollectBehaviour : WeedContainerBehavior
         // }
     }
 
-    
-    public void EnableWeed()
-    {
-        for (int i = 0; i < meshParentTransform.childCount; i++)
-        {
-            Destroy(meshParentTransform.GetChild(i).gameObject);
-        }
-        
-        weedBehaviour.EnableWeed();
-        
-        IsWeed = true;
-    }
-
 
     private void EnableCollect()
     {
         collectInputCanvasGameObject.SetActive(true);
-        
-        if (IsWeed)
-        {
-            weedBehaviour.EnableCollect(isUiRight);
-            
-            return;
-        }
         
         if (IngredientValuesSo.Type == scythingIngredientType)
         {
@@ -210,7 +186,6 @@ public class IngredientToCollectBehaviour : WeedContainerBehavior
         harvestInputRightGameObject.SetActive(false);
         harvestReleaseRightGameObject.SetActive(false);
         harvestGaugeRightGameObject.SetActive(false);
-        weedBehaviour.DisableUI();
     }
 
     public void PressUnearthing()
@@ -327,17 +302,6 @@ public class IngredientToCollectBehaviour : WeedContainerBehavior
         IngredientToCollectVfxManagerBehaviour.StopAllLunarCycleVfx();
         collectTrigger.enabled = false;
     }
-
-    public void RemoveWeed()
-    {
-        GameDontDestroyOnLoadManager.Instance.RemainingWeeds.Remove(SpawnIndex);
-        
-        DisableCollect();
-        
-        weedBehaviour.CollectWeed();
-        IngredientToCollectVfxManagerBehaviour.StopAllLunarCycleVfx();
-        collectTrigger.enabled = false;
-    }
     
     
     private bool IsNewIngredient()
@@ -352,7 +316,7 @@ public class IngredientToCollectBehaviour : WeedContainerBehavior
     {
         if (other.TryGetComponent(out CollectHapticChallengeManager collectHapticChallengeManager))
         {
-            collectHapticChallengeManager.CurrentWeedableBehaviours.Add(this);
+            collectHapticChallengeManager.CurrentCollectibleBehaviours.Add(this);
             
             if (!DoesNeedToShowUi) return;
             
@@ -378,7 +342,7 @@ public class IngredientToCollectBehaviour : WeedContainerBehavior
     private void OnTriggerExit(Collider other)
     {
         if (other.TryGetComponent(out CollectHapticChallengeManager collectHapticChallengeManager) &&
-            collectHapticChallengeManager.CurrentWeedableBehaviours.Contains(this))
+            collectHapticChallengeManager.CurrentCollectibleBehaviours.Contains(this))
         {
             collectHapticChallengeManager.RemoveIngredientToCollectBehaviour(this);
             DisableCollect();

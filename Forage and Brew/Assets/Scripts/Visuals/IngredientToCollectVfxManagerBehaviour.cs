@@ -17,7 +17,6 @@ public class IngredientToCollectVfxManagerBehaviour : MonoBehaviour
     [SerializeField] private ParticleSystem unearthingVfx;
     [SerializeField] private ParticleSystem scrapingVfx;
     [SerializeField] private ParticleSystem harvestVfx;
-    [SerializeField] private ParticleSystem weedingVfx;
 
 
     private void Start()
@@ -105,10 +104,5 @@ public class IngredientToCollectVfxManagerBehaviour : MonoBehaviour
     public void PlayHarvestVfx()
     {
         harvestVfx.Play();
-    }
-    
-    public void PlayWeedingVfx()
-    {
-        weedingVfx.Play();
     }
 }

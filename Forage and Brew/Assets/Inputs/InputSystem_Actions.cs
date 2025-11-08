@@ -372,15 +372,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Weeding"",
-                    ""type"": ""Button"",
-                    ""id"": ""58e2d3bf-7a2f-4649-bb62-899f0f19469d"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""PushBellows"",
                     ""type"": ""Button"",
                     ""id"": ""4c6ea8b3-1ad6-4ed4-a35d-2f87f1510db3"",
@@ -1426,28 +1417,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""2b52eb90-5ebc-448f-9b4c-d106510d237e"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""Weeding"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""bc23bf28-0b9c-4cf8-98c8-565edb1558b5"",
-                    ""path"": ""<Keyboard>/f"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Weeding"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""6bf68a35-2618-4d2c-a2e7-b74e602061f0"",
                     ""path"": ""<Gamepad>/rightStick/down"",
                     ""interactions"": """",
@@ -2457,7 +2426,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Unearth1 = m_Player.FindAction("Unearth1", throwIfNotFound: true);
         m_Player_Unearth2 = m_Player.FindAction("Unearth2", throwIfNotFound: true);
         m_Player_Harvest = m_Player.FindAction("Harvest", throwIfNotFound: true);
-        m_Player_Weeding = m_Player.FindAction("Weeding", throwIfNotFound: true);
         m_Player_PushBellows = m_Player.FindAction("PushBellows", throwIfNotFound: true);
         m_Player_GrindingHapticChallenge1 = m_Player.FindAction("GrindingHapticChallenge1", throwIfNotFound: true);
         m_Player_GrindingHapticChallenge2 = m_Player.FindAction("GrindingHapticChallenge2", throwIfNotFound: true);
@@ -2600,7 +2568,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Unearth1;
     private readonly InputAction m_Player_Unearth2;
     private readonly InputAction m_Player_Harvest;
-    private readonly InputAction m_Player_Weeding;
     private readonly InputAction m_Player_PushBellows;
     private readonly InputAction m_Player_GrindingHapticChallenge1;
     private readonly InputAction m_Player_GrindingHapticChallenge2;
@@ -2754,10 +2721,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Harvest".
         /// </summary>
         public InputAction @Harvest => m_Wrapper.m_Player_Harvest;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/Weeding".
-        /// </summary>
-        public InputAction @Weeding => m_Wrapper.m_Player_Weeding;
         /// <summary>
         /// Provides access to the underlying input action "Player/PushBellows".
         /// </summary>
@@ -2949,9 +2912,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Harvest.started += instance.OnHarvest;
             @Harvest.performed += instance.OnHarvest;
             @Harvest.canceled += instance.OnHarvest;
-            @Weeding.started += instance.OnWeeding;
-            @Weeding.performed += instance.OnWeeding;
-            @Weeding.canceled += instance.OnWeeding;
             @PushBellows.started += instance.OnPushBellows;
             @PushBellows.performed += instance.OnPushBellows;
             @PushBellows.canceled += instance.OnPushBellows;
@@ -3110,9 +3070,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Harvest.started -= instance.OnHarvest;
             @Harvest.performed -= instance.OnHarvest;
             @Harvest.canceled -= instance.OnHarvest;
-            @Weeding.started -= instance.OnWeeding;
-            @Weeding.performed -= instance.OnWeeding;
-            @Weeding.canceled -= instance.OnWeeding;
             @PushBellows.started -= instance.OnPushBellows;
             @PushBellows.performed -= instance.OnPushBellows;
             @PushBellows.canceled -= instance.OnPushBellows;
@@ -3684,13 +3641,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnHarvest(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Weeding" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnWeeding(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "PushBellows" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
