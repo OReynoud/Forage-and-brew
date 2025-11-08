@@ -408,8 +408,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                 }
             }
         }
-
-        newOrdersCounter = Mathf.FloorToInt(newOrdersCounter * 0.5f);
+        newOrdersCounter = Mathf.CeilToInt(newOrdersCounter * 0.5f);
         for (int i = 0; i < newOrdersCounter; i++)
         {
             CodexContentManager.instance.tutorialDissolvesToCheck.Insert(0, "");
@@ -417,10 +416,10 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         
         var temp = CodexContentManager.instance.pageIndexesToCheck.Count -
                    CodexContentManager.instance.tutorialDissolvesToCheck.Count;
-        Debug.Log(temp);
+
         if (temp >= 1)
         {
-            for (int i = 1; i < temp; i++)
+            for (int i = 0; i < temp; i++)
             {
                 CodexContentManager.instance.tutorialDissolvesToCheck.Add("");
             }
