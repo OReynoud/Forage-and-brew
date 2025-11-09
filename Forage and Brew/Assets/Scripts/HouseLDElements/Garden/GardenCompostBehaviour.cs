@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GardenCompostBehaviour : MonoBehaviour, IIngredientAddable
 {
@@ -8,7 +10,23 @@ public class GardenCompostBehaviour : MonoBehaviour, IIngredientAddable
     public static GardenCompostBehaviour Instance { get; private set; }
     
     public CollectedSeedBehaviour seedBehaviourPrefab;
+    [Header("Compost Humus")]
+    [SerializeField] private Transform compostHumusTransform;
+    [SerializeField] private List<float> compostHumusFillHeights;
+    [SerializeField] private float compostHumusFillDuration;
+    [SerializeField] private AnimationCurve compostHumusFillCurve;
+    [SerializeField] private float compostHumusBreakingDownHeight;
+    [SerializeField] private float compostHumusBreakingDownDuration;
+    [SerializeField] private AnimationCurve compostHumusBreakingDownCurve;
+    [Header("VFX")]
+    [SerializeField] private ParticleSystem finishSeedParticleSystem;
+    [Header("UI")]
     [SerializeField] private GameObject interactInputCanvasGameObject;
+    [SerializeField] private GameObject buttonAGameObject;
+    [SerializeField] private GameObject buttonXGameObject;
+    [Header("Ingredient Type Display")]
+    [SerializeField] private GameObject ingredientTypeCanvasGameObject;
+    [SerializeField] private Image ingredientTypeImage;
     [Foldout("Debug")] [SerializeField] private bool compostIsFull;
 
     [ReadOnly] public SeedValuesSo currentSeed;
@@ -54,6 +72,8 @@ public class GardenCompostBehaviour : MonoBehaviour, IIngredientAddable
         {
             Debug.Log("Started Seed making");
             currentSeed = comparator.IngredientValuesSo.Type.AssociatedSeedValuesSo;
+            ingredientTypeCanvasGameObject.SetActive(true);
+            ingredientTypeImage.sprite = currentSeed.RequiredIngredientType.IconHigh;
             TryAddIngredients();
         }
         else if (currentSeed.RequiredIngredientType == comparator.IngredientValuesSo.Type)
@@ -106,6 +126,7 @@ public class GardenCompostBehaviour : MonoBehaviour, IIngredientAddable
                 CharacterInteractController.Instance.ShovePartialStackInTarget(transform, this, temp.ToArray());
                 CloseCompostBox();
                 temp.Clear();
+                EnableHapticChallenge();
                 return;
             }
         }
@@ -118,14 +139,49 @@ public class GardenCompostBehaviour : MonoBehaviour, IIngredientAddable
         storedIngredients.Add(collectedIngredientBehaviour.IngredientValuesSo.Type);
         temp.Add(CharacterInteractController.Instance.collectedStack[^1]);
         CharacterInteractController.Instance.collectedStack.RemoveAt( CharacterInteractController.Instance.collectedStack.Count - 1);
+        
+        collectedIngredientBehaviour.OnIngredientDropEnd.AddListener(DestroyIngredient);
+        
+        DisableInteraction();
     }
+
+    private void DestroyIngredient(CollectedIngredientBehaviour collectedIngredientBehaviour)
+    {
+        Destroy(collectedIngredientBehaviour.gameObject);
+        
+        // Humus visual update
+        compostHumusTransform.gameObject.SetActive(true);
+        compostHumusTransform.DOKill();
+        compostHumusTransform.DOLocalMoveY(compostHumusFillHeights[storedIngredients.Count - 1],
+            compostHumusFillDuration).SetEase(compostHumusFillCurve);
+    }
+    
+    
+    public void BreakDownHumus()
+    {
+        compostHumusTransform.DOKill();
+        compostHumusTransform.localPosition = new Vector3(compostHumusTransform.localPosition.x, 
+            compostHumusFillHeights[^1], compostHumusTransform.localPosition.z);
+        compostHumusTransform.DOLocalMoveY(compostHumusFillHeights[^1] + compostHumusBreakingDownHeight,
+                compostHumusBreakingDownDuration).SetEase(compostHumusBreakingDownCurve).SetLoops(2, LoopType.Yoyo);
+    }
+    
     
     public void EnableInteract()
     {
         interactInputCanvasGameObject.SetActive(true);
+        buttonAGameObject.SetActive(true);
+        buttonXGameObject.SetActive(false);
     }
     
-    public void DisableInteract()
+    public void EnableHapticChallenge()
+    {
+        interactInputCanvasGameObject.SetActive(true);
+        buttonAGameObject.SetActive(false);
+        buttonXGameObject.SetActive(true);
+    }
+    
+    public void DisableInteraction()
     {
         interactInputCanvasGameObject.SetActive(false);
     }
@@ -138,11 +194,16 @@ public class GardenCompostBehaviour : MonoBehaviour, IIngredientAddable
         {
             characterInteractController.CurrentNearCompostBox = this;
             compostHapticChallengeManager.CurrentCompost = this;
-            
-            if (compostIsFull) return;
-            if (characterInteractController.collectedStack.Count <= 0) return;
-            
-            EnableInteract();
+
+            if (compostIsFull && characterInteractController.collectedStack.Count == 0)
+            {
+                EnableHapticChallenge();
+            }
+            else if (!compostIsFull && characterInteractController.collectedStack.Count > 0 && 
+                     characterInteractController.collectedStack[0].StackableItem is CollectedIngredientBehaviour)
+            {
+                EnableInteract();
+            }
         }
     }
 
@@ -151,7 +212,7 @@ public class GardenCompostBehaviour : MonoBehaviour, IIngredientAddable
         if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
             other.TryGetComponent(out CompostHapticChallengeManager compostHapticChallengeManager))
         {
-            DisableInteract();
+            DisableInteraction();
             
             if (characterInteractController.CurrentNearCompostBox == this)
             {
@@ -173,9 +234,14 @@ public class GardenCompostBehaviour : MonoBehaviour, IIngredientAddable
 
     public void CompleteCompostHapticChallenge()
     {
+        finishSeedParticleSystem.Play();
         CollectedSeedBehaviour newSeed = Instantiate(seedBehaviourPrefab, transform.position, transform.rotation);
         newSeed.SeedValuesSo = currentSeed;
         currentSeed = null;
+        storedIngredients.Clear();
+        ingredientTypeCanvasGameObject.SetActive(false);
+        compostHumusTransform.DOKill();
+        compostHumusTransform.gameObject.SetActive(false);
         CharacterInteractController.Instance.AddToPile(newSeed);
         compostIsFull = false;
         

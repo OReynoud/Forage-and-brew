@@ -18,7 +18,7 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
     [BoxGroup("Refs")]public GameObject sproutMesh;
     [BoxGroup("Refs")]public GameObject wateringCheckMark;
     [BoxGroup("Refs")]private GameObject fullyGrownPlantMesh;
-    [BoxGroup("Refs")] public GameObject seedInformationBubble;
+    [BoxGroup("Refs")] public GameObject seedInformationCanvas;
     [BoxGroup("Refs")]public Image seedIndicator;
     [BoxGroup("Refs")]public GameObject buttonAObject;
 
@@ -71,7 +71,7 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
     {
         if (PlantedSeed)
         {
-            seedInformationBubble.SetActive(true);
+            seedInformationCanvas.SetActive(true);
             seedIndicator.sprite = PlantedSeed.IngredientToGrowSo.iconLow;
             wateringCheckMark.SetActive(!NeedsWatering);
             parcelMesh.material = NeedsWatering ? dryParcelMat : wetParcelMat;
@@ -86,7 +86,7 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
         }
         else
         {
-            seedInformationBubble.SetActive(false);
+            seedInformationCanvas.SetActive(false);
             seedIndicator.sprite = null;
         }
     }
@@ -183,33 +183,37 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
         }
     }
     
+    
     protected override void ManageCharacterNear(Collider other)
     {
-        if (CanPurchase)
+        if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
-            if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
-                characterInteractController.collectedStack.Count == 0)
+            if (CanPurchase)
             {
-                LastTriggeredCollider = other;
+                if (characterInteractController.collectedStack.Count == 0)
+                {
+                    LastTriggeredCollider = other;
 
-                pricePopUpBehaviour.ShowPrice(purchaseCost);
+                    pricePopUpBehaviour.ShowPrice(purchaseCost);
 
-                characterInteractController.CurrentNearPlot = this;
+                    characterInteractController.CurrentNearPlot = this;
+                }
             }
-        }
-        else if (Unlocked)
-        {
-            if (other.TryGetComponent(out CharacterInteractController characterInteractController))
+            else if (Unlocked)
             {
                 LastTriggeredCollider = other;
 
                 characterInteractController.CurrentNearPlot = this;
-
-                EnableInteract();
+                
+                if (characterInteractController.collectedStack.Count == 0 && NeedsWatering ||
+                    !PlantedSeed && characterInteractController.collectedStack.Count > 0 &&
+                    characterInteractController.collectedStack[0].StackableItem is CollectedSeedBehaviour)
+                {
+                    EnableInteract();
+                }
             }
         }
     }
-
 
     protected override void ManageCharacterFar(Collider other)
     {
@@ -229,5 +233,4 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
         DisableInteract();
         pricePopUpBehaviour.HidePrice();
     }
-
 }

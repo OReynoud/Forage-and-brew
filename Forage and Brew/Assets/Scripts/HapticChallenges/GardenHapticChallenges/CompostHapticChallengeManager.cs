@@ -1,5 +1,7 @@
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CompostHapticChallengeManager : MonoBehaviour
 {
@@ -14,6 +16,9 @@ public class CompostHapticChallengeManager : MonoBehaviour
     [SerializeField] private GameObject compostChallengeGameObject;
     [SerializeField] private GameObject leftInputGameObject;
     [SerializeField] private GameObject rightInputGameObject;
+    [SerializeField] private RectTransform obtainedPotionRectTransform;
+    [SerializeField] private TMP_Text obtainedPotionNameText;
+    [SerializeField] private Image obtainedSeedVegetableImage;
     
     [Header("Camera")]
     [SerializeField] private float compostCameraTransitionTime = 0.5f;
@@ -75,7 +80,7 @@ public class CompostHapticChallengeManager : MonoBehaviour
         CharacterInputManager.Instance.EnableQuitHapticChallengeInputs();
         
         // Compost Box
-        CurrentCompost.DisableInteract();
+        CurrentCompost.DisableInteraction();
         
         // Challenge
         GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge = true;
@@ -123,12 +128,16 @@ public class CompostHapticChallengeManager : MonoBehaviour
 
     public void CheckInputCompostChallenge(int i)
     {
+        if (!_isInCompostChallenge) return;
+        
         if (_currentCompostIndex >= compostHapticChallengeGlobalValuesSo.InputCount) return;
         
         if (_lastInputIndex == i) return;
         
         _lastInputIndex = i;
         _currentCompostIndex++;
+        
+        CurrentCompost.BreakDownHumus();
 
         switch (i)
         {
