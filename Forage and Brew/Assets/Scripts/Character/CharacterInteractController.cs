@@ -35,7 +35,7 @@ public class CharacterInteractController : MonoBehaviour
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public GrindingCountertopBehaviour CurrentNearGrindingCountertop { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<IngredientBasketBehaviour> CurrentNearIngredientBaskets { get; set; } = new();
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public List<PotionCrateBehaviour> CurrentNearPotionBaskets { get; set; } = new();
-    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public PotionEnsembleBehaviour CurrentNearPotionEnsemble { get; set; } = new();
+    [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public PotionEnsembleBehaviour CurrentNearPotionEnsemble { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public GateBehaviour CurrentNearChargedGate { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public GardenCompostBehaviour CurrentNearCompostBox { get; set; }
     [field:Foldout("Debug")][field:SerializeField] [field:ReadOnly] public GardenPlotBehavior CurrentNearPlot { get; set; }

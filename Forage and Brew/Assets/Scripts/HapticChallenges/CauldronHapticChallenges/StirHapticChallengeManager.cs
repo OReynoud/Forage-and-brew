@@ -540,6 +540,8 @@ public class StirHapticChallengeManager : MonoBehaviour
 
     public void ObtainPotion(bool doCanvasAnim)
     {
+        if (!_currentPotion) return;
+        
         if (!doCanvasAnim)
         {
             foreach (ConfirmationCircleBehaviour confirmationCircle in _confirmationCircles)

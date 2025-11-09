@@ -12,7 +12,7 @@ public class CollectedSeedBehaviour : StackableItem
     [SerializeField] private SphereCollider grabTrigger;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Collider ingredientCollider;
-    [SerializeField] private Transform meshParentTransform;
+    [SerializeField] private SpriteRenderer vegetableSpriteRenderer;
     
     
     public override StackableValuesSo GetStackableValuesSo() => SeedValuesSo;
@@ -23,14 +23,13 @@ public class CollectedSeedBehaviour : StackableItem
     
 
 
-    private void Start()
+    public void Start()
     {
-        Instantiate(SeedValuesSo.MeshGameObject, meshParentTransform);
+        vegetableSpriteRenderer.sprite = SeedValuesSo.IngredientToGrowSo.iconLow;
         grabInputGameObject.SetActive(false);
         StackHeight = collectedIngredientGlobalValuesSo.StackHeight;
         dropInTargetLerp = Random.Range(collectedIngredientGlobalValuesSo.MinDropInTargetLerp,
             collectedIngredientGlobalValuesSo.MaxDropInTargetLerp);
-        
     }
 
 

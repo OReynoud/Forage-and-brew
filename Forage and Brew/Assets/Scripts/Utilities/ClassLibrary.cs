@@ -287,6 +287,3 @@ public class StackableItem : MonoBehaviour
     [field: SerializeField]
     public AnimationCurve ShoveRotationCurve { get; set; } = AnimationCurve.EaseInOut(0, 0, 1, 1);
 }
-
-[Serializable]
-public class CollectibleBehaviour : MonoBehaviour { }

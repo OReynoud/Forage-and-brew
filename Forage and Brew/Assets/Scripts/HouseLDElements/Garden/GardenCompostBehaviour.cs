@@ -141,12 +141,11 @@ public class GardenCompostBehaviour : MonoBehaviour, IIngredientAddable
         if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
             other.TryGetComponent(out CompostHapticChallengeManager compostHapticChallengeManager))
         {
-            if (characterInteractController.collectedStack.Count <= 0) return;
-            
             characterInteractController.CurrentNearCompostBox = this;
             compostHapticChallengeManager.CurrentCompost = this;
             
             if (compostIsFull) return;
+            if (characterInteractController.collectedStack.Count <= 0) return;
             
             EnableInteract();
         }

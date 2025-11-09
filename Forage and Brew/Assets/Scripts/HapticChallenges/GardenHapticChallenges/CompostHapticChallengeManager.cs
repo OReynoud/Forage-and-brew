@@ -159,6 +159,7 @@ public class CompostHapticChallengeManager : MonoBehaviour
         }
         else
         {
+            _isObtainedSeedAnimationPlaying = false;
             StopCompostChallenge();
         }
     }

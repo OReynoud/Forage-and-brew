@@ -1,12 +1,11 @@
-using System;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
 {
     private static readonly int DoWater = Animator.StringToHash("DoWatering");
+    [SerializeField] private IngredientToCollectBehaviour ingredientToCollect;
     [field: BoxGroup("Plot Data")] [field: SerializeField] public bool NeedsWatering { get; set; }
     [field: BoxGroup("Plot Data")] [field: SerializeField] public int PlantGrowthProgression { get; set; }
     [field: BoxGroup("Plot Data")] [field: SerializeField] public int RequiredProgressionToMature { get; set; }
@@ -32,7 +31,6 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
     protected override void Start()
     {
         base.Start();
-        InitPurchasableHouseItem();
         DisableInteract();
         SceneTransitionManager.instance.OnSleep.AddListener(ProgressDay);
         if (!GameDontDestroyOnLoadManager.Instance.codexIsUnlocked)
@@ -53,10 +51,8 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
             }
             NeedsWatering = true;
             UpdateVisuals();
-            return;
         }
     }
-
 
     public void EnableInteract()
     {
@@ -75,12 +71,12 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
         if (PlantedSeed)
         {
             seedInformationBubble.SetActive(true);
-            seedIndicator.sprite = PlantedSeed.SeedIcon;
+            seedIndicator.sprite = PlantedSeed.IngredientToGrowSo.iconLow;
             wateringCheckMark.SetActive(!NeedsWatering);
             parcelMesh.material = NeedsWatering ? dryParcelMat : wetParcelMat;
             if (PlantGrowthProgression == PlantedSeed.DaysToMature && fullyGrownPlantMesh == null)
             {
-                fullyGrownPlantMesh = Instantiate(PlantedSeed.MeshGameObject,new Vector3(0,-0.5f,0), Quaternion.identity, sproutMesh.transform.parent);
+                ingredientToCollect.gameObject.SetActive(true);
             }
             else if(PlantGrowthProgression > 0 && PlantGrowthProgression < PlantedSeed.DaysToMature)
             {
@@ -120,7 +116,7 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
         NeedsWatering = false;
         UpdateVisuals();
         CharacterAnimManager.instance.animator.SetTrigger(DoWater);
-        Vector3 posToLook = new Vector3(transform.position.x,
+        Vector3 posToLook = new(transform.position.x,
             CharacterAnimManager.instance.transform.position.y, transform.position.z);
         CharacterAnimManager.instance.transform.LookAt(posToLook);
 
@@ -131,6 +127,8 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
     {
         PlantedSeed = collectedSeedBehaviour.SeedValuesSo;
         RequiredProgressionToMature = PlantedSeed.DaysToMature;
+        ingredientToCollect.IngredientValuesSo = PlantedSeed.IngredientToGrowSo;
+        ingredientToCollect.SpawnMesh();
         NeedsWatering = true;
         UpdateVisuals();
         GardenManager.instance.plotsData[selfIndex + 1].UpdateData(this);
@@ -167,22 +165,19 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
             
             CharacterInteractController.Instance.collectedStack.RemoveAt(CharacterInteractController.Instance.collectedStack.Count - 1);
             
-            UpdateVisuals();
-            
             if (CharacterInteractController.Instance.collectedStack.Count == 0)
                 CharacterInteractController.Instance.AreHandsFull = false;
             return;
         }
-
         
         if (PlantGrowthProgression == RequiredProgressionToMature)
         {
             Debug.Log("Ingredient collect haptic challenge");
             //TODO: Vegetable harvest haptic challenge
         }
+        
         if (NeedsWatering)
         {
-            //TODO: Watering Animation
             WaterPlot();
         }
     }

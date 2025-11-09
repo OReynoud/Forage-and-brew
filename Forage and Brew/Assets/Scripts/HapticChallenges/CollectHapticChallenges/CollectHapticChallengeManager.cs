@@ -32,7 +32,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
     
     // Global variables
     private bool _callCodexOnAnimationEnd;
-    public List<CollectibleBehaviour> CurrentCollectibleBehaviours { get; } = new();
+    public List<IngredientToCollectBehaviour> CurrentIngredientToCollectBehaviours { get; } = new();
     private IngredientToCollectBehaviour _currentIngredientToCollectBehaviour;
     private GardenPlotBehavior _currentGardenPlotBehaviour;
     public Vector2 JoystickInputValue { get; set; }
@@ -76,7 +76,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
 
     private void Update()
     {
-        if (CurrentCollectibleBehaviours.Count == 0) return;
+        if (CurrentIngredientToCollectBehaviours.Count == 0) return;
         
         UpdateUnearthing();
         
@@ -91,10 +91,8 @@ public class CollectHapticChallengeManager : MonoBehaviour
     public void CheckScythingInput()
     {
         SortIngredientsByDistance();
-        foreach (CollectibleBehaviour collectibleBehaviour in CurrentCollectibleBehaviours)
+        foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
         {
-            if (collectibleBehaviour is not IngredientToCollectBehaviour ingredientToCollectBehaviour)continue;
-            
             if (!ingredientToCollectBehaviour.IngredientValuesSo) continue;
 
             if (ingredientToCollectBehaviour.IngredientValuesSo.Type != scythingIngredientType) continue;
@@ -150,10 +148,8 @@ public class CollectHapticChallengeManager : MonoBehaviour
         {
             SortIngredientsByDistance();
         
-            foreach (CollectibleBehaviour collectibleBehaviour in CurrentCollectibleBehaviours)
+            foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
             {
-                if (collectibleBehaviour is not IngredientToCollectBehaviour ingredientToCollectBehaviour)continue;
-                
                 if (ingredientToCollectBehaviour.IngredientValuesSo.Type != unearthingIngredientType) continue;
             
                 _currentIngredientToCollectBehaviour = ingredientToCollectBehaviour;
@@ -237,9 +233,8 @@ public class CollectHapticChallengeManager : MonoBehaviour
             {
                 SortIngredientsByDistance();
         
-                foreach (CollectibleBehaviour collectibleBehaviour in CurrentCollectibleBehaviours)
+                foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
                 {
-                    if (collectibleBehaviour is not IngredientToCollectBehaviour ingredientToCollectBehaviour)continue;
                     if (!ingredientToCollectBehaviour.IngredientValuesSo) continue;
 
                     if (ingredientToCollectBehaviour.IngredientValuesSo.Type != scrapingIngredientType) continue;
@@ -303,9 +298,8 @@ public class CollectHapticChallengeManager : MonoBehaviour
     {
         SortIngredientsByDistance();
         
-        foreach (CollectibleBehaviour collectibleBehaviour in CurrentCollectibleBehaviours)
+        foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
         {
-            if (collectibleBehaviour is not IngredientToCollectBehaviour ingredientToCollectBehaviour)continue;
             if (!ingredientToCollectBehaviour.IngredientValuesSo) continue;
 
             if (ingredientToCollectBehaviour.IngredientValuesSo.Type != harvestIngredientType) continue;
@@ -353,7 +347,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
     
     private void SortIngredientsByDistance()
     {
-        CurrentCollectibleBehaviours.Sort((a, b) => Vector3.Distance(transform.position, a.transform.position)
+        CurrentIngredientToCollectBehaviours.Sort((a, b) => Vector3.Distance(transform.position, a.transform.position)
             .CompareTo(Vector3.Distance(transform.position, b.transform.position)));
     }
 
@@ -392,39 +386,20 @@ public class CollectHapticChallengeManager : MonoBehaviour
     {
         // Audio
         collectAudioSource.Play();
-
-        if (_currentIngredientToCollectBehaviour)
-        {
-            _currentIngredientToCollectBehaviour.Collect();
-            UpdateCounters.Invoke(_currentIngredientToCollectBehaviour.IngredientValuesSo);
-            CurrentCollectibleBehaviours.Remove(_currentIngredientToCollectBehaviour);
-            _currentIngredientToCollectBehaviour = null;
-        }
-        else
-        {
-            CurrentCollectibleBehaviours.Remove(_currentGardenPlotBehaviour);
-            _currentGardenPlotBehaviour = null;
-        }
+        _currentIngredientToCollectBehaviour.Collect();
+        UpdateCounters.Invoke(_currentIngredientToCollectBehaviour.IngredientValuesSo);
+        CurrentIngredientToCollectBehaviours.Remove(_currentIngredientToCollectBehaviour);
+        _currentIngredientToCollectBehaviour = null;
     }
     
     public void RemoveIngredientToCollectBehaviour(IngredientToCollectBehaviour ingredientToCollectBehaviour)
     {
-        CurrentCollectibleBehaviours.Remove(ingredientToCollectBehaviour);
+        CurrentIngredientToCollectBehaviours.Remove(ingredientToCollectBehaviour);
         
         if (_currentIngredientToCollectBehaviour == ingredientToCollectBehaviour)
         {
             _currentIngredientToCollectBehaviour = null;
             _isScrapingHapticChallengeActive = false;
-        }
-    }
-    
-    public void RemoveGardenPlotBehavior(GardenPlotBehavior gardenPlotBehavior)
-    {
-        CurrentCollectibleBehaviours.Remove(gardenPlotBehavior);
-        
-        if (_currentGardenPlotBehaviour == gardenPlotBehavior)
-        {
-            _currentGardenPlotBehaviour = null;
         }
     }
 

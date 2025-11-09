@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class IngredientToCollectBehaviour : CollectibleBehaviour
+public class IngredientToCollectBehaviour : MonoBehaviour
 {
     [Header("Dependencies")]
     [SerializeField] private IngredientToCollectGlobalValuesSo ingredientToCollectGlobalValuesSo;
@@ -316,7 +316,7 @@ public class IngredientToCollectBehaviour : CollectibleBehaviour
     {
         if (other.TryGetComponent(out CollectHapticChallengeManager collectHapticChallengeManager))
         {
-            collectHapticChallengeManager.CurrentCollectibleBehaviours.Add(this);
+            collectHapticChallengeManager.CurrentIngredientToCollectBehaviours.Add(this);
             
             if (!DoesNeedToShowUi) return;
             
@@ -342,7 +342,7 @@ public class IngredientToCollectBehaviour : CollectibleBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.TryGetComponent(out CollectHapticChallengeManager collectHapticChallengeManager) &&
-            collectHapticChallengeManager.CurrentCollectibleBehaviours.Contains(this))
+            collectHapticChallengeManager.CurrentIngredientToCollectBehaviours.Contains(this))
         {
             collectHapticChallengeManager.RemoveIngredientToCollectBehaviour(this);
             DisableCollect();
