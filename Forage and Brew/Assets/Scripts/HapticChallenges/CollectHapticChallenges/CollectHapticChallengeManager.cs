@@ -374,16 +374,18 @@ public class CollectHapticChallengeManager : MonoBehaviour
         Vector3 ingredientPosition;
         if (_currentIngredientToCollectBehaviour)
         {
-            ingredientPosition = new(_currentIngredientToCollectBehaviour.transform.position.x,
+            ingredientPosition = new Vector3(_currentIngredientToCollectBehaviour.transform.position.x,
                 transform.position.y, _currentIngredientToCollectBehaviour.transform.position.z);
-        }
-        else
-        {
-            ingredientPosition = new(_currentGardenPlotBehaviour.transform.position.x,
-                transform.position.y, _currentGardenPlotBehaviour.transform.position.z);
-        }
 
-        transform.LookAt(ingredientPosition);
+            transform.LookAt(ingredientPosition);
+        }
+        else if (_currentGardenPlotBehaviour)
+        {
+            ingredientPosition = new Vector3(_currentGardenPlotBehaviour.transform.position.x,
+                transform.position.y, _currentGardenPlotBehaviour.transform.position.z);
+
+            transform.LookAt(ingredientPosition);
+        }
     }
 
     private void CollectIngredient()

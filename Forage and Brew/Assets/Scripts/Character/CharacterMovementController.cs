@@ -247,7 +247,7 @@ public class CharacterMovementController : MonoBehaviour
         Debug.DrawLine(transform.position, locationToWalk.position, Color.red, 5);
     }
 
-    public UnityEvent FinishWalkToLocation = new ();
+    public UnityEvent FinishWalkToLocation = new();
 
     private void WalkToLocation()
     {
@@ -287,8 +287,7 @@ public class CharacterMovementController : MonoBehaviour
                 transitionWalk = false;
                 coll.isTrigger = false;
                 rb.useGravity = true;
-                if (FinishWalkToLocation != null)
-                    FinishWalkToLocation.Invoke();
+                FinishWalkToLocation?.Invoke();
             }
         }
     }
