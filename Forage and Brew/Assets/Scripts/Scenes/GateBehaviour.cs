@@ -35,7 +35,7 @@ public class GateBehaviour : MonoBehaviour
             pricePopUpBehaviour.SetPrice(chargedBiomeAreaSos[0].PurchaseCost);
             pricePopUpBehaviour.HidePrice();
         
-            GateManager.Instance.OnAreaPurchased.AddListener(InitChargedGate);
+            GateManager.Instance.OnAreaPurchased.AddListener(Start);
             InitChargedGate();
         }
     }
@@ -64,7 +64,7 @@ public class GateBehaviour : MonoBehaviour
         MoneyManager.Instance.SubtractMoney(chargedBiomeAreaSos[0].PurchaseCost);
         Unlocked = true;
         GameDontDestroyOnLoadManager.Instance.UnlockedChargedBiomeAreas.Add(chargedBiomeAreaSos[0]);
-        GateManager.Instance.OnAreaPurchased.RemoveListener(InitChargedGate);
+        GateManager.Instance.OnAreaPurchased.RemoveListener(Start);
         GateManager.Instance.OnAreaPurchased.Invoke();
         pricePopUpBehaviour.HidePrice();
         
