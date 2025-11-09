@@ -1,7 +1,5 @@
-using System.Linq;
-using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 public class CollectedSeedBehaviour : StackableItem
@@ -12,7 +10,7 @@ public class CollectedSeedBehaviour : StackableItem
     [SerializeField] private SphereCollider grabTrigger;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Collider ingredientCollider;
-    [SerializeField] private SpriteRenderer vegetableSpriteRenderer;
+    [SerializeField] private List<SpriteRenderer> vegetableSpriteRenderers;
     
     
     public override StackableValuesSo GetStackableValuesSo() => SeedValuesSo;
@@ -25,7 +23,10 @@ public class CollectedSeedBehaviour : StackableItem
 
     public void Start()
     {
-        vegetableSpriteRenderer.sprite = SeedValuesSo.IngredientToGrowSo.iconLow;
+        foreach (SpriteRenderer vegetableSpriteRenderer in vegetableSpriteRenderers)
+        {
+            vegetableSpriteRenderer.sprite = SeedValuesSo.IngredientToGrowSo.iconLow;
+        }
         grabInputGameObject.SetActive(false);
         StackHeight = collectedIngredientGlobalValuesSo.StackHeight;
         dropInTargetLerp = Random.Range(collectedIngredientGlobalValuesSo.MinDropInTargetLerp,

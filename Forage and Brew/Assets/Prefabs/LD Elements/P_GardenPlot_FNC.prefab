@@ -425,6 +425,8 @@ MonoBehaviour:
   unlockDissolveSettingsSo: {fileID: 11400000, guid: 8b5ab7fae430ba94999ad9033782617d, type: 2}
   pricePopUpBehaviour: {fileID: 1349969120587684880}
   lockBehaviour: {fileID: 5769730472059288205}
+  ingredientToCollect: {fileID: 3513781821603347297}
+  gardenPlotSelfIndex: 0
   <NeedsWatering>k__BackingField: 0
   <PlantGrowthProgression>k__BackingField: 0
   <RequiredProgressionToMature>k__BackingField: 0
@@ -794,6 +796,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b06cb7d46a9ec814ab2bf2542cedefb0, type: 3}
+--- !u!114 &3513781821603347297 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7824270413145107009, guid: b06cb7d46a9ec814ab2bf2542cedefb0, type: 3}
+  m_PrefabInstance: {fileID: 6653524806521622816}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5854b7f6ff8d4cc4cb8a127f6c5a9dc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6826481824422211062 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 210148018192661718, guid: b06cb7d46a9ec814ab2bf2542cedefb0, type: 3}
@@ -888,7 +901,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1634862110756868167, guid: 7687026b88b15c449acf48d58a797f20, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2160569765127047933, guid: 7687026b88b15c449acf48d58a797f20, type: 3}
       propertyPath: m_LocalPosition.x

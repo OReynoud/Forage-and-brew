@@ -100,8 +100,6 @@ public class CompostHapticChallengeManager : MonoBehaviour
             CurrentCompost.CompleteCompostHapticChallenge();
         }
         
-        compostChallengeGameObject.SetActive(false);
-        
         // Sound
         if (!fromQuit)
         {
@@ -125,6 +123,8 @@ public class CompostHapticChallengeManager : MonoBehaviour
 
     public void CheckInputCompostChallenge(int i)
     {
+        if (_currentCompostIndex >= compostHapticChallengeGlobalValuesSo.InputCount) return;
+        
         if (_lastInputIndex == i) return;
         
         _lastInputIndex = i;
@@ -167,6 +167,7 @@ public class CompostHapticChallengeManager : MonoBehaviour
     private void ObtainSeed()
     {
         // CompostVfxManager.Instance.PlayObtainedSeedVfx();
+        compostChallengeGameObject.SetActive(false);
         characterAnimator.SetTrigger(PotionSuccess);
         characterAnimator.SetBool(IsStirring, false);
         _isObtainedSeedAnimationPlaying = true;

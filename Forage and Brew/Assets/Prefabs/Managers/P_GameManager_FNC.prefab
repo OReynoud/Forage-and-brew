@@ -1739,6 +1739,7 @@ MonoBehaviour:
   <DayPassed>k__BackingField: 0
   UnlockedIngredients: []
   UnlockedRecipes: []
+  UnlockedTutorials: []
   <HasChosenLettersToday>k__BackingField: 0
   <QuestProgressionIndex>k__BackingField: 0
   <FillerQuestProgression>k__BackingField: 0
@@ -1812,6 +1813,7 @@ MonoBehaviour:
     <OrderPotions>k__BackingField: []
     <UnlockedIngredients>k__BackingField: []
     <UnlockedRecipes>k__BackingField: []
+    <UnlockedTutorials>k__BackingField: []
     <HasChosenIngredientsToday>k__BackingField: 0
     <RemainingIngredientToCollectBehavioursKeys>k__BackingField: 
     <RemainingIngredientToCollectBehavioursValues>k__BackingField: []
@@ -1828,6 +1830,8 @@ MonoBehaviour:
     <CurrentLunarCycleStateIndex>k__BackingField: 0
     <MoneyAmount>k__BackingField: 0
     <CurrentOrders>k__BackingField: []
+    <CodexIsUnlocked>k__BackingField: 0
+    <HasDonePinTutorial>k__BackingField: 0
 --- !u!114 &5935014821520033967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1987,6 +1991,7 @@ MonoBehaviour:
   brownCapValuesSo: {fileID: 11400000, guid: 6735ded97f7bb62499ab40b5a224f4b0, type: 2}
   headText: {fileID: 8730600995987420570}
   bodyText: {fileID: 535306423462868521}
+  potionCompleteDelay: 1
 --- !u!114 &7851085412552730424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2023,37 +2028,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cbff5243201ad148b4adf9fd26f26a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  compostBox: {fileID: 0}
   plotsData:
-  - <NeedsWatering>k__BackingField: 1
-    <PlantGrowthProgression>k__BackingField: 0
-    <RequiredProgressionToMature>k__BackingField: 0
-    <IsWeed>k__BackingField: 0
-    <WeedSpawnChance>k__BackingField: 0
-    <PlantedSeed>k__BackingField: {fileID: 11400000, guid: 203f4ed2748d3d84480b49dcabc0c9b3, type: 2}
   - <NeedsWatering>k__BackingField: 0
     <PlantGrowthProgression>k__BackingField: 0
     <RequiredProgressionToMature>k__BackingField: 0
-    <IsWeed>k__BackingField: 0
-    <WeedSpawnChance>k__BackingField: 0
     <PlantedSeed>k__BackingField: {fileID: 0}
   - <NeedsWatering>k__BackingField: 0
     <PlantGrowthProgression>k__BackingField: 0
     <RequiredProgressionToMature>k__BackingField: 0
-    <IsWeed>k__BackingField: 0
-    <WeedSpawnChance>k__BackingField: 0
     <PlantedSeed>k__BackingField: {fileID: 0}
   - <NeedsWatering>k__BackingField: 0
     <PlantGrowthProgression>k__BackingField: 0
     <RequiredProgressionToMature>k__BackingField: 0
-    <IsWeed>k__BackingField: 0
-    <WeedSpawnChance>k__BackingField: 0
     <PlantedSeed>k__BackingField: {fileID: 0}
   - <NeedsWatering>k__BackingField: 0
     <PlantGrowthProgression>k__BackingField: 0
     <RequiredProgressionToMature>k__BackingField: 0
-    <IsWeed>k__BackingField: 0
-    <WeedSpawnChance>k__BackingField: 0
     <PlantedSeed>k__BackingField: {fileID: 0}
 --- !u!1 &6136499012256218945
 GameObject:

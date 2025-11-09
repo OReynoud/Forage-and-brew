@@ -23,11 +23,6 @@ public class GardenCompostBehaviour : MonoBehaviour, IIngredientAddable
         Instance = this;
     }
     
-    void Start()
-    {
-        GardenManager.instance.compostBox = this;
-    }
-    
     public void HandlePlayerInput()
     {
         if (compostIsFull)

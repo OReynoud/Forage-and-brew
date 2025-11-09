@@ -6,6 +6,7 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
 {
     private static readonly int DoWater = Animator.StringToHash("DoWatering");
     [SerializeField] private IngredientToCollectBehaviour ingredientToCollect;
+    [SerializeField] private int gardenPlotSelfIndex;
     [field: BoxGroup("Plot Data")] [field: SerializeField] public bool NeedsWatering { get; set; }
     [field: BoxGroup("Plot Data")] [field: SerializeField] public int PlantGrowthProgression { get; set; }
     [field: BoxGroup("Plot Data")] [field: SerializeField] public int RequiredProgressionToMature { get; set; }
@@ -103,7 +104,7 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
 
         if (!Unlocked) return;
 
-        var data = GardenManager.instance.plotsData[selfIndex + 1];
+        var data = GardenManager.instance.plotsData[gardenPlotSelfIndex];
         NeedsWatering = data.NeedsWatering;
         PlantGrowthProgression = data.PlantGrowthProgression;
         RequiredProgressionToMature = data.RequiredProgressionToMature;
@@ -120,7 +121,7 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
             CharacterAnimManager.instance.transform.position.y, transform.position.z);
         CharacterAnimManager.instance.transform.LookAt(posToLook);
 
-        GardenManager.instance.plotsData[selfIndex + 1].UpdateData(this);
+        GardenManager.instance.plotsData[gardenPlotSelfIndex].UpdateData(this);
     }
 
     public void AddSeed(CollectedSeedBehaviour collectedSeedBehaviour)
@@ -131,7 +132,7 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
         ingredientToCollect.SpawnMesh();
         NeedsWatering = true;
         UpdateVisuals();
-        GardenManager.instance.plotsData[selfIndex + 1].UpdateData(this);
+        GardenManager.instance.plotsData[gardenPlotSelfIndex].UpdateData(this);
         
         TutorialManager.instance.NotifyFromRecipeReceived("WaterSeeds");
     }
