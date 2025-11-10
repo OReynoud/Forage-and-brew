@@ -224,8 +224,6 @@ public class CharacterAnimManager : Singleton<CharacterAnimManager>
     
     public void SetOutfit(CharacterOutfitSo outfitSo)
     {
-        if (GameDontDestroyOnLoadManager.Instance.CurrentOutfitSo == outfitSo) return;
-        
         GameDontDestroyOnLoadManager.Instance.CurrentOutfitSo = outfitSo;
         
         defaultClothes.SetActive(!outfitSo.IsRainOutfit);
