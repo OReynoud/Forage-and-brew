@@ -1,34 +1,35 @@
-using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class IdleBirdBehavior : MonoBehaviour
 {
+    [SerializeField] private bool canFlyAwayOnTrigger = true;
+    
+    private Collider _col;
+    private Animator _animator;
+    
+    // Animator Hashes
     private static readonly int CycleOffset = Animator.StringToHash("CycleOffset");
     private static readonly int DoFly = Animator.StringToHash("DoFly");
-    private Collider col;
 
-    private Animator animator;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
-        animator = GetComponent<Animator>();
-        animator.SetFloat(CycleOffset, Random.value);
-        col = GetComponent<Collider>();
-    }
+        _animator = GetComponent<Animator>();
+        _animator.SetFloat(CycleOffset, Random.value);
+        _col = GetComponent<Collider>();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (!canFlyAwayOnTrigger)
+        {
+            _col.enabled = false;
+        }
     }
 
     public void OnTriggerEnter(Collider other)
     {
         if (other.transform.CompareTag("Player"))
         {
-            animator.SetTrigger(DoFly);
-            col.enabled = false;
+            _animator.SetTrigger(DoFly);
+            _col.enabled = false;
         }
     }
 }
