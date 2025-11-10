@@ -16,8 +16,8 @@ public class CompostHapticChallengeManager : MonoBehaviour
     [SerializeField] private GameObject compostChallengeGameObject;
     [SerializeField] private GameObject leftInputGameObject;
     [SerializeField] private GameObject rightInputGameObject;
-    [SerializeField] private RectTransform obtainedPotionRectTransform;
-    [SerializeField] private TMP_Text obtainedPotionNameText;
+    [SerializeField] private RectTransform obtainedSeedRectTransform;
+    [SerializeField] private TMP_Text obtainedSeedNameText;
     [SerializeField] private Image obtainedSeedVegetableImage;
     
     [Header("Camera")]
@@ -112,7 +112,7 @@ public class CompostHapticChallengeManager : MonoBehaviour
         }
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(_previousCameraPreset, compostCameraTransitionTime);
         CharacterInputManager.Instance.EnableInputs();
-        CurrentCompost.EnableInteract();
+        compostChallengeGameObject.SetActive(false);
         
         GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge = false;
         _isInCompostChallenge = false;
@@ -162,11 +162,41 @@ public class CompostHapticChallengeManager : MonoBehaviour
 
     private void UpdateObtainedSeedAnimation()
     {
+        _currentObtainedSeedAnimationTime += Time.deltaTime;
+        
         if (_currentObtainedSeedAnimationTime <= compostHapticChallengeGlobalValuesSo.ObtainedSeedAnimationDuration)
         {
-            _currentObtainedSeedAnimationTime += Time.deltaTime;
+            obtainedSeedRectTransform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one,
+                compostHapticChallengeGlobalValuesSo.ObtainedSeedScaleAnimationCurve.Evaluate(
+                    _currentObtainedSeedAnimationTime /
+                    compostHapticChallengeGlobalValuesSo.ObtainedSeedAnimationDuration));
+            
+            obtainedSeedRectTransform.anchoredPosition = Vector3.Lerp(
+                compostHapticChallengeGlobalValuesSo.ObtainedSeedAnimationStartPosition,
+                compostHapticChallengeGlobalValuesSo.ObtainedSeedAnimationEndPosition,
+                compostHapticChallengeGlobalValuesSo.ObtainedSeedPositionAnimationCurve.Evaluate(
+                    _currentObtainedSeedAnimationTime /
+                    compostHapticChallengeGlobalValuesSo.ObtainedSeedAnimationDuration));
+        }
+        else if (_currentObtainedSeedAnimationTime <= compostHapticChallengeGlobalValuesSo.ObtainedSeedAnimationDuration +
+                 compostHapticChallengeGlobalValuesSo.ObtainedSeedStayDuration)
+        {
+            obtainedSeedRectTransform.localScale = Vector3.one;
+            obtainedSeedRectTransform.anchoredPosition =
+                compostHapticChallengeGlobalValuesSo.ObtainedSeedAnimationEndPosition;
         }
         else
+        {
+            obtainedSeedRectTransform.localScale = Vector3.LerpUnclamped(Vector3.one, Vector3.zero,
+                compostHapticChallengeGlobalValuesSo.ObtainedSeedScaleEndAnimationCurve.Evaluate(
+                    (_currentObtainedSeedAnimationTime - compostHapticChallengeGlobalValuesSo.ObtainedSeedAnimationDuration
+                                                         - compostHapticChallengeGlobalValuesSo.ObtainedSeedStayDuration) /
+                    compostHapticChallengeGlobalValuesSo.ObtainedSeedAnimationEndDuration));
+        }
+            
+        if (_currentObtainedSeedAnimationTime >= compostHapticChallengeGlobalValuesSo.ObtainedSeedAnimationDuration +
+            compostHapticChallengeGlobalValuesSo.ObtainedSeedStayDuration +
+            compostHapticChallengeGlobalValuesSo.ObtainedSeedAnimationEndDuration)
         {
             _isObtainedSeedAnimationPlaying = false;
             StopCompostChallenge();
@@ -175,8 +205,15 @@ public class CompostHapticChallengeManager : MonoBehaviour
 
     private void ObtainSeed()
     {
-        // CompostVfxManager.Instance.PlayObtainedSeedVfx();
-        compostChallengeGameObject.SetActive(false);
+        CurrentCompost.PlayObtainedSeedVfx();
+        obtainedSeedVegetableImage.sprite = CurrentCompost.currentSeed.IngredientToGrowSo.iconHigh;
+        obtainedSeedNameText.text = CurrentCompost.currentSeed.IngredientToGrowSo.Name + " Seed";
+        obtainedSeedRectTransform.localScale = Vector3.zero;
+        obtainedSeedRectTransform.anchoredPosition =
+            compostHapticChallengeGlobalValuesSo.ObtainedSeedAnimationStartPosition;
+        obtainedSeedRectTransform.gameObject.SetActive(true);
+        leftInputGameObject.SetActive(false);
+        rightInputGameObject.SetActive(false);
         characterAnimator.SetTrigger(PotionSuccess);
         characterAnimator.SetBool(IsStirring, false);
         _isObtainedSeedAnimationPlaying = true;

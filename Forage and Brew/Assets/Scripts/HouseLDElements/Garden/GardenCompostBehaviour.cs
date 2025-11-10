@@ -231,10 +231,10 @@ public class GardenCompostBehaviour : MonoBehaviour, IIngredientAddable
     {
         compostIsFull = true;
     }
+    
 
     public void CompleteCompostHapticChallenge()
     {
-        finishSeedParticleSystem.Play();
         CollectedSeedBehaviour newSeed = Instantiate(seedBehaviourPrefab, transform.position, transform.rotation);
         newSeed.SeedValuesSo = currentSeed;
         currentSeed = null;
@@ -246,5 +246,10 @@ public class GardenCompostBehaviour : MonoBehaviour, IIngredientAddable
         compostIsFull = false;
         
         Debug.Log("Obtained new Seed");
+    }
+
+    public void PlayObtainedSeedVfx()
+    {
+        finishSeedParticleSystem.Play();
     }
 }
