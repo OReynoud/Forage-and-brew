@@ -113,7 +113,7 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
     private bool showBackground;
     [ReadOnly]public bool showPause;
     private bool showOptions;
-    private bool _canInputPause = true;
+    [ShowNonSerializedField] [ReadOnly] private bool _canInputPause = true;
     [field: SerializeField] public bool canShowCodex { get; set; }
 
 
@@ -264,6 +264,8 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
         CharacterInputManager.Instance.DisableInputs();
         CharacterInputManager.Instance.EnablePauseInputs();
         uiInput.enabled = true;
+        uiInput.ActivateModule();
+        Debug.Log(uiInput.didAwake);
 
         _canInputPause = false;
         StartCoroutine(PauseInputBuffer());
@@ -289,8 +291,7 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
 
     private IEnumerator PauseInputBuffer()
     {
-        yield return new WaitForNextFrameUnit();
-
+        yield return new WaitUntil(() => uiInput.didStart);
         _canInputPause = true;
     }
 
