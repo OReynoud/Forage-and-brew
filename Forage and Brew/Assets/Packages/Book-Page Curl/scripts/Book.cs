@@ -115,6 +115,10 @@ public class Book : MonoBehaviour
         Left.gameObject.SetActive(false);
         Right.gameObject.SetActive(false);
         CalcCurlCriticalPoints();
+        foreach (var bookMark in bookMarks)
+        {
+            bookMark.basePos = bookMark.UIComponent.anchoredPosition;
+        }
 
 
         float pageWidth = BookPanel.rect.width / 2.0f;
@@ -125,10 +129,6 @@ public class Book : MonoBehaviour
         ClippingPlane.rectTransform.sizeDelta = new Vector2(pageWidth * 2 + pageHeight, pageHeight + pageHeight * 2);
 
 
-        foreach (var bookMark in bookMarks)
-        {
-            bookMark.basePos = bookMark.UIComponent.anchoredPosition;
-        }
 
         if (!GameDontDestroyOnLoadManager.Instance)
             return;
