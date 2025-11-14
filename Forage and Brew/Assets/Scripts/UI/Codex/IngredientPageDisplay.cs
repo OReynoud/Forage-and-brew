@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class IngredientPageDisplay : PageBehavior
 {
@@ -35,8 +36,13 @@ public class IngredientPageDisplay : PageBehavior
     public float animationTime;
 
     public bool doDissolve;
-    
 
+
+    void Start()
+    {
+        CodexContentManager.instance.OnAddIngredientPage.AddListener(CheckPageBackground);
+    }
+    
     private void OnDisable()
     {
         Debug.Log("Disabled", gameObject);
@@ -78,6 +84,22 @@ public class IngredientPageDisplay : PageBehavior
             CharacterInputManager.Instance.EnableCodexExitInput();
             CharacterInputManager.Instance.EnableMoveInputs();
             enabled = false;
+        }
+    }
+
+    void CheckPageBackground()
+    {
+        if (PageNumber % 2 == 1)
+        {
+            backgroundImage.sprite =
+                CodexContentManager.instance.rightIngredientPage[
+                    Random.Range(0, CodexContentManager.instance.rightIngredientPage.Length)];
+        }
+        else
+        {
+            backgroundImage.sprite =
+                CodexContentManager.instance.leftIngredientPage[
+                    Random.Range(0, CodexContentManager.instance.leftIngredientPage.Length)];
         }
     }
 

@@ -65,6 +65,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
     public bool isDiscoveringNewIngredient { get; set; }
     public UnityEvent OnStartingRoutineFinished { get; set; } = new UnityEvent();
+    public UnityEvent OnAddIngredientPage { get; set; } = new UnityEvent();
 
     public override void Awake()
     {
@@ -397,7 +398,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
     public int AddIngredientPage(IngredientValuesSo ingredient)
     {
         pageChoser = Random.Range(0, rightIngredientPage.Length);
-
+        
         int ingredientIndex = ingredientList.IngredientValues.IndexOf(ingredient);
         //Debug.Log("Raw index: " + ingredientIndex);
         if (ingredientPages.Count == 0)
@@ -485,6 +486,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
         //Debug.Log("Placed " + ingredient.Name + " at index " + ingredientIndex);
         AutoFlip.instance.ControledBook.UpdatePageNumbers();
+        OnAddIngredientPage.Invoke();
         return ingredientIndex;
     }
 
