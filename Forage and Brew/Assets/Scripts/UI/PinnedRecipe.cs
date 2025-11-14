@@ -187,6 +187,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         if (!GameDontDestroyOnLoadManager.Instance.hasDonePinTutorial)
         {
             GameDontDestroyOnLoadManager.Instance.hasDonePinTutorial = true;
+            CharacterInputManager.Instance.OnCodexUse.Invoke(true);
             AutoFlip.instance.doCutout = false;
             AutoFlip.instance.removeCutout = true;
             CharacterInputManager.Instance.EnableMoveInputs();
