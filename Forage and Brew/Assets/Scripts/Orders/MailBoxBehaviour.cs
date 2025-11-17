@@ -44,6 +44,8 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 
     [SerializeField] private Collider letterBoxTrigger;
     [SerializeField] private Animator letterBoxAnimator;
+    
+    [SerializeField] private IngredientTypeListSo ingredientTypeListSo;
 
     private bool _openedMailOnFrame;
 
@@ -348,6 +350,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         _letterPileTargetPosition = letterPileHiddenPosition;
         _backgroundTargetFadeValue = backgroundHiddenFadeValue;
         int newOrdersCounter = 0;
+        bool gardenTuto = false;
 
         foreach (var letter in GameDontDestroyOnLoadManager.Instance.ChosenLetters)
         {
@@ -361,6 +364,17 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                         {
                             GameDontDestroyOnLoadManager.Instance.UnlockedRecipes.Add(demand.Potion);
                             GameDontDestroyOnLoadManager.Instance.OnNewRecipeReceived.Invoke(demand.Potion);
+                            if (CodexContentManager.instance.tutorialDissolves.ContainsKey("GardenTuto"))
+                            {
+                                foreach (var temperatureIngredient in demand.Potion.TemperatureChallengeIngredients)
+                                {
+                                    if (Array.Exists(temperatureIngredient.CookedIngredients.ToArray(), x => x.Ingredient.Type == ingredientTypeListSo.IngredientTypes[^1]))
+                                    {
+                                        gardenTuto = true;
+                                        break;
+                                    }
+                                }
+                            }
                         }
                     }
                     OrderManager.Instance.CreateNewOrder(letter.Item1);
@@ -391,7 +405,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         {
             TutorialManager.instance.NotifyFromRecipeReceived("SpendMoney");
         }
-        if (GameDontDestroyOnLoadManager.Instance.DayPassed == 6)
+        if (gardenTuto)
         {
             TutorialManager.instance.NotifyFromRecipeReceived("GardenTuto");
         }
