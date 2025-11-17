@@ -348,7 +348,10 @@ public class StirHapticChallengeManager : MonoBehaviour
             CharacterInteractController.Instance.AddToPile(collectedPotionBehaviour);
             GameDontDestroyOnLoadManager.Instance.OutCookedPotions.Add(collectedPotionBehaviour);
             GameDontDestroyOnLoadManager.Instance.CauldronTemperatureAndIngredients.Clear();
-            TutorialManager.instance.NotifyFromCompletePotion();
+            if (_currentPotion != potionListSo.DefaultPotion)
+            {
+                TutorialManager.instance.NotifyFromCompletePotion();
+            }
         }
         
         foreach (ConfirmationCircleBehaviour confirmationCircle in _confirmationCircles)
