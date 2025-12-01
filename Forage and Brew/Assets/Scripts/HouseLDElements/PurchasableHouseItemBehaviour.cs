@@ -47,6 +47,12 @@ public abstract class PurchasableHouseItemBehaviour : MonoBehaviour
 
     public virtual void InitPurchasableHouseItem()
     {
+        if (!Unlocked && CanPurchase && GameDontDestroyOnLoadManager.Instance.WorkshopProgressionIndex > selfIndex &&
+            purchaseCost == 0)
+        {
+            PurchaseItem();
+        }
+        
         if (GameDontDestroyOnLoadManager.Instance.WorkshopProgressionIndex == selfIndex)
         {
             CanPurchase = true;
@@ -69,10 +75,13 @@ public abstract class PurchasableHouseItemBehaviour : MonoBehaviour
         MoneyManager.Instance.SubtractMoney(purchaseCost);
         CanPurchase = false;
         Unlocked = true;
-        GameDontDestroyOnLoadManager.Instance.WorkshopProgressionIndex++;
         pricePopUpBehaviour.HidePrice();
         lockBehaviour.Unlock();
-        ManageCharacterNear(LastTriggeredCollider);
+        if (LastTriggeredCollider)
+        {
+            GameDontDestroyOnLoadManager.Instance.WorkshopProgressionIndex++;
+            ManageCharacterNear(LastTriggeredCollider);
+        }
         foreach (Renderer purchasableItemMeshRenderer in purchasableItemMeshRenderers)
         {
             purchasableItemMeshRenderer.material.DOFloat(1f, CutoffHeight, unlockDissolveSettingsSo.AnimationDuration)

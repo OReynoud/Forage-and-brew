@@ -4,7 +4,7 @@ using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GardenCompostBehaviour : MonoBehaviour, IIngredientAddable
+public class GardenCompostBehaviour : PurchasableHouseItemBehaviour, IIngredientAddable
 {
     // Singleton
     public static GardenCompostBehaviour Instance { get; private set; }
@@ -32,8 +32,8 @@ public class GardenCompostBehaviour : MonoBehaviour, IIngredientAddable
     [ReadOnly] public SeedValuesSo currentSeed;
     public List<IngredientTypeSo> storedIngredients;
     [field: SerializeField] public bool UseEndPoint { get; set; }
-    [field: ShowIf("UseEndPoint")][field: SerializeField] public Transform EndPoint { get; set; }
-    [field: ShowIf("UseEndPoint")][field: SerializeField] public float heightShove { get; set; }
+    [field: ShowIf("UseEndPoint")] [field: SerializeField] public Transform EndPoint { get; set; }
+    [field: ShowIf("UseEndPoint")] [field: SerializeField] public float heightShove { get; set; }
 
     
     private void Awake()
@@ -43,6 +43,12 @@ public class GardenCompostBehaviour : MonoBehaviour, IIngredientAddable
     
     public void HandlePlayerInput()
     {
+        if (!Unlocked)
+        {
+            PurchaseItem();
+            return;
+        }
+        
         if (compostIsFull)
         {
             if (CharacterInteractController.Instance.collectedStack.Count > 0)
@@ -185,34 +191,56 @@ public class GardenCompostBehaviour : MonoBehaviour, IIngredientAddable
     {
         interactInputCanvasGameObject.SetActive(false);
     }
-    
-    
-    private void OnTriggerEnter(Collider other)
+
+
+    protected override void ManageCharacterNear(Collider other)
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
-            other.TryGetComponent(out CompostHapticChallengeManager compostHapticChallengeManager))
+         other.TryGetComponent(out CompostHapticChallengeManager compostHapticChallengeManager))
         {
-            characterInteractController.CurrentNearCompostBox = this;
-            compostHapticChallengeManager.CurrentCompost = this;
-
-            if (compostIsFull && characterInteractController.collectedStack.Count == 0)
+            if (CanPurchase)
             {
-                EnableHapticChallenge();
+                if (characterInteractController.collectedStack.Count == 0)
+                {
+                    LastTriggeredCollider = other;
+                
+                    pricePopUpBehaviour.ShowPrice(purchaseCost);
+                
+                    characterInteractController.CurrentNearCompostBox = this;
+                }
             }
-            else if (!compostIsFull && characterInteractController.collectedStack.Count > 0 && 
-                     characterInteractController.collectedStack[0].StackableItem is CollectedIngredientBehaviour)
+            else if (Unlocked)
             {
-                EnableInteract();
+                LastTriggeredCollider = other;
+
+                characterInteractController.CurrentNearCompostBox = this;
+                compostHapticChallengeManager.CurrentCompost = this;
+
+                if (compostIsFull && characterInteractController.collectedStack.Count == 0)
+                {
+                    EnableHapticChallenge();
+                }
+                else if (!compostIsFull && characterInteractController.collectedStack.Count > 0 &&
+                         characterInteractController.collectedStack[0].StackableItem is CollectedIngredientBehaviour)
+                {
+                    EnableInteract();
+                }
             }
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    protected override void ManageCharacterFar(Collider other)
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
             other.TryGetComponent(out CompostHapticChallengeManager compostHapticChallengeManager))
         {
+            if (LastTriggeredCollider == other)
+            {
+                LastTriggeredCollider = null;
+            }
+            
             DisableInteraction();
+            pricePopUpBehaviour.HidePrice();
             
             if (characterInteractController.CurrentNearCompostBox == this)
             {

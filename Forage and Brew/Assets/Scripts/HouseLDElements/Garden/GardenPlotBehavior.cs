@@ -12,15 +12,15 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
     [field: BoxGroup("Plot Data")] [field: SerializeField] public int RequiredProgressionToMature { get; set; }
     [field: BoxGroup("Plot Data")] [field: SerializeField] public SeedValuesSo PlantedSeed { get; set; }
     
-    [BoxGroup("Refs")]public MeshRenderer parcelMesh;
-    [BoxGroup("Refs")]public Material dryParcelMat;
-    [BoxGroup("Refs")]public Material wetParcelMat;
-    [BoxGroup("Refs")]public GameObject sproutMesh;
-    [BoxGroup("Refs")]public GameObject wateringCheckMark;
-    [BoxGroup("Refs")]private GameObject fullyGrownPlantMesh;
+    [BoxGroup("Refs")] public MeshRenderer parcelMesh;
+    [BoxGroup("Refs")] public Material dryParcelMat;
+    [BoxGroup("Refs")] public Material wetParcelMat;
+    [BoxGroup("Refs")] public GameObject sproutMesh;
+    [BoxGroup("Refs")] public GameObject wateringCheckMark;
+    [BoxGroup("Refs")] private GameObject fullyGrownPlantMesh;
     [BoxGroup("Refs")] public GameObject seedInformationCanvas;
-    [BoxGroup("Refs")]public Image seedIndicator;
-    [BoxGroup("Refs")]public GameObject buttonAObject;
+    [BoxGroup("Refs")] public Image seedIndicator;
+    [BoxGroup("Refs")] public GameObject buttonAObject;
 
     [field: SerializeField] public bool UseEndPoint { get; set; }
     [field: SerializeField] public Transform EndPoint { get; set; }
@@ -93,14 +93,7 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
 
     public override void InitPurchasableHouseItem()
     {
-        if (GameDontDestroyOnLoadManager.Instance.GardenProgressionIndex == selfIndex)
-        {
-            CanPurchase = true;
-        }
-        else if (GameDontDestroyOnLoadManager.Instance.GardenProgressionIndex > selfIndex)
-        {
-            Unlocked = true;
-        }
+        base.InitPurchasableHouseItem();
 
         if (!Unlocked) return;
 
@@ -217,8 +210,6 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
 
     protected override void ManageCharacterFar(Collider other)
     {
-        //if (IsCharacterOnCountertop) return;
-
         if (LastTriggeredCollider == other)
         {
             LastTriggeredCollider = null;

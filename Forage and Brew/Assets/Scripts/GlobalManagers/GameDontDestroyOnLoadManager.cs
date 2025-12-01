@@ -67,7 +67,6 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     
     // Progression
     [field: SerializeField] public int WorkshopProgressionIndex { get; set; }
-    public int GardenProgressionIndex { get; set; }
     public List<ChargedBiomeAreaSo> UnlockedChargedBiomeAreas { get; set; } = new();
     
     // Outfits
