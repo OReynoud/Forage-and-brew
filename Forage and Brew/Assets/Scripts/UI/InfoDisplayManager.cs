@@ -114,7 +114,7 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
     [ReadOnly]public bool showPause;
     private bool showOptions;
     [ShowNonSerializedField] [ReadOnly] private bool _canInputPause = true;
-    [field: SerializeField] public bool canShowCodex { get; set; }
+    [field: BoxGroup("Behavior")] [field: SerializeField] public bool canShowCodex { get; set; }
 
 
     public void DisplayAll()
@@ -139,7 +139,7 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
         sfxSlider.value = volumeFX;
     }
 
-    private void UpdateCodexSprite(bool state)
+    public void UpdateCodexSprite(bool state)
     {
         crossImage.sprite = state ? downArrow : upArrow;
         if (CodexContentManager.instance.pageIndexesToCheck.Count > 0)

@@ -493,6 +493,7 @@ public class AutoFlip : Singleton<AutoFlip>
 
         if (CodexPickUpBehaviour.doTutorialPages)
             yield break;
+        InfoDisplayManager.instance.UpdateCodexSprite(true);
         CharacterInputManager.Instance.EnableMoveInputs();
         CharacterInputManager.Instance.EnableCodexInputs();
         CharacterInputManager.Instance.EnableCodexExitInput();
