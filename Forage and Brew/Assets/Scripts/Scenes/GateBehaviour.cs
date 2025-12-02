@@ -2,16 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using NaughtyAttributes;
 using UnityEngine;
 
 public class GateBehaviour : MonoBehaviour
 {
     [SerializeField] private List<ChargedBiomeAreaSo> chargedBiomeAreaSos;
-    [SerializeField] private PricePopUpBehaviour pricePopUpBehaviour;
+    [SerializeField] public PricePopUpBehaviour pricePopUpBehaviour;
     [SerializeField] private List<Renderer> gateMeshRenderers;
     [SerializeField] private List<Collider> gateColliders;
     [SerializeField] private float disableCollidersDelay = 1.5f;
     [SerializeField] private DissolveSettingsSo unlockDissolveSettingsSo;
+    
+    [SerializeField] private bool isOverridenByPurchasableHouseItem;
+    [SerializeField] [ShowIf("isOverridenByPurchasableHouseItem")] private PurchasableHouseItemBehaviour linkedPurchasableHouseItemBehaviour;
     
     public bool Unlocked { get; private set; }
     
@@ -94,6 +98,14 @@ public class GateBehaviour : MonoBehaviour
     {
         if (!Unlocked)
         {
+            if (isOverridenByPurchasableHouseItem)
+            {
+                if (linkedPurchasableHouseItemBehaviour.selfIndex > GameDontDestroyOnLoadManager.Instance.WorkshopProgressionIndex) return;
+                
+                linkedPurchasableHouseItemBehaviour.LastTriggeredCollider = other;
+                linkedPurchasableHouseItemBehaviour.Triggerers.Add(gameObject);
+            }
+            
             if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
                 characterInteractController.collectedStack.Count == 0)
             {
@@ -111,7 +123,27 @@ public class GateBehaviour : MonoBehaviour
         {
             characterInteractController.CurrentNearChargedGate = null;
         }
+
+        if (isOverridenByPurchasableHouseItem)
+        {
+            if (linkedPurchasableHouseItemBehaviour.Triggerers.Contains(gameObject))
+            {
+                linkedPurchasableHouseItemBehaviour.Triggerers.Remove(gameObject);
+
+                if (linkedPurchasableHouseItemBehaviour.Triggerers.Count == 0)
+                {
+                    if (linkedPurchasableHouseItemBehaviour.LastTriggeredCollider == other)
+                    {
+                        linkedPurchasableHouseItemBehaviour.LastTriggeredCollider = null;
+                    }
         
-        pricePopUpBehaviour.HidePrice();
+                    pricePopUpBehaviour.HidePrice();
+                }
+            }
+        }
+        else
+        {
+            pricePopUpBehaviour.HidePrice();
+        }
     }
 }

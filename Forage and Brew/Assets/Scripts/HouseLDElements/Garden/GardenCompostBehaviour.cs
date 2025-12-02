@@ -27,6 +27,7 @@ public class GardenCompostBehaviour : PurchasableHouseItemBehaviour, IIngredient
     [Header("Ingredient Type Display")]
     [SerializeField] private GameObject ingredientTypeCanvasGameObject;
     [SerializeField] private Image ingredientTypeImage;
+    [SerializeField] private GateBehaviour linkedGateBehaviour;
     [Foldout("Debug")] [SerializeField] private bool compostIsFull;
 
     [ReadOnly] public SeedValuesSo currentSeed;
@@ -204,7 +205,8 @@ public class GardenCompostBehaviour : PurchasableHouseItemBehaviour, IIngredient
                 {
                     LastTriggeredCollider = other;
                 
-                    pricePopUpBehaviour.ShowPrice(purchaseCost);
+                    linkedGateBehaviour.pricePopUpBehaviour.ShowPrice(purchaseCost);
+                    Triggerers.Add(gameObject);
                 
                     characterInteractController.CurrentNearCompostBox = this;
                 }
@@ -234,14 +236,6 @@ public class GardenCompostBehaviour : PurchasableHouseItemBehaviour, IIngredient
         if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
             other.TryGetComponent(out CompostHapticChallengeManager compostHapticChallengeManager))
         {
-            if (LastTriggeredCollider == other)
-            {
-                LastTriggeredCollider = null;
-            }
-            
-            DisableInteraction();
-            pricePopUpBehaviour.HidePrice();
-            
             if (characterInteractController.CurrentNearCompostBox == this)
             {
                 characterInteractController.CurrentNearCompostBox = null;
@@ -250,6 +244,23 @@ public class GardenCompostBehaviour : PurchasableHouseItemBehaviour, IIngredient
             if (compostHapticChallengeManager.CurrentCompost == this)
             {
                 compostHapticChallengeManager.CurrentCompost = null;
+            }
+            
+            DisableInteraction();
+
+            if (Triggerers.Contains(gameObject))
+            {
+                Triggerers.Remove(gameObject);
+
+                if (Triggerers.Count == 0)
+                {
+                    if (LastTriggeredCollider == other)
+                    {
+                        LastTriggeredCollider = null;
+                    }
+            
+                    linkedGateBehaviour.pricePopUpBehaviour.HidePrice();
+                }
             }
         }
     }
