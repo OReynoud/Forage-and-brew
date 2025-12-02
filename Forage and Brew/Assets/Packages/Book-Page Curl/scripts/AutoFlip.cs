@@ -86,7 +86,6 @@ public class AutoFlip : Singleton<AutoFlip>
         cutoutActivePos = ControledBook.pinRecipeUI.transform.parent.GetComponent<RectTransform>().anchoredPosition;
 
         GameDontDestroyOnLoadManager.Instance.OnNewIngredientCollected.AddListener(ControledBook.StoreNewIngredient);
-        //ControledBook.SetupIngredientDisplays();
     }
 
     private void Update()

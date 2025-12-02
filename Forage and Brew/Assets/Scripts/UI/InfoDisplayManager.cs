@@ -213,10 +213,10 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
         pauseBackground.alpha = Mathf.Lerp(pauseBackground.alpha, showPause ? 1 : 0, lerp);
 
         pauseMenu.anchoredPosition = Vector2.Lerp(pauseMenu.anchoredPosition,
-            showPause ? Vector2.zero : new Vector2(0, Screen.height * 2), lerp);
+            showPause ? Vector2.zero : new Vector2(0, pauseMenu.rect.height), lerp);
 
         optionsMenu.anchoredPosition = Vector2.Lerp(optionsMenu.anchoredPosition,
-            showOptions ? Vector2.zero : new Vector2(0, Screen.height * 2), lerp);
+            showOptions ? Vector2.zero : new Vector2(0, pauseMenu.rect.height), lerp);
     }
 
 
