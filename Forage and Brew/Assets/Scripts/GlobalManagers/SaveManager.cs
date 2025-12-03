@@ -24,6 +24,7 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private LunarCycleManager lunarCycleManager;
     [SerializeField] private MoneyManager moneyManager;
     [SerializeField] private OrderManager orderManager;
+    [SerializeField] private GardenManager gardenManager;
     
     private static string DirectoryPath => Path.Combine(Application.persistentDataPath, "Saves");
     private static string FilePath => Path.Combine(DirectoryPath, "Save.json");
@@ -108,9 +109,14 @@ public class SaveManager : MonoBehaviour
         // Letters
         data.HasChosenLettersToday = gameDontDestroyOnLoadManager.HasChosenLettersToday;
         data.QuestProgressionIndex = gameDontDestroyOnLoadManager.QuestProgressionIndex;
+        data.FillerQuestProgression = gameDontDestroyOnLoadManager.FillerQuestProgression;
         data.AllNarrativeBlocks = gameDontDestroyOnLoadManager.AllNarrativeBlocks;
+        data.AllFillerBlocks = gameDontDestroyOnLoadManager.AllFillerBlocks;
+        data.LastUsedFillerBlock = gameDontDestroyOnLoadManager.LastUsedFillerBlockOfLetters;
+        data.QuestProgressionIndexWatchers = gameDontDestroyOnLoadManager.QuestProgressionIndexWatchers;
         data.ThanksAndErrorLetters = gameDontDestroyOnLoadManager.ThanksAndErrorLetters;
         data.MailBoxLetters = gameDontDestroyOnLoadManager.MailBoxLetters;
+        data.ChosenLetters = gameDontDestroyOnLoadManager.ChosenLetters;
         
         // Cauldron
         data.CauldronTemperatureAndIngredients = gameDontDestroyOnLoadManager.CauldronTemperatureAndIngredients;
@@ -131,6 +137,17 @@ public class SaveManager : MonoBehaviour
         data.HasDonePinTutorial = gameDontDestroyOnLoadManager.hasDonePinTutorial;
         
         data.UnlockedTutorials = gameDontDestroyOnLoadManager.UnlockedTutorials;
+        
+        //Garden
+        data.PlotsData = gardenManager.plotsData;
+        
+        //Mirror
+        data.CurrentOutfit = gameDontDestroyOnLoadManager.CurrentOutfitSo;
+        data.UnlockedOutifts = gameDontDestroyOnLoadManager.UnlockedOutfits;
+        
+        //Progression
+        data.WorkshopProgressionIndex = gameDontDestroyOnLoadManager.WorkshopProgressionIndex;
+        data.UnlockedChargedBiomeAreas = gameDontDestroyOnLoadManager.UnlockedChargedBiomeAreas;
         
         // Save Data
         string jsonData = JsonUtility.ToJson(data, true);
@@ -201,9 +218,14 @@ public class SaveManager : MonoBehaviour
         // Letters
         gameDontDestroyOnLoadManager.HasChosenLettersToday = data.HasChosenLettersToday;
         gameDontDestroyOnLoadManager.QuestProgressionIndex = data.QuestProgressionIndex;
+        gameDontDestroyOnLoadManager.FillerQuestProgression = data.FillerQuestProgression;
         gameDontDestroyOnLoadManager.AllNarrativeBlocks.AddRange(data.AllNarrativeBlocks);
+        gameDontDestroyOnLoadManager.AllFillerBlocks.AddRange(data.AllFillerBlocks);
+        gameDontDestroyOnLoadManager.LastUsedFillerBlockOfLetters = data.LastUsedFillerBlock;
+        gameDontDestroyOnLoadManager.QuestProgressionIndexWatchers.AddRange(data.QuestProgressionIndexWatchers);
         gameDontDestroyOnLoadManager.ThanksAndErrorLetters.AddRange(data.ThanksAndErrorLetters);
         gameDontDestroyOnLoadManager.MailBoxLetters.AddRange(data.MailBoxLetters);
+        gameDontDestroyOnLoadManager.ChosenLetters.AddRange(data.ChosenLetters);
         
         // Cauldron
         gameDontDestroyOnLoadManager.CauldronTemperatureAndIngredients.AddRange(data.CauldronTemperatureAndIngredients);
@@ -224,6 +246,17 @@ public class SaveManager : MonoBehaviour
         gameDontDestroyOnLoadManager.hasDonePinTutorial = data.HasDonePinTutorial;
         
         gameDontDestroyOnLoadManager.UnlockedTutorials = data.UnlockedTutorials;
+        
+        //Garden
+        gardenManager.plotsData = data.PlotsData;
+        
+        //Mirror
+        gameDontDestroyOnLoadManager.CurrentOutfitSo = data.CurrentOutfit;
+        gameDontDestroyOnLoadManager.UnlockedOutfits = data.UnlockedOutifts;
+        
+        //Progression
+        gameDontDestroyOnLoadManager.WorkshopProgressionIndex = data.WorkshopProgressionIndex;
+        gameDontDestroyOnLoadManager.UnlockedChargedBiomeAreas = data.UnlockedChargedBiomeAreas;
     }
     
     public static void DeleteSave(bool isOnMainMenu)
@@ -268,9 +301,14 @@ public class SaveManager : MonoBehaviour
         
         [field: SerializeField] public bool HasChosenLettersToday { get; set; }
         [field: SerializeField] public int QuestProgressionIndex { get; set; }
+        [field: SerializeField] public int FillerQuestProgression { get; set; }
         [field: SerializeField] public List<NarrativeBlockOfLetters> AllNarrativeBlocks { get; set; }
+        [field: SerializeField] public List<FillerBlockOfLetters> AllFillerBlocks { get; set; }
+        [field: SerializeField] public FillerBlockOfLetters LastUsedFillerBlock { get; set; }
+        [field: SerializeField] public List<QuestProgressionIndexWatcher> QuestProgressionIndexWatchers { get; set; }
         [field: SerializeField] public List<Letter> ThanksAndErrorLetters { get; set; }
         [field: SerializeField] public List<Letter> MailBoxLetters { get; set; }
+        [field: SerializeField] public List<(Letter, LetterContentSo)> ChosenLetters { get; set; }
         
         [field: SerializeField] public List<TemperatureChallengeIngredients> CauldronTemperatureAndIngredients { get; set; }
         [field: SerializeField] public Temperature CauldronTemperature { get; set; }
@@ -283,6 +321,10 @@ public class SaveManager : MonoBehaviour
         
         [field: SerializeField] public bool CodexIsUnlocked { get; set; }
         [field: SerializeField] public bool HasDonePinTutorial { get; set; }
-    
+        [field: SerializeField] public GardenPlotData[] PlotsData { get; set; }
+        [field: SerializeField] public CharacterOutfitSo CurrentOutfit { get; set; }
+        [field: SerializeField] public List<CharacterOutfitSo> UnlockedOutifts { get; set; }
+        [field: SerializeField] public int WorkshopProgressionIndex { get; set; }
+        [field: SerializeField] public List<ChargedBiomeAreaSo> UnlockedChargedBiomeAreas { get; set; }
     }
 }

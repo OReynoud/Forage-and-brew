@@ -27,6 +27,7 @@ public class TutorialDissolveBehavior : MonoBehaviour
         {
             mat.SetFloat(Ex.CutoffHeight, 1);
             DissolveImage.material = mat;
+            Destroy(gameObject,Random.Range(1,10));
             
             return;
         }
