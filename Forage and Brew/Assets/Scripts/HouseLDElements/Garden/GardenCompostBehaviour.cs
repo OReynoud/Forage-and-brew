@@ -194,6 +194,26 @@ public class GardenCompostBehaviour : PurchasableHouseItemBehaviour, IIngredient
     }
 
 
+    public override void PurchaseItem(bool isCalledByOther)
+    {
+        if (isCalledByOther)
+        {
+            base.PurchaseItem();
+        }
+        else
+        {
+            PurchaseItem();
+        }
+    }
+
+    public override void PurchaseItem()
+    {
+        if (!linkedGateBehaviour.Purchase(true)) return;
+        
+        base.PurchaseItem();
+    }
+
+
     protected override void ManageCharacterNear(Collider other)
     {
         if (other.TryGetComponent(out CharacterInteractController characterInteractController) &&
@@ -205,7 +225,7 @@ public class GardenCompostBehaviour : PurchasableHouseItemBehaviour, IIngredient
                 {
                     LastTriggeredCollider = other;
                 
-                    linkedGateBehaviour.pricePopUpBehaviour.ShowPrice(purchaseCost);
+                    linkedGateBehaviour.pricePopUpBehaviour.ShowPrice(linkedGateBehaviour.chargedBiomeAreaSos[0].PurchaseCost);
                     Triggerers.Add(gameObject);
                 
                     characterInteractController.CurrentNearCompostBox = this;

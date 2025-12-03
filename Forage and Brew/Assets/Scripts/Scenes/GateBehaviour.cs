@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class GateBehaviour : MonoBehaviour
 {
-    [SerializeField] private List<ChargedBiomeAreaSo> chargedBiomeAreaSos;
+    [SerializeField] public List<ChargedBiomeAreaSo> chargedBiomeAreaSos;
     [SerializeField] public PricePopUpBehaviour pricePopUpBehaviour;
     [SerializeField] private List<Renderer> gateMeshRenderers;
     [SerializeField] private List<Collider> gateColliders;
@@ -57,12 +57,12 @@ public class GateBehaviour : MonoBehaviour
     }
     
 
-    public void Purchase()
+    public bool Purchase(bool isCalledByOther = false)
     {
         if (MoneyManager.Instance.MoneyAmount < chargedBiomeAreaSos[0].PurchaseCost)
         {
             CharacterAnimManager.instance.animator.SetTrigger(CatNo);
-            return;
+            return false;
         }
 
         MoneyManager.Instance.SubtractMoney(chargedBiomeAreaSos[0].PurchaseCost);
@@ -70,6 +70,12 @@ public class GateBehaviour : MonoBehaviour
         GameDontDestroyOnLoadManager.Instance.UnlockedChargedBiomeAreas.Add(chargedBiomeAreaSos[0]);
         GateManager.Instance.OnAreaPurchased.RemoveListener(Start);
         GateManager.Instance.OnAreaPurchased.Invoke();
+
+        if (isOverridenByPurchasableHouseItem && !isCalledByOther)
+        {
+            linkedPurchasableHouseItemBehaviour.PurchaseItem(true);
+        }
+        
         pricePopUpBehaviour.HidePrice();
         
         foreach (Renderer gateMeshRenderer in gateMeshRenderers)
@@ -81,6 +87,8 @@ public class GateBehaviour : MonoBehaviour
         }
         
         StartCoroutine(DisableColliders());
+        
+        return true;
     }
     
     private IEnumerator DisableColliders()

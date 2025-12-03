@@ -63,6 +63,11 @@ public abstract class PurchasableHouseItemBehaviour : MonoBehaviour
         }
     }
     
+    
+    public virtual void PurchaseItem(bool isCalledByOther)
+    {
+        PurchaseItem();
+    }
 
     public virtual void PurchaseItem()
     {
