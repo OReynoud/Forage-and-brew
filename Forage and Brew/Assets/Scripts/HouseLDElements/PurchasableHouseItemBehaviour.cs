@@ -5,8 +5,7 @@ using UnityEngine;
 public abstract class PurchasableHouseItemBehaviour : MonoBehaviour
 {
     [Header("Purchasable House Item Values")]
-    [SerializeField]
-    protected int selfIndex;
+    [SerializeField] public int selfIndex;
     [SerializeField] protected int purchaseCost;
     public bool CanPurchase { get; set; }
     public bool Unlocked { get; set; }
@@ -19,7 +18,8 @@ public abstract class PurchasableHouseItemBehaviour : MonoBehaviour
     [SerializeField] protected PricePopUpBehaviour pricePopUpBehaviour;
     [SerializeField] protected LockBehaviour lockBehaviour;
 
-    protected Collider LastTriggeredCollider;
+    public Collider LastTriggeredCollider { get; set; }
+    public List<GameObject> Triggerers { get; private set; } = new();
     
     private static readonly int CutoffHeight = Shader.PropertyToID("_CutoffHeight");
     private static readonly int CatNo = Animator.StringToHash("DoNo");
@@ -63,6 +63,11 @@ public abstract class PurchasableHouseItemBehaviour : MonoBehaviour
         }
     }
     
+    
+    public virtual void PurchaseItem(bool isCalledByOther)
+    {
+        PurchaseItem();
+    }
 
     public virtual void PurchaseItem()
     {
