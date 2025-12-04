@@ -295,8 +295,9 @@ public class CodexContentManager : Singleton<CodexContentManager>
         index += AutoFlip.instance.ControledBook.bookMarks[0].index;
         if (!emptyOrderPage)
         {
-            emptyOrderPage = AutoFlip.instance.ControledBook.bookPages[emptyOrderPageIndex].UIComponent;
             emptyOrderPageIndex = index;
+            emptyOrderPage = AutoFlip.instance.ControledBook.bookPages[emptyOrderPageIndex].UIComponent;
+            Debug.Log("Removed order " + AutoFlip.instance.ControledBook.bookPages[index].UIComponent.name);
             Destroy(emptyOrderPage.GetChild(0).gameObject);
             emptyOrderPage.name = "Empty Order Page " + emptyOrderPageIndex;
         }
