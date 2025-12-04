@@ -425,9 +425,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.14901961, g: 0.09411765, b: 0.21568628, a: 0.2}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -676,9 +676,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.15574935, g: 0.15661593, b: 0.21960784, a: 0.85882354}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1635,9 +1635,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.15574935, g: 0.15661593, b: 0.21960784, a: 0.94509804}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1769,7 +1769,8 @@ MonoBehaviour:
   <UnlockedOutfits>k__BackingField:
   - {fileID: 11400000, guid: 4ca77531ddd046f4b85a61cf5fc6fc72, type: 2}
   loadOrders: 0
-  OrdersToLoad: []
+  OrdersToLoad:
+  - {fileID: 11400000, guid: 3d1a68c2bb46fd94bb157cbb47c81da1, type: 2}
   loadAllRecipes: 0
   loadAllIngredients: 0
   loadHistoric: 0
@@ -1778,10 +1779,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d50d47e7ab07df84aa32835ad3fdf999, type: 2}
   - {fileID: 11400000, guid: f93b08edb701cb84bbfb03430712c221, type: 2}
   debugCommands: 0
-  codexIsUnlocked: 0
-  hasDonePinTutorial: 0
-  unlockedOnWakeUp: 0
-  moneyAmountOnStart: 0
+  codexIsUnlocked: 1
+  hasDonePinTutorial: 1
+  unlockedOnWakeUp: 1
+  moneyAmountOnStart: 1000
 --- !u!114 &8749834936499281840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1802,6 +1803,7 @@ MonoBehaviour:
   lunarCycleManager: {fileID: 3201330203133309056}
   moneyManager: {fileID: 8835802637744483326}
   orderManager: {fileID: 4342198150096644585}
+  gardenManager: {fileID: 0}
   data:
     <PreviousScene>k__BackingField: 0
     <CurrentTimeOfDay>k__BackingField: 0
@@ -1818,7 +1820,14 @@ MonoBehaviour:
     <RemainingIngredientToCollectBehavioursValues>k__BackingField: []
     <HasChosenLettersToday>k__BackingField: 0
     <QuestProgressionIndex>k__BackingField: 0
+    <FillerQuestProgression>k__BackingField: 0
     <AllNarrativeBlocks>k__BackingField: []
+    <AllFillerBlocks>k__BackingField: []
+    <LastUsedFillerBlock>k__BackingField:
+      <ContentSo>k__BackingField: {fileID: 0}
+      <HasUsedFirstLetter>k__BackingField: 0
+      <LastUsedLetter>k__BackingField: {fileID: 0}
+    <QuestProgressionIndexWatchers>k__BackingField: []
     <ThanksAndErrorLetters>k__BackingField: []
     <MailBoxLetters>k__BackingField: []
     <CauldronTemperatureAndIngredients>k__BackingField: []
@@ -1831,6 +1840,11 @@ MonoBehaviour:
     <CurrentOrders>k__BackingField: []
     <CodexIsUnlocked>k__BackingField: 0
     <HasDonePinTutorial>k__BackingField: 0
+    <PlotsData>k__BackingField: []
+    <CurrentOutfit>k__BackingField: {fileID: 0}
+    <UnlockedOutifts>k__BackingField: []
+    <WorkshopProgressionIndex>k__BackingField: 0
+    <UnlockedChargedBiomeAreas>k__BackingField: []
 --- !u!114 &5935014821520033967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1897,6 +1911,7 @@ MonoBehaviour:
   background: {fileID: 3235896669131646989}
   pauseBackground: {fileID: 1074871226296963427}
   pauseMenu: {fileID: 810566581111580188}
+  pauseButtonDefaultSelected: {fileID: 4636194778353128335}
   uiInput: {fileID: 2260788752589896804}
   optionsMenu: {fileID: 5763913631903170379}
   musicSlider: {fileID: 2850482393058796473}
@@ -2317,9 +2332,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.15574935, g: 0.15661593, b: 0.21960784, a: 0.79607844}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -3763,19 +3778,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 202837854717140103, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 202837854717140103, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 202837854717140103, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 202837854717140103, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -757.5
       objectReference: {fileID: 0}
     - target: {fileID: 234749071883741242, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3803,19 +3818,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 502030879067088429, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 502030879067088429, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 502030879067088429, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 502030879067088429, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -1071.5
       objectReference: {fileID: 0}
     - target: {fileID: 508482357130253814, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4211,19 +4226,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3658934427443796586, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3658934427443796586, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3658934427443796586, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 3658934427443796586, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -443.5
       objectReference: {fileID: 0}
     - target: {fileID: 3684447886812165519, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4479,19 +4494,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5280318203721362165, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5280318203721362165, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5280318203721362165, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 5280318203721362165, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -129.5
       objectReference: {fileID: 0}
     - target: {fileID: 5378124232527665937, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4789,8 +4804,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedComponents:
+    - {fileID: 2022463170110202602, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 1575703261780287163, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4b3934bccceb8e49a3f35f3f9c33a48, type: 3}

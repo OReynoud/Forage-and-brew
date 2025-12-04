@@ -17,6 +17,8 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
 
     [BoxGroup("References")] [SerializeField]
     private RectTransform pauseMenu;
+    [BoxGroup("References")] [SerializeField]
+    private Button pauseButtonDefaultSelected;
 
     [BoxGroup("References")] [SerializeField]
     private InputSystemUIInputModule uiInput;
@@ -265,7 +267,7 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
         CharacterInputManager.Instance.EnablePauseInputs();
         uiInput.enabled = true;
         uiInput.ActivateModule();
-        Debug.Log(uiInput.didAwake);
+        pauseButtonDefaultSelected.Select();
 
         _canInputPause = false;
         StartCoroutine(PauseInputBuffer());
