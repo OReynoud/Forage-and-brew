@@ -8,7 +8,6 @@ using UnityEngine.UI;
 
 public class PinnedRecipe : Singleton<PinnedRecipe>
 {
-    private RectTransform ownTransform; //Behavior logic
     public bool isPinned { get; set; } //Behavior logic
     [field: SerializeField] public bool canShow { get; set; }
     // {
@@ -22,6 +21,8 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
 
     [field: ReadOnly] public PotionValuesSo pinnedRecipe;
+    [BoxGroup("References")] public RectTransform recipeTitleTransform;
+    [BoxGroup("References")] public RectTransform stepsTransform;
     [BoxGroup("References")] public TextMeshProUGUI title;
     [BoxGroup("References")] public CanvasGroup ingredientsCanvas;
     [BoxGroup("References")] public CanvasGroup recipeStepsCanvas;
@@ -57,8 +58,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
     public void Start()
     {
-        ownTransform = GetComponent<RectTransform>();
-        CharacterInputManager.Instance.OnInputsEnabled.AddListener(ChangePos);
+        CharacterInputManager.Instance.OnInputsEnabled.AddListener(InverseChangePos);
         CharacterInputManager.Instance.OnCodexUse.AddListener(InverseChangePos);
         for (int i = 0; i < potionIngredientsImage.Length; i++)
         {
@@ -72,15 +72,26 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
     {
         if (TemperatureHapticChallengeManager.Instance.IsChallengeActive)
         {
+            Debug.Log("Challenge active");
             canShow = true;
             return;
         }
 
         if (isInBedroom)
         {
+            Debug.Log("In bedroom");
             canShow = false;
             return;
         }
+        
+        if (CharacterInputManager.Instance.showCodex)
+        {
+            Debug.Log("Codex open");
+            canShow = true;
+            return;
+        }
+        
+        Debug.Log("Change Pos" + arg0);
         canShow = arg0;
         
         if (pinnedRecipe)
@@ -90,16 +101,26 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
     {
         if (TemperatureHapticChallengeManager.Instance.IsChallengeActive)
         {
+            Debug.Log("Challenge active Inverse");
             canShow = true;
             return;
         }
         
         if (isInBedroom)
         {
+            Debug.Log("In bedroom Inverse");
             canShow = false;
             return;
         }
         
+        if (CharacterInputManager.Instance.showCodex)
+        {
+            Debug.Log("Codex open Inverse");
+            canShow = true;
+            return;
+        }
+        
+        Debug.Log("Inverse Change Pos" + !arg0);
         canShow = !arg0;
         
         if (pinnedRecipe)
@@ -108,17 +129,27 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
     private void Update()
     {
-        if (CharacterInputManager.Instance.showCodex || !canShow)
+        if (!canShow)
         {
-            ownTransform.anchoredPosition = Vector2.Lerp(
-                ownTransform.anchoredPosition, restingPos, lerp);
+            recipeTitleTransform.anchoredPosition = Vector2.Lerp(
+                recipeTitleTransform.anchoredPosition, restingPos, lerp);
+            stepsTransform.anchoredPosition = Vector2.Lerp(
+                stepsTransform.anchoredPosition, restingPos, lerp);
+        }
+        else if (CharacterInputManager.Instance.showCodex)
+        {
+            Debug.Log("Kakou kakou");
+            recipeTitleTransform.anchoredPosition = Vector2.Lerp(
+                recipeTitleTransform.anchoredPosition, isPinned ? pinnedPos : restingPos, lerp);
+            stepsTransform.anchoredPosition = Vector2.Lerp(
+                stepsTransform.anchoredPosition, restingPos, lerp);
         }
         else
         {
-            ownTransform.anchoredPosition = Vector2.Lerp(
-                ownTransform.anchoredPosition,
-                isPinned ? pinnedPos : restingPos,
-                lerp);
+            recipeTitleTransform.anchoredPosition = Vector2.Lerp(
+                recipeTitleTransform.anchoredPosition, isPinned ? pinnedPos : restingPos, lerp);
+            stepsTransform.anchoredPosition = Vector2.Lerp(
+                stepsTransform.anchoredPosition, isPinned ? pinnedPos : restingPos, lerp);
         }
     }
 
