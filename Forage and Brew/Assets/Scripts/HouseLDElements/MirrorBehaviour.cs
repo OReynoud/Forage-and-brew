@@ -134,7 +134,6 @@ public class MirrorBehaviour : MonoBehaviour
         leftArrowRectTransform.anchoredPosition = new Vector2(_leftArrowStartX, leftArrowRectTransform.anchoredPosition.y);
         rightArrowRectTransform.anchoredPosition = new Vector2(_rightArrowStartX, rightArrowRectTransform.anchoredPosition.y);
         UpdateOutfitCategoryUI();
-        RegenerateOutfitUI();
         UpdateLockUI();
         
         // Inputs
@@ -151,7 +150,7 @@ public class MirrorBehaviour : MonoBehaviour
         if (!_isUsingMirror) return;
         
         // Set selected outfit
-        if (_selectedOutfitIndex != _currentOutfitIndex)
+        if (_isCurrentRainOutfit != _isSelectedRainOutfit || _selectedOutfitIndex != _currentOutfitIndex)
         {
             StartCoroutine(ChangeOutfitCoroutine(_isSelectedRainOutfit ? outfitListSo.RainOutfits[_selectedOutfitIndex] : 
                 outfitListSo.CasualOutfits[_selectedOutfitIndex]));
