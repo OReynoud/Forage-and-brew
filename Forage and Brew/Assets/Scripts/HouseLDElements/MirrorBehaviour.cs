@@ -133,6 +133,7 @@ public class MirrorBehaviour : MonoBehaviour
         mirrorInterfaceCanvas.SetActive(true);
         leftArrowRectTransform.anchoredPosition = new Vector2(_leftArrowStartX, leftArrowRectTransform.anchoredPosition.y);
         rightArrowRectTransform.anchoredPosition = new Vector2(_rightArrowStartX, rightArrowRectTransform.anchoredPosition.y);
+        UpdateOutfitCategoryUI();
         RegenerateOutfitUI();
         UpdateLockUI();
         
