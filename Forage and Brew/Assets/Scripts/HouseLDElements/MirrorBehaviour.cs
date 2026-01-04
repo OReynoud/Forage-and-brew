@@ -50,10 +50,8 @@ public class MirrorBehaviour : MonoBehaviour
     [SerializeField] private float mainButtonAvailableAlpha = 1f;
     [SerializeField] private GameObject selectLayout;
     [SerializeField] private GameObject purchaseLayout;
-    [SerializeField] private RectTransform moneyCostLayoutRectTransform;
     [SerializeField] private TMP_Text moneyCostText;
-    [SerializeField] private GameObject ingredientCostsLayout;
-    [SerializeField] private RectTransform ingredientCostsLayoutRectTransform;
+    [SerializeField] private RectTransform ingredientAndMoneyCostsLayoutRectTransform;
     [SerializeField] private List<GameObject> ingredientCostLayouts;
     [SerializeField] private List<TMP_Text> ingredientCostTexts;
     [SerializeField] private List<Image> ingredientCostImages;
@@ -494,6 +492,7 @@ public class MirrorBehaviour : MonoBehaviour
         // Update main button and layouts
         if (GameDontDestroyOnLoadManager.Instance.UnlockedOutfits.Contains(currentOutfit))
         {
+            // If outfit is unlocked, show select layout
             mainButtonCanvasGroup.alpha = _currentOutfitIndex != _selectedOutfitIndex ?
                 mainButtonAvailableAlpha : mainButtonUnavailableAlpha;
             purchaseLayout.SetActive(false);
@@ -501,6 +500,7 @@ public class MirrorBehaviour : MonoBehaviour
         }
         else
         {
+            // If outfit is locked, show purchase layout
             _canBuyCurrentOutfit = !(MoneyManager.Instance.MoneyAmount < currentOutfit.OutfitMoneyCost ||
                                     currentOutfit.IngredientCosts.Any(ingredientCost =>
                                         GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Count(ingredient =>
@@ -514,31 +514,21 @@ public class MirrorBehaviour : MonoBehaviour
             selectLayout.SetActive(false);
             
             moneyCostText.text = currentOutfit.OutfitMoneyCost.ToString();
-            LayoutRebuilder.ForceRebuildLayoutImmediate(moneyCostLayoutRectTransform);
             
-            if (currentOutfit.IngredientCosts.Count == 0)
+            for (int i = 0; i < ingredientCostLayouts.Count; i++)
             {
-                ingredientCostsLayout.SetActive(false);
+                ingredientCostLayouts[i].SetActive(false);
             }
-            else
+
+            for (int i = 0; i < currentOutfit.IngredientCosts.Count; i++)
             {
-                ingredientCostsLayout.SetActive(true);
-                
-                for (int i = 0; i < ingredientCostLayouts.Count; i++)
-                {
-                    ingredientCostLayouts[i].SetActive(false);
-                }
-
-                for (int i = 0; i < currentOutfit.IngredientCosts.Count; i++)
-                {
-                    IngredientCost ingredientCost = currentOutfit.IngredientCosts[i];
-                    ingredientCostLayouts[i].SetActive(true);
-                    ingredientCostTexts[i].text = ingredientCost.Amount.ToString();
-                    ingredientCostImages[i].sprite = ingredientCost.Ingredient.iconLow;
-                }
-
-                LayoutRebuilder.ForceRebuildLayoutImmediate(ingredientCostsLayoutRectTransform);
+                IngredientCost ingredientCost = currentOutfit.IngredientCosts[i];
+                ingredientCostLayouts[i].SetActive(true);
+                ingredientCostTexts[i].text = ingredientCost.Amount.ToString();
+                ingredientCostImages[i].sprite = ingredientCost.Ingredient.iconLow;
             }
+
+            LayoutRebuilder.ForceRebuildLayoutImmediate(ingredientAndMoneyCostsLayoutRectTransform);
         }
     }
     
