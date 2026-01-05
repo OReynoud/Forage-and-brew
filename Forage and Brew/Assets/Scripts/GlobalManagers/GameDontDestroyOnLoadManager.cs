@@ -9,7 +9,7 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     public static GameDontDestroyOnLoadManager Instance { get; private set; }
     
     // Global Information
-    public bool IsFirstGameSession { get; set; } = true;
+    [field: SerializeField]public bool IsFirstGameSession { get; set; } = true;
     
     // Scene
     [field: SerializeField] [field: ReadOnly] public Scene CurrentScene { get; set; }

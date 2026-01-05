@@ -87,6 +87,7 @@ public class OrderManager : MonoBehaviour
         foreach (Order o in CurrentOrders)
         {
             if (o == null) continue;
+            if (o.OrderContent == null) continue;
             
             CodexContentManager.instance.ReceiveNewOrder(
                 o.RelatedLetter.Client,

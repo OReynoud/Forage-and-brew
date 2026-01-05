@@ -225,7 +225,7 @@ public class SaveManager : MonoBehaviour
         gameDontDestroyOnLoadManager.QuestProgressionIndexWatchers.AddRange(data.QuestProgressionIndexWatchers);
         gameDontDestroyOnLoadManager.ThanksAndErrorLetters.AddRange(data.ThanksAndErrorLetters);
         gameDontDestroyOnLoadManager.MailBoxLetters.AddRange(data.MailBoxLetters);
-        gameDontDestroyOnLoadManager.ChosenLetters.AddRange(data.ChosenLetters);
+        if (data.ChosenLetters != null) gameDontDestroyOnLoadManager.ChosenLetters.AddRange(data.ChosenLetters);
         
         // Cauldron
         gameDontDestroyOnLoadManager.CauldronTemperatureAndIngredients.AddRange(data.CauldronTemperatureAndIngredients);
@@ -239,7 +239,17 @@ public class SaveManager : MonoBehaviour
         moneyManager.MoneyAmount = data.MoneyAmount;
         
         // Orders
-        orderManager.CurrentOrders.AddRange(data.CurrentOrders);
+        foreach (var o in data.CurrentOrders)
+        {
+            if (o.OrderContent == null)
+            {
+                orderManager.CurrentOrders.Add(null);
+            }
+            else
+            {
+                orderManager.CurrentOrders.Add(o);
+            }
+        }
         
         // Tutorial progression
         gameDontDestroyOnLoadManager.codexIsUnlocked = data.CodexIsUnlocked;
