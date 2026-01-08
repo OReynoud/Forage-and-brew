@@ -57,6 +57,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
     [Foldout("Debug")] private List<Sprite> tempIngredientsLow = new();
     [Foldout("Debug")] private List<Sprite> tempIngredientsHigh = new();
+    public bool codexIsUnlocked { get; set; }
     public Dictionary<string, TutorialDissolveBehavior> tutorialDissolves = new();
 
     [field : SerializeField] public List<int> pageIndexesToCheck { get; set; } = new();
@@ -69,8 +70,8 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
     public override void Awake()
     {
-        base.Awake();
-        if (!GDDOL.codexIsUnlocked)
+        base.Awake();        
+        if (!codexIsUnlocked)
         {
             tutorialDissolvesToCheck.Add("");
         }
@@ -78,11 +79,13 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
     private void Start()
     {
+
         StartCoroutine(StartingRoutine());
     }
 
     IEnumerator StartingRoutine()
     {
+
         pinImage.enabled = false;
         recipes.Clear();
         historicPages.Clear();

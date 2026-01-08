@@ -170,7 +170,7 @@ public class SaveManager : MonoBehaviour
             
             return;
         }
-        
+
         // Global Information
         gameDontDestroyOnLoadManager.IsFirstGameSession = false;
         
@@ -253,6 +253,11 @@ public class SaveManager : MonoBehaviour
         
         // Tutorial progression
         gameDontDestroyOnLoadManager.codexIsUnlocked = data.CodexIsUnlocked;
+        if (data.CodexIsUnlocked)
+        {
+            codexManager.codexIsUnlocked = true;
+            codexManager.tutorialDissolvesToCheck.Clear();
+        }
         gameDontDestroyOnLoadManager.hasDonePinTutorial = data.HasDonePinTutorial;
         
         gameDontDestroyOnLoadManager.UnlockedTutorials = data.UnlockedTutorials;
