@@ -72,55 +72,48 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
     {
         if (TemperatureHapticChallengeManager.Instance.IsChallengeActive)
         {
-            Debug.Log("Challenge active");
             canShow = true;
             return;
         }
 
         if (isInBedroom)
         {
-            Debug.Log("In bedroom");
             canShow = false;
             return;
         }
         
         if (CharacterInputManager.Instance.showCodex)
         {
-            Debug.Log("Codex open");
             canShow = true;
             return;
         }
         
-        Debug.Log("Change Pos" + arg0);
         canShow = arg0;
         
         if (pinnedRecipe)
             PinRecipe(pinnedRecipe, potionIngredients);
     }
+    
     public void InverseChangePos(bool arg0)
     {
         if (TemperatureHapticChallengeManager.Instance.IsChallengeActive)
         {
-            Debug.Log("Challenge active Inverse");
             canShow = true;
             return;
         }
         
         if (isInBedroom)
         {
-            Debug.Log("In bedroom Inverse");
             canShow = false;
             return;
         }
         
         if (CharacterInputManager.Instance.showCodex)
         {
-            Debug.Log("Codex open Inverse");
             canShow = true;
             return;
         }
         
-        Debug.Log("Inverse Change Pos" + !arg0);
         canShow = !arg0;
         
         if (pinnedRecipe)
