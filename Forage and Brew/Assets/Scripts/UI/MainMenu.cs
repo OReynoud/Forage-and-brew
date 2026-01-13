@@ -1,3 +1,6 @@
+using System.IO;
+using System.Text;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
@@ -7,10 +10,13 @@ public class MainMenu : MonoBehaviour
 {
     [SerializeField] private bool doesShowCursor;
     
+    [BoxGroup("SaveSystem")]     
+    [SerializeField] private SceneListSo sceneListSo;
+    
     public CanvasGroup background;
     private bool showBackground;
-    private bool showOptions;
-    private bool showCredits;
+    public bool showOptions;
+    public bool showCredits;
     public RectTransform options;
     public RectTransform credits;
     
@@ -23,9 +29,28 @@ public class MainMenu : MonoBehaviour
     public float alphaLerp;
     public float posLerp;
     
+    private readonly Encoding _encoding = Encoding.UTF8;
+    
     public void StartGame()
     {
-        SceneManager.LoadScene("SC_NewHouse");
+        if (File.Exists(SaveManager.FilePath))
+        {
+            string jsonData = File.ReadAllText(SaveManager.FilePath, _encoding);
+            var data = JsonUtility.FromJson<SaveManager.SavedData>(jsonData);
+            foreach (SceneName sceneName in sceneListSo.SceneNames)
+            {
+                if (sceneName.Scene == data.PreviousScene)
+                {
+                    SceneManager.LoadScene(sceneName.Name);
+                    //SceneTransitionManager.instance.HandleLoadNewScene(sceneName.Scene);
+                    break;
+                }
+            }
+        }
+        else
+        {
+            SceneManager.LoadScene("SC_NewHouse");
+        }
     }
 
     public void ShowOptions()
@@ -85,9 +110,9 @@ public class MainMenu : MonoBehaviour
         
         background.alpha = Mathf.Lerp(background.alpha, showBackground ? 1 : 0, alphaLerp);
 
-        options.anchoredPosition = Vector2.Lerp(options.anchoredPosition, showOptions ? Vector2.zero : new Vector2(0, Screen.height), posLerp);
+        options.anchoredPosition = Vector2.Lerp(options.anchoredPosition, showOptions ? Vector2.zero : new Vector2(0, options.rect.height), posLerp);
         
-        credits.anchoredPosition = Vector2.Lerp(credits.anchoredPosition, showCredits ? Vector2.zero : new Vector2(0, Screen.height), posLerp);
+        credits.anchoredPosition = Vector2.Lerp(credits.anchoredPosition, showCredits ? Vector2.zero : new Vector2(0, credits.rect.height), posLerp);
 
     }
 

@@ -27,7 +27,7 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private GardenManager gardenManager;
     
     private static string DirectoryPath => Path.Combine(Application.persistentDataPath, "Saves");
-    private static string FilePath => Path.Combine(DirectoryPath, "Save.json");
+    public static string FilePath => Path.Combine(DirectoryPath, "Save.json");
     private readonly Encoding _encoding = Encoding.UTF8;
     
     [SerializeField, HideInInspector] private SavedData data = new();
@@ -51,7 +51,7 @@ public class SaveManager : MonoBehaviour
     private void OnApplicationQuit()
     {
         if (!isSaveEnabled) return;
-        
+        Debug.Log("Bro saved");
         SaveGame();
     }
     
@@ -180,15 +180,15 @@ public class SaveManager : MonoBehaviour
         
         // Scene
         gameDontDestroyOnLoadManager.CurrentScene = data.PreviousScene;
-        foreach (SceneName sceneName in sceneListSo.SceneNames)
-        {
-            if (sceneName.Scene == data.PreviousScene)
-            {
-                SceneManager.LoadScene(sceneName.Name);
-                SceneTransitionManager.instance.HandleLoadNewScene(sceneName.Scene);
-                break;
-            }
-        }
+        // foreach (SceneName sceneName in sceneListSo.SceneNames)
+        // {
+        //     if (sceneName.Scene == data.PreviousScene)
+        //     {
+        //         SceneManager.LoadScene(sceneName.Name);
+        //         SceneTransitionManager.instance.HandleLoadNewScene(sceneName.Scene);
+        //         break;
+        //     }
+        // }
         
         // Days
         gameDontDestroyOnLoadManager.CurrentTimeOfDay = data.CurrentTimeOfDay;
