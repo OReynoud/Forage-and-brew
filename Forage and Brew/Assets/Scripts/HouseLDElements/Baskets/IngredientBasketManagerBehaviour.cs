@@ -57,6 +57,12 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
             ingredientIndex = 0;
         }
         
+        if (GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Count == 0 &&
+            GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients.Count == 0)
+        {
+            currentTypeBackgroundTransform.gameObject.SetActive(false);
+        }
+        
         ReactivateRightIngredientBaskets();
         
         StartCoroutine(UpdateIngredientTypeBackgroundAtStart());
@@ -65,19 +71,31 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
     
     public override void IncreaseCurrentSetIndex()
     {
-        _currentIngredientSetIndex++;
-        _currentIngredientSetIndex %= _ingredientSets.Count;
+        do
+        {
+            _currentIngredientSetIndex++;
+            _currentIngredientSetIndex %= _ingredientSets.Count;
+        } while (_ingredientSets[_currentIngredientSetIndex].All(ingredient =>
+            !GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Contains(ingredient) && 
+            !GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients.Select(behaviour => behaviour.IngredientValuesSo)
+                .Contains(ingredient)));
         
         ReactivateRightIngredientBaskets();
     }
     
     public override void DecreaseCurrentSetIndex()
     {
-        _currentIngredientSetIndex--;
-        if (_currentIngredientSetIndex < 0)
+        do
         {
-            _currentIngredientSetIndex = _ingredientSets.Count - 1;
-        }
+            _currentIngredientSetIndex--;
+            if (_currentIngredientSetIndex < 0)
+            {
+                _currentIngredientSetIndex = _ingredientSets.Count - 1;
+            }
+        } while (_ingredientSets[_currentIngredientSetIndex].All(ingredient =>
+            !GameDontDestroyOnLoadManager.Instance.CollectedIngredients.Contains(ingredient) && 
+            !GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients.Select(behaviour => behaviour.IngredientValuesSo)
+                .Contains(ingredient)));
         
         ReactivateRightIngredientBaskets();
     }
@@ -150,7 +168,25 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        List<IngredientTypeSo> distinctCollectedIngredientTypes = new();
+
+        foreach (IngredientValuesSo ingredientValues in GameDontDestroyOnLoadManager.Instance.CollectedIngredients)
+        {
+            if (!distinctCollectedIngredientTypes.Contains(ingredientValues.Type))
+            {
+                distinctCollectedIngredientTypes.Add(ingredientValues.Type);
+            }
+        }
+        
+        foreach (CollectedIngredientBehaviour outIngredient in GameDontDestroyOnLoadManager.Instance.OutCollectedIngredients)
+        {
+            if (!distinctCollectedIngredientTypes.Contains(outIngredient.IngredientValuesSo.Type))
+            {
+                distinctCollectedIngredientTypes.Add(outIngredient.IngredientValuesSo.Type);
+            }
+        }
+        
+        if (other.CompareTag("Player") && distinctCollectedIngredientTypes.Count >= 2)
         {
             EnableChangeSet();
         }
