@@ -613,15 +613,6 @@ public class CodexContentManager : Singleton<CodexContentManager>
             pinnedRecipe.pinIcon.enabled = true;
             pinImage.enabled = true;
         }
-        else
-        {
-            if (!pinnedRecipe)
-                return;
-            //Debug.Log("Selected nothing, unpinning");
-            pinnedRecipe.pinIcon.enabled = false;
-            pinImage.enabled = false;
-            PinnedRecipe.instance.UnpinRecipe();
-        }
     }
 
 

@@ -305,13 +305,6 @@ public class Book : MonoBehaviour
                 pinRecipeUI.gameObject.SetActive(true);
             pinRecipeUI.text = "Pin this recipe";
         }
-        else if(PinnedRecipe.instance.pinnedRecipe)
-        {
-            if (!pinRecipeUI.gameObject.activeSelf)
-                pinRecipeUI.gameObject.SetActive(true);
-            
-            pinRecipeUI.text = "Unpin recipe";
-        }
         else
         {
             pinRecipeUI.gameObject.SetActive(false);
