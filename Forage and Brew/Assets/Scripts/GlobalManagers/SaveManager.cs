@@ -117,8 +117,15 @@ public class SaveManager : MonoBehaviour
         data.QuestProgressionIndexWatchers = gameDontDestroyOnLoadManager.QuestProgressionIndexWatchers;
         data.ThanksAndErrorLetters = gameDontDestroyOnLoadManager.ThanksAndErrorLetters;
         data.MailBoxLetters = gameDontDestroyOnLoadManager.MailBoxLetters;
-        data.ChosenLetters = new List<(Letter, LetterContentSo)>();
-        data.ChosenLetters.AddRange(gameDontDestroyOnLoadManager.ChosenLetters);
+        data.ChosenLetters.Clear();
+        foreach (var tuple in gameDontDestroyOnLoadManager.ChosenLetters)
+        {
+            data.ChosenLetters.Add(new ChosenLetter()
+            {
+                VisualLetterComponent = tuple.Item1,
+                DataLetterComponent = tuple.Item2
+            });
+        }
         Debug.Log(data.ChosenLetters.Count);
             
         
@@ -233,8 +240,10 @@ public class SaveManager : MonoBehaviour
         gameDontDestroyOnLoadManager.QuestProgressionIndexWatchers.AddRange(data.QuestProgressionIndexWatchers);
         gameDontDestroyOnLoadManager.ThanksAndErrorLetters.AddRange(data.ThanksAndErrorLetters);
         gameDontDestroyOnLoadManager.MailBoxLetters.AddRange(data.MailBoxLetters);
-        if (data.ChosenLetters != null) gameDontDestroyOnLoadManager.ChosenLetters.AddRange(data.ChosenLetters);
-        Debug.Log(data.ChosenLetters.Count);
+        foreach (var chosenLetter in data.ChosenLetters)
+        {
+            gameDontDestroyOnLoadManager.ChosenLetters.Add((chosenLetter.VisualLetterComponent,chosenLetter.DataLetterComponent));
+        }
         
         // Cauldron
         gameDontDestroyOnLoadManager.CauldronTemperatureAndIngredients.AddRange(data.CauldronTemperatureAndIngredients);
@@ -332,7 +341,7 @@ public class SaveManager : MonoBehaviour
         [field: SerializeField] public List<QuestProgressionIndexWatcher> QuestProgressionIndexWatchers { get; set; }
         [field: SerializeField] public List<Letter> ThanksAndErrorLetters { get; set; }
         [field: SerializeField] public List<Letter> MailBoxLetters { get; set; }
-        [field: SerializeField] public List<(Letter, LetterContentSo)> ChosenLetters { get; set; }
+        [field: SerializeField] public List<ChosenLetter> ChosenLetters { get; set; }
         
         [field: SerializeField] public List<TemperatureChallengeIngredients> CauldronTemperatureAndIngredients { get; set; }
         [field: SerializeField] public Temperature CauldronTemperature { get; set; }

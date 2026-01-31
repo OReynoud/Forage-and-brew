@@ -88,7 +88,6 @@ public class OrderManager : MonoBehaviour
         {
             if (o == null) continue;
             if (o.OrderContent == null) continue;
-            
             CodexContentManager.instance.ReceiveNewOrder(
                 o.RelatedLetter.Client,
                 o.RelatedLetter.TextContent,

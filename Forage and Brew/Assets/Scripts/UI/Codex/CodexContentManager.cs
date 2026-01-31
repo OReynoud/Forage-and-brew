@@ -93,7 +93,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
         GameDontDestroyOnLoadManager.Instance.OnNewRecipeReceived.AddListener(CreateNewRecipePage);
         foreach (var ticket in _orderCodexDisplayBehaviours)
         {
-            ticket.gameObject.SetActive(false);
+            ticket.transform.parent.gameObject.SetActive(false);
         }
 
         yield return new WaitWhile(() => !OrderManager.Instance.IsInitialized);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -18,7 +19,12 @@ public class OrderCodexDisplayBehaviour : PageBehavior
     public OrderSpecificPotionDemand keywordPotionPrefab;
     public List<Transform> potionLists = new();
     public List<OrderSpecificPotionDemand> demandedPotionsList = new();
-    
+
+
+    private void OnDisable()
+    {
+        Debug.Log("gne");
+    }
 
     public override void InitOrder(ClientSo client,string description, PotionDemand[] Potions, int Reward, int index)
     {

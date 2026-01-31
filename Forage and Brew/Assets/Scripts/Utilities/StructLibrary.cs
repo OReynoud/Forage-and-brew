@@ -19,6 +19,12 @@ public struct QuestProgressionIndexWatcher
     [field: SerializeField] public int MaximumOrdersAmount { get; private set; }
 }
 [Serializable]
+public struct ChosenLetter
+{
+    [field: SerializeField] public Letter VisualLetterComponent { get; set; }
+    [field: SerializeField] public LetterContentSo DataLetterComponent { get; set; }
+}
+[Serializable]
 public struct MusicContainer
 {
     [field: SerializeField] public Scene Scene { get; private set; }
