@@ -255,6 +255,7 @@ public class CollectHapticChallengeManager : MonoBehaviour
         {
             _firstScrapingJoystickPosition = Vector2.zero;
             _currentIngredientToCollectBehaviour = null;
+            _isScrapingHapticChallengeActive = false;
             return;
         }
         
