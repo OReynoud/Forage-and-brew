@@ -408,6 +408,8 @@ public class MirrorBehaviour : MonoBehaviour
         
         // Update the current outfit UI
         UpdateOutfitUI();
+        
+        SelectOutfit();
     }
 
     private IEnumerator ChangeOutfitCoroutine(CharacterOutfitSo outfit)
