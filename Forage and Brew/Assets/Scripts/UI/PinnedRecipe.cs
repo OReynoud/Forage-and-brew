@@ -131,7 +131,6 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
         }
         else if (CharacterInputManager.Instance.showCodex)
         {
-            Debug.Log("Kakou kakou");
             recipeTitleTransform.anchoredPosition = Vector2.Lerp(
                 recipeTitleTransform.anchoredPosition, isPinned ? pinnedPos : restingPos, lerp);
             stepsTransform.anchoredPosition = Vector2.Lerp(
