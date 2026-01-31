@@ -58,7 +58,7 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
     public void Start()
     {
-        CharacterInputManager.Instance.OnInputsEnabled.AddListener(InverseChangePos);
+        CharacterInputManager.Instance.OnInputsEnabled.AddListener(ChangePos);
         CharacterInputManager.Instance.OnCodexUse.AddListener(InverseChangePos);
         for (int i = 0; i < potionIngredientsImage.Length; i++)
         {
@@ -122,17 +122,17 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
 
     private void Update()
     {
-        if (!canShow)
-        {
-            recipeTitleTransform.anchoredPosition = Vector2.Lerp(
-                recipeTitleTransform.anchoredPosition, restingPos, lerp);
-            stepsTransform.anchoredPosition = Vector2.Lerp(
-                stepsTransform.anchoredPosition, restingPos, lerp);
-        }
-        else if (CharacterInputManager.Instance.showCodex)
+        if (CharacterInputManager.Instance.showCodex)
         {
             recipeTitleTransform.anchoredPosition = Vector2.Lerp(
                 recipeTitleTransform.anchoredPosition, isPinned ? pinnedPos : restingPos, lerp);
+            stepsTransform.anchoredPosition = Vector2.Lerp(
+                stepsTransform.anchoredPosition, restingPos, lerp);
+        }
+        else if (!canShow)
+        {
+            recipeTitleTransform.anchoredPosition = Vector2.Lerp(
+                recipeTitleTransform.anchoredPosition, restingPos, lerp);
             stepsTransform.anchoredPosition = Vector2.Lerp(
                 stepsTransform.anchoredPosition, restingPos, lerp);
         }
