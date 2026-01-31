@@ -5,6 +5,7 @@ public class BedBehaviour : MonoBehaviour
     [SerializeField] private PotionCrateManager[] potionBasketManagerBehaviours;
     [SerializeField] private GameObject interactInputCanvasGameObject;
     [SerializeField] private Transform bedSpawnPoint;
+    [SerializeField] private float timeBeforeBed = 10f;
 
 
     private void Start()
@@ -45,12 +46,13 @@ public class BedBehaviour : MonoBehaviour
         CharacterInteractController.Instance.CurrentNearBed = null;
         MailBoxBehaviour.instance.MailNewDayMethod();
         DisableInteract();
+        GameDontDestroyOnLoadManager.Instance.SetTimeBeforeBed(timeBeforeBed);
     }
     
     
     private void OnTriggerEnter(Collider other)
     {
-        if (GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay == TimeOfDay.Daytime) return;
+        if (GameDontDestroyOnLoadManager.Instance.TimeBeforeBed > 0f) return;
         
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {

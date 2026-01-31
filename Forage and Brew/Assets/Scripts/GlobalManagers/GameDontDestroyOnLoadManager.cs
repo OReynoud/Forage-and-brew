@@ -86,6 +86,9 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     [Foldout("Debug")] public bool unlockedOnWakeUp;
     [Foldout("Debug")] public int moneyAmountOnStart;
     
+    // Time before bed management
+    public float TimeBeforeBed { get; private set; }
+    
     
     private void Awake()
     {
@@ -108,5 +111,17 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
         {
             MailBoxBehaviour.instance.MailNewDayMethod();
         }
+    }
+    
+    private void Update()
+    {
+        if (TimeBeforeBed <= 0f) return;
+        
+        TimeBeforeBed -= Time.deltaTime;
+    }
+    
+    public void SetTimeBeforeBed(float time)
+    {
+        TimeBeforeBed = time;
     }
 }
