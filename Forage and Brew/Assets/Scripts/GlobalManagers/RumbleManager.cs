@@ -11,6 +11,10 @@ public class RumbleManager : MonoBehaviour
     private float _rumbleTimeLeft;
     private List<float> _rumbleIntervalsLeft;
     private float _rumbleIntervalTimeLeft;
+    private bool _isRumbleIncremental;
+    private float _rumbleTargetMagnitude;
+    private float _rumbleTargetDuration;
+    private AnimationCurve _rumbleCurve;
 
     
     private void Awake()
@@ -42,6 +46,19 @@ public class RumbleManager : MonoBehaviour
         _rumbleTimeLeft = duration;
     }
 
+    public void PlayIncrementalRumble(float duration, float magnitude, AnimationCurve curve)
+    {
+        if (Gamepad.current == null) return;
+
+        _isRumbleIncremental = true;
+        _rumbleTargetMagnitude = magnitude;
+        _rumbleTargetDuration = duration;
+        _rumbleCurve = curve;
+        _rumbleIntervalTimeLeft = 0f;
+        _rumbleDurationsLeft = new List<float>();
+        _rumbleTimeLeft = duration;
+    }
+
     public void PlayMultipleRumbles(List<float> durations, float magnitude, List<float> intervals)
     {
         if (Gamepad.current == null) return;
@@ -54,7 +71,18 @@ public class RumbleManager : MonoBehaviour
 
     private void UpdateCurrentRumble()
     {
+        if (Gamepad.current == null) return;
+        
         if (_rumbleTimeLeft <= 0f) return;
+        
+        if (_isRumbleIncremental)
+        {
+            float currentTime = _rumbleTargetDuration - _rumbleTimeLeft;
+            float normalizedTime = Mathf.Clamp01(currentTime / _rumbleTargetDuration);
+            float curveValue = _rumbleCurve.Evaluate(normalizedTime);
+            float currentMagnitude = curveValue * _rumbleTargetMagnitude;
+            Gamepad.current.SetMotorSpeeds(currentMagnitude * 0.5f, currentMagnitude);
+        }
         
         _rumbleTimeLeft -= Time.deltaTime;
         
@@ -69,6 +97,7 @@ public class RumbleManager : MonoBehaviour
             }
             else
             {
+                _isRumbleIncremental = false;
                 InputSystem.ResetHaptics();
             }
         }
@@ -76,6 +105,8 @@ public class RumbleManager : MonoBehaviour
 
     private void UpdateRumbleInterval()
     {
+        if (Gamepad.current == null) return;
+        
         if (_rumbleIntervalTimeLeft <= 0f) return;
         
         _rumbleIntervalTimeLeft -= Time.deltaTime;

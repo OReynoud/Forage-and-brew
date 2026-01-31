@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class FrogInteractionBehavior : MonoBehaviour, ICinematicInteraction
 {
-
     public Animator animator;
+    [SerializeField] private FrogInteractionValuesSo frogInteractionValuesSo;
 
     public float distance;
     public ParticleSystem particleSystem;
@@ -51,6 +51,10 @@ public class FrogInteractionBehavior : MonoBehaviour, ICinematicInteraction
         particleSystem.Stop();
         particleSystem.Play();
         animator.SetTrigger(CharacterAnimManager.DoPet);
+        RumbleManager.Instance.PlayIncrementalRumble(
+            frogInteractionValuesSo.PetVibrationDuration,
+            frogInteractionValuesSo.PetVibrationTargetPower,
+            frogInteractionValuesSo.PetVibrationPowerCurve);
         CharacterMovementController.Instance.FinishWalkToLocation.RemoveListener(PlayerPet);
     }
 }
