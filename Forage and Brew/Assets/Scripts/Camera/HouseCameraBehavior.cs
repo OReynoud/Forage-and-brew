@@ -36,13 +36,11 @@ public class HouseCameraBehavior : SimpleCameraBehavior
     // Update is called once per frame
     public override void FixedUpdate()
     {
-        //Debug.Log(mainCameraPreset);
         if (localCodexShow || overrideCameraLerp)
         {
             base.FixedUpdate();
             return;
         }
-
         if (allHouseCameraSettings.Count <= 1)
         {
             transform.parent.position = Vector3.Lerp(transform.parent.position, player.position + cameraOffset, positionLerp);

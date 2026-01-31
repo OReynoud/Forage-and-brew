@@ -15,15 +15,15 @@ public class CharacterSpawnBehaviour : MonoBehaviour
         {
             characterTransform.position = transform.position;
             characterTransform.rotation = transform.rotation;
-            
-            
+
+
             foreach (SceneName sceneName in sceneListSo.SceneNames)
             {
                 if (sceneName.Name == SceneManager.GetActiveScene().name)
                 {
                     CharacterVfxManager.Instance.CheckForRainVfx();
                     WeatherLightingManager.Instance?.SetRightLighting();
-                    
+
                     if (sourceScene == Scene.HouseOutdoor && sceneName.Scene == Scene.HouseOutdoor)
                     {
                         SceneTransitionManager.instance.Wake();
@@ -31,25 +31,23 @@ public class CharacterSpawnBehaviour : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log(gameObject,gameObject);
+                        Debug.Log(gameObject, gameObject);
                         SceneTransitionManager.instance.HandleLoadNewScene(sceneName.Scene);
                         PinnedRecipe.instance.isInHouse = false;
                     }
-                    
+
                     MusicManager.Instance.PlaySceneMucic(sceneName.Scene);
                     break;
                 }
             }
-            
+
             PinnedRecipe.instance.Start();
-            
+
             if (camSettings != null)
             {
                 SimpleCameraBehavior.instance.ApplyScriptableCamSettings(camSettings, 0);
                 SimpleCameraBehavior.instance.InstantCamUpdate(camSettings);
             }
-
-
         }
     }
 }

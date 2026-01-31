@@ -66,6 +66,7 @@ public class SaveManager : MonoBehaviour
     
     public void SaveGame()
     {
+
         // Scene
         data.PreviousScene = gameDontDestroyOnLoadManager.CurrentScene;
         
@@ -116,7 +117,10 @@ public class SaveManager : MonoBehaviour
         data.QuestProgressionIndexWatchers = gameDontDestroyOnLoadManager.QuestProgressionIndexWatchers;
         data.ThanksAndErrorLetters = gameDontDestroyOnLoadManager.ThanksAndErrorLetters;
         data.MailBoxLetters = gameDontDestroyOnLoadManager.MailBoxLetters;
-        data.ChosenLetters = gameDontDestroyOnLoadManager.ChosenLetters;
+        data.ChosenLetters = new List<(Letter, LetterContentSo)>();
+        data.ChosenLetters.AddRange(gameDontDestroyOnLoadManager.ChosenLetters);
+        Debug.Log(data.ChosenLetters.Count);
+            
         
         // Cauldron
         data.CauldronTemperatureAndIngredients = gameDontDestroyOnLoadManager.CauldronTemperatureAndIngredients;
@@ -153,9 +157,9 @@ public class SaveManager : MonoBehaviour
         string jsonData = JsonUtility.ToJson(data, true);
         File.WriteAllText(FilePath, jsonData, _encoding);
     }
-
     public void LoadGame()
     {
+        
         // Check if there is no save file
         if (!File.Exists(FilePath) || !isSaveEnabled)
         {
@@ -170,14 +174,18 @@ public class SaveManager : MonoBehaviour
             
             return;
         }
-
+        Debug.Log("Bro loaded");
         // Global Information
         gameDontDestroyOnLoadManager.IsFirstGameSession = false;
         
         // Load Data
         string jsonData = File.ReadAllText(FilePath, _encoding);
         data = JsonUtility.FromJson<SavedData>(jsonData);
-        
+
+
+        // cam.ApplyScriptableCamSettings(cam.TargetCamSettings, 0);
+        // cam.InstantCamUpdate(cam.TargetCamSettings);
+
         // Scene
         gameDontDestroyOnLoadManager.CurrentScene = data.PreviousScene;
         // foreach (SceneName sceneName in sceneListSo.SceneNames)
@@ -226,6 +234,7 @@ public class SaveManager : MonoBehaviour
         gameDontDestroyOnLoadManager.ThanksAndErrorLetters.AddRange(data.ThanksAndErrorLetters);
         gameDontDestroyOnLoadManager.MailBoxLetters.AddRange(data.MailBoxLetters);
         if (data.ChosenLetters != null) gameDontDestroyOnLoadManager.ChosenLetters.AddRange(data.ChosenLetters);
+        Debug.Log(data.ChosenLetters.Count);
         
         // Cauldron
         gameDontDestroyOnLoadManager.CauldronTemperatureAndIngredients.AddRange(data.CauldronTemperatureAndIngredients);
@@ -273,7 +282,6 @@ public class SaveManager : MonoBehaviour
         gameDontDestroyOnLoadManager.WorkshopProgressionIndex = data.WorkshopProgressionIndex;
         gameDontDestroyOnLoadManager.UnlockedChargedBiomeAreas = data.UnlockedChargedBiomeAreas;
     }
-    
     public static void DeleteSave(bool isOnMainMenu)
     {
         if (File.Exists(FilePath))
@@ -295,6 +303,7 @@ public class SaveManager : MonoBehaviour
     [Serializable]
     public class SavedData
     {
+
         [field: SerializeField] public Scene PreviousScene { get; set; }
         
         [field: SerializeField] public TimeOfDay CurrentTimeOfDay { get; set; }

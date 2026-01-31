@@ -76,6 +76,8 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         }
         _letterPileTargetPosition = letterPileHiddenPosition;
         letterPile.anchoredPosition = letterPileHiddenPosition;
+        //Debug.Log(GameDontDestroyOnLoadManager.Instance.ChosenLetters.Count);
+        
     }
 
     public void MailNewDayMethod()
@@ -352,6 +354,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         int newOrdersCounter = 0;
         bool gardenTuto = false;
 
+        Debug.Log(GameDontDestroyOnLoadManager.Instance.ChosenLetters.Count);
         foreach (var letter in GameDontDestroyOnLoadManager.Instance.ChosenLetters)
         {
             switch (letter.Item1.LetterContent.LetterType)
