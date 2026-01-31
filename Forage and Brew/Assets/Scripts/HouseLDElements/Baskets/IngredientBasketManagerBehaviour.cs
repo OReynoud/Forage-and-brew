@@ -125,6 +125,14 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
                 ingredientBaskets[i].StartDisable(enableDisableTime);
             }
         }
+        
+        List<IngredientTypeSo> distinctCollectedIngredientTypes = GetDistinctCollectedIngredientTypes();
+
+        if (distinctCollectedIngredientTypes.Count < 2 &&
+            distinctCollectedIngredientTypes.Contains(ingredientTypeListSo.IngredientTypes[_currentIngredientSetIndex]))
+        {
+            DisableChangeSet();
+        }
     }
     
     private IEnumerator UpdateIngredientTypeBackgroundAtStart()
@@ -168,6 +176,26 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        List<IngredientTypeSo> distinctCollectedIngredientTypes = GetDistinctCollectedIngredientTypes();
+
+        if (other.CompareTag("Player") && (distinctCollectedIngredientTypes.Count >= 2 ||
+                                           !distinctCollectedIngredientTypes.Contains(ingredientTypeListSo.IngredientTypes[_currentIngredientSetIndex])))
+        {
+            EnableChangeSet();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            DisableChangeSet();
+        }
+    }
+    
+    
+    private List<IngredientTypeSo> GetDistinctCollectedIngredientTypes()
+    {
         List<IngredientTypeSo> distinctCollectedIngredientTypes = new();
 
         foreach (IngredientValuesSo ingredientValues in GameDontDestroyOnLoadManager.Instance.CollectedIngredients)
@@ -185,18 +213,7 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
                 distinctCollectedIngredientTypes.Add(outIngredient.IngredientValuesSo.Type);
             }
         }
-        
-        if (other.CompareTag("Player") && distinctCollectedIngredientTypes.Count >= 2)
-        {
-            EnableChangeSet();
-        }
-    }
-    
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            DisableChangeSet();
-        }
+
+        return distinctCollectedIngredientTypes;
     }
 }
