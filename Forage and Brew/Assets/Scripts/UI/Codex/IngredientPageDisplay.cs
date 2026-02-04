@@ -59,7 +59,8 @@ public class IngredientPageDisplay : PageBehavior
         dissolveTimer = 0;
         AutoFlip.instance.ControledBook.discoveryAudio.Play();
         
-        disolveImage.sprite = AutoFlip.instance.ControledBook.bookPages.Find(x => x.pageBehavior == this).pageSprite;
+        //disolveImage.sprite = AutoFlip.instance.ControledBook.bookPages.Find(x => x.pageBehavior == this).pageSprite;
+        disolveImage.sprite = backgroundImage.sprite;
         //Debug.Log("Init Dissolve");
     }
 
@@ -171,6 +172,7 @@ public class IngredientPageDisplay : PageBehavior
         ingredientCounter.UpdateDisplay(ingredientToDisplay);
 
         Debug.Log("Init ingredient");
+        CheckPageBackground();
         StartDissolve();
 
     }

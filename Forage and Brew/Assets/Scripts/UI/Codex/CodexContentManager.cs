@@ -433,8 +433,8 @@ public class CodexContentManager : Singleton<CodexContentManager>
                     }
                 }
             }
-            //Debug.Log("Index can be fitted in book: " + ingredientIndex);
         }
+        Debug.Log("Index can be fitted in book: " + ingredientIndex);
 
 
         if (!emptyIngredientPage)
@@ -458,6 +458,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
 
             ingredientPages.Add(ingredientPage);
+            ingredientPage.PageNumber = ingredientIndex + 1;
             ingredientPage.InitIngredient(ingredient, leftIngredientPage[pageChoser]);
             emptyIngredientPage.name = "Empty ingredient page " +
                                        (AutoFlip.instance.ControledBook.bookMarks[2].index + ingredientPages.Count);
@@ -483,6 +484,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
 
             AutoFlip.instance.ControledBook.bookPages.Insert(ingredientIndex, bookPage);
             ingredientPages.Add(ingredientPage);
+            ingredientPage.PageNumber = ingredientIndex + 1;
             ingredientPage.InitIngredient(ingredient, rightIngredientPage[pageChoser]);
             emptyIngredientPage.name = ingredient.Name;
             emptyIngredientPage = null;
