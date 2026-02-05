@@ -490,6 +490,9 @@ public class CodexContentManager : Singleton<CodexContentManager>
             emptyIngredientPage = null;
         }
 
+        AutoFlip.instance.ControledBook.bookPages[AutoFlip.instance.ControledBook.currentPage].UIComponent.gameObject.SetActive(false);
+        AutoFlip.instance.ControledBook.bookPages[AutoFlip.instance.ControledBook.currentPage + 1].UIComponent.gameObject.SetActive(false);
+        
         //Debug.Log("Placed " + ingredient.Name + " at index " + ingredientIndex);
         AutoFlip.instance.ControledBook.UpdatePageNumbers();
         OnAddIngredientPage.Invoke();
