@@ -192,6 +192,13 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
             maskElement.sizeDelta = Vector2.Lerp(focusedDimensions, Vector2.zero, timer/transitionTime);
             yield return new WaitForSecondsRealtime(Time.unscaledDeltaTime);
         }
+
+        if (GameDontDestroyOnLoadManager.Instance.DayPassed >= 5)
+        {
+            SceneManager.LoadScene("SC_MainMenu");
+            yield break;
+        }
+        
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(camSettings,0);
         SimpleCameraBehavior.instance.InstantCamUpdate(camSettings);
         ((HouseCameraBehavior)HouseCameraBehavior.instance).overrideCameraLerp = false;
