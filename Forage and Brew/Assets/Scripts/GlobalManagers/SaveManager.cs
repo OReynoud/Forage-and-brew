@@ -254,7 +254,7 @@ public class SaveManager : MonoBehaviour
         lunarCycleManager.CurrentLunarCycleStateIndex = data.CurrentLunarCycleStateIndex;
         
         // Money
-        moneyManager.MoneyAmount = data.MoneyAmount;
+        gameDontDestroyOnLoadManager.moneyAmountOnStart = data.MoneyAmount;
         
         // Orders
         foreach (var o in data.CurrentOrders)
