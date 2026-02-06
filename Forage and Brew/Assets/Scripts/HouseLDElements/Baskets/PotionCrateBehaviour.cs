@@ -17,7 +17,7 @@ public class PotionCrateBehaviour : MonoBehaviour, IPotionAddable
     public PotionCrateManager PotionCrateManager { get; set; }
     public OrderContentSo OrderContentSo { get; private set; }
     public ClientSo ClientSo { get; private set; }
-    public OrderCodexDisplayBehaviour AssociatedCodexDisplay { get; private set; }
+    [field: SerializeField] public OrderCodexDisplayBehaviour AssociatedCodexDisplay { get; private set; }
     
     [Header("Closing Collider")]
     [SerializeField] private float closingColliderOffset = 2f;

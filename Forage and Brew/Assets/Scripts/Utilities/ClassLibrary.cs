@@ -33,7 +33,7 @@ public class Letter
 public class Order
 {
     [field: SerializeField] public OrderContentSo OrderContent { get; set; }
-    public OrderCodexDisplayBehaviour OrderDisplay { get; set; }
+    [field: SerializeField] public OrderCodexDisplayBehaviour OrderDisplay { get; set; }
     [field: SerializeField] public NarrativeBlockOfLetters RelatedNarrativeBlock { get; private set; }
     [field: SerializeField] public LetterContentSo RelatedLetter { get; private set; }
 

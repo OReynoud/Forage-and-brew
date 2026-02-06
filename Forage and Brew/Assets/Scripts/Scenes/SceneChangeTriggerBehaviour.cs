@@ -34,6 +34,7 @@ public class SceneChangeTriggerBehaviour : MonoBehaviour
                 for (int i = 0; i < PotionCrateManager.Instance.PotionCrates.Count; i++)
                 {
                     if (OrderManager.Instance.CurrentOrders[i] == null) continue;
+                    if (OrderManager.Instance.CurrentOrders[i].OrderContent == null) continue;
                     
                     GameDontDestroyOnLoadManager.Instance.OrderPotions[i] = new ClientOrderPotions(
                         OrderManager.Instance.CurrentOrders[i].OrderContent,

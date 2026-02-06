@@ -7,7 +7,7 @@ public class OrderManager : MonoBehaviour
 {
     public static OrderManager Instance { get; private set; }
 
-    [field: AllowNesting] [field: SerializeField] public List<Order> CurrentOrders { get; } = new();
+    [field: AllowNesting] [field: SerializeField] public List<Order> CurrentOrders { get; private set; } = new();
     public bool IsInitialized { get; private set; }
 
 
@@ -58,7 +58,7 @@ public class OrderManager : MonoBehaviour
             letter.LetterContent.OrderContent.MoneyReward,
             out OrderCodexDisplayBehaviour order);
 
-        int newOrderIndex = CurrentOrders.FindIndex(x => x == null);
+        int newOrderIndex = CurrentOrders.FindIndex(x => x.OrderContent == null);
         //Debug.Log(CurrentOrders.Count);
         //Debug.Log(newOrderIndex);
         CurrentOrders[newOrderIndex] = new Order(letter, order);

@@ -27,7 +27,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
     [Foldout("References")] public Sprite[] allBrewingActionSprites;
 
     //Orders Management
-    private readonly List<OrderCodexDisplayBehaviour> _orderCodexDisplayBehaviours = new();
+    [SerializeField]private List<OrderCodexDisplayBehaviour> _orderCodexDisplayBehaviours = new();
     private RectTransform emptyOrderPage;
     private int emptyOrderPageIndex;
 
@@ -289,6 +289,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
             emptyOrderPage = null;
         }
 
+        OrderManager.Instance.CurrentOrders[_orderCodexDisplayBehaviours.Count - 1].OrderDisplay = order;
         AutoFlip.instance.ControledBook.UpdateSprites();
         AutoFlip.instance.ControledBook.UpdatePageNumbers();
     }
