@@ -23,7 +23,7 @@ public class TutorialDissolveBehavior : MonoBehaviour
     {
         Material mat = Instantiate(DissolveImage.material);
         
-        if (GameDontDestroyOnLoadManager.Instance.UnlockedTutorials.Contains(this))
+        if (GameDontDestroyOnLoadManager.Instance.UnlockedTutorials.Contains(dissolveID))
         {
             mat.SetFloat(Ex.CutoffHeight, 1);
             DissolveImage.material = mat;
@@ -55,7 +55,7 @@ public class TutorialDissolveBehavior : MonoBehaviour
 
     public void StartDissolve()
     {
-        GameDontDestroyOnLoadManager.Instance.UnlockedTutorials.Add(this);
+        GameDontDestroyOnLoadManager.Instance.UnlockedTutorials.Add(dissolveID);
         Material mat = Instantiate(DissolveImage.material);
         mat.SetFloat(Ex.CutoffHeight, 0);
         DissolveImage.material = mat;

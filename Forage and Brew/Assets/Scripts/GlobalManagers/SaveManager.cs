@@ -326,7 +326,7 @@ public class SaveManager : MonoBehaviour
         
         [field: SerializeField] public List<IngredientValuesSo> UnlockedIngredients { get; set; }
         [field: SerializeField] public List<PotionValuesSo> UnlockedRecipes { get; set; }
-        [field: SerializeField] public List<TutorialDissolveBehavior> UnlockedTutorials { get; set; }
+        [field: SerializeField] public List<string> UnlockedTutorials { get; set; }
         
         [field: SerializeField] public bool HasChosenIngredientsToday { get; set; }
         [field: SerializeField] public List<int> RemainingIngredientToCollectBehavioursKeys { get; set; }
