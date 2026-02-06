@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class LetterMailBoxDisplayBehaviour : PageBehavior
 {
-    public TextMeshProUGUI clientNameText;
     public Image letterBackground;
     public Image bills;
     public GameObject moneyIcon;
@@ -39,8 +38,7 @@ public class LetterMailBoxDisplayBehaviour : PageBehavior
         letterContent = newLetterContent;
         letterType = letterContent.LetterType;
         
-        clientNameText.text = letterContent.Client.Name;
-        descriptionText.text = letterContent.TextContent;
+        descriptionText.text = letterContent.TextContent + "\n" + letterContent.Client.Name;
         letterBackground.color = letterContent.Client.AssociatedColor;
 
         foreach (var potionImage in potionImages)
