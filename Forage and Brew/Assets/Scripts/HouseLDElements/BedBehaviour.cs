@@ -46,13 +46,17 @@ public class BedBehaviour : MonoBehaviour
         CharacterInteractController.Instance.CurrentNearBed = null;
         MailBoxBehaviour.instance.MailNewDayMethod();
         DisableInteract();
-        GameDontDestroyOnLoadManager.Instance.SetTimeBeforeBed(timeBeforeBed);
     }
     
     
     private void OnTriggerEnter(Collider other)
     {
-        if (GameDontDestroyOnLoadManager.Instance.TimeBeforeBed > 0f) return;
+        if (GameDontDestroyOnLoadManager.Instance.DayPassed == 0 &&
+            GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay == TimeOfDay.Daytime) return;
+        
+        if (!GameDontDestroyOnLoadManager.Instance.HasChosenLettersToday) return;
+        
+        if (GameDontDestroyOnLoadManager.Instance.ChosenLetters.Count > 0) return;
         
         if (other.TryGetComponent(out CharacterInteractController characterInteractController))
         {
