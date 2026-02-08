@@ -178,8 +178,8 @@ public class IngredientBasketManagerBehaviour : BasketManagerBehaviour
     {
         List<IngredientTypeSo> distinctCollectedIngredientTypes = GetDistinctCollectedIngredientTypes();
 
-        if (other.CompareTag("Player") && (distinctCollectedIngredientTypes.Count >= 2 ||
-                                           !distinctCollectedIngredientTypes.Contains(ingredientTypeListSo.IngredientTypes[_currentIngredientSetIndex])))
+        if (other.CompareTag("Player") && (distinctCollectedIngredientTypes.Count >= 2 || distinctCollectedIngredientTypes.Count >= 1 &&
+                !distinctCollectedIngredientTypes.Contains(ingredientTypeListSo.IngredientTypes[_currentIngredientSetIndex])))
         {
             EnableChangeSet();
         }
