@@ -58,12 +58,15 @@ public class OrderManager : MonoBehaviour
             letter.LetterContent.OrderContent.MoneyReward,
             out OrderCodexDisplayBehaviour order);
 
-        int newOrderIndex = CurrentOrders.FindIndex(x => x.OrderContent == null);
+        int newOrderIndex = CurrentOrders.FindIndex(x => x == null);
+        if (newOrderIndex == -1)
+        {
+            newOrderIndex = CurrentOrders.FindIndex(x => x.OrderDisplay == null);
+        }
         //Debug.Log(CurrentOrders.Count);
         //Debug.Log(newOrderIndex);
         
         CurrentOrders[newOrderIndex] = new Order(letter, order);
-        CurrentOrders[CodexContentManager.instance._orderCodexDisplayBehaviours.Count - 1].OrderDisplay = order;
         
         PotionCrateManager.Instance.ReactivateRightPotionCrates();
         if (triggerAutoPin)
