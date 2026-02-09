@@ -61,7 +61,9 @@ public class OrderManager : MonoBehaviour
         int newOrderIndex = CurrentOrders.FindIndex(x => x.OrderContent == null);
         //Debug.Log(CurrentOrders.Count);
         //Debug.Log(newOrderIndex);
+        
         CurrentOrders[newOrderIndex] = new Order(letter, order);
+        CurrentOrders[CodexContentManager.instance._orderCodexDisplayBehaviours.Count - 1].OrderDisplay = order;
         
         PotionCrateManager.Instance.ReactivateRightPotionCrates();
         if (triggerAutoPin)
@@ -94,6 +96,8 @@ public class OrderManager : MonoBehaviour
                 o.RelatedLetter.OrderContent.RequestedPotions,
                 o.RelatedLetter.OrderContent.MoneyReward
                 , out OrderCodexDisplayBehaviour order);
+            
+            CurrentOrders[CodexContentManager.instance._orderCodexDisplayBehaviours.Count - 1].OrderDisplay = order;
         }
 
         CodexContentManager.instance.pageIndexesToCheck.Clear();
