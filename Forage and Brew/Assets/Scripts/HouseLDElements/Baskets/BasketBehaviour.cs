@@ -57,6 +57,11 @@ public abstract class BasketBehaviour : MonoBehaviour
     
     public void StartDisable(float duration)
     {
+        if (HasToBeEnabled)
+        {
+            StopEnable();
+        }
+        
         if (!IsEnabled) return; // If already disabled, do nothing
         
         OnDisable();
