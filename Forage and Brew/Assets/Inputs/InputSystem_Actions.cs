@@ -224,7 +224,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""id"": ""0b61c09d-6b48-457f-accc-3d78878e3c8e"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Tap"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -513,6 +513,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FinishRun"",
+                    ""type"": ""Button"",
+                    ""id"": ""757fb4bc-491c-4830-9c79-4be7a47ef574"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""SlowTap(duration=0.2)"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -1072,6 +1081,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""id"": ""7c84cbc5-eee7-4c35-ab4d-d2264c1ccfa2"",
                     ""path"": ""<HID::PowerA NSW wired controller>/button6"",
                     ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ToggleRun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a3d4f9da-a020-4d7c-b4c2-8242c69bd837"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": ""Hold(duration=0.2)"",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ToggleRun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a597eca5-45dd-4060-9621-2a961012270f"",
+                    ""path"": ""<HID::PowerA NSW wired controller>/button2"",
+                    ""interactions"": ""Hold(duration=0.2)"",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""ToggleRun"",
@@ -1770,6 +1801,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""CompostHapticChallenge2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""92bbcb2f-ab41-480b-88f8-930f9c04e89e"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""FinishRun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fa88714a-db14-43bb-8e28-c83fdee8949d"",
+                    ""path"": ""<HID::PowerA NSW wired controller>/button2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""FinishRun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -2185,6 +2238,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_PurchaseOutfit = m_Player.FindAction("PurchaseOutfit", throwIfNotFound: true);
         m_Player_CompostHapticChallenge1 = m_Player.FindAction("CompostHapticChallenge1", throwIfNotFound: true);
         m_Player_CompostHapticChallenge2 = m_Player.FindAction("CompostHapticChallenge2", throwIfNotFound: true);
+        m_Player_FinishRun = m_Player.FindAction("FinishRun", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -2318,6 +2372,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_PurchaseOutfit;
     private readonly InputAction m_Player_CompostHapticChallenge1;
     private readonly InputAction m_Player_CompostHapticChallenge2;
+    private readonly InputAction m_Player_FinishRun;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -2518,6 +2573,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @CompostHapticChallenge2 => m_Wrapper.m_Player_CompostHapticChallenge2;
         /// <summary>
+        /// Provides access to the underlying input action "Player/FinishRun".
+        /// </summary>
+        public InputAction @FinishRun => m_Wrapper.m_Player_FinishRun;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -2684,6 +2743,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @CompostHapticChallenge2.started += instance.OnCompostHapticChallenge2;
             @CompostHapticChallenge2.performed += instance.OnCompostHapticChallenge2;
             @CompostHapticChallenge2.canceled += instance.OnCompostHapticChallenge2;
+            @FinishRun.started += instance.OnFinishRun;
+            @FinishRun.performed += instance.OnFinishRun;
+            @FinishRun.canceled += instance.OnFinishRun;
         }
 
         /// <summary>
@@ -2836,6 +2898,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @CompostHapticChallenge2.started -= instance.OnCompostHapticChallenge2;
             @CompostHapticChallenge2.performed -= instance.OnCompostHapticChallenge2;
             @CompostHapticChallenge2.canceled -= instance.OnCompostHapticChallenge2;
+            @FinishRun.started -= instance.OnFinishRun;
+            @FinishRun.performed -= instance.OnFinishRun;
+            @FinishRun.canceled -= instance.OnFinishRun;
         }
 
         /// <summary>
@@ -3388,6 +3453,13 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnCompostHapticChallenge2(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "FinishRun" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnFinishRun(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

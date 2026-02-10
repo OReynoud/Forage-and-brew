@@ -113,6 +113,7 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.PinRight.performed += PinRightOnPerformed;
         _inputs.Player.PassLetters.performed += PassLettersOnPerformed;
         _inputs.Player.ToggleRun.performed += ToggleRunOnPerformed;
+        _inputs.Player.FinishRun.performed += FinishRunOnPerformed;
         _inputs.Player.PauseIn.performed += PauseInOnPerformed;
         _inputs.Player.PauseOut.performed += PauseOutOnPerformed;
         _inputs.Player.PreviousOutfitCategory.performed += PreviousOutfitCategoryOnPerformed;
@@ -152,6 +153,7 @@ public class CharacterInputManager : MonoBehaviour
     {
         _inputs.Player.Move.Enable();
         _inputs.Player.ToggleRun.Enable();
+        _inputs.Player.FinishRun.Enable();
     }
     
     public void EnableInteractInputs()
@@ -287,6 +289,7 @@ public class CharacterInputManager : MonoBehaviour
     {
         _inputs.Player.Move.Disable();
         _inputs.Player.ToggleRun.Disable();
+        _inputs.Player.FinishRun.Disable();
         CharacterMovementController.Instance.Move(Vector2.zero);
     }
     
@@ -400,6 +403,10 @@ public class CharacterInputManager : MonoBehaviour
     private void ToggleRunOnPerformed(InputAction.CallbackContext obj)
     {
         CharacterMovementController.Instance.isRunning = true;
+    }
+    private void FinishRunOnPerformed(InputAction.CallbackContext obj)
+    {
+        CharacterMovementController.Instance.isRunning = false;
     }
 
     private void InteractOnPerformed(InputAction.CallbackContext obj)
