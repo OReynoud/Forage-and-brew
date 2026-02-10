@@ -149,7 +149,7 @@ public class ObjectToSitBehaviour : MonoBehaviour, ICinematicInteraction
         yield return new WaitForSeconds(standCamTransitionTime);
         
         CharacterMovementController.Instance.rb.constraints = RigidbodyConstraints.FreezeRotation;
-        Debug.Log("Stand");
+        // Debug.Log("Stand");
         localCanvas.SetActive(true);
         ((HouseCameraBehavior)HouseCameraBehavior.instance).overrideCameraLerp = false;
         CharacterInputManager.Instance.EnableInputs();

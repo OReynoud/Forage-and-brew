@@ -31,7 +31,7 @@ public class CharacterSpawnBehaviour : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log(gameObject, gameObject);
+                        // Debug.Log(gameObject, gameObject);
                         SceneTransitionManager.instance.HandleLoadNewScene(sceneName.Scene);
                         PinnedRecipe.instance.isInHouse = false;
                     }

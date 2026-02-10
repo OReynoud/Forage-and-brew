@@ -30,7 +30,7 @@ public class LunarCycleManager : MonoBehaviour
         {
             CurrentLunarCycleStateIndex = startingLunarCycleStateIndex;
         }
-        Debug.Log("The current lunar cycle state is: " + lunarCycleStateOrderSo.LunarCycleStates[CurrentLunarCycleStateIndex].Name);
+        // Debug.Log("The current lunar cycle state is: " + lunarCycleStateOrderSo.LunarCycleStates[CurrentLunarCycleStateIndex].Name);
         InfoDisplayManager.instance.DisplayMoonCycles();
     }
     
@@ -43,7 +43,7 @@ public class LunarCycleManager : MonoBehaviour
             CurrentLunarCycleStateIndex = 0;
         }
         
-        Debug.Log("The current lunar cycle state is: " + lunarCycleStateOrderSo.LunarCycleStates[CurrentLunarCycleStateIndex].Name);
+        // Debug.Log("The current lunar cycle state is: " + lunarCycleStateOrderSo.LunarCycleStates[CurrentLunarCycleStateIndex].Name);
         
         InfoDisplayManager.instance.DisplayMoonCycles();
     }

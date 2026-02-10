@@ -51,7 +51,7 @@ public class SceneChangeTriggerBehaviour : MonoBehaviour
             if (doesMakeItNighttime)
             {
                 GameDontDestroyOnLoadManager.Instance.CurrentTimeOfDay = TimeOfDay.Nighttime;
-                Debug.Log("It's nighttime now");
+                // Debug.Log("It's nighttime now");
             }
         }
     }

@@ -48,7 +48,7 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
             if (NeedsWatering == false)
             {
                 PlantGrowthProgression++;
-                Debug.Log("Plant has grown!");
+                // Debug.Log("Plant has grown!");
             }
             NeedsWatering = true;
             UpdateVisuals();
@@ -106,7 +106,7 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
     
     public void WaterPlot()
     {
-        Debug.Log("Watered plant");
+        // Debug.Log("Watered plant");
         NeedsWatering = false;
         UpdateVisuals();
         CharacterAnimManager.instance.animator.SetTrigger(DoWater);
@@ -149,7 +149,7 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
             if (CharacterInteractController.Instance.collectedStack[0].StackableItem is not CollectedSeedBehaviour)
                 return;
             
-            Debug.Log("Planted new seed");
+            // Debug.Log("Planted new seed");
 
             CharacterAnimManager.instance.CatThrow();
 
@@ -166,7 +166,7 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
         
         if (PlantGrowthProgression == RequiredProgressionToMature)
         {
-            Debug.Log("Ingredient collect haptic challenge");
+            // Debug.Log("Ingredient collect haptic challenge");
             //TODO: Vegetable harvest haptic challenge
         }
         

@@ -428,7 +428,7 @@ public class AutoFlip : Singleton<AutoFlip>
             CharacterInputManager.Instance.EnableMoveInputs();
             CodexContentManager.instance.pageIndexesToCheck.RemoveAt(CodexContentManager.instance.pageIndexesToCheck
                 .Count - 1);
-            Debug.Log("Removed Page to check");
+            // Debug.Log("Removed Page to check");
 
             if (CodexContentManager.instance.pageIndexesToCheck.Count == 0)
             {
