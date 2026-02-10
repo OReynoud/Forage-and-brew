@@ -300,7 +300,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
         {
             emptyOrderPageIndex = index;
             emptyOrderPage = AutoFlip.instance.ControledBook.bookPages[emptyOrderPageIndex].UIComponent;
-            Debug.Log("Removed order " + AutoFlip.instance.ControledBook.bookPages[index].UIComponent.name);
+            // Debug.Log("Removed order " + AutoFlip.instance.ControledBook.bookPages[index].UIComponent.name);
             Destroy(emptyOrderPage.GetChild(0).gameObject);
             emptyOrderPage.name = "Empty Order Page " + emptyOrderPageIndex;
         }
@@ -308,15 +308,14 @@ public class CodexContentManager : Singleton<CodexContentManager>
         {
             emptyOrderPage = null;
 
-            Debug.Log("Removed page " + AutoFlip.instance.ControledBook.bookPages[index].UIComponent.name);
+            // Debug.Log("Removed page " + AutoFlip.instance.ControledBook.bookPages[index].UIComponent.name);
             Destroy(AutoFlip.instance.ControledBook.bookPages[index].UIComponent.gameObject);
             AutoFlip.instance.ControledBook.bookPages.RemoveAt(index);
 
             if (emptyOrderPageIndex > index)
                 emptyOrderPageIndex--;
 
-            Debug.Log("Removed page " +
-                      AutoFlip.instance.ControledBook.bookPages[emptyOrderPageIndex].UIComponent.name);
+            // Debug.Log("Removed page " + AutoFlip.instance.ControledBook.bookPages[emptyOrderPageIndex].UIComponent.name);
             Destroy(AutoFlip.instance.ControledBook.bookPages[emptyOrderPageIndex].UIComponent.gameObject);
             AutoFlip.instance.ControledBook.bookPages.RemoveAt(emptyOrderPageIndex);
 
@@ -434,7 +433,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
                 }
             }
         }
-        Debug.Log("Index can be fitted in book: " + ingredientIndex);
+        // Debug.Log("Index can be fitted in book: " + ingredientIndex);
 
 
         if (!emptyIngredientPage)
@@ -505,7 +504,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
     {
         pageChoser = Random.Range(0, rightEmptyPage.Length);
 
-        Debug.Log("New bundle pages");
+        // Debug.Log("New bundle pages");
         var pageContainer = Instantiate(emptyPage, transform);
 
         emptyBundlesPage = Instantiate(emptyPage, transform);

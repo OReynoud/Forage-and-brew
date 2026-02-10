@@ -45,7 +45,7 @@ public class IngredientPageDisplay : PageBehavior
     
     private void OnDisable()
     {
-        Debug.Log("Disabled", gameObject);
+        // Debug.Log("Disabled", gameObject);
     }
 
     private void StartDissolve()
@@ -171,7 +171,7 @@ public class IngredientPageDisplay : PageBehavior
         ingredientCounter.AddCollectListener();
         ingredientCounter.UpdateDisplay(ingredientToDisplay);
 
-        Debug.Log("Init ingredient");
+        // Debug.Log("Init ingredient");
         CheckPageBackground();
         StartDissolve();
 

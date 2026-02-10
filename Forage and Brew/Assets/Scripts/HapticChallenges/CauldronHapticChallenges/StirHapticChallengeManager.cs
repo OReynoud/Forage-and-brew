@@ -214,7 +214,7 @@ public class StirHapticChallengeManager : MonoBehaviour
         GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge = true;
         
         PickRightPotion();
-        Debug.Log(_currentPotion.Name + " Stir Challenge");
+        // Debug.Log(_currentPotion.Name + " Stir Challenge");
         _currentChallenge = _currentPotion.StirHapticChallenge;
         _currentStirTime = 0;
         _currentStirIndex = 0;

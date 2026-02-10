@@ -238,7 +238,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
     
     void AddBiomeListeners()
     {
-        Debug.Log("Adding Biome Listeners");
+        // Debug.Log("Adding Biome Listeners");
         CollectHapticChallengeManager.Instance.UpdateCounters.RemoveAllListeners();
         foreach (var recipeDisplay in CodexContentManager.instance.recipes)
         {
@@ -258,7 +258,7 @@ public class SceneTransitionManager : Singleton<SceneTransitionManager>
     private void AddHouseListeners()
     {
         StirHapticChallengeManager.Instance.OnAddIngredient.RemoveAllListeners();
-        Debug.Log("Adding House Listeners");
+        // Debug.Log("Adding House Listeners");
         foreach (var recipeDisplay in CodexContentManager.instance.recipes)
         {
             foreach (var container in recipeDisplay.ingredientDisplayContainers)

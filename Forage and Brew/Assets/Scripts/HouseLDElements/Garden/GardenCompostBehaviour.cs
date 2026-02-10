@@ -54,7 +54,7 @@ public class GardenCompostBehaviour : PurchasableHouseItemBehaviour, IIngredient
         {
             if (CharacterInteractController.Instance.collectedStack.Count > 0)
             {            
-                Debug.Log("Cant add more ingredients");
+                // Debug.Log("Cant add more ingredients");
                 CharacterAnimManager.instance.CatNo();
             }
             
@@ -71,13 +71,13 @@ public class GardenCompostBehaviour : PurchasableHouseItemBehaviour, IIngredient
             (CollectedIngredientBehaviour)CharacterInteractController.Instance.collectedStack[0].StackableItem;
         if (comparator.CookedForm == null)
         {
-            Debug.Log("Ingredient not cooked");
+            // Debug.Log("Ingredient not cooked");
             CharacterAnimManager.instance.CatNo();
             return;
         }
         if (currentSeed == null)
         {
-            Debug.Log("Started Seed making");
+            // Debug.Log("Started Seed making");
             currentSeed = comparator.IngredientValuesSo.Type.AssociatedSeedValuesSo;
             ingredientTypeCanvasGameObject.SetActive(true);
             ingredientTypeImage.sprite = currentSeed.RequiredIngredientType.IconHigh;
@@ -85,12 +85,12 @@ public class GardenCompostBehaviour : PurchasableHouseItemBehaviour, IIngredient
         }
         else if (currentSeed.RequiredIngredientType == comparator.IngredientValuesSo.Type)
         {
-            Debug.Log("Added same ingredient type");
+            // Debug.Log("Added same ingredient type");
             TryAddIngredients();
         }
         else
         {
-            Debug.Log("Ingredient not valid");
+            // Debug.Log("Ingredient not valid");
             CharacterAnimManager.instance.CatNo();
         }
     }
@@ -101,7 +101,7 @@ public class GardenCompostBehaviour : PurchasableHouseItemBehaviour, IIngredient
         
         if (CharacterInteractController.Instance.collectedStack.Count > 0)
         {            
-            Debug.Log("Cant add more ingredients");
+            // Debug.Log("Cant add more ingredients");
             CharacterAnimManager.instance.CatNo();
             return;
         }
@@ -304,7 +304,7 @@ public class GardenCompostBehaviour : PurchasableHouseItemBehaviour, IIngredient
         CharacterInteractController.Instance.AddToPile(newSeed);
         compostIsFull = false;
         
-        Debug.Log("Obtained new Seed");
+        // Debug.Log("Obtained new Seed");
     }
 
     public void PlayObtainedSeedVfx()

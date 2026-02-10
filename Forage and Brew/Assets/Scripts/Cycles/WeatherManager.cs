@@ -32,8 +32,8 @@ public class WeatherManager : MonoBehaviour
     
     private void Start()
     {
-        Debug.Log("The weather state for the first day is " + CurrentWeatherState.WeatherStateSo.Name +
-                  " in the forest and the swamp.");
+        // Debug.Log("The weather state for the first day is " + CurrentWeatherState.WeatherStateSo.Name +
+        //           " in the forest and the swamp.");
         InfoDisplayManager.instance.DisplayWeather();
     }
     
@@ -53,8 +53,8 @@ public class WeatherManager : MonoBehaviour
                     
                 if (randomValue <= cumulativeProbability)
                 {
-                    Debug.Log("The weather state for the next day is " + endProbability.WeatherStateSo.Name);
-                        
+                    // Debug.Log("The weather state for the next day is " + endProbability.WeatherStateSo.Name);
+                    
                     if (endProbability.WeatherStateSo == CurrentWeatherState.WeatherStateSo)
                     {
                         CurrentWeatherState.SuccessiveDays++;

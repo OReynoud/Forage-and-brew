@@ -101,7 +101,7 @@ public class MainMenu : MonoBehaviour
         musicSlider.value = volume;
         mixer.SetFloat(Ex.SfxVolume, volumeFX == sfxSlider.minValue ? -80 : volumeFX);
         sfxSlider.value = volumeFX;
-        Debug.Log(PlayerPrefs.GetFloat(Ex.SfxVolume));
+        // Debug.Log(PlayerPrefs.GetFloat(Ex.SfxVolume));
         
     }
 
@@ -124,6 +124,6 @@ public class MainMenu : MonoBehaviour
         PlayerPrefs.SetFloat(Ex.MusicVolume, musicSlider.value);
         PlayerPrefs.SetFloat(Ex.SfxVolume, sfxSlider.value);
         PlayerPrefs.Save();
-        Debug.Log(PlayerPrefs.GetFloat(Ex.SfxVolume));
+        // Debug.Log(PlayerPrefs.GetFloat(Ex.SfxVolume));
     }
 }

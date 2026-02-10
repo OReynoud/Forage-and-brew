@@ -51,7 +51,7 @@ public class SaveManager : MonoBehaviour
     private void OnApplicationQuit()
     {
         if (!isSaveEnabled) return;
-        Debug.Log("Bro saved");
+        // Debug.Log("Bro saved");
         SaveGame();
     }
     
@@ -126,7 +126,7 @@ public class SaveManager : MonoBehaviour
                 DataLetterComponent = tuple.Item2
             });
         }
-        Debug.Log(data.ChosenLetters.Count);
+        // Debug.Log(data.ChosenLetters.Count);
             
         
         // Cauldron
@@ -181,7 +181,7 @@ public class SaveManager : MonoBehaviour
             
             return;
         }
-        Debug.Log("Bro loaded");
+        // Debug.Log("Bro loaded");
         // Global Information
         gameDontDestroyOnLoadManager.IsFirstGameSession = false;
         

@@ -264,7 +264,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     
     private void GenerateSuccessLetter(Letter letter)
     {
-        Debug.Log("Generated success letter");
+        // Debug.Log("Generated success letter");
         int moneyToEarn = letter.LetterContent.OrderContent.MoneyReward;
         _moneyAmountsToEarn.Add((moneyToEarn, GameDontDestroyOnLoadManager.Instance.ChosenLetters.Count));
         if (letter.RelatedNarrativeBlock != null)
@@ -341,7 +341,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
             if (i != GeneratedLetters.Count - 1) return;
         }
 
-        Debug.Log("Read every letter");
+        // Debug.Log("Read every letter");
         letterBoxAnimator.SetBool(IsOpen, false);
         letterBoxAnimator.SetBool(IsEmpty, true);
         CharacterInputManager.Instance.DisableMailInputs();
@@ -354,7 +354,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         int newOrdersCounter = 0;
         bool gardenTuto = false;
 
-        Debug.Log(GameDontDestroyOnLoadManager.Instance.ChosenLetters.Count);
+        // Debug.Log(GameDontDestroyOnLoadManager.Instance.ChosenLetters.Count);
         foreach (var letter in GameDontDestroyOnLoadManager.Instance.ChosenLetters)
         {
             switch (letter.Item1.LetterContent.LetterType)
@@ -420,7 +420,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                 CodexContentManager.instance.pageIndexesToCheck.Insert(0, recipe.PageNumber);
                 if (Array.Exists(recipe.storedPotion.TemperatureChallengeIngredients, x => x.Temperature != Temperature.None))
                 {
-                    Debug.Log("Add Bellows Tutorial");
+                    // Debug.Log("Add Bellows Tutorial");
                     TutorialManager.instance.NotifyFromRecipeReceived("Bellows");
                 }
             }

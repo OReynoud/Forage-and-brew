@@ -23,7 +23,7 @@ public class OrderCodexDisplayBehaviour : PageBehavior
 
     private void OnDisable()
     {
-        Debug.Log("gne");
+        // Debug.Log("gne");
     }
 
     public override void InitOrder(ClientSo client,string description, PotionDemand[] Potions, int Reward, int index)
