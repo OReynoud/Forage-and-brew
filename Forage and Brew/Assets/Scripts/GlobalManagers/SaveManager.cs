@@ -141,7 +141,8 @@ public class SaveManager : MonoBehaviour
         data.MoneyAmount = moneyManager.MoneyAmount;
         
         // Orders
-        data.CurrentOrders = orderManager.CurrentOrders;
+        data.CurrentOrders = new List<Order>();
+        data.CurrentOrders.AddRange(orderManager.CurrentOrders);
         
         //Tutorial progression
         data.CodexIsUnlocked = gameDontDestroyOnLoadManager.codexIsUnlocked;
@@ -259,7 +260,7 @@ public class SaveManager : MonoBehaviour
         // Orders
         foreach (var o in data.CurrentOrders)
         {
-            if (o.OrderContent == null)
+            if (o.checker == 0)
             {
                 orderManager.CurrentOrders.Add(null);
             }
@@ -285,11 +286,11 @@ public class SaveManager : MonoBehaviour
         
         //Mirror
         gameDontDestroyOnLoadManager.CurrentOutfitSo = data.CurrentOutfit;
-        gameDontDestroyOnLoadManager.UnlockedOutfits = data.UnlockedOutifts;
+        gameDontDestroyOnLoadManager.UnlockedOutfits.AddRange(data.UnlockedOutifts);
         
         //Progression
         gameDontDestroyOnLoadManager.WorkshopProgressionIndex = data.WorkshopProgressionIndex;
-        gameDontDestroyOnLoadManager.UnlockedChargedBiomeAreas = data.UnlockedChargedBiomeAreas;
+        gameDontDestroyOnLoadManager.UnlockedChargedBiomeAreas.AddRange(data.UnlockedChargedBiomeAreas);
     }
     public static void DeleteSave(bool isOnMainMenu)
     {

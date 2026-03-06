@@ -32,6 +32,7 @@ public class Letter
 [Serializable]
 public class Order
 {
+    public int checker = 0;
     [field: SerializeField] public OrderContentSo OrderContent { get; set; }
     [field: SerializeField] public OrderCodexDisplayBehaviour OrderDisplay { get; set; }
     [field: SerializeField] public NarrativeBlockOfLetters RelatedNarrativeBlock { get; private set; }
@@ -43,6 +44,15 @@ public class Order
         OrderContent = LetterToOrder.LetterContent.OrderContent;
         RelatedLetter = LetterToOrder.LetterContent;
         RelatedNarrativeBlock = LetterToOrder.RelatedNarrativeBlock;
+        checker = 1;
+    }
+    public Order(Letter LetterToOrder, OrderCodexDisplayBehaviour orderDisplay)
+    {
+        OrderDisplay = orderDisplay;
+        OrderContent = LetterToOrder.LetterContent.OrderContent;
+        RelatedLetter = LetterToOrder.LetterContent;
+        RelatedNarrativeBlock = LetterToOrder.RelatedNarrativeBlock;
+        checker = 1;
     }
 }
 

@@ -11,4 +11,17 @@ public class CharacterOutfitSo : ScriptableObject
     [field: SerializeField] public bool IsRainOutfit { get; private set; }
     [field: SerializeField] public int OutfitMoneyCost { get; private set; }
     [field: SerializeField] public List<IngredientCost> IngredientCosts { get; private set; } = new();
+
+    public CharacterOutfitSo(CharacterOutfitSo copy)
+    {
+        OutfitName = copy.OutfitName;
+        OutfitColor = copy.OutfitColor;
+        OutfitSprite = copy.OutfitSprite;
+        OutfitMaterial = copy.OutfitMaterial;
+        IsRainOutfit = copy.IsRainOutfit;
+        OutfitMoneyCost = copy.OutfitMoneyCost;
+        
+        IngredientCosts = new();
+        IngredientCosts.AddRange(copy.IngredientCosts);
+    }
 }

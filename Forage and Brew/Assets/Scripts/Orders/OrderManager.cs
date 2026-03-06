@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using NaughtyAttributes;
 using UnityEngine;
 
@@ -57,7 +58,6 @@ public class OrderManager : MonoBehaviour
             letter.LetterContent.OrderContent.RequestedPotions,
             letter.LetterContent.OrderContent.MoneyReward,
             out OrderCodexDisplayBehaviour order);
-
         int newOrderIndex = CurrentOrders.FindIndex(x => x == null);
         if (newOrderIndex == -1)
         {
@@ -67,7 +67,6 @@ public class OrderManager : MonoBehaviour
         //Debug.Log(newOrderIndex);
         
         CurrentOrders[newOrderIndex] = new Order(letter, order);
-        
         PotionCrateManager.Instance.ReactivateRightPotionCrates();
         if (triggerAutoPin)
         {
@@ -91,8 +90,10 @@ public class OrderManager : MonoBehaviour
     {
         foreach (Order o in CurrentOrders)
         {
+            Debug.Log("New Order");
             if (o == null) continue;
-            if (o.OrderContent == null) continue;
+            if (o.checker == 0) continue;
+            Debug.Log(o);
             CodexContentManager.instance.ReceiveNewOrder(
                 o.RelatedLetter.Client,
                 o.RelatedLetter.TextContent,
