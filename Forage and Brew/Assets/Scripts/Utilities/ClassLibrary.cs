@@ -46,14 +46,6 @@ public class Order
         RelatedNarrativeBlock = LetterToOrder.RelatedNarrativeBlock;
         checker = 1;
     }
-    public Order(Letter LetterToOrder, OrderCodexDisplayBehaviour orderDisplay)
-    {
-        OrderDisplay = orderDisplay;
-        OrderContent = LetterToOrder.LetterContent.OrderContent;
-        RelatedLetter = LetterToOrder.LetterContent;
-        RelatedNarrativeBlock = LetterToOrder.RelatedNarrativeBlock;
-        checker = 1;
-    }
 }
 
 [Serializable]
