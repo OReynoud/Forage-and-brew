@@ -523,6 +523,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""SlowTap(duration=0.2)"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ExtractHold"",
+                    ""type"": ""Button"",
+                    ""id"": ""daa8e193-8c1d-490c-9d7f-58d89faaca1e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ExtractPress"",
+                    ""type"": ""Button"",
+                    ""id"": ""bd1cc614-9ff1-448a-ad24-6272ab63d8d7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1823,6 +1841,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""FinishRun"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""185a6863-f324-46cd-9f58-7bdfaba6608c"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ExtractHold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cfa8c777-8f6e-440c-ba30-885624a2c079"",
+                    ""path"": ""<Gamepad>/rightStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ExtractPress"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -2239,6 +2279,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_CompostHapticChallenge1 = m_Player.FindAction("CompostHapticChallenge1", throwIfNotFound: true);
         m_Player_CompostHapticChallenge2 = m_Player.FindAction("CompostHapticChallenge2", throwIfNotFound: true);
         m_Player_FinishRun = m_Player.FindAction("FinishRun", throwIfNotFound: true);
+        m_Player_ExtractHold = m_Player.FindAction("ExtractHold", throwIfNotFound: true);
+        m_Player_ExtractPress = m_Player.FindAction("ExtractPress", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -2373,6 +2415,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_CompostHapticChallenge1;
     private readonly InputAction m_Player_CompostHapticChallenge2;
     private readonly InputAction m_Player_FinishRun;
+    private readonly InputAction m_Player_ExtractHold;
+    private readonly InputAction m_Player_ExtractPress;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -2577,6 +2621,14 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @FinishRun => m_Wrapper.m_Player_FinishRun;
         /// <summary>
+        /// Provides access to the underlying input action "Player/ExtractHold".
+        /// </summary>
+        public InputAction @ExtractHold => m_Wrapper.m_Player_ExtractHold;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/ExtractPress".
+        /// </summary>
+        public InputAction @ExtractPress => m_Wrapper.m_Player_ExtractPress;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -2746,6 +2798,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @FinishRun.started += instance.OnFinishRun;
             @FinishRun.performed += instance.OnFinishRun;
             @FinishRun.canceled += instance.OnFinishRun;
+            @ExtractHold.started += instance.OnExtractHold;
+            @ExtractHold.performed += instance.OnExtractHold;
+            @ExtractHold.canceled += instance.OnExtractHold;
+            @ExtractPress.started += instance.OnExtractPress;
+            @ExtractPress.performed += instance.OnExtractPress;
+            @ExtractPress.canceled += instance.OnExtractPress;
         }
 
         /// <summary>
@@ -2901,6 +2959,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @FinishRun.started -= instance.OnFinishRun;
             @FinishRun.performed -= instance.OnFinishRun;
             @FinishRun.canceled -= instance.OnFinishRun;
+            @ExtractHold.started -= instance.OnExtractHold;
+            @ExtractHold.performed -= instance.OnExtractHold;
+            @ExtractHold.canceled -= instance.OnExtractHold;
+            @ExtractPress.started -= instance.OnExtractPress;
+            @ExtractPress.performed -= instance.OnExtractPress;
+            @ExtractPress.canceled -= instance.OnExtractPress;
         }
 
         /// <summary>
@@ -3460,6 +3524,20 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnFinishRun(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ExtractHold" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnExtractHold(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ExtractPress" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnExtractPress(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

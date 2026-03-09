@@ -87,6 +87,9 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.Unearth2.canceled += Unearth2OnCanceled;
         _inputs.Player.Harvest.performed += HarvestOnPerformed;
         _inputs.Player.Harvest.canceled += HarvestOnCanceled;
+        _inputs.Player.ExtractHold.performed += ExtractHoldOnPerformed;
+        _inputs.Player.ExtractHold.canceled += ExtractHoldOnCanceled;
+        _inputs.Player.ExtractPress.performed += ExtractPressOnPerformed;
         _inputs.Player.ChoppingHapticChallenge1.performed += ChoppingHapticChallenge1OnPerformed;
         _inputs.Player.ChoppingHapticChallenge2.performed += ChoppingHapticChallenge2OnPerformed;
         _inputs.Player.ChoppingHapticChallenge3.performed += ChoppingHapticChallenge3OnPerformed;
@@ -173,6 +176,8 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.Unearth1.Enable();
         _inputs.Player.Unearth2.Enable();
         _inputs.Player.Harvest.Enable();
+        _inputs.Player.ExtractHold.Enable();
+        _inputs.Player.ExtractPress.Enable();
         EnableChoppingHapticChallengeInputs();
         EnableGrindingHapticChallengeInputs();
         EnableTemperatureHapticChallengeInputs();
@@ -310,6 +315,8 @@ public class CharacterInputManager : MonoBehaviour
         _inputs.Player.Unearth1.Disable();
         _inputs.Player.Unearth2.Disable();
         _inputs.Player.Harvest.Disable();
+        _inputs.Player.ExtractHold.Disable();
+        _inputs.Player.ExtractPress.Disable();
         DisableChoppingHapticChallengeInputs();
         DisableGrindingHapticChallengeInputs();
         DisableTemperatureHapticChallengeInputs();
@@ -499,6 +506,21 @@ public class CharacterInputManager : MonoBehaviour
     private void HarvestOnCanceled(InputAction.CallbackContext obj)
     {
         CollectHapticChallengeManager.Instance.CheckHarvestInputReleased();
+    }
+    
+    private void ExtractHoldOnPerformed(InputAction.CallbackContext obj)
+    {
+        CollectHapticChallengeManager.Instance.CheckExtractHoldInputPressed();
+    }
+    
+    private void ExtractHoldOnCanceled(InputAction.CallbackContext obj)
+    {
+        CollectHapticChallengeManager.Instance.CheckExtractHoldInputReleased();
+    }
+    
+    private void ExtractPressOnPerformed(InputAction.CallbackContext obj)
+    {
+        CollectHapticChallengeManager.Instance.CheckExtractPressInput();
     }
     
     private void ChoppingHapticChallenge1OnPerformed(InputAction.CallbackContext obj)

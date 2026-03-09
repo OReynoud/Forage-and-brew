@@ -18,12 +18,14 @@ public class CollectHapticChallengeManager : MonoBehaviour
     [SerializeField] private IngredientTypeSo unearthingIngredientType;
     [SerializeField] private IngredientTypeSo scrapingIngredientType;
     [SerializeField] private IngredientTypeSo harvestIngredientType;
+    [SerializeField] private IngredientTypeSo extractIngredientType;
     
     [Header("Visuals")]
     [SerializeField] private float characterScythingDistance = 1f;
     [SerializeField] private float characterUnearthingDistance = 1f;
     [SerializeField] private float characterScrapingDistance = 1f;
     [SerializeField] private float characterHarvestDistance = 1f;
+    [SerializeField] private float characterExtractDistance = 1f;
     
     [Header("Audio")]
     [SerializeField] private AudioSource collectAudioSource;
@@ -52,6 +54,9 @@ public class CollectHapticChallengeManager : MonoBehaviour
     // Harvest
     private float _currentHarvestTime;
     private bool _canValidateHarvest;
+    
+    // Extract
+    private bool _canValidateExtract;
     
     // Animator Hashes
     private static readonly int DoBuildUpHarvest = Animator.StringToHash("DoBuildUpHarvest");
@@ -336,6 +341,65 @@ public class CollectHapticChallengeManager : MonoBehaviour
         }
         
         _canValidateHarvest = false;
+        
+        characterAnimator.SetTrigger(DoHarvest);
+        _currentIngredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayHarvestVfx();
+        
+        CollectIngredient();
+    }
+    
+    #endregion
+    
+    
+    #region Extract
+    
+    public void CheckExtractHoldInputPressed()
+    {
+        SortIngredientsByDistance();
+        
+        foreach (IngredientToCollectBehaviour ingredientToCollectBehaviour in CurrentIngredientToCollectBehaviours)
+        {
+            if (!ingredientToCollectBehaviour.IngredientValuesSo) continue;
+
+            if (ingredientToCollectBehaviour.IngredientValuesSo.Type != extractIngredientType) continue;
+            
+            _currentIngredientToCollectBehaviour = ingredientToCollectBehaviour;
+            _currentIngredientToCollectBehaviour.PressExtract();
+            
+            _canValidateExtract = true;
+            
+            characterAnimator.SetTrigger(DoBuildUpHarvest);
+            CharacterInputManager.Instance.DisableMoveInputs();
+            CharacterInputManager.Instance.DisableCodexInputs();
+            
+            FaceIngredient(characterExtractDistance, _currentIngredientToCollectBehaviour.transform);
+            
+            break;
+        }
+    }
+    
+    public void CheckExtractHoldInputReleased()
+    {
+        if (!_canValidateExtract) return;
+        
+        _currentIngredientToCollectBehaviour.HoldExtract();
+        
+        _currentIngredientToCollectBehaviour = null;
+        characterAnimator.SetTrigger(DoCancelHarvest);
+        
+        CharacterInputManager.Instance.EnableCodexInputs();
+        CharacterInputManager.Instance.EnableMoveInputs();
+        
+        _canValidateExtract = false;
+    }
+    
+    public void CheckExtractPressInput()
+    {
+        if (!_canValidateExtract) return;
+        
+        CharacterInputManager.Instance.EnableCodexInputs();
+        
+        _canValidateExtract = false;
         
         characterAnimator.SetTrigger(DoHarvest);
         _currentIngredientToCollectBehaviour.IngredientToCollectVfxManagerBehaviour.PlayHarvestVfx();

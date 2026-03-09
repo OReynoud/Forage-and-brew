@@ -24,7 +24,6 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private LunarCycleManager lunarCycleManager;
     [SerializeField] private MoneyManager moneyManager;
     [SerializeField] private OrderManager orderManager;
-    [SerializeField] private GardenManager gardenManager;
     
     private static string DirectoryPath => Path.Combine(Application.persistentDataPath, "Saves");
     public static string FilePath => Path.Combine(DirectoryPath, "Save.json");
@@ -141,7 +140,8 @@ public class SaveManager : MonoBehaviour
         data.MoneyAmount = moneyManager.MoneyAmount;
         
         // Orders
-        data.CurrentOrders = orderManager.CurrentOrders;
+        data.CurrentOrders = new List<Order>();
+        data.CurrentOrders.AddRange(orderManager.CurrentOrders);
         
         //Tutorial progression
         data.CodexIsUnlocked = gameDontDestroyOnLoadManager.codexIsUnlocked;
@@ -150,7 +150,7 @@ public class SaveManager : MonoBehaviour
         data.UnlockedTutorials = gameDontDestroyOnLoadManager.UnlockedTutorials;
         
         //Garden
-        data.PlotsData = gardenManager.plotsData;
+        data.PlotsData = gameDontDestroyOnLoadManager.plotsData;
         
         //Mirror
         data.CurrentOutfit = gameDontDestroyOnLoadManager.CurrentOutfitSo;
@@ -259,7 +259,7 @@ public class SaveManager : MonoBehaviour
         // Orders
         foreach (var o in data.CurrentOrders)
         {
-            if (o.OrderContent == null)
+            if (o.checker == 0)
             {
                 orderManager.CurrentOrders.Add(null);
             }
@@ -281,15 +281,15 @@ public class SaveManager : MonoBehaviour
         gameDontDestroyOnLoadManager.UnlockedTutorials = data.UnlockedTutorials;
         
         //Garden
-        gardenManager.plotsData = data.PlotsData;
+        gameDontDestroyOnLoadManager.plotsData = data.PlotsData;
         
         //Mirror
         gameDontDestroyOnLoadManager.CurrentOutfitSo = data.CurrentOutfit;
-        gameDontDestroyOnLoadManager.UnlockedOutfits = data.UnlockedOutifts;
+        gameDontDestroyOnLoadManager.UnlockedOutfits.AddRange(data.UnlockedOutifts);
         
         //Progression
         gameDontDestroyOnLoadManager.WorkshopProgressionIndex = data.WorkshopProgressionIndex;
-        gameDontDestroyOnLoadManager.UnlockedChargedBiomeAreas = data.UnlockedChargedBiomeAreas;
+        gameDontDestroyOnLoadManager.UnlockedChargedBiomeAreas.AddRange(data.UnlockedChargedBiomeAreas);
     }
     public static void DeleteSave(bool isOnMainMenu)
     {
@@ -354,7 +354,7 @@ public class SaveManager : MonoBehaviour
         
         [field: SerializeField] public bool CodexIsUnlocked { get; set; }
         [field: SerializeField] public bool HasDonePinTutorial { get; set; }
-        [field: SerializeField] public GardenPlotData[] PlotsData { get; set; }
+        [field: SerializeField] public List<GardenPlotData> PlotsData { get; set; }
         [field: SerializeField] public CharacterOutfitSo CurrentOutfit { get; set; }
         [field: SerializeField] public List<CharacterOutfitSo> UnlockedOutifts { get; set; }
         [field: SerializeField] public int WorkshopProgressionIndex { get; set; }

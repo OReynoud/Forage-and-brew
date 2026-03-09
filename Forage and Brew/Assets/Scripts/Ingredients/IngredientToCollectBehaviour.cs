@@ -19,6 +19,7 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     [SerializeField] private IngredientTypeSo unearthingIngredientType;
     [SerializeField] private IngredientTypeSo scrapingIngredientType;
     [SerializeField] private IngredientTypeSo harvestIngredientType;
+    [SerializeField] private IngredientTypeSo extractIngredientType;
 
     [SerializeField] public bool isUiRight;
 
@@ -55,6 +56,10 @@ public class IngredientToCollectBehaviour : MonoBehaviour
     [SerializeField] private GameObject harvestReleaseRightGameObject;
     [SerializeField] private GameObject harvestGaugeRightGameObject;
     [SerializeField] private Slider harvestGaugeRightSlider;
+    [SerializeField] private GameObject extractInputLeftGameObject;
+    [SerializeField] private GameObject extractPressInputLeftGameObject;
+    [SerializeField] private GameObject extractInputRightGameObject;
+    [SerializeField] private GameObject extractPressInputRightGameObject;
 
     public bool DoesNeedToShowUi { get; set; } = true;
     private float _currentTriggerTime;
@@ -153,6 +158,17 @@ public class IngredientToCollectBehaviour : MonoBehaviour
                 harvestGaugeLeftSlider.value = 0f;
             }
         }
+        else if (IngredientValuesSo.Type == extractIngredientType)
+        {
+            if (isUiRight)
+            {
+                extractInputRightGameObject.SetActive(true);
+            }
+            else
+            {
+                extractInputLeftGameObject.SetActive(true);
+            }
+        }
     }
     
     public void DisableCollect()
@@ -186,6 +202,10 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         harvestInputRightGameObject.SetActive(false);
         harvestReleaseRightGameObject.SetActive(false);
         harvestGaugeRightGameObject.SetActive(false);
+        extractInputLeftGameObject.SetActive(false);
+        extractPressInputLeftGameObject.SetActive(false);
+        extractInputRightGameObject.SetActive(false);
+        extractPressInputRightGameObject.SetActive(false);
     }
 
     public void PressUnearthing()
@@ -245,6 +265,30 @@ public class IngredientToCollectBehaviour : MonoBehaviour
         else
         {
             harvestReleaseLeftGameObject.SetActive(true);
+        }
+    }
+    
+    public void HoldExtract()
+    {
+        if (isUiRight)
+        {
+            extractPressInputRightGameObject.SetActive(false);
+        }
+        else
+        {
+            extractPressInputLeftGameObject.SetActive(false);
+        }
+    }
+    
+    public void PressExtract()
+    {
+        if (isUiRight)
+        {
+            extractPressInputRightGameObject.SetActive(true);
+        }
+        else
+        {
+            extractPressInputLeftGameObject.SetActive(true);
         }
     }
 

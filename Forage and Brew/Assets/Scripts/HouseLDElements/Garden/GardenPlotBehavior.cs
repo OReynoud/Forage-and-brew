@@ -1,12 +1,22 @@
+using System.Collections.Generic;
+using DG.Tweening;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
 {
-    private static readonly int DoWater = Animator.StringToHash("DoWatering");
     [SerializeField] private IngredientToCollectBehaviour ingredientToCollect;
     [SerializeField] private int gardenPlotSelfIndex;
+    
+    [Header("Growth Settings")]
+    [SerializeField] private List<Vector3> sproutPositions = new();
+    [SerializeField] private List<Vector3> sproutRotations = new();
+    [SerializeField] private float growDuration;
+    [SerializeField] private AnimationCurve growCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    private Tweener _growthPositionTweener;
+    private Tweener _growthRotationTweener;
+        
     [field: BoxGroup("Plot Data")] [field: SerializeField] public bool NeedsWatering { get; set; }
     [field: BoxGroup("Plot Data")] [field: SerializeField] public int PlantGrowthProgression { get; set; }
     [field: BoxGroup("Plot Data")] [field: SerializeField] public int RequiredProgressionToMature { get; set; }
@@ -17,7 +27,6 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
     [BoxGroup("Refs")] public Material wetParcelMat;
     [BoxGroup("Refs")] public GameObject sproutMesh;
     [BoxGroup("Refs")] public GameObject wateringCheckMark;
-    [BoxGroup("Refs")] private GameObject fullyGrownPlantMesh;
     [BoxGroup("Refs")] public GameObject seedInformationCanvas;
     [BoxGroup("Refs")] public Image seedIndicator;
     [BoxGroup("Refs")] public GameObject buttonAObject;
@@ -27,10 +36,18 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
     [field: SerializeField] public float heightShove { get; set; }
 
     [SerializeField] private GameObject interactInputCanvasGameObject;
+    
+    // Animator hashes
+    private static readonly int DoWater = Animator.StringToHash("DoWatering");
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    
     protected override void Start()
     {
+        for (int i = GameDontDestroyOnLoadManager.Instance.plotsData.Count; i < gardenPlotSelfIndex + 1; i++)
+        {
+            GameDontDestroyOnLoadManager.Instance.plotsData.Add(new GardenPlotData());
+        }
+        
         base.Start();
         DisableInteract();
         SceneTransitionManager.instance.OnSleep.AddListener(ProgressDay);
@@ -45,12 +62,16 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
     {
         if (PlantedSeed)
         {
-            if (NeedsWatering == false)
+            if (PlantGrowthProgression < RequiredProgressionToMature && !NeedsWatering)
             {
                 PlantGrowthProgression++;
-                // Debug.Log("Plant has grown!");
             }
-            NeedsWatering = true;
+
+            if (PlantGrowthProgression < RequiredProgressionToMature)
+            {
+                NeedsWatering = true;
+            }
+            
             UpdateVisuals();
         }
     }
@@ -75,13 +96,37 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
             seedIndicator.sprite = PlantedSeed.IngredientToGrowSo.iconLow;
             wateringCheckMark.SetActive(!NeedsWatering);
             parcelMesh.material = NeedsWatering ? dryParcelMat : wetParcelMat;
-            if (PlantGrowthProgression == PlantedSeed.DaysToMature && fullyGrownPlantMesh == null)
+            int totalProgression = PlantGrowthProgression + (NeedsWatering ? 0 : 1);
+            
+            if (PlantGrowthProgression >= PlantedSeed.DaysToMature)
             {
                 ingredientToCollect.gameObject.SetActive(true);
+                sproutMesh.SetActive(false);
             }
-            else if(PlantGrowthProgression > 0 && PlantGrowthProgression < PlantedSeed.DaysToMature)
+            else if (totalProgression == 0)
             {
-                sproutMesh.gameObject.SetActive(true);
+                ingredientToCollect.gameObject.SetActive(false);
+                sproutMesh.SetActive(false);
+                sproutMesh.transform.localPosition = sproutPositions[0];
+                sproutMesh.transform.localRotation = Quaternion.Euler(sproutRotations[0]);
+            }
+            else
+            {
+                sproutMesh.SetActive(true);
+                
+                if (sproutMesh.transform.localPosition != sproutPositions[totalProgression] &&
+                    (_growthPositionTweener == null || !_growthPositionTweener.IsActive() || !_growthPositionTweener.IsPlaying()))
+                {
+                    _growthPositionTweener = sproutMesh.transform.DOLocalMove(sproutPositions[totalProgression],
+                        growDuration).SetEase(growCurve);
+                }
+
+                if (sproutMesh.transform.localRotation != Quaternion.Euler(sproutRotations[totalProgression]) &&
+                    (_growthRotationTweener == null || !_growthRotationTweener.IsActive() || !_growthRotationTweener.IsPlaying()))
+                {
+                    _growthRotationTweener = sproutMesh.transform.DOLocalRotate(sproutRotations[totalProgression],
+                        growDuration).SetEase(growCurve);
+                }
             }
         }
         else
@@ -97,11 +142,17 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
 
         if (!Unlocked) return;
 
-        var data = GardenManager.instance.plotsData[gardenPlotSelfIndex];
+        GardenPlotData data = GameDontDestroyOnLoadManager.Instance.plotsData[gardenPlotSelfIndex];
         NeedsWatering = data.NeedsWatering;
         PlantGrowthProgression = data.PlantGrowthProgression;
         RequiredProgressionToMature = data.RequiredProgressionToMature;
         PlantedSeed = data.PlantedSeed;
+        
+        if (PlantedSeed)
+        {
+            ingredientToCollect.IngredientValuesSo = PlantedSeed.IngredientToGrowSo;
+            ingredientToCollect.SpawnMesh();
+        }
     }
     
     public void WaterPlot()
@@ -114,7 +165,7 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
             CharacterAnimManager.instance.transform.position.y, transform.position.z);
         CharacterAnimManager.instance.transform.LookAt(posToLook);
 
-        GardenManager.instance.plotsData[gardenPlotSelfIndex].UpdateData(this);
+        GameDontDestroyOnLoadManager.Instance.plotsData[gardenPlotSelfIndex].UpdateData(this);
     }
 
     public void AddSeed(CollectedSeedBehaviour collectedSeedBehaviour)
@@ -122,10 +173,9 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
         PlantedSeed = collectedSeedBehaviour.SeedValuesSo;
         RequiredProgressionToMature = PlantedSeed.DaysToMature;
         ingredientToCollect.IngredientValuesSo = PlantedSeed.IngredientToGrowSo;
-        ingredientToCollect.SpawnMesh();
         NeedsWatering = true;
         UpdateVisuals();
-        GardenManager.instance.plotsData[gardenPlotSelfIndex].UpdateData(this);
+        GameDontDestroyOnLoadManager.Instance.plotsData[gardenPlotSelfIndex].UpdateData(this);
         
         TutorialManager.instance.NotifyFromRecipeReceived("WaterSeeds");
     }
@@ -194,14 +244,14 @@ public class GardenPlotBehavior : PurchasableHouseItemBehaviour, ISeedAddable
             }
             else if (Unlocked)
             {
-                LastTriggeredCollider = other;
-
-                characterInteractController.CurrentNearPlot = this;
-                
                 if (characterInteractController.collectedStack.Count == 0 && NeedsWatering ||
                     !PlantedSeed && characterInteractController.collectedStack.Count > 0 &&
                     characterInteractController.collectedStack[0].StackableItem is CollectedSeedBehaviour)
                 {
+                    LastTriggeredCollider = other;
+                    
+                    characterInteractController.CurrentNearPlot = this;
+                    
                     EnableInteract();
                 }
             }
