@@ -446,6 +446,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ExtractHold",
+                    "type": "Button",
+                    "id": "daa8e193-8c1d-490c-9d7f-58d89faaca1e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ExtractPress",
+                    "type": "Button",
+                    "id": "bd1cc614-9ff1-448a-ad24-6272ab63d8d7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1766,6 +1784,28 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "CompostHapticChallenge2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "185a6863-f324-46cd-9f58-7bdfaba6608c",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "ExtractHold",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cfa8c777-8f6e-440c-ba30-885624a2c079",
+                    "path": "<Gamepad>/rightStick/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "ExtractPress",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

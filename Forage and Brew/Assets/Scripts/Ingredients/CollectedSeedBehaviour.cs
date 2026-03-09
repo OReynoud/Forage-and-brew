@@ -40,6 +40,7 @@ public class CollectedSeedBehaviour : StackableItem
     {
         isBeingDroppedInTarget = false;
         lerp = 0f;
+        gameObject.SetActive(false);
     }
     
 

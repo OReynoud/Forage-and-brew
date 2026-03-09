@@ -24,7 +24,6 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private LunarCycleManager lunarCycleManager;
     [SerializeField] private MoneyManager moneyManager;
     [SerializeField] private OrderManager orderManager;
-    [SerializeField] private GardenManager gardenManager;
     
     private static string DirectoryPath => Path.Combine(Application.persistentDataPath, "Saves");
     public static string FilePath => Path.Combine(DirectoryPath, "Save.json");
@@ -151,7 +150,7 @@ public class SaveManager : MonoBehaviour
         data.UnlockedTutorials = gameDontDestroyOnLoadManager.UnlockedTutorials;
         
         //Garden
-        data.PlotsData = gardenManager.plotsData;
+        data.PlotsData = gameDontDestroyOnLoadManager.plotsData;
         
         //Mirror
         data.CurrentOutfit = gameDontDestroyOnLoadManager.CurrentOutfitSo;
@@ -282,7 +281,7 @@ public class SaveManager : MonoBehaviour
         gameDontDestroyOnLoadManager.UnlockedTutorials = data.UnlockedTutorials;
         
         //Garden
-        gardenManager.plotsData = data.PlotsData;
+        gameDontDestroyOnLoadManager.plotsData = data.PlotsData;
         
         //Mirror
         gameDontDestroyOnLoadManager.CurrentOutfitSo = data.CurrentOutfit;
@@ -355,7 +354,7 @@ public class SaveManager : MonoBehaviour
         
         [field: SerializeField] public bool CodexIsUnlocked { get; set; }
         [field: SerializeField] public bool HasDonePinTutorial { get; set; }
-        [field: SerializeField] public GardenPlotData[] PlotsData { get; set; }
+        [field: SerializeField] public List<GardenPlotData> PlotsData { get; set; }
         [field: SerializeField] public CharacterOutfitSo CurrentOutfit { get; set; }
         [field: SerializeField] public List<CharacterOutfitSo> UnlockedOutifts { get; set; }
         [field: SerializeField] public int WorkshopProgressionIndex { get; set; }

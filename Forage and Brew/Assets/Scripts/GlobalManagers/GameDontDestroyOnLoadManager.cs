@@ -73,6 +73,9 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     [field: SerializeField] public CharacterOutfitSo CurrentOutfitSo { get; set; }
     [field: SerializeField] public List<CharacterOutfitSo> UnlockedOutfits { get; set; } = new();
     
+    // Garden
+    public List<GardenPlotData> plotsData;
+    
     //Debug Options
     [Foldout("Debug")] public bool loadOrders;
     [Foldout("Debug")][ShowIf("loadOrders")] public List<LetterContentSo> OrdersToLoad;

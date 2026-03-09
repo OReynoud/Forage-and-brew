@@ -440,6 +440,41 @@ MonoBehaviour:
   lockBehaviour: {fileID: 5769730472059288205}
   ingredientToCollect: {fileID: 3513781821603347297}
   gardenPlotSelfIndex: 0
+  sproutPositions:
+  - {x: 0, y: -1.32, z: 0}
+  - {x: -0.26, y: -0.89, z: 0}
+  - {x: 0.23, y: -0.52, z: -0.12}
+  - {x: 0, y: 0.04, z: 0}
+  sproutRotations:
+  - {x: 0, y: -45, z: 0}
+  - {x: 0, y: 0, z: -15}
+  - {x: 0, y: 45, z: 15}
+  - {x: 0, y: 90, z: 0}
+  growDuration: 4
+  growCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   <NeedsWatering>k__BackingField: 0
   <PlantGrowthProgression>k__BackingField: 0
   <RequiredProgressionToMature>k__BackingField: 0
@@ -865,6 +900,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3770871100324441608, guid: b06cb7d46a9ec814ab2bf2542cedefb0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -908,7 +947,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7812077379903692601, guid: 59ee248e3bb9cbc4e888614248849504, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.5
+      value: 0.04
       objectReference: {fileID: 0}
     - target: {fileID: 7812077379903692601, guid: 59ee248e3bb9cbc4e888614248849504, type: 3}
       propertyPath: m_LocalPosition.z
@@ -916,19 +955,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7812077379903692601, guid: 59ee248e3bb9cbc4e888614248849504, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 7812077379903692601, guid: 59ee248e3bb9cbc4e888614248849504, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.000000021855694
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7812077379903692601, guid: 59ee248e3bb9cbc4e888614248849504, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 7812077379903692601, guid: 59ee248e3bb9cbc4e888614248849504, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7812077379903692601, guid: 59ee248e3bb9cbc4e888614248849504, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -936,7 +975,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7812077379903692601, guid: 59ee248e3bb9cbc4e888614248849504, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 7812077379903692601, guid: 59ee248e3bb9cbc4e888614248849504, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
