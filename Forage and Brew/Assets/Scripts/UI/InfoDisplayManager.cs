@@ -267,6 +267,7 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
         CharacterInputManager.Instance.EnablePauseInputs();
         uiInput.enabled = true;
         uiInput.ActivateModule();
+        Debug.Log("ahhhhhhh");
         pauseButtonDefaultSelected.Select();
 
         _canInputPause = false;

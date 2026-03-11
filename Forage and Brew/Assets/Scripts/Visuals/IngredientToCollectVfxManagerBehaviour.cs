@@ -21,6 +21,7 @@ public class IngredientToCollectVfxManagerBehaviour : MonoBehaviour
 
     private void Start()
     {
+        if (!LunarCycleManager.Instance)return;
         SetRightLunarCycleVfx();
     }
 

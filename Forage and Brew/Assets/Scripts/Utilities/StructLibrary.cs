@@ -206,3 +206,17 @@ public struct IngredientCost
         return $"{Ingredient.Name} x{Amount}";
     }
 }
+
+[Serializable]
+public struct OrderStruct
+{
+    [field: SerializeField] public OrderContentSo OrderContent { get; set; }
+    [field: SerializeField] public NarrativeBlockOfLetters RelatedNarrativeBlock { get; private set; }
+    [field: SerializeField] public LetterContentSo RelatedLetter { get; private set; }
+    public OrderStruct(OrderContentSo contentSo, NarrativeBlockOfLetters relatedNB, LetterContentSo relatedLetter)
+    {
+        OrderContent = contentSo;
+        RelatedLetter = relatedLetter;
+        RelatedNarrativeBlock = relatedNB;
+    }
+}

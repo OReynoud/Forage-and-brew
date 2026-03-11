@@ -140,8 +140,22 @@ public class SaveManager : MonoBehaviour
         data.MoneyAmount = moneyManager.MoneyAmount;
         
         // Orders
-        data.CurrentOrders = new List<Order>();
-        data.CurrentOrders.AddRange(orderManager.CurrentOrders);
+        data.OrdersContentList = new ();
+        data.OrdersRelatedNBList = new ();
+        data.OrdersRelatedLetterList = new();
+        foreach (var order in orderManager.CurrentOrders)
+        {
+            if (order == null)
+            {
+                data.OrdersContentList.Add(null);
+                data.OrdersRelatedNBList.Add(null);
+                data.OrdersRelatedLetterList.Add(null);
+                continue;
+            }
+            data.OrdersContentList.Add(order.OrderContent);
+            data.OrdersRelatedNBList.Add(order.RelatedNarrativeBlock);
+            data.OrdersRelatedLetterList.Add(order.RelatedLetter);
+        }
         
         //Tutorial progression
         data.CodexIsUnlocked = gameDontDestroyOnLoadManager.codexIsUnlocked;
@@ -257,16 +271,9 @@ public class SaveManager : MonoBehaviour
         gameDontDestroyOnLoadManager.moneyAmountOnStart = data.MoneyAmount;
         
         // Orders
-        foreach (var o in data.CurrentOrders)
+        for (int i = 0; i < data.OrdersContentList.Count; i++)
         {
-            if (o.checker == 0)
-            {
-                orderManager.CurrentOrders.Add(null);
-            }
-            else
-            {
-                orderManager.CurrentOrders.Add(o);
-            }
+            orderManager.CurrentOrders.Add(new Order(data.OrdersContentList[i], data.OrdersRelatedNBList[i], data.OrdersRelatedLetterList[i]));
         }
         
         // Tutorial progression
@@ -290,6 +297,20 @@ public class SaveManager : MonoBehaviour
         //Progression
         gameDontDestroyOnLoadManager.WorkshopProgressionIndex = data.WorkshopProgressionIndex;
         gameDontDestroyOnLoadManager.UnlockedChargedBiomeAreas.AddRange(data.UnlockedChargedBiomeAreas);
+        
+        foreach (SceneName sceneName in sceneListSo.SceneNames)
+        {
+            if (sceneName.Scene == data.PreviousScene)
+            {
+                SceneManager.LoadScene(sceneName.Name);
+                //SceneTransitionManager.instance.HandleLoadNewScene(sceneName.Scene);
+                break;
+            }
+        }
+        
+        inputManager.EnableMoveInputs();
+        inputManager.EnableInteractInputs();
+        inputManager.EnableCodexInputs();
     }
     public static void DeleteSave(bool isOnMainMenu)
     {
@@ -350,7 +371,14 @@ public class SaveManager : MonoBehaviour
         [field: SerializeField] public int CurrentLunarCycleStateIndex { get; set; }
         
         [field: SerializeField] public int MoneyAmount { get; set; }
-        [field: SerializeField] public List<Order> CurrentOrders { get; set; }
+        
+        //----------Orders Content----------
+        [field: SerializeField] public List<OrderContentSo> OrdersContentList { get; set; }
+        [field: SerializeField] public List<NarrativeBlockOfLetters> OrdersRelatedNBList { get; set; }
+        [field: SerializeField] public List<LetterContentSo> OrdersRelatedLetterList { get; set; }
+        
+        
+        //----------Orders Content----------
         
         [field: SerializeField] public bool CodexIsUnlocked { get; set; }
         [field: SerializeField] public bool HasDonePinTutorial { get; set; }
