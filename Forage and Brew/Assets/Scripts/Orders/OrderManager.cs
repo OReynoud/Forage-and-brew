@@ -90,10 +90,8 @@ public class OrderManager : MonoBehaviour
     {
         foreach (Order o in CurrentOrders)
         {
-            Debug.Log("New Order");
             if (o == null) continue;
-            if (o.checker == 0) continue;
-            Debug.Log(o);
+            if (o.RelatedLetter == null) continue;
             CodexContentManager.instance.ReceiveNewOrder(
                 o.RelatedLetter.Client,
                 o.RelatedLetter.TextContent,

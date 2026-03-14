@@ -27,11 +27,11 @@ public class CharacterInputManager : MonoBehaviour
     {
         Instance = this;
         _inputs = new InputSystem_Actions();
+        SetupInputs();
     }
     
     private void Start()
     {
-        SetupInputs();
 
         if (GameDontDestroyOnLoadManager.Instance.debugCommands)
         {
@@ -633,6 +633,7 @@ public class CharacterInputManager : MonoBehaviour
 
     private void CodexLeaveOnPerformed(InputAction.CallbackContext obj)
     {
+        Debug.Log("Leave codex");
         OnNavigationChange.Invoke(false);
         if (OnCodexUse != null)
             OnCodexUse.Invoke(false);

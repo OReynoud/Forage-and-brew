@@ -37,20 +37,9 @@ public class MainMenu : MonoBehaviour
         {
             string jsonData = File.ReadAllText(SaveManager.FilePath, _encoding);
             var data = JsonUtility.FromJson<SaveManager.SavedData>(jsonData);
-            foreach (SceneName sceneName in sceneListSo.SceneNames)
-            {
-                if (sceneName.Scene == data.PreviousScene)
-                {
-                    SceneManager.LoadScene(sceneName.Name);
-                    //SceneTransitionManager.instance.HandleLoadNewScene(sceneName.Scene);
-                    break;
-                }
-            }
         }
-        else
-        {
-            SceneManager.LoadScene("SC_NewHouse");
-        }
+        SceneManager.LoadScene("SC_NewHouse");
+        
     }
 
     public void ShowOptions()
