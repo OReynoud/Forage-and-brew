@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class ChoppingInputBehaviour : MonoBehaviour
 {
+    [SerializeField] private GameObject arrowCurrentInputGameObject;
     [SerializeField] private Image previewInputImage;
     [SerializeField] private Image currentInputImage;
     [SerializeField] private Image correctInputImage;
@@ -23,6 +24,7 @@ public class ChoppingInputBehaviour : MonoBehaviour
         currentInputImage.gameObject.SetActive(false);
         correctInputImage.gameObject.SetActive(false);
         wrongInputImage.gameObject.SetActive(false);
+        arrowCurrentInputGameObject.SetActive(false);
     }
     
     public void SetCurrentInput()
@@ -31,6 +33,7 @@ public class ChoppingInputBehaviour : MonoBehaviour
         currentInputImage.gameObject.SetActive(true);
         correctInputImage.gameObject.SetActive(false);
         wrongInputImage.gameObject.SetActive(false);
+        arrowCurrentInputGameObject.SetActive(true);
     }
     
     public void SetRightInput()
@@ -39,6 +42,7 @@ public class ChoppingInputBehaviour : MonoBehaviour
         currentInputImage.gameObject.SetActive(false);
         correctInputImage.gameObject.SetActive(true);
         wrongInputImage.gameObject.SetActive(false);
+        arrowCurrentInputGameObject.SetActive(false);
     }
     
     public void SetWrongInput()
@@ -47,6 +51,7 @@ public class ChoppingInputBehaviour : MonoBehaviour
         currentInputImage.gameObject.SetActive(false);
         correctInputImage.gameObject.SetActive(false);
         wrongInputImage.gameObject.SetActive(true);
+        arrowCurrentInputGameObject.SetActive(true);
     }
     
     
