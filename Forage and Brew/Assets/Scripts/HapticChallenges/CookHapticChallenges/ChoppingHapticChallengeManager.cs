@@ -194,18 +194,18 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
             // Rumble
             RumbleManager.Instance.PlayRumble(choppingHapticChallengeListSo.CorrectInputVibrationDuration,
                 choppingHapticChallengeListSo.CorrectInputVibrationPower);
-        }
         
-        _currentChoppingInputIndex++;
+            _currentChoppingInputIndex++;
         
-        if (_currentChoppingInputIndex == _currentChoppingChallenge.ChoppingInputIndices.Count)
-        {
-            StopChoppingChallenge();
-        }
-        else
-        {
-            CurrentChoppingCountertopBehaviour.SetCutIngredientPositionAndRotation(_currentChoppingInputIndex);
-            _isWaitingForNextChopping = true;
+            if (_currentChoppingInputIndex == _currentChoppingChallenge.ChoppingInputIndices.Count)
+            {
+                StopChoppingChallenge();
+            }
+            else
+            {
+                CurrentChoppingCountertopBehaviour.SetCutIngredientPositionAndRotation(_currentChoppingInputIndex);
+                _isWaitingForNextChopping = true;
+            }
         }
     }
 }
