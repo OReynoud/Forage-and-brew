@@ -18,7 +18,7 @@ public class CodexPickUpBehaviour : MonoBehaviour, ICinematicInteraction
     [SerializeField] private float timer;
     [SerializeField] private bool startDelay;
     [SerializeField] private bool startBackGroundLerp;
-    public static bool doTutorialPages = true;
+    public static bool doTutorialPages = false;
     public static UnityEvent codexTutorialEvent;
     
     private static readonly int IsOpen = Animator.StringToHash("IsOpen");
