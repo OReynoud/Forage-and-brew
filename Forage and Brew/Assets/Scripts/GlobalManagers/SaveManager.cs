@@ -12,7 +12,7 @@ public class SaveManager : MonoBehaviour
     public static SaveManager Instance { get; private set; }
     
     [Header("Debug")]
-    [SerializeField] private bool isSaveEnabled;
+    [SerializeField] public bool isSaveEnabled;
     
     [Header("Required Data")]
     [SerializeField] private SceneListSo sceneListSo;
@@ -24,6 +24,7 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private LunarCycleManager lunarCycleManager;
     [SerializeField] private MoneyManager moneyManager;
     [SerializeField] private OrderManager orderManager;
+    [SerializeField] private CharacterInputManager inputManager;
     
     private static string DirectoryPath => Path.Combine(Application.persistentDataPath, "Saves");
     public static string FilePath => Path.Combine(DirectoryPath, "Save.json");
@@ -193,6 +194,7 @@ public class SaveManager : MonoBehaviour
                 gameDontDestroyOnLoadManager.AllFillerBlocks.Add(new FillerBlockOfLetters(contentSo, false, null));
             }
             
+            inputManager.SetupInputs();
             return;
         }
         // Debug.Log("Bro loaded");
@@ -307,10 +309,9 @@ public class SaveManager : MonoBehaviour
                 break;
             }
         }
-        
-        inputManager.EnableMoveInputs();
-        inputManager.EnableInteractInputs();
-        inputManager.EnableCodexInputs();
+
+        CodexPickUpBehaviour.doTutorialPages = false;
+        inputManager.SetupInputs();
     }
     public static void DeleteSave(bool isOnMainMenu)
     {

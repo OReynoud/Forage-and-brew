@@ -26,8 +26,7 @@ public class CharacterInputManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        _inputs = new InputSystem_Actions();
-        SetupInputs();
+
     }
     
     private void Start()
@@ -36,6 +35,10 @@ public class CharacterInputManager : MonoBehaviour
         if (GameDontDestroyOnLoadManager.Instance.debugCommands)
         {
             EnableDebugCommands();
+        }
+        if (!SaveManager.Instance.isSaveEnabled)
+        {
+            SetupInputs();
         }
     }
 
@@ -72,6 +75,7 @@ public class CharacterInputManager : MonoBehaviour
 
     public void SetupInputs()
     {
+        _inputs = new InputSystem_Actions();
         _inputs.Player.Move.performed += MoveOnPerformed;
         _inputs.Player.Interact.performed += InteractOnPerformed;
         _inputs.Player.Cancel.performed += CancelOnPerformed;
