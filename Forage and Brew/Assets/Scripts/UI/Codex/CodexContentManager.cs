@@ -210,12 +210,7 @@ public class CodexContentManager : Singleton<CodexContentManager>
         AutoFlip.instance.ControledBook.bookPages.Insert(index,
             new Book.BookPage(leftRecipePage[pageChoser], recipeDisplay.leftPage, recipeDisplay));
 
-        // for (var i = 0; i < pageIndexesToCheck.Count; i++)
-        // {
-        //     pageIndexesToCheck[i] = (pageIndexesToCheck[i].Item1 + 2, pageIndexesToCheck[i].Item2);
-        // }
 
-        //pageIndexesToCheck.Add();
 
         for (int i = 2; i < AutoFlip.instance.ControledBook.bookMarks.Length; i++)
         {
