@@ -6,7 +6,7 @@ public class PageBehavior : MonoBehaviour
     public int PageNumber;
     public TextMeshProUGUI pageNumberText;
     public virtual void InitOrder(ClientSo client,string description, PotionDemand[] Potions, int Reward, int index) { }
-    public virtual void InitLetter(LetterContentSo newLetterContent) {}
+    public virtual void InitLetter(LetterContentSo newLetterContent, int moneyReward = 0) {}
     public virtual void InitIngredient(IngredientValuesSo ingredientToDisplay, Sprite backgroundImage = null) {}
     public virtual void InitHistoric(LetterContentSo originLetter, LetterContentSo successLetter) {}
     public virtual void InitRecipe(Sprite[] PotionIngredientsLow, Sprite[] PotionIngredientsHigh, PotionValuesSo PotionSteps, Sprite[] AllBrewingActionSprites, Sprite[] PagesToUse) {}

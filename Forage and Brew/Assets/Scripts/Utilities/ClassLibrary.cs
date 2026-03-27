@@ -10,17 +10,29 @@ public class Letter
     [field: SerializeField] public LetterContentSo LetterContent { get; set; }
     [field: SerializeField] public NarrativeBlockOfLetters RelatedNarrativeBlock { get; set; }
     [field: SerializeField] public FillerBlockOfLetters RelatedFillerBlock { get; set; }
+    [field: SerializeField] public int MoneyToGive { get; set; }
 
     public Letter(LetterContentSo content, NarrativeBlockOfLetters nBlock)
     {
         LetterContent = content;
         RelatedNarrativeBlock = nBlock;
     }
-
+    public Letter(LetterContentSo content, NarrativeBlockOfLetters nBlock, int money)
+    {
+        LetterContent = content;
+        RelatedNarrativeBlock = nBlock;
+        MoneyToGive = money;
+    }
     public Letter(LetterContentSo content, FillerBlockOfLetters fBlock)
     {
         LetterContent = content;
         RelatedFillerBlock = fBlock;
+    }
+    public Letter(LetterContentSo content, FillerBlockOfLetters fBlock, int money)
+    {
+        LetterContent = content;
+        RelatedFillerBlock = fBlock;
+        MoneyToGive = money;
     }
 
     public Letter(LetterContentSo content)

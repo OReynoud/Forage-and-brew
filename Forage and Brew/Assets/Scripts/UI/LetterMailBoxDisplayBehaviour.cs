@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -33,10 +34,24 @@ public class LetterMailBoxDisplayBehaviour : PageBehavior
     public AnimationClip animClip;
 
     
-    public override void InitLetter(LetterContentSo newLetterContent)
+    public override void InitLetter(LetterContentSo newLetterContent, int MoneyReward = 0)
     {
         letterContent = newLetterContent;
         letterType = letterContent.LetterType;
+        switch (letterType)
+        {
+            case LetterType.Orders:
+                moneyReward = letterContent.OrderContent.MoneyReward;
+                break;
+            case LetterType.Thanks:
+                moneyReward =  MoneyReward;
+                break;
+            case LetterType.Gift:
+                break;
+        }
+       Debug.Log("Init letter: " + letterContent.name + "\n" +
+                  letterContent.LetterType + "\n" + 
+                  moneyReward, gameObject);
         
         descriptionText.text = letterContent.TextContent + "\n" + letterContent.Client.Name;
         letterBackground.color = letterContent.Client.AssociatedColor;
@@ -51,6 +66,8 @@ public class LetterMailBoxDisplayBehaviour : PageBehavior
             keyword.transform.parent.gameObject.SetActive(false);
         }
         
+        moneyTextOrder.text = moneyReward.ToString();
+        moneyTextThanks.text = moneyReward.ToString();
         if (letterType != LetterType.Orders)
         {
             moneyTextOrder.transform.parent.gameObject.SetActive(false);
@@ -59,9 +76,11 @@ public class LetterMailBoxDisplayBehaviour : PageBehavior
 
         bills.gameObject.SetActive(letterType is LetterType.Thanks or LetterType.Gift);
         moneyIcon.SetActive(letterType is LetterType.Orders);
-        moneyReward = letterContent.OrderContent.MoneyReward;
-        moneyTextOrder.text = moneyReward.ToString();
-        moneyTextThanks.text = moneyReward.ToString();
+        if (letterType is LetterType.Thanks)
+        {
+            Debug.Log(letterContent.RelatedSuccessLetter.name);
+            Debug.Log(letterContent.OrderContent.name);
+        }
         potionsDemanded.Clear();
         potionsDemanded.AddRange(letterContent.OrderContent.RequestedPotions);
 
