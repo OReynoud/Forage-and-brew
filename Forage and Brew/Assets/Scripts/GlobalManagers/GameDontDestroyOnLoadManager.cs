@@ -54,8 +54,8 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     [field: SerializeField] [field: AllowNesting] public List<QuestProgressionIndexWatcher> QuestProgressionIndexWatchers { get; set; } = new();
 
 
-    public List<Letter> ThanksAndErrorLetters { get; set; } = new();
-    [field: SerializeField]public List<Letter> MailBoxLetters { get; set; } = new();
+    [field: SerializeField] public List<Letter> ThanksAndErrorLetters { get; set; } = new();
+    [field: SerializeField] public List<Letter> MailBoxLetters { get; set; } = new();
     public List<(Letter, LetterContentSo)> ChosenLetters { get; set; } = new();
     
     // Cauldron
@@ -109,7 +109,7 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
         InfoDisplayManager.instance.DisplayDays();
         if (MailBoxBehaviour.instance != null)
         {
-            MailBoxBehaviour.instance.MailNewDayMethod();
+            //MailBoxBehaviour.instance.MailNewDayMethod();
         }
     }
 }

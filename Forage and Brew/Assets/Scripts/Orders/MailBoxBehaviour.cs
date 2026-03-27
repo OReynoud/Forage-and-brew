@@ -67,17 +67,20 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
         CharacterInputManager.Instance.DisableMailInputs();
 
         moneyDisplayGameObject.SetActive(false);
-        GenerateLetters();
-        if (GeneratedLetters.Count == 0)
+        for (var i = 0; i < GameDontDestroyOnLoadManager.Instance.MailBoxLetters.Count; i++)
         {
-            letterBoxTrigger.enabled = false;
-            letterBoxAnimator.SetBool(IsEmpty, true);
-            blink.SetActive(false);
+            var letter = GameDontDestroyOnLoadManager.Instance.MailBoxLetters[i];
+            if (letter.LetterContent.LetterType is LetterType.Thanks)
+            {
+                _moneyAmountsToEarn.Add((letter.MoneyToGive, i));
+            }
         }
+        MailNewDayMethod();
+        
         _letterPileTargetPosition = letterPileHiddenPosition;
         letterPile.anchoredPosition = letterPileHiddenPosition;
         //Debug.Log(GameDontDestroyOnLoadManager.Instance.ChosenLetters.Count);
-        
+        Debug.Log(_moneyAmountsToEarn.Count);
     }
 
     public void MailNewDayMethod()
@@ -264,19 +267,20 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
     
     private void GenerateSuccessLetter(Letter letter)
     {
-        // Debug.Log("Generated success letter");
-        int moneyToEarn = letter.LetterContent.OrderContent.MoneyReward;
+        Debug.Log("Generated success letter: " + letter.LetterContent.name);
+        int moneyToEarn = letter.LetterContent.OrderContent.MoneyReward; 
+        Debug.Log(moneyToEarn);
         _moneyAmountsToEarn.Add((moneyToEarn, GameDontDestroyOnLoadManager.Instance.ChosenLetters.Count));
         if (letter.RelatedNarrativeBlock != null)
         {
-            GameDontDestroyOnLoadManager.Instance.ChosenLetters.Add((new Letter(letter.LetterContent.RelatedSuccessLetter, letter.RelatedNarrativeBlock),
+            GameDontDestroyOnLoadManager.Instance.ChosenLetters.Add((new Letter(letter.LetterContent.RelatedSuccessLetter, letter.RelatedNarrativeBlock, moneyToEarn),
                 letter.LetterContent));
             letter.RelatedNarrativeBlock.NewLetterCountDown =
                 letter.LetterContent.TimeForLetterAfterSuccess;
         }
         else
         {
-            GameDontDestroyOnLoadManager.Instance.ChosenLetters.Add((new Letter(letter.LetterContent.RelatedSuccessLetter, letter.RelatedFillerBlock),
+            GameDontDestroyOnLoadManager.Instance.ChosenLetters.Add((new Letter(letter.LetterContent.RelatedSuccessLetter, letter.RelatedFillerBlock, moneyToEarn),
                 letter.LetterContent));
         }
 
@@ -284,13 +288,22 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
 
     public void GenerateLetters()
     {
+        Debug.Log("Generate letters");
         GeneratedLetters.Clear();
 
         for (int i = GameDontDestroyOnLoadManager.Instance.MailBoxLetters.Count - 1; i >= 0; i--)
         {
             var current = Instantiate(letterPrefab, letterPile);
             GeneratedLetters.Insert(0, current);
-            current.InitLetter(GameDontDestroyOnLoadManager.Instance.MailBoxLetters[i].LetterContent);
+            if (GameDontDestroyOnLoadManager.Instance.MailBoxLetters[i].LetterContent.LetterType == LetterType.Thanks)
+            {
+                current.InitLetter(GameDontDestroyOnLoadManager.Instance.MailBoxLetters[i].LetterContent, GameDontDestroyOnLoadManager.Instance.MailBoxLetters[i].MoneyToGive);
+            }
+            else
+            {
+                current.InitLetter(GameDontDestroyOnLoadManager.Instance.MailBoxLetters[i].LetterContent);
+            }
+
         }
     }
 
