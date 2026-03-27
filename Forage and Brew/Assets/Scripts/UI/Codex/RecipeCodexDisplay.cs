@@ -38,7 +38,7 @@ public class RecipeCodexDisplay : PageBehavior
 
     public int SecondPageNumber;
 
-    public bool isDissolved { get; private set; } = false;
+    [field: SerializeField] public bool isDissolved { get; private set; } = false;
 
     private bool doDissolve;
     private float dissolveTimer;
@@ -280,6 +280,7 @@ public class RecipeCodexDisplay : PageBehavior
 
     public void RemoveDissolve()
     {
+        isDissolved = true;
         Material mat = Instantiate(leftPageDissolve.material);
         mat.SetFloat(Ex.CutoffHeight, 1);
         leftPageDissolve.material = mat;
