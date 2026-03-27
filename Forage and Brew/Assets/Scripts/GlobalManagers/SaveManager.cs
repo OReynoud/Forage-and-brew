@@ -97,8 +97,10 @@ public class SaveManager : MonoBehaviour
         data.OrderPotions.AddRange(gameDontDestroyOnLoadManager.OrderPotions);
         
         // Unlocked Ingredients and Recipes
-        data.UnlockedIngredients = gameDontDestroyOnLoadManager.UnlockedIngredients;
-        data.UnlockedRecipes = gameDontDestroyOnLoadManager.UnlockedRecipes;
+        data.UnlockedIngredients.Clear();
+        data.UnlockedIngredients.AddRange(gameDontDestroyOnLoadManager.UnlockedIngredients);
+        data.UnlockedRecipes.Clear();
+        data.UnlockedRecipes.AddRange(gameDontDestroyOnLoadManager.UnlockedRecipes);
         
         // Ingredients to Collect
         data.HasChosenIngredientsToday = gameDontDestroyOnLoadManager.HasChosenIngredientsToday;
@@ -111,12 +113,24 @@ public class SaveManager : MonoBehaviour
         data.HasChosenLettersToday = gameDontDestroyOnLoadManager.HasChosenLettersToday;
         data.QuestProgressionIndex = gameDontDestroyOnLoadManager.QuestProgressionIndex;
         data.FillerQuestProgression = gameDontDestroyOnLoadManager.FillerQuestProgression;
-        data.AllNarrativeBlocks = gameDontDestroyOnLoadManager.AllNarrativeBlocks;
-        data.AllFillerBlocks = gameDontDestroyOnLoadManager.AllFillerBlocks;
+        
+        data.AllNarrativeBlocks.Clear();
+        data.AllNarrativeBlocks.AddRange(gameDontDestroyOnLoadManager.AllNarrativeBlocks);
+        
+        data.AllFillerBlocks.Clear();
+        data.AllFillerBlocks.AddRange(gameDontDestroyOnLoadManager.AllFillerBlocks);
+        
         data.LastUsedFillerBlock = gameDontDestroyOnLoadManager.LastUsedFillerBlockOfLetters;
-        data.QuestProgressionIndexWatchers = gameDontDestroyOnLoadManager.QuestProgressionIndexWatchers;
-        data.ThanksAndErrorLetters = gameDontDestroyOnLoadManager.ThanksAndErrorLetters;
-        data.MailBoxLetters = gameDontDestroyOnLoadManager.MailBoxLetters;
+        
+        data.QuestProgressionIndexWatchers.Clear();
+        data.QuestProgressionIndexWatchers.AddRange(gameDontDestroyOnLoadManager.QuestProgressionIndexWatchers);
+        
+        data.ThanksAndErrorLetters.Clear();
+        data.ThanksAndErrorLetters.AddRange(gameDontDestroyOnLoadManager.ThanksAndErrorLetters);
+        
+        data.MailBoxLetters.Clear();
+        data.MailBoxLetters.AddRange(gameDontDestroyOnLoadManager.MailBoxLetters);
+        
         data.ChosenLetters.Clear();
         foreach (var tuple in gameDontDestroyOnLoadManager.ChosenLetters)
         {
@@ -130,7 +144,8 @@ public class SaveManager : MonoBehaviour
             
         
         // Cauldron
-        data.CauldronTemperatureAndIngredients = gameDontDestroyOnLoadManager.CauldronTemperatureAndIngredients;
+        data.CauldronTemperatureAndIngredients.Clear();
+        data.CauldronTemperatureAndIngredients.AddRange(gameDontDestroyOnLoadManager.CauldronTemperatureAndIngredients);
         data.CauldronTemperature = gameDontDestroyOnLoadManager.CauldronTemperature;
         
         // Cycles
@@ -162,18 +177,22 @@ public class SaveManager : MonoBehaviour
         data.CodexIsUnlocked = gameDontDestroyOnLoadManager.codexIsUnlocked;
         data.HasDonePinTutorial = gameDontDestroyOnLoadManager.hasDonePinTutorial;
         
-        data.UnlockedTutorials = gameDontDestroyOnLoadManager.UnlockedTutorials;
+        data.UnlockedTutorials.Clear();
+        data.UnlockedTutorials.AddRange(gameDontDestroyOnLoadManager.UnlockedTutorials);
         
         //Garden
-        data.PlotsData = gameDontDestroyOnLoadManager.plotsData;
+        data.PlotsData.Clear();
+        data.PlotsData.AddRange(gameDontDestroyOnLoadManager.plotsData);
         
         //Mirror
         data.CurrentOutfit = gameDontDestroyOnLoadManager.CurrentOutfitSo;
-        data.UnlockedOutifts = gameDontDestroyOnLoadManager.UnlockedOutfits;
+        data.UnlockedOutifts.Clear();
+        data.UnlockedOutifts.AddRange(gameDontDestroyOnLoadManager.UnlockedOutfits);
         
         //Progression
         data.WorkshopProgressionIndex = gameDontDestroyOnLoadManager.WorkshopProgressionIndex;
-        data.UnlockedChargedBiomeAreas = gameDontDestroyOnLoadManager.UnlockedChargedBiomeAreas;
+        data.UnlockedChargedBiomeAreas.Clear();
+        data.UnlockedChargedBiomeAreas.AddRange(gameDontDestroyOnLoadManager.UnlockedChargedBiomeAreas);
         
         // Save Data
         string jsonData = JsonUtility.ToJson(data, true);
