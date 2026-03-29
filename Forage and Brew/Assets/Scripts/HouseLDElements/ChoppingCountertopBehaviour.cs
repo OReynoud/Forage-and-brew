@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using NaughtyAttributes;
 using UnityEngine;
 
@@ -43,9 +44,14 @@ public class ChoppingCountertopBehaviour : PurchasableHouseItemBehaviour, IIngre
     }
 
 
-    public void SetCutIngredient()
+    public void SetCutIngredients()
     {
-        CollectedIngredients[0].SetCutMeshGameObject();
+        for (int i = 0; i < CollectedIngredients.Count; i++)
+        {
+            CollectedIngredients[i].SetCutMeshGameObject();
+
+            CollectedIngredients[i].transform.DOLocalMoveX(i == 0 ? 0f : -1f, 0.5f).SetDelay(1f);
+        }
     }
     
     public void SetCutIngredientPositionAndRotation(int index)
