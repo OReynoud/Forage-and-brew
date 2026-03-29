@@ -35,6 +35,7 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
     private int _currentChoppingInputIndex;
     private bool _isWaitingForNextChopping;
     private float _currentChoppingWaitTime;
+    private Tweener _cameraTransitionTweener;
     
     // Animator Hashes
     private static readonly int IsChopping = Animator.StringToHash("IsChopping");
@@ -86,13 +87,14 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         // Countertop
         CurrentChoppingCountertopBehaviour.DisableInteract();
         CurrentChoppingCountertopBehaviour.IsCharacterOnCountertop = true;
-        CurrentChoppingCountertopBehaviour.SetCutIngredient();
+        CurrentChoppingCountertopBehaviour.SetCutIngredients();
         
         // Inputs
         CharacterInputManager.Instance.DisableInputs();
         CharacterInputManager.Instance.EnableChoppingHapticChallengeInputs();
         
         // Camera
+        _cameraTransitionTweener?.Kill();
         _previousCameraPreset = SimpleCameraBehavior.instance.TargetCamSettings;
         ((HouseCameraBehavior)HouseCameraBehavior.instance).overrideCameraLerp = true;
         SimpleCameraBehavior.instance.ApplyScriptableCamSettings(choppingChallengeCameraPreset, choppingCameraTransitionTime);
@@ -130,16 +132,17 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         characterAnimator.SetBool(IsChopping, false);
         knifeGameObject.SetActive(false);
         CurrentChoppingCountertopBehaviour.IsCharacterOnCountertop = false;
-        CurrentChoppingCountertopBehaviour.ChopIngredient(choppingHapticChallengeListSo);
         
         GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge = false;
         
-        DOTween.To(() => transform.position, x => transform.position = x, transform.position,
+        _cameraTransitionTweener = DOTween.To(() => transform.position, x => transform.position = x, transform.position,
             choppingCameraTransitionTime).OnComplete(
             () =>
             {
                 ((HouseCameraBehavior)HouseCameraBehavior.instance).overrideCameraLerp = false;
             });
+        
+        CurrentChoppingCountertopBehaviour.ChopIngredient(choppingHapticChallengeListSo);
         
         //Animation
         characterAnimator.SetLayerWeight(characterAnimator.GetLayerIndex("Carry"),1);
