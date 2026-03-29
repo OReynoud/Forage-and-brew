@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
@@ -65,7 +66,7 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         if (!CurrentChoppingCountertopBehaviour) return;
         
         // Challenge variables
-        _isChallengeActive = true;
+        StartCoroutine(ActiveHapticChallengeBufferCoroutine());
         List<ChoppingHapticChallengeSo> choppingHapticChallenges = choppingHapticChallengeListSo
             .ChoppingHapticChallenges.Where(choppingHapticChallenge =>
                 choppingHapticChallenge.ChoppingInputIndices.Count ==
@@ -113,6 +114,13 @@ public class ChoppingHapticChallengeManager : MonoBehaviour
         GameDontDestroyOnLoadManager.Instance.IsInHapticChallenge = true;
         
         StartChoppingTurn();
+    }
+
+    private IEnumerator ActiveHapticChallengeBufferCoroutine()
+    {
+        yield return null;
+        
+        _isChallengeActive = true;
     }
     
     private void StopChoppingChallenge()
