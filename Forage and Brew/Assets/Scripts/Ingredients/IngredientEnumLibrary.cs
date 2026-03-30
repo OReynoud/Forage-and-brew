@@ -9,7 +9,7 @@ public enum SpawnLocation
 {
     None = 0,
     FlatLand = 1 << 0,
-    BaseOfTreeWithSmallBushes = 1 << 1,
+    BaseOfTree = 1 << 1,
     DeadTreeTrunk = 1 << 2,
     TreeStump = 1 << 3,
     Bush = 1 << 4,
