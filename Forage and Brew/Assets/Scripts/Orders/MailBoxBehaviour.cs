@@ -208,7 +208,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
             }
         }
 
-        fillerChosen = false;
+        /*fillerChosen = false;
         if (OrderManager.Instance.CurrentOrders.FindIndex(x => x == null) + ordersCount < GameDontDestroyOnLoadManager.Instance.QuestProgressionIndexWatchers[GameDontDestroyOnLoadManager.Instance.FillerQuestProgression].MaximumOrdersAmount)
         {
             foreach (var FillerBlocks in GameDontDestroyOnLoadManager.Instance.AllFillerBlocks)
@@ -251,7 +251,7 @@ public class MailBoxBehaviour : Singleton<MailBoxBehaviour>
                 GameDontDestroyOnLoadManager.Instance.ChosenLetters.Add((new Letter(tempValidFillerLetters[y],tempValidFillerBlocks[i]), null));
                 fillerChosen = true;
             }
-        }
+        }*/
 
         GameDontDestroyOnLoadManager.Instance.ThanksAndErrorLetters.Clear();
         tempValidFillerBlocks.Clear();

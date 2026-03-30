@@ -72,6 +72,8 @@ public class OrderManager : MonoBehaviour
         {
             for (int x = 0; x < CurrentOrders.Count; x++)
             {
+                if (CurrentOrders[x] == null) continue;
+                if (CurrentOrders[x].OrderDisplay == null) continue;
                 for (int y = 0; y < CurrentOrders[x].OrderContent.RequestedPotions.Length; y++)
                 {
                     if (CurrentOrders[x].OrderContent.RequestedPotions[y].IsSpecific)
@@ -85,7 +87,24 @@ public class OrderManager : MonoBehaviour
         }
         
     }
-    
+
+    [Button("Unit Test",EButtonEnableMode.Always)]
+    public void UnitTest()
+    {
+        for (int x = 0; x < CurrentOrders.Count; x++)
+        {
+            if (CurrentOrders[x] == null) continue;
+            if (CurrentOrders[x].OrderDisplay == null) continue;
+            for (int y = 0; y < CurrentOrders[x].OrderContent.RequestedPotions.Length; y++)
+            {
+                if (CurrentOrders[x].OrderContent.RequestedPotions[y].IsSpecific)
+                {
+                    AutoFlip.instance.recipeToPin = CurrentOrders[x].OrderContent.RequestedPotions[y].Potion;
+                    return;
+                }
+            }
+        }
+    }
     public void CreateOrdersFromSave()
     {
         foreach (Order o in CurrentOrders)
@@ -128,7 +147,7 @@ public class OrderManager : MonoBehaviour
                 
             CurrentOrders[orderIndex].RelatedNarrativeBlock.CompletedLetters[index] = true;
             CurrentOrders[orderIndex].RelatedNarrativeBlock.SelfProgressionIndex++;
-                
+            Debug.Log(CurrentOrders[orderIndex].RelatedNarrativeBlock.SelfProgressionIndex);
             if (CurrentOrders[orderIndex].RelatedLetter.CanAdvanceQuestProgressionIndex)
             {
                 GameDontDestroyOnLoadManager.Instance.QuestProgressionIndex++;
