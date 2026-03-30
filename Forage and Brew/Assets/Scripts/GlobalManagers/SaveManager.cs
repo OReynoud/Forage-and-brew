@@ -306,7 +306,7 @@ public class SaveManager : MonoBehaviour
         }
         gameDontDestroyOnLoadManager.hasDonePinTutorial = data.HasDonePinTutorial;
         
-        gameDontDestroyOnLoadManager.UnlockedTutorials = data.UnlockedTutorials;
+        gameDontDestroyOnLoadManager.UnlockedTutorials.AddRange(data.UnlockedTutorials);
         
         //Garden
         gameDontDestroyOnLoadManager.plotsData = data.PlotsData;

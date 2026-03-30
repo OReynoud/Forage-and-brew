@@ -50,7 +50,7 @@ public class GameDontDestroyOnLoadManager : MonoBehaviour
     
     [field: Expandable] [field: SerializeField] public List<FillerBlockLettersContentSo> AllFillerBlocksContentSo { get; set; } = new();
     [field: SerializeField] [field: AllowNesting] public List<FillerBlockOfLetters> AllFillerBlocks { get; set; } = new();
-    public FillerBlockOfLetters LastUsedFillerBlockOfLetters { get; set; }
+    [field: SerializeField] public FillerBlockOfLetters LastUsedFillerBlockOfLetters { get; set; }
     [field: SerializeField] [field: AllowNesting] public List<QuestProgressionIndexWatcher> QuestProgressionIndexWatchers { get; set; } = new();
 
 
