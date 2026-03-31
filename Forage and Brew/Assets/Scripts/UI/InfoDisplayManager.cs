@@ -1,7 +1,6 @@
 using System.Collections;
 using NaughtyAttributes;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.InputSystem.UI;
@@ -25,6 +24,9 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
 
     [BoxGroup("References")] [SerializeField]
     private RectTransform optionsMenu;
+
+    [BoxGroup("References")] [SerializeField]
+    private TextMeshProUGUI versionText;
 
     [BoxGroup("References")] [SerializeField]
     private Slider musicSlider;
@@ -129,6 +131,8 @@ public class InfoDisplayManager : Singleton<InfoDisplayManager>
 
     private void Start()
     {
+        versionText.text = "v. " + Application.version;
+        
         CharacterInputManager.Instance.OnInputsEnabled.AddListener(UpdateUIVisibility);
         CharacterInputManager.Instance.OnNavigationChange.AddListener(UpdateUIVisibilityReverse);
         CharacterInputManager.Instance.OnCodexUse.AddListener(UpdateCodexSprite);

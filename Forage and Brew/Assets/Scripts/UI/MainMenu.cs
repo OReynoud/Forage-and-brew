@@ -1,6 +1,7 @@
 using System.IO;
 using System.Text;
 using NaughtyAttributes;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
@@ -20,6 +21,8 @@ public class MainMenu : MonoBehaviour
     public RectTransform options;
     public RectTransform credits;
     
+    
+    public TextMeshProUGUI versionText;
     
     public Slider musicSlider;
     public Slider sfxSlider;
@@ -78,6 +81,8 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
+        versionText.text = "v. " + Application.version;
+        
         if (!doesShowCursor)
         {
             Cursor.visible = false;
