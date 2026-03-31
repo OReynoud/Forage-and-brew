@@ -549,6 +549,10 @@ public class PinnedRecipe : Singleton<PinnedRecipe>
                 i += numberOfIngredients;
                 writingIndex++;
             }
+            else
+            {
+                potionIngredientQuantity[writingIndex].text = "1";
+            }
 
 
             if (enumerable.Length >= 1)

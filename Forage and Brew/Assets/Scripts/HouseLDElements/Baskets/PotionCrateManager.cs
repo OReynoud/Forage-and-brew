@@ -85,13 +85,13 @@ public class PotionCrateManager : MonoBehaviour
                 PotionCrates[i].DisableCrate();
                 continue;
             }
-
+        
             if (OrderManager.Instance.CurrentOrders[i].OrderContent == null)
             {
                 PotionCrates[i].DisableCrate();
                 continue;
             }
-
+        
             PotionCrates[i].EnableCrate(
                 OrderManager.Instance.CurrentOrders[i].OrderContent,
                 OrderManager.Instance.CurrentOrders[i].RelatedLetter.Client,
